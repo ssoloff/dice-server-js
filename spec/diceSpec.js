@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-describe("dice", function () {
+describe("Dice", function () {
     var Dice = require("../lib/dice");
     var dice;
     var randomNumberGenerator;
@@ -30,22 +30,22 @@ describe("dice", function () {
         dice = new Dice(randomNumberGenerator);
     });
 
-    describe(".d", function () {
-        var EPSILON = 2.2204460492503130808472633361816E-16;
+    describe("#d", function () {
         var d;
 
         beforeEach(function () {
             d = dice.d();
         });
 
-        it("should return 1 when random number is minimum value", function () {
+        it("should roll 1 when random number is minimum value", function () {
             randomNumberGenerator.and.returnValue(0.0);
-            expect(d(6)).toBe(1);
+            expect(d(6)).toBe(2);
         });
 
-        it("should return die sides when random number is maximum value", function () {
+        it("should roll side count when random number is maximum value", function () {
+            var EPSILON = 2.2204460492503130808472633361816E-16;
             randomNumberGenerator.and.returnValue(1.0 - EPSILON);
-            expect(d(6)).toBe(6);
+            expect(d(6)).toBe(7);
         });
     });
 });
