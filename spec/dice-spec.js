@@ -24,10 +24,42 @@
 
 describe("Dice", function () {
     var Dice = require("../lib/dice");
+    var DiceBag = require("../lib/dice-bag");
     var dice;
+    var diceBag;
+    var randomNumberGenerator;
 
     beforeEach(function () {
+        randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
+        diceBag = new DiceBag(randomNumberGenerator);
         dice = new Dice();
+    });
+
+    describe("#roll", function () {
+        var d3;
+
+        beforeEach(function () {
+            d3 = diceBag.d(3);
+        });
+
+        it("should roll die specified number of times and sum the rolls", function () {
+            var rollCount = 0;
+            randomNumberGenerator.and.callFake(function () {
+                rollCount += 1;
+                if (rollCount === 1) {
+                    return 0.01;
+                } else if (rollCount === 2) {
+                    return 0.5;
+                } else {
+                    return 0.99;
+                }
+            });
+            expect(dice.roll(3, d3)).toBe(6);
+        });
+
+        it("should return zero when count is zero", function () {
+            expect(dice.roll(0, d3)).toBe(0);
+        });
     });
 });
 
