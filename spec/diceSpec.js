@@ -39,13 +39,13 @@ describe("Dice", function () {
 
         it("should roll 1 when random number is minimum value", function () {
             randomNumberGenerator.and.returnValue(0.0);
-            expect(d(6)).toBe(2);
+            expect(d(6)).toBe(1);
         });
 
         it("should roll side count when random number is maximum value", function () {
             var EPSILON = 2.2204460492503130808472633361816E-16;
             randomNumberGenerator.and.returnValue(1.0 - EPSILON);
-            expect(d(6)).toBe(7);
+            expect(d(6)).toBe(6);
         });
     });
 });
