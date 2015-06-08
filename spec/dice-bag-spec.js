@@ -32,6 +32,11 @@ describe("DiceBag", function () {
         diceBag = new DiceBag(randomNumberGenerator);
     });
 
+    it("should use a default random number generator", function () {
+        diceBag = new DiceBag();
+        expect(diceBag.d(6)).not.toThrow();
+    });
+
     describe("#d", function () {
         var d6;
 
