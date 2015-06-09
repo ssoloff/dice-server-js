@@ -35,6 +35,13 @@ describe("Dice", function () {
         dice = new Dice();
     });
 
+    describe("#add", function () {
+        it("should return the sum of the values", function () {
+            expect(dice.add(4, 3)).toBe(7);
+            expect(dice.add(3, 4)).toBe(7);
+        });
+    });
+
     describe("#roll", function () {
         var d3;
 
@@ -59,6 +66,13 @@ describe("Dice", function () {
 
         it("should return zero when count is zero", function () {
             expect(dice.roll(0, d3)).toBe(0);
+        });
+    });
+
+    describe("#subtract", function () {
+        it("should return the difference of the values", function () {
+            expect(dice.subtract(4, 3)).toBe(1);
+            expect(dice.subtract(3, 4)).toBe(-1);
         });
     });
 });
