@@ -1,2 +1,2 @@
 # dice-server-js
-Server for parsing and executing dice notation
+Server for parsing and executing dice notation.

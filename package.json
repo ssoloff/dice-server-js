@@ -1,7 +1,7 @@
 {
   "name": "dice-server-js",
   "version": "0.1.0",
-  "description": "Server for parsing and executing dice notation",
+  "description": "Server for parsing and executing dice notation.",
   "main": "index.js",
   "dependencies": {
     "underscore": "^1.8.3"
