@@ -28,51 +28,96 @@ describe("Dice", function () {
     var dice;
     var diceBag;
     var randomNumberGenerator;
+    var d3;
+    var three;
+    var four;
 
     beforeEach(function () {
         randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
         diceBag = new DiceBag(randomNumberGenerator);
         dice = new Dice();
+
+        var rollCount = 0;
+        randomNumberGenerator.and.callFake(function () {
+            var randomNumbers = [0.1, 0.5, 0.9];
+            var roll = randomNumbers[rollCount];
+            rollCount = (rollCount + 1) % randomNumbers.length;
+            return roll;
+        });
+        d3 = diceBag.d(3);
+
+        three = dice.constant(3);
+        four = dice.constant(4);
     });
 
     describe("#add", function () {
-        it("should return the sum of the values", function () {
-            expect(dice.add(4, 3)).toBe(7);
-            expect(dice.add(3, 4)).toBe(7);
+        it("should return source equal to <augend>+<addend>", function () {
+            expect(dice.add(four, three).source).toBe("4+3");
+        });
+
+        it("should return value equal to sum of augend and addend", function () {
+            expect(dice.add(four, three).value).toBe(7);
+            expect(dice.add(three, four).value).toBe(7);
+        });
+    });
+
+    describe("#constant", function () {
+        it("should return source equal to value", function () {
+            expect(dice.constant(5).source).toBe("5");
+        });
+
+        it("should return value equal to value", function () {
+            expect(dice.constant(5).value).toBe(5);
         });
     });
 
     describe("#roll", function () {
-        var d3;
-
         beforeEach(function () {
-            d3 = diceBag.d(3);
         });
 
-        it("should roll die specified number of times and sum the rolls", function () {
-            var rollCount = 0;
-            randomNumberGenerator.and.callFake(function () {
-                rollCount += 1;
-                if (rollCount === 1) {
-                    return 0.01;
-                } else if (rollCount === 2) {
-                    return 0.5;
-                } else {
-                    return 0.99;
-                }
+        describe("when count less than one", function () {
+            it("should throw an exception", function () {
+                var MIN_SAFE_INTEGER = -9007199254740991;
+                var roll = function (count) {
+                    return function () {
+                        dice.roll(count, d3);
+                    };
+                };
+                expect(roll(0)).toThrowError(RangeError);
+                expect(roll(-1)).toThrowError(RangeError);
+                expect(roll(MIN_SAFE_INTEGER)).toThrowError(RangeError);
             });
-            expect(dice.roll(3, d3)).toBe(6);
         });
 
-        it("should return zero when count is zero", function () {
-            expect(dice.roll(0, d3)).toBe(0);
+        describe("when count equals one", function () {
+            it("should return source equal to d<sides>", function () {
+                expect(dice.roll(1, d3).source).toBe("d3");
+            });
+
+            it("should return value equal to roll", function () {
+                expect(dice.roll(1, d3).value).toBe(1);
+            });
+        });
+
+        describe("when count greater than one", function () {
+            it("should return source equal to d<sides>+d<sides>+...", function () {
+                expect(dice.roll(3, d3).source).toBe("d3+d3+d3");
+            });
+
+            it("should return value equal to sum of rolls", function () {
+                expect(dice.roll(3, d3).value).toBe(6);
+            });
         });
     });
 
     describe("#subtract", function () {
-        it("should return the difference of the values", function () {
-            expect(dice.subtract(4, 3)).toBe(1);
-            expect(dice.subtract(3, 4)).toBe(-1);
+        it("should return source equal to <minuend>-<subtrahend>", function () {
+            expect(dice.subtract(four, three).source).toBe("4-3");
+        });
+
+        it("should return value equal to difference between minuend and subtrahend", function () {
+            expect(dice.subtract(four, three).value).toBe(1);
+            expect(dice.subtract(three, four).value).toBe(-1);
         });
     });
 });

@@ -44,15 +44,19 @@ describe("DiceBag", function () {
             d6 = diceBag.d(6);
         });
 
-        it("should roll 1 when random number is minimum value", function () {
-            randomNumberGenerator.and.returnValue(0.0);
-            expect(d6()).toBe(1);
+        it("should return source equal to d<sides>", function () {
+            expect(d6().source).toBe("d6");
         });
 
-        it("should roll side count when random number is maximum value", function () {
+        it("should return value equal to 1 when random number is minimum value", function () {
+            randomNumberGenerator.and.returnValue(0.0);
+            expect(d6().value).toBe(1);
+        });
+
+        it("should return value equal to <sides> when random number is maximum value", function () {
             var EPSILON = 2.2204460492503130808472633361816E-16;
             randomNumberGenerator.and.returnValue(1.0 - EPSILON);
-            expect(d6()).toBe(6);
+            expect(d6().value).toBe(6);
         });
     });
 });
