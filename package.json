@@ -23,5 +23,13 @@
   "jscsConfig": {
     "preset": "crockford",
     "requireMultipleVarDecl": null
+  },
+  "jshintConfig": {
+    "jasmine": true,
+    "node": true,
+    "curly": true,
+    "eqeqeq": true,
+    "undef": true,
+    "unused": true
   }
 }

@@ -3,7 +3,7 @@
 all: check test
 
 check:
-	jshint
+	jshint .
 	jscs **/*.js
 
 test:
