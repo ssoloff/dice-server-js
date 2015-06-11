@@ -27,13 +27,12 @@ describe("Dice", function () {
     var DiceBag = require("../lib/dice-bag");
     var dice;
     var diceBag;
-    var randomNumberGenerator;
     var d3;
     var three;
     var four;
 
     beforeEach(function () {
-        randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
+        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
         diceBag = new DiceBag(randomNumberGenerator);
         dice = new Dice();
 

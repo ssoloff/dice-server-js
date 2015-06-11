@@ -25,10 +25,9 @@
 describe("DiceBag", function () {
     var DiceBag = require("../lib/dice-bag");
     var diceBag;
-    var randomNumberGenerator;
 
     beforeEach(function () {
-        randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
+        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
         diceBag = new DiceBag(randomNumberGenerator);
     });
 
@@ -49,13 +48,13 @@ describe("DiceBag", function () {
         });
 
         it("should return value equal to 1 when random number is minimum value", function () {
-            randomNumberGenerator.and.returnValue(0.0);
+            diceBag.randomNumberGenerator.and.returnValue(0.0);
             expect(d6().value).toBe(1);
         });
 
         it("should return value equal to <sides> when random number is maximum value", function () {
             var EPSILON = 2.2204460492503130808472633361816E-16;
-            randomNumberGenerator.and.returnValue(1.0 - EPSILON);
+            diceBag.randomNumberGenerator.and.returnValue(1.0 - EPSILON);
             expect(d6().value).toBe(6);
         });
     });
