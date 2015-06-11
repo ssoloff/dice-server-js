@@ -23,8 +23,8 @@
 "use strict";
 
 describe("DiceBag", function () {
-    var DiceBag = require("../lib/dice-bag"),
-        diceBag;
+    var DiceBag = require("../lib/dice-bag");
+    var diceBag;
 
     beforeEach(function () {
         var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");

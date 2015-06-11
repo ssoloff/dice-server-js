@@ -47,14 +47,14 @@ describe("diceExpression", function () {
 
     describe("#add", function () {
         it("should return expression that evaluates to sum of augend and addend", function () {
-            expect(diceExpression.add(four, three)()).toEqual({source: "4+3", value: 7});
-            expect(diceExpression.add(three, four)()).toEqual({source: "3+4", value: 7});
+            expect(diceExpression.add(four, three)).toEvaluateTo(7, "4+3");
+            expect(diceExpression.add(three, four)).toEvaluateTo(7, "3+4");
         });
     });
 
     describe("#constant", function () {
         it("should return expression that evaluates to constant value", function () {
-            expect(diceExpression.constant(5)()).toEqual({source: "5", value: 5});
+            expect(diceExpression.constant(5)).toEvaluateTo(5, "5");
         });
     });
 
@@ -75,21 +75,21 @@ describe("diceExpression", function () {
 
         describe("when count equals one", function () {
             it("should return expression that evaluates to single die roll", function () {
-                expect(diceExpression.roll(1, d3)()).toEqual({source: "d3", value: 1});
+                expect(diceExpression.roll(1, d3)).toEvaluateTo(1, "d3");
             });
         });
 
         describe("when count greater than one", function () {
             it("should return expression that evaluates to sum of multiple die rolls", function () {
-                expect(diceExpression.roll(3, d3)()).toEqual({source: "d3+d3+d3", value: 6});
+                expect(diceExpression.roll(3, d3)).toEvaluateTo(6, "d3+d3+d3");
             });
         });
     });
 
     describe("#subtract", function () {
         it("should return expression that evaluates to difference between minuend and subtrahend", function () {
-            expect(diceExpression.subtract(four, three)()).toEqual({source: "4-3", value: 1});
-            expect(diceExpression.subtract(three, four)()).toEqual({source: "3-4", value: -1});
+            expect(diceExpression.subtract(four, three)).toEvaluateTo(1, "4-3");
+            expect(diceExpression.subtract(three, four)).toEvaluateTo(-1, "3-4");
         });
     });
 });
