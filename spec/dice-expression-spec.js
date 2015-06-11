@@ -62,7 +62,7 @@ describe("diceExpression", function () {
         describe("when count less than one", function () {
             it("should throw exception", function () {
                 var MIN_SAFE_INTEGER = -9007199254740991;
-                var roll = function (count) {
+                function roll(count) {
                     return function () {
                         diceExpression.roll(count, d3);
                     };
