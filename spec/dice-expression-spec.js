@@ -23,22 +23,23 @@
 "use strict";
 
 describe("diceExpression", function () {
-    var DiceBag = require("../lib/dice-bag"),
-        diceExpression = require("../lib/dice-expression"),
-        d3,
-        three,
-        four;
+    var DiceBag = require("../lib/dice-bag");
+    var diceExpression = require("../lib/dice-expression");
+    var d3;
+    var three;
+    var four;
 
     beforeEach(function () {
-        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator"),
-            diceBag = new DiceBag(randomNumberGenerator),
-            rollCount = 0;
+        var rollCount = 0;
+        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
         randomNumberGenerator.and.callFake(function () {
-            var randomNumbers = [0.1, 0.5, 0.9],
-                roll = randomNumbers[rollCount];
+            var randomNumbers = [0.1, 0.5, 0.9];
+            var roll = randomNumbers[rollCount];
             rollCount = (rollCount + 1) % randomNumbers.length;
             return roll;
         });
+
+        var diceBag = new DiceBag(randomNumberGenerator);
         d3 = diceBag.d(3);
         three = diceExpression.constant(3);
         four = diceExpression.constant(4);
@@ -60,12 +61,12 @@ describe("diceExpression", function () {
     describe("#roll", function () {
         describe("when count less than one", function () {
             it("should throw exception", function () {
-                var MIN_SAFE_INTEGER = -9007199254740991,
-                    roll = function (count) {
-                        return function () {
-                            diceExpression.roll(count, d3);
-                        };
+                var MIN_SAFE_INTEGER = -9007199254740991;
+                var roll = function (count) {
+                    return function () {
+                        diceExpression.roll(count, d3);
                     };
+                };
                 expect(roll(0)).toThrowError(RangeError);
                 expect(roll(-1)).toThrowError(RangeError);
                 expect(roll(MIN_SAFE_INTEGER)).toThrowError(RangeError);
