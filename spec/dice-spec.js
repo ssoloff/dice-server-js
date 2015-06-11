@@ -69,9 +69,6 @@ describe("Dice", function () {
     });
 
     describe("#roll", function () {
-        beforeEach(function () {
-        });
-
         describe("when count less than one", function () {
             it("should throw an exception", function () {
                 var MIN_SAFE_INTEGER = -9007199254740991,
