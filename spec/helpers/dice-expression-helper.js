@@ -29,7 +29,7 @@ beforeEach(function () {
                 compare: function (actualExpression, expectedValue, expectedSource) {
                     var result = actualExpression();
                     return {
-                        pass: (result.value === expectedValue) && (result.source == expectedSource)
+                        pass: (result.value === expectedValue) && (result.source === expectedSource)
                     };
                 }
             };

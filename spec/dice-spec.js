@@ -23,6 +23,5 @@
 "use strict";
 
 describe("Dice", function () {
-    var Dice = require("../lib/dice");
 });
 
