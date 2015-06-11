@@ -66,7 +66,7 @@ describe("diceExpression", function () {
                     return function () {
                         diceExpression.roll(count, d3);
                     };
-                };
+                }
                 expect(roll(0)).toThrowError(RangeError);
                 expect(roll(-1)).toThrowError(RangeError);
                 expect(roll(MIN_SAFE_INTEGER)).toThrowError(RangeError);
