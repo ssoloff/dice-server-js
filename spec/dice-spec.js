@@ -23,28 +23,26 @@
 "use strict";
 
 describe("Dice", function () {
-    var Dice = require("../lib/dice");
-    var DiceBag = require("../lib/dice-bag");
-    var dice;
-    var diceBag;
-    var d3;
-    var three;
-    var four;
+    var Dice = require("../lib/dice"),
+        DiceBag = require("../lib/dice-bag"),
+        dice,
+        diceBag,
+        d3,
+        three,
+        four;
 
     beforeEach(function () {
-        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
-        diceBag = new DiceBag(randomNumberGenerator);
-        dice = new Dice();
-
-        var rollCount = 0;
+        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator"),
+            rollCount = 0;
         randomNumberGenerator.and.callFake(function () {
-            var randomNumbers = [0.1, 0.5, 0.9];
-            var roll = randomNumbers[rollCount];
+            var randomNumbers = [0.1, 0.5, 0.9],
+                roll = randomNumbers[rollCount];
             rollCount = (rollCount + 1) % randomNumbers.length;
             return roll;
         });
+        diceBag = new DiceBag(randomNumberGenerator);
+        dice = new Dice();
         d3 = diceBag.d(3);
-
         three = dice.constant(3);
         four = dice.constant(4);
     });
@@ -76,8 +74,8 @@ describe("Dice", function () {
 
         describe("when count less than one", function () {
             it("should throw an exception", function () {
-                var MIN_SAFE_INTEGER = -9007199254740991;
-                var roll = function (count) {
+                var MIN_SAFE_INTEGER = -9007199254740991,
+                    roll = function (count) {
                     return function () {
                         dice.roll(count, d3);
                     };

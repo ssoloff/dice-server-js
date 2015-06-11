@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/ssoloff/dice-server-js",
   "jscsConfig": {
-    "preset": "crockford",
-    "requireMultipleVarDecl": null
+    "preset": "crockford"
   }
 }
