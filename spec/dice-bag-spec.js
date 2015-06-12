@@ -23,7 +23,6 @@
 "use strict";
 
 var DiceBag = require("../lib/dice-bag");
-var DiceExpressionResult = require("../lib/dice-expression-result");
 
 describe("DiceBag", function () {
     var bag;
@@ -47,13 +46,13 @@ describe("DiceBag", function () {
 
         it("should return expression that evaluates to 1 when random number is minimum value", function () {
             bag.randomNumberGenerator.and.returnValue(0.0);
-            expect(d6).toEvaluateTo(DiceExpressionResult.fromSource("d6").withValue(1));
+            expect(d6()).toEqual({sides: 6, value: 1});
         });
 
         it("should return expression that evaluates to <sides> when random number is maximum value", function () {
             var EPSILON = 2.2204460492503130808472633361816E-16;
             bag.randomNumberGenerator.and.returnValue(1.0 - EPSILON);
-            expect(d6).toEvaluateTo(DiceExpressionResult.fromSource("d6").withValue(6));
+            expect(d6()).toEqual({sides: 6, value: 6});
         });
     });
 });
