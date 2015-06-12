@@ -22,15 +22,15 @@
 
 "use strict";
 
+var _ = require("underscore");
+
 beforeEach(function () {
     jasmine.addMatchers({
         toEvaluateTo: function () {
             return {
                 compare: function (actualExpression, expectedExpressionResult) {
-                    var actualExpressionResult = actualExpression();
                     return {
-                        pass: (actualExpressionResult.source === expectedExpressionResult.source)
-                            && (actualExpressionResult.value === expectedExpressionResult.value)
+                        pass: _.isEqual(expectedExpressionResult, actualExpression())
                     };
                 }
             };
