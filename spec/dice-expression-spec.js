@@ -22,6 +22,8 @@
 
 "use strict";
 
+var DiceExpressionResult = require("../lib/dice-expression-result");
+
 describe("diceExpression", function () {
     var DiceBag = require("../lib/dice-bag");
     var diceExpression = require("../lib/dice-expression");
@@ -47,14 +49,14 @@ describe("diceExpression", function () {
 
     describe("#add", function () {
         it("should return expression that evaluates to sum of augend and addend", function () {
-            expect(diceExpression.add(four, three)).toEvaluateTo(7, "4+3");
-            expect(diceExpression.add(three, four)).toEvaluateTo(7, "3+4");
+            expect(diceExpression.add(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4+3").withValue(7));
+            expect(diceExpression.add(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3+4").withValue(7));
         });
     });
 
     describe("#constant", function () {
         it("should return expression that evaluates to constant value", function () {
-            expect(diceExpression.constant(5)).toEvaluateTo(5, "5");
+            expect(diceExpression.constant(5)).toEvaluateTo(DiceExpressionResult.fromSource("5").withValue(5));
         });
     });
 
@@ -75,21 +77,21 @@ describe("diceExpression", function () {
 
         describe("when count equals one", function () {
             it("should return expression that evaluates to single die roll", function () {
-                expect(diceExpression.roll(1, d3)).toEvaluateTo(1, "d3");
+                expect(diceExpression.roll(1, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3").withValue(1));
             });
         });
 
         describe("when count greater than one", function () {
             it("should return expression that evaluates to sum of multiple die rolls", function () {
-                expect(diceExpression.roll(3, d3)).toEvaluateTo(6, "d3+d3+d3");
+                expect(diceExpression.roll(3, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3+d3+d3").withValue(6));
             });
         });
     });
 
     describe("#subtract", function () {
         it("should return expression that evaluates to difference between minuend and subtrahend", function () {
-            expect(diceExpression.subtract(four, three)).toEvaluateTo(1, "4-3");
-            expect(diceExpression.subtract(three, four)).toEvaluateTo(-1, "3-4");
+            expect(diceExpression.subtract(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4-3").withValue(1));
+            expect(diceExpression.subtract(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3-4").withValue(-1));
         });
     });
 });

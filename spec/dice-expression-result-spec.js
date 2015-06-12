@@ -22,19 +22,27 @@
 
 "use strict";
 
-beforeEach(function () {
-    jasmine.addMatchers({
-        toEvaluateTo: function () {
-            return {
-                compare: function (actualExpression, expectedExpressionResult) {
-                    var actualExpressionResult = actualExpression();
-                    return {
-                        pass: (actualExpressionResult.source === expectedExpressionResult.source)
-                            && (actualExpressionResult.value === expectedExpressionResult.value)
-                    };
-                }
-            };
-        }
+var DiceExpressionResult = require("../lib/dice-expression-result");
+
+describe("DiceExpressionResult", function () {
+    describe("#fromSource", function () {
+        it("should return a new expression result with the given source", function () {
+            expect(DiceExpressionResult.fromSource("source").source).toBe("source");
+        });
+    });
+
+    describe("fluent interface", function () {
+        var expressionResult;
+
+        beforeEach(function () {
+            expressionResult = DiceExpressionResult.fromSource("source");
+        });
+
+        describe("#withValue", function () {
+            it("should set the expression result value", function () {
+                expect(expressionResult.withValue(42).value).toBe(42);
+            });
+        });
     });
 });
 
