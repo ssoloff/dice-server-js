@@ -44,15 +44,30 @@ describe("DiceBag", function () {
             d6 = bag.d(6);
         });
 
-        it("should return expression that evaluates to 1 when random number is minimum value", function () {
-            bag.randomNumberGenerator.and.returnValue(0.0);
-            expect(d6()).toEqual({sides: 6, value: 1});
+        describe("#roll", function () {
+            it("should return 1 when random number is minimum value", function () {
+                bag.randomNumberGenerator.and.returnValue(0.0);
+                expect(d6.roll()).toBe(1);
+            });
+
+            it("should return <sides> when random number is maximum value", function () {
+                var EPSILON = 2.2204460492503130808472633361816E-16;
+                bag.randomNumberGenerator.and.returnValue(1.0 - EPSILON);
+                expect(d6.roll()).toBe(6);
+            });
         });
 
-        it("should return expression that evaluates to <sides> when random number is maximum value", function () {
-            var EPSILON = 2.2204460492503130808472633361816E-16;
-            bag.randomNumberGenerator.and.returnValue(1.0 - EPSILON);
-            expect(d6()).toEqual({sides: 6, value: 6});
+        describe("#sides", function () {
+            it("should return the die sides", function () {
+                expect(d6.sides).toBe(6);
+            });
+        });
+
+        describe("when evaluated", function () {
+            it("should roll the die", function () {
+                bag.randomNumberGenerator.and.returnValue(0.0);
+                expect(d6()).toBe(1);
+            });
         });
     });
 });
