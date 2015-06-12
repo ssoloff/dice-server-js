@@ -22,11 +22,11 @@
 
 "use strict";
 
+var DiceBag = require("../lib/dice-bag");
+var diceExpression = require("../lib/dice-expression");
 var DiceExpressionResult = require("../lib/dice-expression-result");
 
 describe("diceExpression", function () {
-    var DiceBag = require("../lib/dice-bag");
-    var diceExpression = require("../lib/dice-expression");
     var d3;
     var three;
     var four;
@@ -41,8 +41,8 @@ describe("diceExpression", function () {
             return roll;
         });
 
-        var diceBag = new DiceBag(randomNumberGenerator);
-        d3 = diceBag.d(3);
+        var bag = new DiceBag(randomNumberGenerator);
+        d3 = bag.d(3);
         three = diceExpression.constant(3);
         four = diceExpression.constant(4);
     });

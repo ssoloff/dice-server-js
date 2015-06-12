@@ -22,25 +22,26 @@
 
 "use strict";
 
+var DiceBag = require("../lib/dice-bag");
+
 describe("DiceBag", function () {
-    var DiceBag = require("../lib/dice-bag");
-    var diceBag;
+    var bag;
 
     beforeEach(function () {
         var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
-        diceBag = new DiceBag(randomNumberGenerator);
+        bag = new DiceBag(randomNumberGenerator);
     });
 
     it("should use a default random number generator", function () {
-        diceBag = new DiceBag();
-        expect(diceBag.d(6)).not.toThrow();
+        bag = new DiceBag();
+        expect(bag.d(6)).not.toThrow();
     });
 
     describe("#d", function () {
         var d6;
 
         beforeEach(function () {
-            d6 = diceBag.d(6);
+            d6 = bag.d(6);
         });
 
         it("should return source equal to d<sides>", function () {
@@ -48,13 +49,13 @@ describe("DiceBag", function () {
         });
 
         it("should return value equal to 1 when random number is minimum value", function () {
-            diceBag.randomNumberGenerator.and.returnValue(0.0);
+            bag.randomNumberGenerator.and.returnValue(0.0);
             expect(d6().value).toBe(1);
         });
 
         it("should return value equal to <sides> when random number is maximum value", function () {
             var EPSILON = 2.2204460492503130808472633361816E-16;
-            diceBag.randomNumberGenerator.and.returnValue(1.0 - EPSILON);
+            bag.randomNumberGenerator.and.returnValue(1.0 - EPSILON);
             expect(d6().value).toBe(6);
         });
     });
