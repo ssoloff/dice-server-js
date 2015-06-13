@@ -23,7 +23,7 @@
 "use strict";
 
 var DiceBag = require("../lib/dice-bag");
-var diceExpression = require("../lib/dice-expression");
+var DiceExpression = require("../lib/dice-expression");
 var DiceExpressionResult = require("../lib/dice-expression-result");
 
 describe("diceExpression", function () {
@@ -43,55 +43,55 @@ describe("diceExpression", function () {
 
         var bag = new DiceBag(randomNumberGenerator);
         d3 = bag.d(3);
-        three = diceExpression.constant(3);
-        four = diceExpression.constant(4);
+        three = DiceExpression.forConstant(3);
+        four = DiceExpression.forConstant(4);
     });
 
-    describe("#add", function () {
+    describe("#forAddition", function () {
         it("should return expression that evaluates to sum of augend and addend", function () {
-            expect(diceExpression.add(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4+3").withValue(7));
-            expect(diceExpression.add(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3+4").withValue(7));
+            expect(DiceExpression.forAddition(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4+3").withValue(7));
+            expect(DiceExpression.forAddition(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3+4").withValue(7));
         });
     });
 
-    describe("#constant", function () {
+    describe("#forConstant", function () {
         it("should return expression that evaluates to constant value", function () {
-            expect(diceExpression.constant(5)).toEvaluateTo(DiceExpressionResult.fromSource("5").withValue(5));
+            expect(DiceExpression.forConstant(5)).toEvaluateTo(DiceExpressionResult.fromSource("5").withValue(5));
         });
     });
 
-    describe("#roll", function () {
+    describe("#forRoll", function () {
         describe("when count less than one", function () {
             it("should throw exception", function () {
                 var MIN_SAFE_INTEGER = -9007199254740991;
-                function roll(count) {
+                function createRollExpressionWithCount(count) {
                     return function () {
-                        diceExpression.roll(count, d3);
+                        DiceExpression.forRoll(count, d3);
                     };
                 }
-                expect(roll(0)).toThrowError(RangeError);
-                expect(roll(-1)).toThrowError(RangeError);
-                expect(roll(MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                expect(createRollExpressionWithCount(0)).toThrowError(RangeError);
+                expect(createRollExpressionWithCount(-1)).toThrowError(RangeError);
+                expect(createRollExpressionWithCount(MIN_SAFE_INTEGER)).toThrowError(RangeError);
             });
         });
 
         describe("when count equals one", function () {
             it("should return expression that evaluates to single die roll", function () {
-                expect(diceExpression.roll(1, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3").withValue(1));
+                expect(DiceExpression.forRoll(1, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3").withValue(1));
             });
         });
 
         describe("when count greater than one", function () {
             it("should return expression that evaluates to sum of multiple die rolls", function () {
-                expect(diceExpression.roll(3, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3+d3+d3").withValue(6));
+                expect(DiceExpression.forRoll(3, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3+d3+d3").withValue(6));
             });
         });
     });
 
-    describe("#subtract", function () {
+    describe("#forSubtraction", function () {
         it("should return expression that evaluates to difference between minuend and subtrahend", function () {
-            expect(diceExpression.subtract(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4-3").withValue(1));
-            expect(diceExpression.subtract(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3-4").withValue(-1));
+            expect(DiceExpression.forSubtraction(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4-3").withValue(1));
+            expect(DiceExpression.forSubtraction(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3-4").withValue(-1));
         });
     });
 });
