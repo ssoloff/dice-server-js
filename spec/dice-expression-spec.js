@@ -25,6 +25,7 @@
 var DiceBag = require("../lib/dice-bag");
 var DiceExpression = require("../lib/dice-expression");
 var DiceExpressionResult = require("../lib/dice-expression-result");
+var NumberUtils = require("../lib/number-utils");
 
 describe("diceExpression", function () {
     var d3;
@@ -63,15 +64,13 @@ describe("diceExpression", function () {
     describe("#forRoll", function () {
         describe("when count less than one", function () {
             it("should throw exception", function () {
-                var MIN_SAFE_INTEGER = -9007199254740991;
                 function createRollExpressionWithCount(count) {
                     return function () {
                         DiceExpression.forRoll(count, d3);
                     };
                 }
                 expect(createRollExpressionWithCount(0)).toThrowError(RangeError);
-                expect(createRollExpressionWithCount(-1)).toThrowError(RangeError);
-                expect(createRollExpressionWithCount(MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                expect(createRollExpressionWithCount(NumberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
             });
         });
 

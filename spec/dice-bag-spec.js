@@ -23,6 +23,7 @@
 "use strict";
 
 var DiceBag = require("../lib/dice-bag");
+var NumberUtils = require("../lib/number-utils");
 
 describe("DiceBag", function () {
     var bag;
@@ -46,14 +47,13 @@ describe("DiceBag", function () {
 
         describe("when sides less than one", function () {
             it("should throw exception", function () {
-                var MIN_SAFE_INTEGER = -9007199254740991;
                 function createDieWithSides(sides) {
                     return function () {
                         bag.d(sides);
                     };
                 }
                 expect(createDieWithSides(0)).toThrowError(RangeError);
-                expect(createDieWithSides(MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                expect(createDieWithSides(NumberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
             });
         });
 
@@ -64,8 +64,7 @@ describe("DiceBag", function () {
             });
 
             it("should return <sides> when random number is maximum value", function () {
-                var EPSILON = 2.2204460492503130808472633361816E-16;
-                bag.randomNumberGenerator.and.returnValue(1.0 - EPSILON);
+                bag.randomNumberGenerator.and.returnValue(1.0 - NumberUtils.EPSILON);
                 expect(d6.roll()).toBe(6);
             });
         });
