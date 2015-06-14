@@ -1,10 +1,13 @@
-.PHONY: all check test
+.PHONY: all check docs test
 
-all: check test
+all: check docs test
 
 check:
 	jshint .
 	jscs **/*.js
+
+docs:
+	jsdoc -c jsdoc-conf.json
 
 test:
 	jasmine
