@@ -44,6 +44,19 @@ describe("DiceBag", function () {
             d6 = bag.d(6);
         });
 
+        describe("when sides less than one", function () {
+            it("should throw exception", function () {
+                var MIN_SAFE_INTEGER = -9007199254740991;
+                function createDieWithSides(sides) {
+                    return function () {
+                        bag.d(sides);
+                    };
+                }
+                expect(createDieWithSides(0)).toThrowError(RangeError);
+                expect(createDieWithSides(MIN_SAFE_INTEGER)).toThrowError(RangeError);
+            });
+        });
+
         describe("#roll", function () {
             it("should return 1 when random number is minimum value", function () {
                 bag.randomNumberGenerator.and.returnValue(0.0);
