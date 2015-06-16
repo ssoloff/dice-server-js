@@ -31,6 +31,7 @@ describe("DiceExpression", function () {
     var d3;
     var three;
     var four;
+    var expression;
 
     beforeEach(function () {
         var rollCount = 0;
@@ -49,26 +50,49 @@ describe("DiceExpression", function () {
     });
 
     describe("#forAddition", function () {
-        it("should return expression that evaluates to sum of augend and addend", function () {
-            expect(DiceExpression.forAddition(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4+3").withValue(7));
-            expect(DiceExpression.forAddition(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3+4").withValue(7));
+        beforeEach(function () {
+            expression = DiceExpression.forAddition(four, three);
+        });
+
+        describe("#evaluate", function () {
+            it("should return sum of augend and addend", function () {
+                expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("4+3").withValue(7));
+            });
         });
 
         describe("#toString", function () {
             it("should return the formatted expression", function () {
-                expect(DiceExpression.forAddition(four, three).toString()).toBe("4+3");
+                expect(expression.toString()).toBe("4+3");
+            });
+        });
+
+        describe("when evaluated", function () {
+            it("should return sum of augend and addend", function () {
+                expect(expression).toEvaluateTo(DiceExpressionResult.fromSource("4+3").withValue(7));
             });
         });
     });
 
     describe("#forConstant", function () {
-        it("should return expression that evaluates to constant value", function () {
-            expect(DiceExpression.forConstant(5)).toEvaluateTo(DiceExpressionResult.fromSource("5").withValue(5));
+        beforeEach(function () {
+            expression = DiceExpression.forConstant(5);
+        });
+
+        describe("#evaluate", function () {
+            it("should return constant value", function () {
+                expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("5").withValue(5));
+            });
         });
 
         describe("#toString", function () {
             it("should return the formatted expression", function () {
-                expect(DiceExpression.forConstant(5).toString()).toBe("5");
+                expect(expression.toString()).toBe("5");
+            });
+        });
+
+        describe("when evaluated", function () {
+            it("should return constant value", function () {
+                expect(expression).toEvaluateTo(DiceExpressionResult.fromSource("5").withValue(5));
             });
         });
     });
@@ -87,39 +111,68 @@ describe("DiceExpression", function () {
         });
 
         describe("when count equals one", function () {
-            it("should return expression that evaluates to single die roll", function () {
-                expect(DiceExpression.forRoll(1, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3").withValue(1));
+            beforeEach(function () {
+                expression = DiceExpression.forRoll(1, d3);
+            });
+
+            describe("#evaluate", function () {
+                it("should return sum of single die roll", function () {
+                    expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("d3").withValue(1));
+                });
             });
 
             describe("#toString", function () {
                 it("should return the formatted expression", function () {
-                    expect(DiceExpression.forRoll(1, d3).toString()).toBe("d3");
+                    expect(expression.toString()).toBe("d3");
                 });
             });
         });
 
         describe("when count greater than one", function () {
-            it("should return expression that evaluates to sum of multiple die rolls", function () {
-                expect(DiceExpression.forRoll(3, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3+d3+d3").withValue(6));
+            beforeEach(function () {
+                expression = DiceExpression.forRoll(4, d3);
+            });
+
+            describe("#evaluate", function () {
+                it("should return sum of multiple die rolls", function () {
+                    expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("d3+d3+d3+d3").withValue(7));
+                });
             });
 
             describe("#toString", function () {
                 it("should return the formatted expression", function () {
-                    expect(DiceExpression.forRoll(4, d3).toString()).toBe("4d3");
+                    expect(expression.toString()).toBe("4d3");
                 });
+            });
+        });
+
+        describe("when evaluated", function () {
+            it("should return sum of die rolls", function () {
+                expect(DiceExpression.forRoll(2, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3+d3").withValue(3));
             });
         });
     });
 
     describe("#forSubtraction", function () {
-        it("should return expression that evaluates to difference between minuend and subtrahend", function () {
-            expect(DiceExpression.forSubtraction(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4-3").withValue(1));
-            expect(DiceExpression.forSubtraction(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3-4").withValue(-1));
+        beforeEach(function () {
+            expression = DiceExpression.forSubtraction(four, three);
+        });
+
+        describe("#evaluate", function () {
+            it("should return difference between minuend and subtrahend", function () {
+                expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("4-3").withValue(1));
+            });
         });
 
         describe("#toString", function () {
             it("should return the formatted expression", function () {
-                expect(DiceExpression.forSubtraction(four, three).toString()).toBe("4-3");
+                expect(expression.toString()).toBe("4-3");
+            });
+        });
+
+        describe("when evaluated", function () {
+            it("should return difference between minuend and subtrahend", function () {
+                expect(expression).toEvaluateTo(DiceExpressionResult.fromSource("4-3").withValue(1));
             });
         });
     });
