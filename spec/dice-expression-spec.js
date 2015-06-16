@@ -27,7 +27,7 @@ var DiceExpression = require("../lib/dice-expression");
 var DiceExpressionResult = require("../lib/dice-expression-result");
 var NumberUtils = require("../lib/number-utils");
 
-describe("diceExpression", function () {
+describe("DiceExpression", function () {
     var d3;
     var three;
     var four;
@@ -53,11 +53,23 @@ describe("diceExpression", function () {
             expect(DiceExpression.forAddition(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4+3").withValue(7));
             expect(DiceExpression.forAddition(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3+4").withValue(7));
         });
+
+        describe("#toString", function () {
+            it("should return the formatted expression", function () {
+                expect(DiceExpression.forAddition(four, three).toString()).toBe("4+3");
+            });
+        });
     });
 
     describe("#forConstant", function () {
         it("should return expression that evaluates to constant value", function () {
             expect(DiceExpression.forConstant(5)).toEvaluateTo(DiceExpressionResult.fromSource("5").withValue(5));
+        });
+
+        describe("#toString", function () {
+            it("should return the formatted expression", function () {
+                expect(DiceExpression.forConstant(5).toString()).toBe("5");
+            });
         });
     });
 
@@ -78,11 +90,23 @@ describe("diceExpression", function () {
             it("should return expression that evaluates to single die roll", function () {
                 expect(DiceExpression.forRoll(1, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3").withValue(1));
             });
+
+            describe("#toString", function () {
+                it("should return the formatted expression", function () {
+                    expect(DiceExpression.forRoll(1, d3).toString()).toBe("d3");
+                });
+            });
         });
 
         describe("when count greater than one", function () {
             it("should return expression that evaluates to sum of multiple die rolls", function () {
                 expect(DiceExpression.forRoll(3, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3+d3+d3").withValue(6));
+            });
+
+            describe("#toString", function () {
+                it("should return the formatted expression", function () {
+                    expect(DiceExpression.forRoll(4, d3).toString()).toBe("4d3");
+                });
             });
         });
     });
@@ -91,6 +115,12 @@ describe("diceExpression", function () {
         it("should return expression that evaluates to difference between minuend and subtrahend", function () {
             expect(DiceExpression.forSubtraction(four, three)).toEvaluateTo(DiceExpressionResult.fromSource("4-3").withValue(1));
             expect(DiceExpression.forSubtraction(three, four)).toEvaluateTo(DiceExpressionResult.fromSource("3-4").withValue(-1));
+        });
+
+        describe("#toString", function () {
+            it("should return the formatted expression", function () {
+                expect(DiceExpression.forSubtraction(four, three).toString()).toBe("4-3");
+            });
         });
     });
 });
