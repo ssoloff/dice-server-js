@@ -23,7 +23,7 @@
 "use strict";
 
 var _ = require("underscore");
-var DiceBag = require("../lib/dice-bag");
+var dice = require("../lib/dice");
 
 module.exports.createDieThatRollsEachSideSuccessively = function (sides) {
     var rollCount = 0;
@@ -38,7 +38,7 @@ module.exports.createDieThatRollsEachSideSuccessively = function (sides) {
         return roll;
     });
 
-    var bag = new DiceBag(randomNumberGenerator);
+    var bag = new dice.Bag(randomNumberGenerator);
     return bag.d(sides);
 };
 

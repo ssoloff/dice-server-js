@@ -22,7 +22,7 @@
 
 "use strict";
 
-var DiceBag = require("../lib/dice-bag");
+var dice = require("../lib/dice");
 var numberUtils = require("../lib/number-utils");
 
 describe("DiceBag", function () {
@@ -30,11 +30,11 @@ describe("DiceBag", function () {
 
     beforeEach(function () {
         var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
-        bag = new DiceBag(randomNumberGenerator);
+        bag = new dice.Bag(randomNumberGenerator);
     });
 
     it("should use a default random number generator", function () {
-        bag = new DiceBag();
+        bag = new dice.Bag();
         expect(bag.d(6)).not.toThrow();
     });
 

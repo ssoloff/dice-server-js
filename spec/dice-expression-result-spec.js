@@ -22,7 +22,7 @@
 
 "use strict";
 
-var diceExpressionResult = require("../lib/dice-expression-result");
+var dice = require("../lib/dice");
 var diceTestUtils = require("./dice-test-utils");
 var numberUtils = require("../lib/number-utils");
 
@@ -33,8 +33,8 @@ describe("diceExpressionResult", function () {
 
     beforeEach(function () {
         d3 = diceTestUtils.createDieThatRollsEachSideSuccessively(3);
-        three = diceExpressionResult.forConstant(3);
-        four = diceExpressionResult.forConstant(4);
+        three = dice.expressionResult.forConstant(3);
+        four = dice.expressionResult.forConstant(4);
     });
 
     describe("#for", function () {
@@ -44,7 +44,7 @@ describe("diceExpressionResult", function () {
                     var expression = {
                         typeId: "__unknown__"
                     };
-                    diceExpressionResult.for(expression);
+                    dice.expressionResult.for(expression);
                 }
                 expect(createUnknownExpressionResult).toThrow();
             });
@@ -54,7 +54,7 @@ describe("diceExpressionResult", function () {
     describe("#forAddition", function () {
         describe("#value", function () {
             it("should return the sum of the augend and the addend", function () {
-                var expressionResult = diceExpressionResult.forAddition(three, four);
+                var expressionResult = dice.expressionResult.forAddition(three, four);
                 expect(expressionResult.value()).toBe(7);
             });
         });
@@ -63,7 +63,7 @@ describe("diceExpressionResult", function () {
     describe("#forConstant", function () {
         describe("#value", function () {
             it("should return the value of the result", function () {
-                var expressionResult = diceExpressionResult.forConstant(42);
+                var expressionResult = dice.expressionResult.forConstant(42);
                 expect(expressionResult.value()).toBe(42);
             });
         });
@@ -75,7 +75,7 @@ describe("diceExpressionResult", function () {
                 it("should throw exception", function () {
                     function createRollExpressionResultWithCount(count) {
                         return function () {
-                            diceExpressionResult.forRoll(count, d3);
+                            dice.expressionResult.forRoll(count, d3);
                         };
                     }
                     expect(createRollExpressionResultWithCount(0)).toThrowError(RangeError);
@@ -85,20 +85,20 @@ describe("diceExpressionResult", function () {
 
             describe("when count equals one", function () {
                 it("should return the result of a single die roll", function () {
-                    var expressionResult = diceExpressionResult.forRoll(1, d3);
+                    var expressionResult = dice.expressionResult.forRoll(1, d3);
                     expect(expressionResult.value()).toBe(1);
                 });
             });
 
             describe("when count greater than one", function () {
                 it("should return the result of the sum of multiple die rolls", function () {
-                    var expressionResult = diceExpressionResult.forRoll(4, d3);
+                    var expressionResult = dice.expressionResult.forRoll(4, d3);
                     expect(expressionResult.value()).toBe(7);
                 });
             });
 
             it("should return same result for all invocations", function () {
-                var expressionResult = diceExpressionResult.forRoll(1, d3);
+                var expressionResult = dice.expressionResult.forRoll(1, d3);
                 expect(expressionResult.value()).toBe(expressionResult.value());
             });
         });
@@ -107,7 +107,7 @@ describe("diceExpressionResult", function () {
     describe("#forSubtraction", function () {
         describe("#value", function () {
             it("should return the difference between the minuend and the subtrahend", function () {
-                var expressionResult = diceExpressionResult.forSubtraction(three, four);
+                var expressionResult = dice.expressionResult.forSubtraction(three, four);
                 expect(expressionResult.value()).toBe(-1);
             });
         });
