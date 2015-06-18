@@ -23,7 +23,7 @@
 "use strict";
 
 var DiceBag = require("../lib/dice-bag");
-var NumberUtils = require("../lib/number-utils");
+var numberUtils = require("../lib/number-utils");
 
 describe("DiceBag", function () {
     var bag;
@@ -53,7 +53,7 @@ describe("DiceBag", function () {
                     };
                 }
                 expect(createDieWithSides(0)).toThrowError(RangeError);
-                expect(createDieWithSides(NumberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                expect(createDieWithSides(numberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
             });
         });
 
@@ -64,7 +64,7 @@ describe("DiceBag", function () {
             });
 
             it("should return <sides> when random number is maximum value", function () {
-                bag.randomNumberGenerator.and.returnValue(1.0 - NumberUtils.EPSILON);
+                bag.randomNumberGenerator.and.returnValue(1.0 - numberUtils.EPSILON);
                 expect(d6.roll()).toBe(6);
             });
         });

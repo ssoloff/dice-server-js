@@ -22,56 +22,56 @@
 
 "use strict";
 
-var DiceExpressionResult = require("../lib/dice-expression-result");
-var DiceExpressionResultFormatter = require("../lib/dice-expression-result-formatter");
-var DiceTestUtils = require("./dice-test-utils");
+var diceExpressionResult = require("../lib/dice-expression-result");
+var diceExpressionResultFormatter = require("../lib/dice-expression-result-formatter");
+var diceTestUtils = require("./dice-test-utils");
 
-describe("DiceExpressionResultFormatter", function () {
+describe("diceExpressionResultFormatter", function () {
     var d3;
     var three;
     var four;
 
     beforeEach(function () {
-        d3 = DiceTestUtils.createDieThatRollsEachSideSuccessively(3);
-        three = DiceExpressionResult.forConstant(3);
-        four = DiceExpressionResult.forConstant(4);
+        d3 = diceTestUtils.createDieThatRollsEachSideSuccessively(3);
+        three = diceExpressionResult.forConstant(3);
+        four = diceExpressionResult.forConstant(4);
     });
 
     describe("#format", function () {
         describe("when expression result is an addition expression result", function () {
             it("should return formatted expression result", function () {
-                var expressionResult = DiceExpressionResult.forAddition(three, four);
-                expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("3 + 4");
+                var expressionResult = diceExpressionResult.forAddition(three, four);
+                expect(diceExpressionResultFormatter.format(expressionResult)).toBe("3 + 4");
             });
         });
 
         describe("when expression result is a constant expression result", function () {
             it("should return formatted expression result", function () {
-                var expressionResult = DiceExpressionResult.forConstant(42);
-                expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("42");
+                var expressionResult = diceExpressionResult.forConstant(42);
+                expect(diceExpressionResultFormatter.format(expressionResult)).toBe("42");
             });
         });
 
         describe("when expression result is a roll expression result", function () {
             describe("when count is equal to one", function () {
                 it("should return formatted expression result", function () {
-                    var expressionResult = DiceExpressionResult.forRoll(1, d3);
-                    expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("1 [d3]");
+                    var expressionResult = diceExpressionResult.forRoll(1, d3);
+                    expect(diceExpressionResultFormatter.format(expressionResult)).toBe("1 [d3]");
                 });
             });
 
             describe("when count is greater than one", function () {
                 it("should return formatted expression result", function () {
-                    var expressionResult = DiceExpressionResult.forRoll(4, d3);
-                    expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("1 [d3] + 2 [d3] + 3 [d3] + 1 [d3]");
+                    var expressionResult = diceExpressionResult.forRoll(4, d3);
+                    expect(diceExpressionResultFormatter.format(expressionResult)).toBe("1 [d3] + 2 [d3] + 3 [d3] + 1 [d3]");
                 });
             });
         });
 
         describe("when expression result is a subtraction expression result", function () {
             it("should return formatted expression result", function () {
-                var expressionResult = DiceExpressionResult.forSubtraction(three, four);
-                expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("3 - 4");
+                var expressionResult = diceExpressionResult.forSubtraction(three, four);
+                expect(diceExpressionResultFormatter.format(expressionResult)).toBe("3 - 4");
             });
         });
 
@@ -81,7 +81,7 @@ describe("DiceExpressionResultFormatter", function () {
                     var expressionResult = {
                         typeId: "__unknown__"
                     };
-                    DiceExpressionResultFormatter.format(expressionResult);
+                    diceExpressionResultFormatter.format(expressionResult);
                 }
                 expect(formatUnknownExpressionResult).toThrow();
             });

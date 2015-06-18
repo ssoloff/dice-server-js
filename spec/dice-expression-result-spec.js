@@ -22,19 +22,19 @@
 
 "use strict";
 
-var DiceExpressionResult = require("../lib/dice-expression-result");
-var DiceTestUtils = require("./dice-test-utils");
-var NumberUtils = require("../lib/number-utils");
+var diceExpressionResult = require("../lib/dice-expression-result");
+var diceTestUtils = require("./dice-test-utils");
+var numberUtils = require("../lib/number-utils");
 
-describe("DiceExpressionResult", function () {
+describe("diceExpressionResult", function () {
     var d3;
     var three;
     var four;
 
     beforeEach(function () {
-        d3 = DiceTestUtils.createDieThatRollsEachSideSuccessively(3);
-        three = DiceExpressionResult.forConstant(3);
-        four = DiceExpressionResult.forConstant(4);
+        d3 = diceTestUtils.createDieThatRollsEachSideSuccessively(3);
+        three = diceExpressionResult.forConstant(3);
+        four = diceExpressionResult.forConstant(4);
     });
 
     describe("#for", function () {
@@ -44,7 +44,7 @@ describe("DiceExpressionResult", function () {
                     var expression = {
                         typeId: "__unknown__"
                     };
-                    DiceExpressionResult.for(expression);
+                    diceExpressionResult.for(expression);
                 }
                 expect(createUnknownExpressionResult).toThrow();
             });
@@ -54,7 +54,7 @@ describe("DiceExpressionResult", function () {
     describe("#forAddition", function () {
         describe("#value", function () {
             it("should return the sum of the augend and the addend", function () {
-                var expressionResult = DiceExpressionResult.forAddition(three, four);
+                var expressionResult = diceExpressionResult.forAddition(three, four);
                 expect(expressionResult.value()).toBe(7);
             });
         });
@@ -63,7 +63,7 @@ describe("DiceExpressionResult", function () {
     describe("#forConstant", function () {
         describe("#value", function () {
             it("should return the value of the result", function () {
-                var expressionResult = DiceExpressionResult.forConstant(42);
+                var expressionResult = diceExpressionResult.forConstant(42);
                 expect(expressionResult.value()).toBe(42);
             });
         });
@@ -75,30 +75,30 @@ describe("DiceExpressionResult", function () {
                 it("should throw exception", function () {
                     function createRollExpressionResultWithCount(count) {
                         return function () {
-                            DiceExpressionResult.forRoll(count, d3);
+                            diceExpressionResult.forRoll(count, d3);
                         };
                     }
                     expect(createRollExpressionResultWithCount(0)).toThrowError(RangeError);
-                    expect(createRollExpressionResultWithCount(NumberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                    expect(createRollExpressionResultWithCount(numberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
                 });
             });
 
             describe("when count equals one", function () {
                 it("should return the result of a single die roll", function () {
-                    var expressionResult = DiceExpressionResult.forRoll(1, d3);
+                    var expressionResult = diceExpressionResult.forRoll(1, d3);
                     expect(expressionResult.value()).toBe(1);
                 });
             });
 
             describe("when count greater than one", function () {
                 it("should return the result of the sum of multiple die rolls", function () {
-                    var expressionResult = DiceExpressionResult.forRoll(4, d3);
+                    var expressionResult = diceExpressionResult.forRoll(4, d3);
                     expect(expressionResult.value()).toBe(7);
                 });
             });
 
             it("should return same result for all invocations", function () {
-                var expressionResult = DiceExpressionResult.forRoll(1, d3);
+                var expressionResult = diceExpressionResult.forRoll(1, d3);
                 expect(expressionResult.value()).toBe(expressionResult.value());
             });
         });
@@ -107,7 +107,7 @@ describe("DiceExpressionResult", function () {
     describe("#forSubtraction", function () {
         describe("#value", function () {
             it("should return the difference between the minuend and the subtrahend", function () {
-                var expressionResult = DiceExpressionResult.forSubtraction(three, four);
+                var expressionResult = diceExpressionResult.forSubtraction(three, four);
                 expect(expressionResult.value()).toBe(-1);
             });
         });
