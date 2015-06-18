@@ -25,20 +25,53 @@
 var _ = require("underscore");
 var dice = require("../lib/dice");
 
-module.exports.createDieThatRollsEachSideSuccessively = function (sides) {
-    var rollCount = 0;
-    var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
-    randomNumberGenerator.and.callFake(function () {
-        function getRandomNumberForIndex(index) {
-            return index / sides;
-        }
-        var randomNumbers = _(sides).times(getRandomNumberForIndex);
-        var roll = randomNumbers[rollCount];
-        rollCount = (rollCount + 1) % randomNumbers.length;
-        return roll;
-    });
+/**
+ * @namespace
+ * @description Provides useful properties and methods for testing the dice
+ *      server.
+ */
+var diceTest = {
+    /**
+     * Represents the difference between one and the smallest value greater
+     * than one that can be represented as a `Number`.
+     *
+     * @constant {Number}
+     */
+    EPSILON: 2.2204460492503130808472633361816E-16,
 
-    var bag = new dice.Bag(randomNumberGenerator);
-    return bag.d(sides);
+    /**
+     * Represents the minimum safe integer in JavaScript (-(2<sup>53</sup> - 1)).
+     *
+     * @constant {Number}
+     */
+    MIN_SAFE_INTEGER: -9007199254740991,
+
+    /**
+     * Creates a new die with the specified count of sides where rolling the
+     * die will deterministically and repeatedly result in the sequence
+     * [1,`sides`].
+     *
+     * @param {Number} sides - The count of sides for the new die.
+     *
+     * @returns {Die} The new die.
+     *
+     * @throws {RangeError} If `sides` is not positive.
+     */
+    createDieThatRollsEachSideSuccessively: function (sides) {
+        var rollCount = 0;
+        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator").and.callFake(function () {
+            function getRandomNumberForIndex(index) {
+                return index / sides;
+            }
+            var randomNumbers = _(sides).times(getRandomNumberForIndex);
+            var roll = randomNumbers[rollCount];
+            rollCount = (rollCount + 1) % randomNumbers.length;
+            return roll;
+        });
+        var bag = new dice.Bag(randomNumberGenerator);
+        return bag.d(sides);
+    }
 };
+
+module.exports = diceTest;
 

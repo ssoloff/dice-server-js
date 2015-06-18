@@ -24,7 +24,6 @@
 
 var dice = require("../lib/dice");
 var diceTest = require("./dice-test");
-var numberUtils = require("../lib/number-utils");
 
 describe("diceExpressionResult", function () {
     var d3;
@@ -79,7 +78,7 @@ describe("diceExpressionResult", function () {
                         };
                     }
                     expect(createRollExpressionResultWithCount(0)).toThrowError(RangeError);
-                    expect(createRollExpressionResultWithCount(numberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                    expect(createRollExpressionResultWithCount(diceTest.MIN_SAFE_INTEGER)).toThrowError(RangeError);
                 });
             });
 
