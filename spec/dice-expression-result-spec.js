@@ -22,8 +22,8 @@
 
 "use strict";
 
-var DiceBag = require("../lib/dice-bag");
 var DiceExpressionResult = require("../lib/dice-expression-result");
+var DiceTestUtils = require("./dice-test-utils");
 var NumberUtils = require("../lib/number-utils");
 
 describe("DiceExpressionResult", function () {
@@ -32,17 +32,7 @@ describe("DiceExpressionResult", function () {
     var four;
 
     beforeEach(function () {
-        var rollCount = 0;
-        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
-        randomNumberGenerator.and.callFake(function () {
-            var randomNumbers = [0.1, 0.5, 0.9];
-            var roll = randomNumbers[rollCount];
-            rollCount = (rollCount + 1) % randomNumbers.length;
-            return roll;
-        });
-
-        var bag = new DiceBag(randomNumberGenerator);
-        d3 = bag.d(3);
+        d3 = DiceTestUtils.createDieThatRollsEachSideSuccessively(3);
         three = DiceExpressionResult.forConstant(3);
         four = DiceExpressionResult.forConstant(4);
     });
