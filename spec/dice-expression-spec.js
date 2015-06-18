@@ -24,7 +24,6 @@
 
 var DiceBag = require("../lib/dice-bag");
 var DiceExpression = require("../lib/dice-expression");
-var DiceExpressionResult = require("../lib/dice-expression-result");
 var NumberUtils = require("../lib/number-utils");
 
 describe("DiceExpression", function () {
@@ -55,14 +54,14 @@ describe("DiceExpression", function () {
         });
 
         describe("#evaluate", function () {
-            it("should return sum of augend and addend", function () {
-                expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("4+3").withValue(7));
+            it("should return result with value equal to sum of augend and addend", function () {
+                expect(expression.evaluate()).toBeExpressionResultWithValue(7);
             });
         });
 
         describe("when evaluated", function () {
-            it("should return sum of augend and addend", function () {
-                expect(expression).toEvaluateTo(DiceExpressionResult.fromSource("4+3").withValue(7));
+            it("should return result with value equal to sum of augend and addend", function () {
+                expect(expression()).toBeExpressionResultWithValue(7);
             });
         });
     });
@@ -73,14 +72,14 @@ describe("DiceExpression", function () {
         });
 
         describe("#evaluate", function () {
-            it("should return constant value", function () {
-                expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("5").withValue(5));
+            it("should return result with value equal to constant", function () {
+                expect(expression.evaluate()).toBeExpressionResultWithValue(5);
             });
         });
 
         describe("when evaluated", function () {
-            it("should return constant value", function () {
-                expect(expression).toEvaluateTo(DiceExpressionResult.fromSource("5").withValue(5));
+            it("should return result with value equal to constant", function () {
+                expect(expression()).toBeExpressionResultWithValue(5);
             });
         });
     });
@@ -104,8 +103,8 @@ describe("DiceExpression", function () {
             });
 
             describe("#evaluate", function () {
-                it("should return sum of single die roll", function () {
-                    expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("d3").withValue(1));
+                it("should return result with value equal to single die roll", function () {
+                    expect(expression.evaluate()).toBeExpressionResultWithValue(1);
                 });
             });
         });
@@ -116,15 +115,16 @@ describe("DiceExpression", function () {
             });
 
             describe("#evaluate", function () {
-                it("should return sum of multiple die rolls", function () {
-                    expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("d3+d3+d3+d3").withValue(7));
+                it("should return result with value equal to sum of multiple die rolls", function () {
+                    expect(expression.evaluate()).toBeExpressionResultWithValue(7);
                 });
             });
         });
 
         describe("when evaluated", function () {
-            it("should return sum of die rolls", function () {
-                expect(DiceExpression.forRoll(2, d3)).toEvaluateTo(DiceExpressionResult.fromSource("d3+d3").withValue(3));
+            it("should return result with value equal to sum of die rolls", function () {
+                expression = DiceExpression.forRoll(2, d3);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(3);
             });
         });
     });
@@ -135,14 +135,14 @@ describe("DiceExpression", function () {
         });
 
         describe("#evaluate", function () {
-            it("should return difference between minuend and subtrahend", function () {
-                expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("4-3").withValue(1));
+            it("should return result with value equal to difference between minuend and subtrahend", function () {
+                expect(expression.evaluate()).toBeExpressionResultWithValue(1);
             });
         });
 
         describe("when evaluated", function () {
-            it("should return difference between minuend and subtrahend", function () {
-                expect(expression).toEvaluateTo(DiceExpressionResult.fromSource("4-3").withValue(1));
+            it("should return result with value equal to difference between minuend and subtrahend", function () {
+                expect(expression()).toBeExpressionResultWithValue(1);
             });
         });
     });

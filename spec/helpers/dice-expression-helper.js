@@ -22,15 +22,14 @@
 
 "use strict";
 
-var _ = require("underscore");
-
 beforeEach(function () {
     jasmine.addMatchers({
-        toEvaluateTo: function () {
+        toBeExpressionResultWithValue: function () {
             return {
-                compare: function (actualExpression, expectedExpressionResult) {
+                compare: function (actualExpressionResult, expectedExpressionResultValue) {
                     return {
-                        pass: _.isEqual(expectedExpressionResult, actualExpression())
+                        message: "Expected expression result with value " + actualExpressionResult.value().toString() + " to be expression result with value " + expectedExpressionResultValue.toString() + ".",
+                        pass: expectedExpressionResultValue === actualExpressionResult.value()
                     };
                 }
             };

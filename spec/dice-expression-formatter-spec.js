@@ -78,13 +78,13 @@ describe("DiceExpressionFormatter", function () {
 
         describe("when expression is of an unknown type", function () {
             it("should throw an exception", function () {
-                function closure() {
+                function formatUnknownExpression() {
                     var expression = {
                         typeId: "__unknown__"
                     };
                     DiceExpressionFormatter.format(expression);
                 }
-                expect(closure).toThrow();
+                expect(formatUnknownExpression).toThrow();
             });
         });
     });
