@@ -60,12 +60,6 @@ describe("DiceExpression", function () {
             });
         });
 
-        describe("#toString", function () {
-            it("should return the formatted expression", function () {
-                expect(expression.toString()).toBe("4+3");
-            });
-        });
-
         describe("when evaluated", function () {
             it("should return sum of augend and addend", function () {
                 expect(expression).toEvaluateTo(DiceExpressionResult.fromSource("4+3").withValue(7));
@@ -81,12 +75,6 @@ describe("DiceExpression", function () {
         describe("#evaluate", function () {
             it("should return constant value", function () {
                 expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("5").withValue(5));
-            });
-        });
-
-        describe("#toString", function () {
-            it("should return the formatted expression", function () {
-                expect(expression.toString()).toBe("5");
             });
         });
 
@@ -120,12 +108,6 @@ describe("DiceExpression", function () {
                     expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("d3").withValue(1));
                 });
             });
-
-            describe("#toString", function () {
-                it("should return the formatted expression", function () {
-                    expect(expression.toString()).toBe("d3");
-                });
-            });
         });
 
         describe("when count greater than one", function () {
@@ -136,12 +118,6 @@ describe("DiceExpression", function () {
             describe("#evaluate", function () {
                 it("should return sum of multiple die rolls", function () {
                     expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("d3+d3+d3+d3").withValue(7));
-                });
-            });
-
-            describe("#toString", function () {
-                it("should return the formatted expression", function () {
-                    expect(expression.toString()).toBe("4d3");
                 });
             });
         });
@@ -161,12 +137,6 @@ describe("DiceExpression", function () {
         describe("#evaluate", function () {
             it("should return difference between minuend and subtrahend", function () {
                 expect(expression.evaluate()).toEqual(DiceExpressionResult.fromSource("4-3").withValue(1));
-            });
-        });
-
-        describe("#toString", function () {
-            it("should return the formatted expression", function () {
-                expect(expression.toString()).toBe("4-3");
             });
         });
 
