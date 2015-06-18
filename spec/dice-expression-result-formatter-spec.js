@@ -23,7 +23,7 @@
 "use strict";
 
 var dice = require("../lib/dice");
-var diceTestUtils = require("./dice-test-utils");
+var diceTest = require("./dice-test");
 
 describe("diceExpressionResultFormatter", function () {
     var d3;
@@ -31,7 +31,7 @@ describe("diceExpressionResultFormatter", function () {
     var four;
 
     beforeEach(function () {
-        d3 = diceTestUtils.createDieThatRollsEachSideSuccessively(3);
+        d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
         three = dice.expressionResult.forConstant(3);
         four = dice.expressionResult.forConstant(4);
     });

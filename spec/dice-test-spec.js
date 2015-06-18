@@ -22,13 +22,13 @@
 
 "use strict";
 
-var diceTestUtils = require("./dice-test-utils");
+var diceTest = require("./dice-test");
 
-describe("diceTestUtils", function () {
+describe("diceTest", function () {
     describe("#createDieThatRollsEachSideSuccessively", function () {
         describe("when die has 3 sides", function () {
             it("should roll each side successively and rollover to 1", function () {
-                var d3 = diceTestUtils.createDieThatRollsEachSideSuccessively(3);
+                var d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
                 expect(d3.roll()).toBe(1);
                 expect(d3.roll()).toBe(2);
                 expect(d3.roll()).toBe(3);
@@ -38,7 +38,7 @@ describe("diceTestUtils", function () {
 
         describe("when die has 6 sides", function () {
             it("should roll each side successively and rollover to 1", function () {
-                var d6 = diceTestUtils.createDieThatRollsEachSideSuccessively(6);
+                var d6 = diceTest.createDieThatRollsEachSideSuccessively(6);
                 expect(d6.roll()).toBe(1);
                 expect(d6.roll()).toBe(2);
                 expect(d6.roll()).toBe(3);
