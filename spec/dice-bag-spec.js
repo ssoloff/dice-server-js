@@ -57,7 +57,7 @@ describe("DiceBag", function () {
             });
         });
 
-        describe("#roll", function () {
+        describe(".roll", function () {
             it("should return 1 when random number is minimum value", function () {
                 bag.randomNumberGenerator.and.returnValue(0.0);
                 expect(d6.roll()).toBe(1);
@@ -69,7 +69,7 @@ describe("DiceBag", function () {
             });
         });
 
-        describe("#sides", function () {
+        describe(".sides", function () {
             it("should return the die sides", function () {
                 expect(d6.sides).toBe(6);
             });

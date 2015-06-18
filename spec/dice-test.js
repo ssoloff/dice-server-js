@@ -53,7 +53,7 @@ var diceTest = {
      *
      * @param {Number} sides - The count of sides for the new die.
      *
-     * @returns {Die} The new die.
+     * @returns {die} The new die.
      *
      * @throws {RangeError} If `sides` is not positive.
      */

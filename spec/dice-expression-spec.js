@@ -37,12 +37,12 @@ describe("diceExpression", function () {
         four = dice.expression.forConstant(4);
     });
 
-    describe("#forAddition", function () {
+    describe(".forAddition", function () {
         beforeEach(function () {
             expression = dice.expression.forAddition(four, three);
         });
 
-        describe("#evaluate", function () {
+        describe(".evaluate", function () {
             it("should return result with value equal to sum of augend and addend", function () {
                 expect(expression.evaluate()).toBeExpressionResultWithValue(7);
             });
@@ -55,12 +55,12 @@ describe("diceExpression", function () {
         });
     });
 
-    describe("#forConstant", function () {
+    describe(".forConstant", function () {
         beforeEach(function () {
             expression = dice.expression.forConstant(5);
         });
 
-        describe("#evaluate", function () {
+        describe(".evaluate", function () {
             it("should return result with value equal to constant", function () {
                 expect(expression.evaluate()).toBeExpressionResultWithValue(5);
             });
@@ -73,7 +73,7 @@ describe("diceExpression", function () {
         });
     });
 
-    describe("#forRoll", function () {
+    describe(".forRoll", function () {
         describe("when count less than one", function () {
             it("should throw exception", function () {
                 function createRollExpressionWithCount(count) {
@@ -91,7 +91,7 @@ describe("diceExpression", function () {
                 expression = dice.expression.forRoll(1, d3);
             });
 
-            describe("#evaluate", function () {
+            describe(".evaluate", function () {
                 it("should return result with value equal to single die roll", function () {
                     expect(expression.evaluate()).toBeExpressionResultWithValue(1);
                 });
@@ -103,7 +103,7 @@ describe("diceExpression", function () {
                 expression = dice.expression.forRoll(4, d3);
             });
 
-            describe("#evaluate", function () {
+            describe(".evaluate", function () {
                 it("should return result with value equal to sum of multiple die rolls", function () {
                     expect(expression.evaluate()).toBeExpressionResultWithValue(7);
                 });
@@ -118,12 +118,12 @@ describe("diceExpression", function () {
         });
     });
 
-    describe("#forSubtraction", function () {
+    describe(".forSubtraction", function () {
         beforeEach(function () {
             expression = dice.expression.forSubtraction(four, three);
         });
 
-        describe("#evaluate", function () {
+        describe(".evaluate", function () {
             it("should return result with value equal to difference between minuend and subtrahend", function () {
                 expect(expression.evaluate()).toBeExpressionResultWithValue(1);
             });

@@ -36,7 +36,7 @@ describe("diceExpressionResult", function () {
         four = dice.expressionResult.forConstant(4);
     });
 
-    describe("#for", function () {
+    describe(".for", function () {
         describe("when expression is of an unknown type", function () {
             it("should throw an exception", function () {
                 function createUnknownExpressionResult() {
@@ -50,8 +50,8 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe("#forAddition", function () {
-        describe("#value", function () {
+    describe(".forAddition", function () {
+        describe(".value", function () {
             it("should return the sum of the augend and the addend", function () {
                 var expressionResult = dice.expressionResult.forAddition(three, four);
                 expect(expressionResult.value()).toBe(7);
@@ -59,8 +59,8 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe("#forConstant", function () {
-        describe("#value", function () {
+    describe(".forConstant", function () {
+        describe(".value", function () {
             it("should return the value of the result", function () {
                 var expressionResult = dice.expressionResult.forConstant(42);
                 expect(expressionResult.value()).toBe(42);
@@ -68,8 +68,8 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe("#forRoll", function () {
-        describe("#value", function () {
+    describe(".forRoll", function () {
+        describe(".value", function () {
             describe("when count less than one", function () {
                 it("should throw exception", function () {
                     function createRollExpressionResultWithCount(count) {
@@ -103,8 +103,8 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe("#forSubtraction", function () {
-        describe("#value", function () {
+    describe(".forSubtraction", function () {
+        describe(".value", function () {
             it("should return the difference between the minuend and the subtrahend", function () {
                 var expressionResult = dice.expressionResult.forSubtraction(three, four);
                 expect(expressionResult.value()).toBe(-1);

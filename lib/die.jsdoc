@@ -21,23 +21,23 @@
  */
 
 /**
- * @namespace Die
+ * @namespace die
  * @description A die.
  */
 
 /**
- * @member {Number} Die#sides
+ * @member {Number} die#sides
  * @description - The count of sides the die possesses.
  */
 
 /**
- * @function Die#roll
+ * @function die#roll
  * @summary Rolls the die.
  * @description A die may also be rolled by directly invoking it as a
  *      function.  See the examples.
  *
  * @returns {Number} The result of rolling the die: a value in the range
- *      [1,{@link Die#sides}].
+ *      [1,{@link die#sides}].
  *
  * @example
  * var d6 = ... // a six-sided die

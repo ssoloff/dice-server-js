@@ -25,7 +25,7 @@
 var diceTest = require("./dice-test");
 
 describe("diceTest", function () {
-    describe("#createDieThatRollsEachSideSuccessively", function () {
+    describe(".createDieThatRollsEachSideSuccessively", function () {
         describe("when die has 3 sides", function () {
             it("should roll each side successively and rollover to 1", function () {
                 var d3 = diceTest.createDieThatRollsEachSideSuccessively(3);

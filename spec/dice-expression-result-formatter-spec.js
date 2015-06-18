@@ -36,7 +36,7 @@ describe("diceExpressionResultFormatter", function () {
         four = dice.expressionResult.forConstant(4);
     });
 
-    describe("#format", function () {
+    describe(".format", function () {
         describe("when expression result is an addition expression result", function () {
             it("should return formatted expression result", function () {
                 var expressionResult = dice.expressionResult.forAddition(three, four);
