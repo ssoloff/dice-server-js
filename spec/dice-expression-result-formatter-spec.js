@@ -41,7 +41,7 @@ describe("DiceExpressionResultFormatter", function () {
         describe("when expression result is an addition expression result", function () {
             it("should return formatted expression result", function () {
                 var expressionResult = DiceExpressionResult.forAddition(three, four);
-                expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("3+4");
+                expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("3 + 4");
             });
         });
 
@@ -56,14 +56,14 @@ describe("DiceExpressionResultFormatter", function () {
             describe("when count is equal to one", function () {
                 it("should return formatted expression result", function () {
                     var expressionResult = DiceExpressionResult.forRoll(1, d3);
-                    expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("1[d3]");
+                    expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("1 [d3]");
                 });
             });
 
             describe("when count is greater than one", function () {
                 it("should return formatted expression result", function () {
                     var expressionResult = DiceExpressionResult.forRoll(4, d3);
-                    expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("1[d3]+2[d3]+3[d3]+1[d3]");
+                    expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("1 [d3] + 2 [d3] + 3 [d3] + 1 [d3]");
                 });
             });
         });
@@ -71,7 +71,7 @@ describe("DiceExpressionResultFormatter", function () {
         describe("when expression result is a subtraction expression result", function () {
             it("should return formatted expression result", function () {
                 var expressionResult = DiceExpressionResult.forSubtraction(three, four);
-                expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("3-4");
+                expect(DiceExpressionResultFormatter.format(expressionResult)).toBe("3 - 4");
             });
         });
 

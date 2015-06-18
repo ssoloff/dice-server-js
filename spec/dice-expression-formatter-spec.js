@@ -42,7 +42,7 @@ describe("DiceExpressionFormatter", function () {
         describe("when expression is an addition expression", function () {
             it("should return formatted expression", function () {
                 var expression = DiceExpression.forAddition(three, four);
-                expect(DiceExpressionFormatter.format(expression)).toBe("3+4");
+                expect(DiceExpressionFormatter.format(expression)).toBe("3 + 4");
             });
         });
 
@@ -72,7 +72,7 @@ describe("DiceExpressionFormatter", function () {
         describe("when expression is a subtraction expression", function () {
             it("should return formatted expression", function () {
                 var expression = DiceExpression.forSubtraction(three, four);
-                expect(DiceExpressionFormatter.format(expression)).toBe("3-4");
+                expect(DiceExpressionFormatter.format(expression)).toBe("3 - 4");
             });
         });
 
