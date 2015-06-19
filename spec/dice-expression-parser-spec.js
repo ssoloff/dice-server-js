@@ -26,6 +26,8 @@ var _ = require("underscore");
 var dice = require("../lib/dice");
 
 describe("diceExpressionParser", function () {
+    var bag;
+
     function isDiceExpressionEqual(first, second) {
         if (_.has(first, "typeId")
                 && _.has(first, "evaluate")
@@ -38,6 +40,7 @@ describe("diceExpressionParser", function () {
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(isDiceExpressionEqual);
+        bag = new dice.Bag();
     });
 
     describe(".parse", function () {
@@ -61,6 +64,14 @@ describe("diceExpressionParser", function () {
                     dice.expression.forConstant(2)
                 )
             );
+        });
+
+        it("should parse a die roll with an explicit count", function () {
+            expect(dice.expressionParser.parse("3d6")).toEqual(dice.expression.forRoll(3, bag.d(6)));
+        });
+
+        it("should parse a die roll with an implicit count", function () {
+            expect(dice.expressionParser.parse("d6")).toEqual(dice.expression.forRoll(1, bag.d(6)));
         });
 
         describe("when source empty", function () {

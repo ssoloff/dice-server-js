@@ -23,19 +23,19 @@
 /* lexical grammar */
 %lex
 
+DIGIT                   [0-9]
+
 %%
-\s+                 /* skip whitespace */
-[0-9]+              return 'INTEGER_LITERAL'
-"-"                 return 'MINUS'
-"+"                 return 'PLUS'
-.                   throw 'illegal character'
-<<EOF>>             return 'EOF'
+
+\s+                     /* skip whitespace */
+{DIGIT}*d{DIGIT}+       return 'DIE_ROLL_LITERAL'
+{DIGIT}+                return 'INTEGER_LITERAL'
+"-"                     return 'MINUS'
+"+"                     return 'PLUS'
+.                       throw 'illegal character'
+<<EOF>>                 return 'EOF'
 
 /lex
-
-%{
-    var diceExpression = require("./dice-expression");
-%}
 
 /* operator associations and precedence */
 
@@ -46,16 +46,42 @@
 %% /* language grammar */
 
 expressions
-    : e EOF
-        { return $1; }
+    : expression EOF
+        {
+            return $1;
+        }
     ;
 
-e
-    : e PLUS e
-        { $$ = diceExpression.forAddition($1, $3); }
-    | e MINUS e
-        { $$ = diceExpression.forSubtraction($1, $3); }
-    | INTEGER_LITERAL
-        { $$ = diceExpression.forConstant(Number(yytext)); }
+expression
+    : expression PLUS expression
+        {
+            $$ = diceExpression.forAddition($1, $3);
+        }
+    | expression MINUS expression
+        {
+            $$ = diceExpression.forSubtraction($1, $3);
+        }
+    | literal
     ;
+
+literal
+    : DIE_ROLL_LITERAL
+        {
+            var matches = yytext.match(/(\d*)d(\d+)/);
+            var count = matches[1] ? Number(matches[1]) : 1;
+            var sides = Number(matches[2]);
+            $$ = diceExpression.forRoll(count, bag.d(sides));
+        }
+    | INTEGER_LITERAL
+        {
+            $$ = diceExpression.forConstant(Number(yytext));
+        }
+    ;
+
+%%
+
+var DiceBag = require("./dice-bag");
+var diceExpression = require("./dice-expression");
+
+var bag = new DiceBag();
 
