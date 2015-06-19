@@ -22,18 +22,19 @@
 
 %lex
 
-DIGIT           [0-9]
-PERCENT         [%]
+DIGIT               [0-9]
+PERCENT             [%]
+POSITIVE_INTEGER    [1-9][0-9]*
 
 %%
 
-\s+                             /* skip whitespace */
-{DIGIT}*d({DIGIT}+|{PERCENT})   return 'DICE_LITERAL'
-{DIGIT}+                        return 'INTEGER_LITERAL'
-"-"                             return 'MINUS'
-"+"                             return 'PLUS'
-.                               throw 'illegal character'
-<<EOF>>                         return 'EOF'
+\s+                                                 /* skip whitespace */
+{POSITIVE_INTEGER}?d({POSITIVE_INTEGER}|{PERCENT})  return 'DICE_LITERAL'
+{DIGIT}+                                            return 'INTEGER_LITERAL'
+"-"                                                 return 'MINUS'
+"+"                                                 return 'PLUS'
+.                                                   throw 'illegal character'
+<<EOF>>                                             return 'EOF'
 
 /lex
 
@@ -64,9 +65,9 @@ expression
 literal
     : DICE_LITERAL
         {
-            var matches = yytext.match(/(\d*)d(\d+|%)/);
-            var count = matches[1] ? Number(matches[1]) : 1;
-            var sides = (matches[2] === "%") ? 100 : Number(matches[2]);
+            var components = yytext.split("d");
+            var count = components[0] ? Number(components[0]) : 1;
+            var sides = (components[1] === "%") ? 100 : Number(components[1]);
             $$ = diceExpression.forRoll(count, bag.d(sides));
         }
     | INTEGER_LITERAL
