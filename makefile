@@ -1,14 +1,38 @@
-.PHONY: all check docs test
+.PHONY: all build check clean docs test
 
-all: check docs test
+JASMINE = jasmine
+JISON = jison
+JSCS = jscs
+JSDOC = jsdoc
+JSHINT = jshint
+RM = rm -f
+RMDIR = $(RM) -r
 
-check:
-	jshint .
-	jscs **/*.js
+JSDOC_OUTPUT_DIR = out
+SRC_DIR = lib
+
+DICE_NOTATION_JISON = $(SRC_DIR)/dice-notation.jison
+DICE_NOTATION_JS = $(SRC_DIR)/dice-notation.js
+JSDOC_CONFIG = jsdoc-conf.json
+
+all: build check test docs
+
+build: $(DICE_NOTATION_JS)
+
+check: build
+	$(JSHINT) .
+	$(JSCS) .
+
+clean:
+	$(RM) $(DICE_NOTATION_JS)
+	$(RMDIR) $(JSDOC_OUTPUT_DIR)
 
 docs:
-	jsdoc -c jsdoc-conf.json
+	$(JSDOC) -c $(JSDOC_CONFIG)
 
-test:
-	jasmine
+test: build
+	$(JASMINE)
+
+$(DICE_NOTATION_JS): $(DICE_NOTATION_JISON)
+	$(JISON) $< -o $@
 

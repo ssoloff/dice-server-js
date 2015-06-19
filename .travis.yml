@@ -3,6 +3,7 @@ node_js:
     - "0.10"
 install:
     - npm install -g jasmine
+    - npm install -g jison
     - npm install -g jscs
     - npm install -g jsdoc
     - npm install -g jshint
