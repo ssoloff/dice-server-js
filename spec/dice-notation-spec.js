@@ -26,8 +26,20 @@ var diceNotation = require("../lib/dice-notation");
 
 describe("diceNotation", function () {
     describe(".parse", function () {
-        it("should parse a simple input", function () {
+        it("should parse the addition of two positive constants", function () {
             expect(diceNotation.parse("3 + 2")).toBe(5);
+        });
+
+        it("should parse the addition of two negative constants", function () {
+            expect(diceNotation.parse("-3 + -2")).toBe(-5);
+        });
+
+        it("should parse the subtraction of two positive constants", function () {
+            expect(diceNotation.parse("3 - 2")).toBe(1);
+        });
+
+        it("should parse the subtraction of two negative constants", function () {
+            expect(diceNotation.parse("-3 - -2")).toBe(-1);
         });
     });
 });
