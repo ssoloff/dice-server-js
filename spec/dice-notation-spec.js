@@ -26,20 +26,25 @@ var diceNotation = require("../lib/dice-notation");
 
 describe("diceNotation", function () {
     describe(".parse", function () {
-        it("should parse the addition of two positive constants", function () {
-            expect(diceNotation.parse("3 + 2")).toBe(5);
+        it("should parse a constant", function () {
+            expect(diceNotation.parse("42").evaluate().value()).toBe(42);
         });
 
-        it("should parse the addition of two negative constants", function () {
-            expect(diceNotation.parse("-3 + -2")).toBe(-5);
+        it("should parse the addition of two constants", function () {
+            expect(diceNotation.parse("3 + 2").evaluate().value()).toBe(5);
         });
 
-        it("should parse the subtraction of two positive constants", function () {
-            expect(diceNotation.parse("3 - 2")).toBe(1);
+        it("should parse the subtraction of two constants", function () {
+            expect(diceNotation.parse("3 - 2").evaluate().value()).toBe(1);
         });
 
-        it("should parse the subtraction of two negative constants", function () {
-            expect(diceNotation.parse("-3 - -2")).toBe(-1);
+        describe("when source empty", function () {
+            it("should throw exception", function () {
+                function parseEmptySource() {
+                    diceNotation.parse("");
+                }
+                expect(parseEmptySource).toThrow();
+            });
         });
     });
 });

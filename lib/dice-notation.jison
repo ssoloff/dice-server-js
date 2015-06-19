@@ -22,21 +22,24 @@
 
 /* lexical grammar */
 %lex
-%%
 
+%%
 \s+                 /* skip whitespace */
 [0-9]+              return 'INTEGER_LITERAL'
 "-"                 return 'MINUS'
 "+"                 return 'PLUS'
+.                   throw 'illegal character'
 <<EOF>>             return 'EOF'
-.                   return 'INVALID'
 
 /lex
+
+%{
+    var diceExpression = require("./dice-expression");
+%}
 
 /* operator associations and precedence */
 
 %left PLUS MINUS
-%left UMINUS
 
 %start expressions
 
@@ -49,12 +52,10 @@ expressions
 
 e
     : e PLUS e
-        { $$ = $1 + $3; }
+        { $$ = diceExpression.forAddition($1, $3); }
     | e MINUS e
-        { $$ = $1 - $3; }
-    | MINUS e %prec UMINUS
-        { $$ = -$2; }
+        { $$ = diceExpression.forSubtraction($1, $3); }
     | INTEGER_LITERAL
-        { $$ = Number(yytext); }
+        { $$ = diceExpression.forConstant(Number(yytext)); }
     ;
 
