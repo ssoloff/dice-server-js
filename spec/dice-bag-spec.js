@@ -34,8 +34,11 @@ describe("DiceBag", function () {
     });
 
     it("should use a default random number generator", function () {
-        bag = new dice.Bag();
-        expect(bag.d(6)).not.toThrow();
+        function rollDie() {
+            bag = new dice.Bag();
+            bag.d(6).roll();
+        }
+        expect(rollDie).not.toThrow();
     });
 
     describe("#d", function () {
@@ -72,13 +75,6 @@ describe("DiceBag", function () {
         describe(".sides", function () {
             it("should return the die sides", function () {
                 expect(d6.sides).toBe(6);
-            });
-        });
-
-        describe("when evaluated", function () {
-            it("should roll the die", function () {
-                bag.randomNumberGenerator.and.returnValue(0.0);
-                expect(d6()).toBe(1);
             });
         });
     });
