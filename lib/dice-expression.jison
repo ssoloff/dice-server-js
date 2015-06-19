@@ -20,30 +20,27 @@
  * THE SOFTWARE.
  */
 
-/* lexical grammar */
 %lex
 
-DIGIT                   [0-9]
+DIGIT           [0-9]
+PERCENT         [%]
 
 %%
 
-\s+                     /* skip whitespace */
-{DIGIT}*d{DIGIT}+       return 'DIE_ROLL_LITERAL'
-{DIGIT}+                return 'INTEGER_LITERAL'
-"-"                     return 'MINUS'
-"+"                     return 'PLUS'
-.                       throw 'illegal character'
-<<EOF>>                 return 'EOF'
+\s+                             /* skip whitespace */
+{DIGIT}*d({DIGIT}+|{PERCENT})   return 'DICE_LITERAL'
+{DIGIT}+                        return 'INTEGER_LITERAL'
+"-"                             return 'MINUS'
+"+"                             return 'PLUS'
+.                               throw 'illegal character'
+<<EOF>>                         return 'EOF'
 
 /lex
 
-/* operator associations and precedence */
-
 %left PLUS MINUS
-
 %start expressions
 
-%% /* language grammar */
+%%
 
 expressions
     : expression EOF
@@ -65,11 +62,11 @@ expression
     ;
 
 literal
-    : DIE_ROLL_LITERAL
+    : DICE_LITERAL
         {
-            var matches = yytext.match(/(\d*)d(\d+)/);
+            var matches = yytext.match(/(\d*)d(\d+|%)/);
             var count = matches[1] ? Number(matches[1]) : 1;
-            var sides = Number(matches[2]);
+            var sides = (matches[2] === "%") ? 100 : Number(matches[2]);
             $$ = diceExpression.forRoll(count, bag.d(sides));
         }
     | INTEGER_LITERAL

@@ -74,6 +74,10 @@ describe("diceExpressionParser", function () {
             expect(dice.expressionParser.parse("d6")).toEqual(dice.expression.forRoll(1, bag.d(6)));
         });
 
+        it("should parse a percentile die roll", function () {
+            expect(dice.expressionParser.parse("2d%")).toEqual(dice.expression.forRoll(2, bag.d(100)));
+        });
+
         describe("when source empty", function () {
             it("should throw exception", function () {
                 function parseEmptySource() {
