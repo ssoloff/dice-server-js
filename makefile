@@ -11,20 +11,20 @@ RMDIR = $(RM) -r
 JSDOC_OUTPUT_DIR = out
 SRC_DIR = lib
 
-DICE_NOTATION_JISON = $(SRC_DIR)/dice-notation.jison
-DICE_NOTATION_JS = $(SRC_DIR)/dice-notation.js
+DICE_EXPRESSION_JISON = $(SRC_DIR)/dice-expression.jison
+DICE_EXPRESSION_PARSER_JS = $(SRC_DIR)/dice-expression-parser.js
 JSDOC_CONFIG = jsdoc-conf.json
 
 all: build check test docs
 
-build: $(DICE_NOTATION_JS)
+build: $(DICE_EXPRESSION_PARSER_JS)
 
 check: build
 	$(JSHINT) .
 	$(JSCS) .
 
 clean:
-	$(RM) $(DICE_NOTATION_JS)
+	$(RM) $(DICE_EXPRESSION_PARSER_JS)
 	$(RMDIR) $(JSDOC_OUTPUT_DIR)
 
 docs:
@@ -33,6 +33,6 @@ docs:
 test: build
 	$(JASMINE)
 
-$(DICE_NOTATION_JS): $(DICE_NOTATION_JISON)
+$(DICE_EXPRESSION_PARSER_JS): $(DICE_EXPRESSION_JISON)
 	$(JISON) $< -o $@
 

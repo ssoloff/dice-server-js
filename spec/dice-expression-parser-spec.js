@@ -24,9 +24,8 @@
 
 var _ = require("underscore");
 var dice = require("../lib/dice");
-var diceNotation = require("../lib/dice-notation");
 
-describe("diceNotation", function () {
+describe("diceExpressionParser", function () {
     function isDiceExpressionEqual(first, second) {
         if (_.has(first, "typeId")
                 && _.has(first, "evaluate")
@@ -43,11 +42,11 @@ describe("diceNotation", function () {
 
     describe(".parse", function () {
         it("should parse a constant", function () {
-            expect(diceNotation.parse("42")).toEqual(dice.expression.forConstant(42));
+            expect(dice.expressionParser.parse("42")).toEqual(dice.expression.forConstant(42));
         });
 
         it("should parse the addition of two constants", function () {
-            expect(diceNotation.parse("3 + 2")).toEqual(
+            expect(dice.expressionParser.parse("3 + 2")).toEqual(
                 dice.expression.forAddition(
                     dice.expression.forConstant(3),
                     dice.expression.forConstant(2)
@@ -56,7 +55,7 @@ describe("diceNotation", function () {
         });
 
         it("should parse the subtraction of two constants", function () {
-            expect(diceNotation.parse("3 - 2")).toEqual(
+            expect(dice.expressionParser.parse("3 - 2")).toEqual(
                 dice.expression.forSubtraction(
                     dice.expression.forConstant(3),
                     dice.expression.forConstant(2)
@@ -67,7 +66,7 @@ describe("diceNotation", function () {
         describe("when source empty", function () {
             it("should throw exception", function () {
                 function parseEmptySource() {
-                    diceNotation.parse("");
+                    dice.expressionParser.parse("");
                 }
                 expect(parseEmptySource).toThrow();
             });

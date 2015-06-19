@@ -22,7 +22,7 @@
   "homepage": "https://github.com/ssoloff/dice-server-js",
   "jscsConfig": {
     "excludeFiles": [
-        "lib/dice-notation.js",
+        "lib/dice-expression-parser.js",
         "node_modules/**",
         "out/**"
     ],

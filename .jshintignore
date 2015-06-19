@@ -1,4 +1,4 @@
-lib/dice-notation.js
+lib/dice-expression-parser.js
 node_modules/
 out/
 
