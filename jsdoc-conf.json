@@ -7,12 +7,18 @@
     ],
     "source": {
         "excludePattern": "(^|\\/|\\\\)_",
-        "include": ["."],
+        "include": [
+            "lib",
+            "spec"
+        ],
         "includePattern": ".+\\.js(doc)?$"
     },
     "tags": {
         "allowUnknownTags": true,
-        "dictionaries": ["jsdoc","closure"]
+        "dictionaries": [
+            "jsdoc",
+            "closure"
+        ]
     },
     "templates": {
         "cleverLinks": false,

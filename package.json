@@ -6,7 +6,9 @@
   "dependencies": {
     "underscore": "^1.8.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "selenium-webdriver": "^2.46.1"
+  },
   "scripts": {
     "test": "make test"
   },
@@ -22,9 +24,9 @@
   "homepage": "https://github.com/ssoloff/dice-server-js",
   "jscsConfig": {
     "excludeFiles": [
-        "lib/dice-expression-parser.js",
-        "node_modules/**",
-        "out/**"
+      "lib/dice-expression-parser.js",
+      "node_modules/**",
+      "out/**"
     ],
     "preset": "crockford",
     "requireMultipleVarDecl": null

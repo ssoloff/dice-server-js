@@ -1,5 +1,6 @@
 .PHONY: all build check clean docs test
 
+CUCUMBER = cucumber.js
 JASMINE = jasmine
 JISON = jison
 JSCS = jscs
@@ -32,6 +33,7 @@ docs:
 
 test: build
 	$(JASMINE)
+	$(CUCUMBER)
 
 $(DICE_EXPRESSION_PARSER_JS): $(DICE_EXPRESSION_JISON)
 	$(JISON) $< -o $@
