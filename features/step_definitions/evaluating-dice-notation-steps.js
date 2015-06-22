@@ -24,6 +24,8 @@
 
 var webdriver = require("selenium-webdriver");
 
+var By = webdriver.By;
+
 module.exports = function () {
     this.Given(/^the home page is open$/, function () {
         this.driver = new webdriver.Builder()
@@ -32,9 +34,9 @@ module.exports = function () {
         return this.driver.get('http://localhost:3000/');
     });
 
-    this.When(/^the expression (.*) is evalulated$/, function (expression, callback) {
-        console.log(expression);
-        callback.pending();
+    this.When(/^the expression (.*) is evalulated$/, function (expression) {
+        this.driver.findElement(By.id("expression")).sendKeys(expression);
+        return this.driver.findElement(By.id("roll")).click();
     });
 
     this.Then(/^the result should be (.*)$/, function (expressionResult, callback) {
