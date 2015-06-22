@@ -26,8 +26,12 @@ var http = require("http");
 var express = require("express");
 var path = require("path");
 
+var rollController = require("./controllers/roll-controller.js");
+
 var app = express();
 app.use(express.static(path.join(__dirname, "/public")));
 
 http.createServer(app).listen(3000);
+
+app.get("/roll", rollController.index);
 

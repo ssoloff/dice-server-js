@@ -8,6 +8,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "chai": "^3.0.0",
     "selenium-webdriver": "^2.46.1"
   },
   "scripts": {
@@ -27,18 +28,10 @@
     "excludeFiles": [
       "lib/dice-expression-parser.js",
       "node_modules/**",
-      "out/**"
+      "out/**",
+      "public/scripts/jquery-*.js"
     ],
     "preset": "crockford",
     "requireMultipleVarDecl": null
-  },
-  "jshintConfig": {
-    "jasmine": true,
-    "node": true,
-    "curly": true,
-    "eqeqeq": true,
-    "laxbreak": true,
-    "undef": true,
-    "unused": true
   }
 }

@@ -22,30 +22,17 @@
 
 "use strict";
 
-var chai = require("chai");
-var webdriver = require("selenium-webdriver");
+var dice = require("../lib/dice");
 
-var By = webdriver.By;
-var expect = chai.expect;
-
-module.exports = function () {
-    this.Given(/^the home page is open$/, function () {
-        this.driver = new webdriver.Builder()
-            .withCapabilities(webdriver.Capabilities.firefox())
-            .build();
-        return this.driver.get('http://localhost:3000/');
-    });
-
-    this.When(/^the expression (.*) is evalulated$/, function (expression) {
-        this.driver.findElement(By.id("expression")).sendKeys(expression);
-        return this.driver.findElement(By.id("roll")).click();
-    });
-
-    this.Then(/^the result should be (.*)$/, function (expressionResult, callback) {
-        this.driver.findElement(By.id("expressionResult")).getText().then(function (text) {
-            expect(text).to.equal(expressionResult);
-            callback();
-        });
-    });
+module.exports = {
+    index: function (req, res) {
+        // TODO: handle exceptions
+        var expression = dice.expressionParser.parse(req.query.expression);
+        var expressionResult = expression.evaluate();
+        var roll = {
+            expressionResult: expressionResult.value()
+        };
+        res.status(200).json(roll);
+    }
 };
 
