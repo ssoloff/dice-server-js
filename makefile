@@ -1,4 +1,4 @@
-.PHONY: all build check clean docs start-app stop-app test
+.PHONY: acceptance-test all build check clean docs start-app stop-app unit-test
 
 CAT = cat
 CUCUMBER = cucumber.js
@@ -22,7 +22,10 @@ DICE_EXPRESSION_JISON = $(SRC_DIR)/dice-expression.jison
 DICE_EXPRESSION_PARSER_JS = $(SRC_DIR)/dice-expression-parser.js
 JSDOC_CONFIG = jsdoc-conf.json
 
-all: build check test docs
+all: build check unit-test docs
+
+acceptance-test:
+	$(CUCUMBER)
 
 build: $(DICE_EXPRESSION_PARSER_JS)
 
@@ -45,9 +48,8 @@ stop-app:
 	$(KILL) $(PID)
 	$(RM) $(APP_PID)
 
-test: build
+unit-test: build
 	$(JASMINE)
-	$(CUCUMBER)
 
 $(DICE_EXPRESSION_PARSER_JS): $(DICE_EXPRESSION_JISON)
 	$(JISON) $< -o $@
