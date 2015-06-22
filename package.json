@@ -4,6 +4,7 @@
   "description": "Server for parsing and executing dice notation.",
   "main": "index.js",
   "dependencies": {
+    "express": "^4.13.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
