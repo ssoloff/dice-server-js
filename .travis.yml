@@ -11,4 +11,7 @@ install:
     - npm install
 script:
     - make all
+    - make start-app
+    - make acceptance-test
+    - make stop-app
 
