@@ -22,16 +22,23 @@
 
 "use strict";
 
+var webdriver = require("selenium-webdriver");
+
 module.exports = function () {
-    this.Given(/^the expression (.*)$/, function (expression, callback) {
-        callback.pending();
+    this.Given(/^the home page is open$/, function () {
+        this.driver = new webdriver.Builder()
+            .withCapabilities(webdriver.Capabilities.firefox())
+            .build();
+        return this.driver.get('http://localhost:3000/');
     });
 
-    this.When(/^the expression is evalulated$/, function (callback) {
+    this.When(/^the expression (.*) is evalulated$/, function (expression, callback) {
+        console.log(expression);
         callback.pending();
     });
 
     this.Then(/^the result should be (.*)$/, function (expressionResult, callback) {
+        console.log(expressionResult);
         callback.pending();
     });
 };
