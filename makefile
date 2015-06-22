@@ -1,8 +1,11 @@
 .PHONY: acceptance-test all build check clean docs start-app stop-app unit-test
 
 CAT = cat
+CSSLINT = csslint
 CUCUMBER = cucumber.js
 ECHO = echo
+FIND = find
+HTML_VALIDATOR = html-validator
 JASMINE = jasmine
 JISON = jison
 JSCS = jscs
@@ -12,9 +15,12 @@ KILL = kill
 NODE = node
 RM = rm -f
 RMDIR = $(RM) -r
+XARGS = xargs
 
 JSDOC_OUTPUT_DIR = out
+PUBLIC_DIR = public
 SRC_DIR = lib
+STYLES_DIR = $(PUBLIC_DIR)/styles
 
 APP_JS = app.js
 APP_PID = app.pid
@@ -50,6 +56,10 @@ stop-app:
 
 unit-test: build
 	$(JASMINE)
+
+web-lint:
+	$(FIND) $(PUBLIC_DIR) -name "*.html" | $(XARGS) -I {} $(HTML_VALIDATOR) --file={}
+	$(CSSLINT) $(STYLES_DIR)
 
 $(DICE_EXPRESSION_PARSER_JS): $(DICE_EXPRESSION_JISON)
 	$(JISON) $< -o $@
