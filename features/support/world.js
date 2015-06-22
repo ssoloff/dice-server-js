@@ -22,29 +22,21 @@
 
 "use strict";
 
-var chai = require("chai");
 var webdriver = require("selenium-webdriver");
 
-var By = webdriver.By;
-var expect = chai.expect;
+var driver = new webdriver.Builder()
+    .withCapabilities(webdriver.Capabilities.firefox())
+    .build();
 
-module.exports = function () {
-    this.World = require("../support/world").World;
+function getDriver() {
+    return driver;
+}
 
-    this.Given(/^the home page is open$/, function () {
-        return this.driver.get('http://localhost:3000/');
-    });
+function World(callback) {
+    this.driver = driver;
+    callback();
+}
 
-    this.When(/^the expression (.*) is evalulated$/, function (expression) {
-        this.driver.findElement(By.id("expression")).sendKeys(expression);
-        return this.driver.findElement(By.id("roll")).click();
-    });
-
-    this.Then(/^the result should be (.*)$/, function (expressionResult, callback) {
-        this.driver.findElement(By.id("expressionResult")).getText().then(function (text) {
-            expect(text).to.equal(expressionResult);
-            callback();
-        });
-    });
-};
+module.exports.World = World;
+module.exports.getDriver = getDriver;
 
