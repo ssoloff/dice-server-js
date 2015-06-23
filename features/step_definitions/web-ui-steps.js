@@ -35,12 +35,12 @@ module.exports = function () {
         return this.driver.get('http://localhost:3000/');
     });
 
-    this.When(/^the expression (.*) is evaluated$/, function (expression) {
+    this.When(/^the expression (.+) is evaluated$/, function (expression) {
         this.driver.findElement(By.id("expression")).sendKeys(expression);
         return this.driver.findElement(By.id("roll")).click();
     });
 
-    this.Then(/^the result should be (.*)$/, function (expressionResult, callback) {
+    this.Then(/^the result should be (\d+)$/, function (expressionResult, callback) {
         this.driver.findElement(By.id("expressionResult")).getText().then(function (text) {
             expect(text).to.equal(expressionResult);
             callback();
