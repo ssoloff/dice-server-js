@@ -27,7 +27,7 @@ var dice = require("../lib/dice");
 module.exports = {
     index: function (req, res) {
         // TODO: handle exceptions
-        var expression = dice.expressionParser.parse(req.query.expression);
+        var expression = dice.expressionParser.parse(req.body.expression);
         var expressionResult = expression.evaluate();
         var roll = {
             expressionResult: expressionResult.value()

@@ -23,7 +23,6 @@
 "use strict";
 
 var chai = require("chai");
-var querystring = require("querystring");
 var request = require("request");
 
 var expect = chai.expect;
@@ -37,8 +36,11 @@ module.exports = function () {
     });
 
     this.When(/^the roll service is invoked$/, function (callback) {
-        var uri = "http://localhost:3000/roll?" + querystring.stringify(req);
-        request(uri, function (error, response, body) {
+        var requestData = {
+            form: req,
+            uri: "http://localhost:3000/roll"
+        };
+        request.post(requestData, function (error, response, body) {
             if (!error && response.statusCode === 200) {
                 res = JSON.parse(body);
                 callback();

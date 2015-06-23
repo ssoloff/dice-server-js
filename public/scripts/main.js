@@ -6,7 +6,7 @@ function main() {
         var request = {
             expression: $expression.val()
         };
-        $.getJSON("/roll", request, function (response) {
+        $.post("/roll", request, function (response) {
             $expression.val("");
             $("#expressionResult").text(response.expressionResult);
         });

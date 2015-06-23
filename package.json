@@ -4,12 +4,12 @@
   "description": "Server for parsing and executing dice notation.",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.13.1",
     "express": "^4.13.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
     "chai": "^3.0.0",
-    "querystring": "^0.2.0",
     "request": "^2.58.0",
     "selenium-webdriver": "^2.46.1"
   },
