@@ -27,7 +27,7 @@ var express = require("express");
 var http = require("http");
 var path = require("path");
 
-var rollController = require("./controllers/roll-controller.js");
+var evaluateController = require("./controllers/evaluate-controller.js");
 
 var app = express();
 app.use(express.static(path.join(__dirname, "/public")));
@@ -35,5 +35,5 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 http.createServer(app).listen(3000);
 
-app.post("/roll", rollController.index);
+app.post("/evaluate", evaluateController.index);
 

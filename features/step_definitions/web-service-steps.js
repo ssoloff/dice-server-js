@@ -35,17 +35,17 @@ module.exports = function () {
         req.expression = expression;
     });
 
-    this.When(/^the roll service is invoked$/, function (callback) {
+    this.When(/^the evaluate service is invoked$/, function (callback) {
         var requestData = {
             form: req,
-            uri: "http://localhost:3000/roll"
+            uri: "http://localhost:3000/evaluate"
         };
         request.post(requestData, function (error, response, body) {
             if (!error && response.statusCode === 200) {
                 res = JSON.parse(body);
                 callback();
             } else {
-                callback.fail(new Error("unexpected response from roll service"));
+                callback.fail(new Error("unexpected response from evaluate service"));
             }
         });
     });

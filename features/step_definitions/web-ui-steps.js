@@ -37,7 +37,7 @@ module.exports = function () {
 
     this.When(/^the expression (.+) is evaluated$/, function (expression) {
         this.driver.findElement(By.id("expression")).sendKeys(expression);
-        return this.driver.findElement(By.id("roll")).click();
+        return this.driver.findElement(By.id("evaluate")).click();
     });
 
     this.Then(/^the result should be (\d+)$/, function (expressionResult, callback) {

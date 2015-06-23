@@ -5,16 +5,16 @@ I want to be able to evaluate a dice notation expression via a web service
 
 Scenario: Evaluating constants
 Given a request with the expression 5
-When the roll service is invoked
+When the evaluate service is invoked
 Then the response should contain the expression result 5
 
 Scenario: Evaluating the addition of constants
 Given a request with the expression 4 + 3
-When the roll service is invoked
+When the evaluate service is invoked
 Then the response should contain the expression result 7
 
 Scenario: Evaluating the subtraction of constants
 Given a request with the expression 4 - 3
-When the roll service is invoked
+When the evaluate service is invoked
 Then the response should contain the expression result 1
 
