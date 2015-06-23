@@ -1,7 +1,7 @@
-Feature: Evaluating dice notation
-In order to streamline game play
-As a user
-I want to be able to evaluate a dice notation expression
+Feature: Evaluating dice notation via web UI
+In order to simplify game play
+As a player
+I want to be able to evaluate a dice notation expression via a web UI
 
 Scenario: Evaluating constants
 Given the home page is open

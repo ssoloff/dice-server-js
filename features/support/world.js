@@ -34,7 +34,10 @@ function getDriver() {
 
 function World(callback) {
     this.driver = driver;
-    callback();
+    // NB: wait until browser is open before proceeding
+    this.driver.getTitle().then(function () {
+        callback();
+    });
 }
 
 module.exports.World = World;

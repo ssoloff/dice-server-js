@@ -22,13 +22,34 @@
 
 "use strict";
 
-var driver = require("./world").getDriver();
+var chai = require("chai");
+var querystring = require("querystring");
+var request = require("request");
+
+var expect = chai.expect;
 
 module.exports = function () {
-    this.registerHandler("AfterFeatures", function (event, callback) {
-        driver.quit().then(function () {
-            callback();
+    var req = {};
+    var res = null;
+
+    this.Given(/^a request with the expression (.+)$/, function (expression) {
+        req.expression = expression;
+    });
+
+    this.When(/^the roll service is invoked$/, function (callback) {
+        var uri = "http://localhost:3000/roll?" + querystring.stringify(req);
+        request(uri, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+                res = JSON.parse(body);
+                callback();
+            } else {
+                callback.fail(new Error("unexpected response from roll service"));
+            }
         });
+    });
+
+    this.Then(/^the response should contain the expression result (\d+)$/, function (expressionResult) {
+        expect(res.expressionResult).to.equal(parseInt(expressionResult));
     });
 };
 
