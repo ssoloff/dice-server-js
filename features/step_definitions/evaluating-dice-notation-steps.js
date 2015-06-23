@@ -35,7 +35,7 @@ module.exports = function () {
         return this.driver.get('http://localhost:3000/');
     });
 
-    this.When(/^the expression (.*) is evalulated$/, function (expression) {
+    this.When(/^the expression (.*) is evaluated$/, function (expression) {
         this.driver.findElement(By.id("expression")).sendKeys(expression);
         return this.driver.findElement(By.id("roll")).click();
     });
