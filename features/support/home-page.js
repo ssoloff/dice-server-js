@@ -30,19 +30,31 @@ function HomePage(driver) {
     this.driver = driver;
 }
 
+HomePage.prototype.clearExpression = function () {
+    return this.driver.findElement(By.id("expression")).clear();
+};
+
 HomePage.prototype.evaluate = function () {
     return this.driver.findElement(By.id("evaluate")).click();
+};
+
+HomePage.prototype.getErrorMessage = function () {
+    return this.driver.findElement(By.id("errorMessage")).getText();
 };
 
 HomePage.prototype.getExpressionResult = function () {
     return this.driver.findElement(By.id("expressionResult")).getText();
 };
 
+HomePage.prototype.isErrorMessageDisplayed = function () {
+    return this.driver.findElement(By.id("errorMessage")).isDisplayed();
+};
+
 HomePage.prototype.open = function () {
     return this.driver.get("http://localhost:3000/");
 };
 
-HomePage.prototype.setExpression = function (expression) {
+HomePage.prototype.typeExpression = function (expression) {
     return this.driver.findElement(By.id("expression")).sendKeys(expression);
 };
 

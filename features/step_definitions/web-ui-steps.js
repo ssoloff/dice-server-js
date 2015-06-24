@@ -38,22 +38,43 @@ module.exports = function () {
     });
 
     this.When(/^the ENTER key is pressed$/, function () {
-        return homePage.setExpression("\n");
+        return homePage.typeExpression("\n");
     });
 
     this.When(/^the expression (.+) is entered$/, function (expression) {
-        return homePage.setExpression(expression);
+        return homePage.typeExpression(expression);
     });
 
     this.When(/^the expression (.+) is evaluated$/, function (expression) {
-        homePage.setExpression(expression);
+        homePage.clearExpression();
+        homePage.typeExpression(expression);
         return homePage.evaluate();
     });
 
-    this.Then(/^the result should be (\d+)$/, function (expressionResult, callback) {
-        homePage.getExpressionResult().then(function (text) {
+    this.Then(/^an error message should be displayed$/, function () {
+        homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
+            expect(isDisplayed).to.be.true;
+        });
+        return homePage.getErrorMessage().then(function (text) {
+            expect(text).to.have.length.above(0);
+        });
+    });
+
+    this.Then(/^an error message should not be displayed$/, function () {
+        return homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
+            expect(isDisplayed).to.be.false;
+        });
+    });
+
+    this.Then(/^the result should be (\d+)$/, function (expressionResult) {
+        return homePage.getExpressionResult().then(function (text) {
             expect(text).to.equal(expressionResult);
-            callback();
+        });
+    });
+
+    this.Then(/^the result should be empty$/, function () {
+        return homePage.getExpressionResult().then(function (text) {
+            expect(text).to.be.empty;
         });
     });
 };

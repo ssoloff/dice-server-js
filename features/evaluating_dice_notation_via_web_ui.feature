@@ -24,3 +24,25 @@ When the expression 5 is entered
     And the ENTER key is pressed
 Then the result should be 5
 
+Scenario: Evaluating well-formed expressions
+Given the home page is open
+When the expression 5 is evaluated
+Then an error message should not be displayed
+
+Scenario: Evaluating malformed expressions
+Given the home page is open
+When the expression <<INVALID>> is evaluated
+Then an error message should be displayed
+
+Scenario: Stale results are removed when an error occurs
+Given the home page is open
+When the expression 5 is evaluated
+    And the expression <<INVALID>> is evaluated
+Then the result should be empty
+
+Scenario: Stale error messages are hidden
+Given the home page is open
+When the expression <<INVALID>> is evaluated
+    And the expression 5 is evaluated
+Then an error message should not be displayed
+
