@@ -37,6 +37,11 @@ module.exports = function () {
         return homePage.open();
     });
 
+    this.When(/^an empty expression is evaluated$/, function () {
+        homePage.clearExpression();
+        return homePage.evaluate();
+    });
+
     this.When(/^the ENTER key is pressed$/, function () {
         return homePage.typeExpression("\n");
     });

@@ -34,6 +34,12 @@ Given the home page is open
 When the expression <<INVALID>> is evaluated
 Then an error message should be displayed
 
+Scenario: Evaluating empty expressions
+Given the home page is open
+When an empty expression is evaluated
+Then the result should be empty
+    And an error message should not be displayed
+
 Scenario: Stale results are removed when an error occurs
 Given the home page is open
 When the expression 5 is evaluated
