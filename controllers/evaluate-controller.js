@@ -26,13 +26,25 @@ var dice = require("../lib/dice");
 
 module.exports = {
     index: function (req, res) {
-        // TODO: handle exceptions
-        var expression = dice.expressionParser.parse(req.body.expression);
-        var expressionResult = expression.evaluate();
-        var roll = {
-            expressionResult: expressionResult.value()
+        var response = {
+            errorMessage: null,
+            expressionResult: null
         };
-        res.status(200).json(roll);
+
+        try {
+            var expression = dice.expressionParser.parse(req.body.expression);
+            var expressionResult = expression.evaluate();
+            response.expressionResult = expressionResult.value();
+        }
+        catch (e) {
+            if (e instanceof Error) {
+                response.errorMessage = e.message;
+            } else {
+                response.errorMessage = e.toString();
+            }
+        }
+
+        res.status(200).json(response);
     }
 };
 

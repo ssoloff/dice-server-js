@@ -42,8 +42,16 @@ module.exports = function () {
         });
     });
 
+    this.Then(/^the response should contain an error message$/, function () {
+        expect(response).to.have.property("errorMessage").that.has.length.above(0);
+    });
+
     this.Then(/^the response should contain the expression result (\d+)$/, function (expressionResult) {
         expect(response.expressionResult).to.equal(parseInt(expressionResult));
+    });
+
+    this.Then(/^the response should not contain an error message$/, function () {
+        expect(response).to.have.property("errorMessage").that.is.null;
     });
 };
 

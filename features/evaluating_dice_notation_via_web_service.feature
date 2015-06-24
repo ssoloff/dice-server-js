@@ -18,3 +18,13 @@ Given a request with the expression 4 - 3
 When the evaluate service is invoked
 Then the response should contain the expression result 1
 
+Scenario: Evaluating well-formed expressions
+Given a request with the expression 5
+When the evaluate service is invoked
+Then the response should not contain an error message
+
+Scenario: Evaluating malformed expressions
+Given a request with the expression <<INVALID>>
+When the evaluate service is invoked
+Then the response should contain an error message
+
