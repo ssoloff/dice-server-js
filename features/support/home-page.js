@@ -30,17 +30,20 @@ function HomePage(driver) {
     this.driver = driver;
 }
 
-HomePage.prototype.evaluateExpression = function (expression) {
-    this.driver.findElement(By.id("expression")).sendKeys(expression);
+HomePage.prototype.evaluate = function () {
     return this.driver.findElement(By.id("evaluate")).click();
 };
 
-HomePage.prototype.getExpressionResultText = function () {
+HomePage.prototype.getExpressionResult = function () {
     return this.driver.findElement(By.id("expressionResult")).getText();
 };
 
 HomePage.prototype.open = function () {
     return this.driver.get("http://localhost:3000/");
+};
+
+HomePage.prototype.setExpression = function (expression) {
+    return this.driver.findElement(By.id("expression")).sendKeys(expression);
 };
 
 module.exports = HomePage;

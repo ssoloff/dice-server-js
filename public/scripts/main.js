@@ -1,7 +1,7 @@
 function main() {
     "use strict";
 
-    $("#evaluate").click(function () {
+    $("#expressionForm").submit(function (event) {
         var $expression = $("#expression");
         var request = {
             expression: $expression.val()
@@ -10,6 +10,7 @@ function main() {
             $expression.val("");
             $("#expressionResult").text(response.expressionResult);
         });
+        event.preventDefault();
     });
 }
 

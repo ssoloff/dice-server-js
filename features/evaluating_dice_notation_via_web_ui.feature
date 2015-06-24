@@ -18,3 +18,9 @@ Given the home page is open
 When the expression 4 - 3 is evaluated
 Then the result should be 1
 
+Scenario: Pressing ENTER should cause evaluation
+Given the home page is open
+When the expression 5 is entered
+    And the ENTER key is pressed
+Then the result should be 5
+

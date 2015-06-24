@@ -37,12 +37,21 @@ module.exports = function () {
         return homePage.open();
     });
 
+    this.When(/^the ENTER key is pressed$/, function () {
+        return homePage.setExpression("\n");
+    });
+
+    this.When(/^the expression (.+) is entered$/, function (expression) {
+        return homePage.setExpression(expression);
+    });
+
     this.When(/^the expression (.+) is evaluated$/, function (expression) {
-        return homePage.evaluateExpression(expression);
+        homePage.setExpression(expression);
+        return homePage.evaluate();
     });
 
     this.Then(/^the result should be (\d+)$/, function (expressionResult, callback) {
-        homePage.getExpressionResultText().then(function (text) {
+        homePage.getExpressionResult().then(function (text) {
             expect(text).to.equal(expressionResult);
             callback();
         });
