@@ -22,30 +22,26 @@
 
 "use strict";
 
-var chai = require("chai");
-var HomePage = require("../support/home-page");
-var world = require("../support/world");
+var webdriver = require("selenium-webdriver");
 
-var expect = chai.expect;
+var By = webdriver.By;
 
-module.exports = function () {
-    var homePage = new HomePage(world.getDriver());
+function HomePage(driver) {
+    this.driver = driver;
+}
 
-    this.World = world.World;
-
-    this.Given(/^the home page is open$/, function () {
-        return homePage.open();
-    });
-
-    this.When(/^the expression (.+) is evaluated$/, function (expression) {
-        return homePage.evaluateExpression(expression);
-    });
-
-    this.Then(/^the result should be (\d+)$/, function (expressionResult, callback) {
-        homePage.getExpressionResultText().then(function (text) {
-            expect(text).to.equal(expressionResult);
-            callback();
-        });
-    });
+HomePage.prototype.evaluateExpression = function (expression) {
+    this.driver.findElement(By.id("expression")).sendKeys(expression);
+    return this.driver.findElement(By.id("evaluate")).click();
 };
+
+HomePage.prototype.getExpressionResultText = function () {
+    return this.driver.findElement(By.id("expressionResult")).getText();
+};
+
+HomePage.prototype.open = function () {
+    return this.driver.get("http://localhost:3000/");
+};
+
+module.exports = HomePage;
 

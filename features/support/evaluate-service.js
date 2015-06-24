@@ -22,30 +22,29 @@
 
 "use strict";
 
-var chai = require("chai");
-var HomePage = require("../support/home-page");
-var world = require("../support/world");
+var request = require("request");
 
-var expect = chai.expect;
+function EvaluateService() {
+    this.request = {};
+}
 
-module.exports = function () {
-    var homePage = new HomePage(world.getDriver());
-
-    this.World = world.World;
-
-    this.Given(/^the home page is open$/, function () {
-        return homePage.open();
-    });
-
-    this.When(/^the expression (.+) is evaluated$/, function (expression) {
-        return homePage.evaluateExpression(expression);
-    });
-
-    this.Then(/^the result should be (\d+)$/, function (expressionResult, callback) {
-        homePage.getExpressionResultText().then(function (text) {
-            expect(text).to.equal(expressionResult);
-            callback();
-        });
+EvaluateService.prototype.call = function (callback) {
+    var requestData = {
+        form: this.request,
+        uri: "http://localhost:3000/evaluate"
+    };
+    request.post(requestData, function (error, response, body) {
+        if (!error && (response.statusCode === 200)) {
+            callback(JSON.parse(body));
+        } else {
+            throw new Error("unexpected response from evaluate service");
+        }
     });
 };
+
+EvaluateService.prototype.setExpression = function (expression) {
+    this.request.expression = expression;
+};
+
+module.exports = EvaluateService;
 

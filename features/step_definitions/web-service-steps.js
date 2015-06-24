@@ -23,35 +23,27 @@
 "use strict";
 
 var chai = require("chai");
-var request = require("request");
+var EvaluateService = require("../support/evaluate-service");
 
 var expect = chai.expect;
 
 module.exports = function () {
-    var req = {};
-    var res = null;
+    var evaluateService = new EvaluateService();
+    var response = null;
 
     this.Given(/^a request with the expression (.+)$/, function (expression) {
-        req.expression = expression;
+        evaluateService.setExpression(expression);
     });
 
     this.When(/^the evaluate service is invoked$/, function (callback) {
-        var requestData = {
-            form: req,
-            uri: "http://localhost:3000/evaluate"
-        };
-        request.post(requestData, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                res = JSON.parse(body);
-                callback();
-            } else {
-                callback.fail(new Error("unexpected response from evaluate service"));
-            }
+        evaluateService.call(function (res) {
+            response = res;
+            callback();
         });
     });
 
     this.Then(/^the response should contain the expression result (\d+)$/, function (expressionResult) {
-        expect(res.expressionResult).to.equal(parseInt(expressionResult));
+        expect(response.expressionResult).to.equal(parseInt(expressionResult));
     });
 };
 
