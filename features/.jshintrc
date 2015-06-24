@@ -1,0 +1,10 @@
+{
+    "node": true,
+    "curly": true,
+    "eqeqeq": true,
+    "expr": true,
+    "laxbreak": true,
+    "undef": true,
+    "unused": true
+}
+
