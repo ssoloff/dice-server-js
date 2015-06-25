@@ -42,8 +42,8 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^the response should contain an error$/, function () {
-        expect(response.error).to.exist;
+    this.Then(/^the response should be$/, function (jsonResponse) {
+        expect(response).to.deep.equal(JSON.parse(jsonResponse));
     });
 
     this.Then(/^the response should contain the expression result text (.+)$/, function (expressionResultText) {
@@ -52,14 +52,6 @@ module.exports = function () {
 
     this.Then(/^the response should contain the expression result value (\d+)$/, function (expressionResultValue) {
         expect(response.expressionResult.value).to.equal(parseInt(expressionResultValue));
-    });
-
-    this.Then(/^the response should contain the expression text (.+)$/, function (expressionText) {
-        expect(response.expression.text).to.equal(expressionText);
-    });
-
-    this.Then(/^the response should not contain an error$/, function () {
-        expect(response.error).to.not.exist;
     });
 };
 
