@@ -71,14 +71,14 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^the result should be (\d+)$/, function (expressionResult) {
-        return homePage.getExpressionResult().then(function (text) {
-            expect(text).to.equal(expressionResult);
+    this.Then(/^the expression result value should be (\d+)$/, function (expressionResultValue) {
+        return homePage.getExpressionResultValue().then(function (text) {
+            expect(text).to.equal(expressionResultValue);
         });
     });
 
-    this.Then(/^the result should be empty$/, function () {
-        return homePage.getExpressionResult().then(function (text) {
+    this.Then(/^the expression result value should be empty$/, function () {
+        return homePage.getExpressionResultValue().then(function (text) {
             expect(text).to.be.empty;
         });
     });

@@ -10,13 +10,13 @@ function main() {
             expression: $expression.val()
         };
         $.post("/evaluate", request, function (response) {
-            var $expressionResult = $("#expressionResult");
+            var $expressionResultValue = $("#expressionResultValue");
             if (response.errorMessage) {
-                $expressionResult.text("");
+                $expressionResultValue.text("");
                 $errorMessage.text(response.errorMessage).show();
             } else {
                 $expression.val("");
-                $expressionResult.text(response.expressionResult);
+                $expressionResultValue.text(response.expressionResult.value.toString());
                 $errorMessage.hide();
             }
         });

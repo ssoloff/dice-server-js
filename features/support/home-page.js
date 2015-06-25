@@ -42,8 +42,8 @@ HomePage.prototype.getErrorMessage = function () {
     return this.driver.findElement(By.id("errorMessage")).getText();
 };
 
-HomePage.prototype.getExpressionResult = function () {
-    return this.driver.findElement(By.id("expressionResult")).getText();
+HomePage.prototype.getExpressionResultValue = function () {
+    return this.driver.findElement(By.id("expressionResultValue")).getText();
 };
 
 HomePage.prototype.isErrorMessageDisplayed = function () {

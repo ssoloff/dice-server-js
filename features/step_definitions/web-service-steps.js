@@ -46,8 +46,12 @@ module.exports = function () {
         expect(response).to.have.property("errorMessage").that.has.length.above(0);
     });
 
-    this.Then(/^the response should contain the expression result (\d+)$/, function (expressionResult) {
-        expect(response.expressionResult).to.equal(parseInt(expressionResult));
+    this.Then(/^the response should contain the expression result text (.+)$/, function (expressionResultText) {
+        expect(response.expressionResult.text).to.equal(expressionResultText);
+    });
+
+    this.Then(/^the response should contain the expression result value (\d+)$/, function (expressionResultValue) {
+        expect(response.expressionResult.value).to.equal(parseInt(expressionResultValue));
     });
 
     this.Then(/^the response should contain the expression text (.+)$/, function (expressionText) {
