@@ -28,11 +28,16 @@ module.exports = {
     index: function (req, res) {
         var response = {
             errorMessage: null,
+            expression: {
+                text: null
+            },
             expressionResult: null
         };
 
         try {
             var expression = dice.expressionParser.parse(req.body.expression);
+            response.expression.text = dice.expressionFormatter.format(expression);
+
             var expressionResult = expression.evaluate();
             response.expressionResult = expressionResult.value();
         }

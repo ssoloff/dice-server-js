@@ -50,6 +50,10 @@ module.exports = function () {
         expect(response.expressionResult).to.equal(parseInt(expressionResult));
     });
 
+    this.Then(/^the response should contain the expression text (.+)$/, function (expressionText) {
+        expect(response.expression.text).to.equal(expressionText);
+    });
+
     this.Then(/^the response should not contain an error message$/, function () {
         expect(response).to.have.property("errorMessage").that.is.null;
     });

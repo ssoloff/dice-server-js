@@ -28,3 +28,8 @@ Given a request with the expression <<INVALID>>
 When the evaluate service is invoked
 Then the response should contain an error message
 
+Scenario: Response includes expression text
+Given a request with the expression 4 + 3
+When the evaluate service is invoked
+Then the response should contain the expression text 4 + 3
+
