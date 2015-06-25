@@ -24,7 +24,7 @@
 
 var chai = require("chai");
 var HomePage = require("../support/home-page");
-var world = require("../support/world");
+var world = require("../../support/world");
 
 var expect = chai.expect;
 
