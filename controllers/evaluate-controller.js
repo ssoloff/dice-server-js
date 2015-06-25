@@ -24,18 +24,34 @@
 
 var dice = require("../lib/dice");
 
+function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
+    switch (randomNumberGeneratorSpecification.name) {
+        case "uniform":
+            return Math.random;
+    }
+
+    throw new Error("unknown random number generator '" + randomNumberGeneratorSpecification.name + "'");
+}
+
+function getRandomNumberGeneratorSpecification(request) {
+    return request.randomNumberGenerator || {name: "uniform"};
+}
+
 module.exports = {
     evaluate: function (req, res) {
+        var request = req.body;
         var response = {};
 
         try {
-            var expression = dice.expressionParser.parse(req.body.expression);
+            var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
+            dice.expressionParser.setBag(new dice.Bag(createRandomNumberGenerator(randomNumberGeneratorSpecification)));
+
+            var expression = dice.expressionParser.parse(request.expression);
             response.expression = {
                 text: dice.expressionFormatter.format(expression)
             };
-            response.randomNumberGenerator = {
-                name: "uniform"
-            };
+
+            response.randomNumberGenerator = randomNumberGeneratorSpecification;
 
             var expressionResult = expression.evaluate();
             response.expressionResult = {

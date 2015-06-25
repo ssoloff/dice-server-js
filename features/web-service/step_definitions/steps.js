@@ -39,6 +39,10 @@ module.exports = function () {
         evaluateService.setExpression(expression);
     });
 
+    this.Given(/^a request with the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
+        evaluateService.setRandomNumberGenerator(randomNumberGeneratorName);
+    });
+
     this.When(/^the evaluate service is invoked$/, function (callback) {
         evaluateService.call(function (res) {
             response = res;
@@ -48,6 +52,10 @@ module.exports = function () {
 
     this.Then(/^the response should be$/, function (jsonResponse) {
         expect(response).to.deep.equal(JSON.parse(jsonResponse));
+    });
+
+    this.Then(/^the response should contain an error$/, function () {
+        expect(response.error).to.exist;
     });
 
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
