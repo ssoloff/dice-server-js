@@ -37,20 +37,15 @@ module.exports = function () {
         return homePage.open();
     });
 
-    this.When(/^an empty expression is evaluated$/, function () {
-        homePage.clearExpression();
-        return homePage.evaluate();
-    });
-
     this.When(/^the ENTER key is pressed$/, function () {
         return homePage.typeExpression("\n");
     });
 
-    this.When(/^the expression (.+) is entered$/, function (expression) {
+    this.When(/^the expression "(.*)" is entered$/, function (expression) {
         return homePage.typeExpression(expression);
     });
 
-    this.When(/^the expression (.+) is evaluated$/, function (expression) {
+    this.When(/^the expression "(.*)" is evaluated$/, function (expression) {
         homePage.clearExpression();
         homePage.typeExpression(expression);
         return homePage.evaluate();
@@ -71,15 +66,9 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^the expression result value should be (\d+)$/, function (expressionResultValue) {
+    this.Then(/^the expression result value should be "(.*)"$/, function (expressionResultValue) {
         return homePage.getExpressionResultValue().then(function (text) {
             expect(text).to.equal(expressionResultValue);
-        });
-    });
-
-    this.Then(/^the expression result value should be empty$/, function () {
-        return homePage.getExpressionResultValue().then(function (text) {
-            expect(text).to.be.empty;
         });
     });
 };

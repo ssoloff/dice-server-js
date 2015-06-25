@@ -5,50 +5,50 @@ I want to be able to evaluate a dice notation expression via a web UI
 
 Scenario: Evaluating constants
 Given the home page is open
-When the expression 5 is evaluated
-Then the expression result value should be 5
+When the expression "5" is evaluated
+Then the expression result value should be "5"
 
 Scenario: Evaluating the addition of constants
 Given the home page is open
-When the expression 4 + 3 is evaluated
-Then the expression result value should be 7
+When the expression "4 + 3" is evaluated
+Then the expression result value should be "7"
 
 Scenario: Evaluating the subtraction of constants
 Given the home page is open
-When the expression 4 - 3 is evaluated
-Then the expression result value should be 1
+When the expression "4 - 3" is evaluated
+Then the expression result value should be "1"
 
 Scenario: Pressing ENTER should cause evaluation
 Given the home page is open
-When the expression 5 is entered
+When the expression "5" is entered
     And the ENTER key is pressed
-Then the expression result value should be 5
+Then the expression result value should be "5"
 
 Scenario: Evaluating well-formed expressions
 Given the home page is open
-When the expression 5 is evaluated
+When the expression "5" is evaluated
 Then an error message should not be displayed
 
 Scenario: Evaluating malformed expressions
 Given the home page is open
-When the expression <<INVALID>> is evaluated
+When the expression "<<INVALID>>" is evaluated
 Then an error message should be displayed
 
 Scenario: Evaluating empty expressions
 Given the home page is open
-When an empty expression is evaluated
-Then the expression result value should be empty
+When the expression "" is evaluated
+Then the expression result value should be ""
     And an error message should not be displayed
 
 Scenario: Stale results are removed when an error occurs
 Given the home page is open
-When the expression 5 is evaluated
-    And the expression <<INVALID>> is evaluated
-Then the expression result value should be empty
+When the expression "5" is evaluated
+    And the expression "<<INVALID>>" is evaluated
+Then the expression result value should be ""
 
 Scenario: Stale error messages are hidden
 Given the home page is open
-When the expression <<INVALID>> is evaluated
-    And the expression 5 is evaluated
+When the expression "<<INVALID>>" is evaluated
+    And the expression "5" is evaluated
 Then an error message should not be displayed
 

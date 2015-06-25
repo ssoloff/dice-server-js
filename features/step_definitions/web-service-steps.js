@@ -31,7 +31,7 @@ module.exports = function () {
     var evaluateService = new EvaluateService();
     var response = null;
 
-    this.Given(/^a request with the expression (.+)$/, function (expression) {
+    this.Given(/^a request with the expression "(.*)"$/, function (expression) {
         evaluateService.setExpression(expression);
     });
 
@@ -46,11 +46,11 @@ module.exports = function () {
         expect(response).to.deep.equal(JSON.parse(jsonResponse));
     });
 
-    this.Then(/^the response should contain the expression result text (.+)$/, function (expressionResultText) {
+    this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
         expect(response.expressionResult.text).to.equal(expressionResultText);
     });
 
-    this.Then(/^the response should contain the expression result value (\d+)$/, function (expressionResultValue) {
+    this.Then(/^the response should contain the expression result value "(.*)"$/, function (expressionResultValue) {
         expect(response.expressionResult.value).to.equal(parseInt(expressionResultValue));
     });
 };
