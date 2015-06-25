@@ -24,6 +24,7 @@
 
 var _ = require("underscore");
 var dice = require("../lib/dice");
+var diceTest = require("./dice-test");
 
 describe("diceExpressionParser", function () {
     var bag;
@@ -84,6 +85,23 @@ describe("diceExpressionParser", function () {
                     dice.expressionParser.parse("");
                 }
                 expect(parseEmptySource).toThrow();
+            });
+        });
+    });
+
+    describe(".setDiceBag", function () {
+        it("should override the dice bag used by the parser", function () {
+            dice.expressionParser.setBag(diceTest.createBagThatProvidesDiceThatAlwaysRollOne());
+            var expression = dice.expressionParser.parse("3d6");
+            expect(expression.evaluate().value()).toBe(3);
+        });
+
+        describe("when dice bag is null", function () {
+            it("should throw exception", function () {
+                function setNullBag() {
+                    dice.expressionParser.setBag(null);
+                }
+                expect(setNullBag).toThrow();
             });
         });
     });

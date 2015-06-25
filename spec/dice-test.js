@@ -47,6 +47,19 @@ var diceTest = {
     MIN_SAFE_INTEGER: -9007199254740991,
 
     /**
+     * Creates a new dice bag that produces dice that will deterministically
+     * and repeatedly roll 1.
+     *
+     * @returns {DiceBag} The new dice bag.
+     */
+    createBagThatProvidesDiceThatAlwaysRollOne: function () {
+        function randomNumberGenerator() {
+            return 0.0;
+        }
+        return new dice.Bag(randomNumberGenerator);
+    },
+
+    /**
      * Creates a new die with the specified count of sides where rolling the
      * die will deterministically and repeatedly result in the sequence
      * [1,`sides`].

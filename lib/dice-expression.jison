@@ -83,3 +83,11 @@ var diceExpression = require("./dice-expression");
 
 var bag = new DiceBag();
 
+module.exports.setBag = function (newBag) {
+    if (!newBag) {
+        throw new Error("bag must be specified");
+    }
+
+    bag = newBag;
+};
+
