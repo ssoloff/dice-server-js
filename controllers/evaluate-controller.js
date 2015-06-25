@@ -26,11 +26,7 @@ var dice = require("../lib/dice");
 
 module.exports = {
     index: function (req, res) {
-        var response = {
-            errorMessage: null,
-            expression: null,
-            expressionResult: null
-        };
+        var response = {};
 
         try {
             var expression = dice.expressionParser.parse(req.body.expression);
@@ -45,11 +41,9 @@ module.exports = {
             };
         }
         catch (e) {
-            if (e instanceof Error) {
-                response.errorMessage = e.message;
-            } else {
-                response.errorMessage = e.toString();
-            }
+            response.error = {
+                message: (e instanceof Error) ? e.message : e.toString()
+            };
         }
 
         res.status(200).json(response);

@@ -11,9 +11,9 @@ function main() {
         };
         $.post("/evaluate", request, function (response) {
             var $expressionResultValue = $("#expressionResultValue");
-            if (response.errorMessage) {
+            if (response.error) {
                 $expressionResultValue.text("");
-                $errorMessage.text(response.errorMessage).show();
+                $errorMessage.text(response.error.message).show();
             } else {
                 $expression.val("");
                 $expressionResultValue.text(response.expressionResult.value.toString());

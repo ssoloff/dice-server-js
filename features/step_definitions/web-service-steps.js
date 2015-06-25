@@ -42,8 +42,8 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^the response should contain an error message$/, function () {
-        expect(response).to.have.property("errorMessage").that.has.length.above(0);
+    this.Then(/^the response should contain an error$/, function () {
+        expect(response.error).to.exist;
     });
 
     this.Then(/^the response should contain the expression result text (.+)$/, function (expressionResultText) {
@@ -58,8 +58,8 @@ module.exports = function () {
         expect(response.expression.text).to.equal(expressionText);
     });
 
-    this.Then(/^the response should not contain an error message$/, function () {
-        expect(response).to.have.property("errorMessage").that.is.null;
+    this.Then(/^the response should not contain an error$/, function () {
+        expect(response.error).to.not.exist;
     });
 };
 

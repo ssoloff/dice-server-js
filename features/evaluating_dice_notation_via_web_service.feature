@@ -24,12 +24,12 @@ Then the response should contain the expression result text 4 - 3
 Scenario: Evaluating well-formed expressions
 Given a request with the expression 5
 When the evaluate service is invoked
-Then the response should not contain an error message
+Then the response should not contain an error
 
 Scenario: Evaluating malformed expressions
 Given a request with the expression <<INVALID>>
 When the evaluate service is invoked
-Then the response should contain an error message
+Then the response should contain an error
 
 Scenario: Response includes expression text
 Given a request with the expression 4 + 3
