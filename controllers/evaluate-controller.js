@@ -25,7 +25,7 @@
 var dice = require("../lib/dice");
 
 module.exports = {
-    index: function (req, res) {
+    evaluate: function (req, res) {
         var response = {};
 
         try {

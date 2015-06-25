@@ -35,5 +35,5 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 http.createServer(app).listen(3000);
 
-app.post("/evaluate", evaluateController.index);
+app.post("/evaluate", evaluateController.evaluate);
 
