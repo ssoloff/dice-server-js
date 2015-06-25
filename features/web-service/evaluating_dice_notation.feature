@@ -15,6 +15,9 @@ Then the response should be
         "expressionResult": {
             "text": "5",
             "value": 5
+        },
+        "randomNumberGenerator": {
+            "name": "uniform"
         }
     }
     """

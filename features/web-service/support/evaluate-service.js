@@ -46,5 +46,11 @@ EvaluateService.prototype.setExpression = function (expression) {
     this.request.expression = expression;
 };
 
+EvaluateService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
+    this.request.randomNumberGenerator = {
+        name: randomNumberGeneratorName
+    };
+};
+
 module.exports = EvaluateService;
 

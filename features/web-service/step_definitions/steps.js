@@ -31,6 +31,10 @@ module.exports = function () {
     var evaluateService = new EvaluateService();
     var response = null;
 
+    this.Given(/^a request with an unspecified random number generator$/, function () {
+        // do nothing
+    });
+
     this.Given(/^a request with the expression "(.*)"$/, function (expression) {
         evaluateService.setExpression(expression);
     });
@@ -52,6 +56,10 @@ module.exports = function () {
 
     this.Then(/^the response should contain the expression result value "(.*)"$/, function (expressionResultValue) {
         expect(response.expressionResult.value).to.equal(parseInt(expressionResultValue));
+    });
+
+    this.Then(/^the response should contain the random number generator name "(.*)"$/, function (randomNumberGeneratorName) {
+        expect(response.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
     });
 };
 

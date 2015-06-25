@@ -33,6 +33,9 @@ module.exports = {
             response.expression = {
                 text: dice.expressionFormatter.format(expression)
             };
+            response.randomNumberGenerator = {
+                name: "uniform"
+            };
 
             var expressionResult = expression.evaluate();
             response.expressionResult = {
