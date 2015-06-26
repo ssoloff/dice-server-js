@@ -34,10 +34,6 @@ module.exports = function () {
         callback();
     });
 
-    this.Given(/^a request with an unspecified random number generator$/, function () {
-        // do nothing
-    });
-
     this.Given(/^a request with the expression "(.*)"$/, function (expression) {
         this.evaluateService.setExpression(expression);
     });
@@ -57,24 +53,12 @@ module.exports = function () {
         expect(this.response).to.deep.equal(JSON.parse(jsonResponse));
     });
 
-    this.Then(/^the response should contain an error$/, function () {
-        expect(this.response.error).to.exist;
-    });
-
-    this.Then(/^the response should contain an expression result value within (\d+) and (\d+)$/, function (lowerExpressionResultValueInclusive, upperExpressionResultValueInclusive) {
-        expect(this.response.expressionResult.value).to.be.within(parseInt(lowerExpressionResultValueInclusive), parseInt(upperExpressionResultValueInclusive));
-    });
-
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
         expect(this.response.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (\d+)$/, function (expressionResultValue) {
         expect(this.response.expressionResult.value).to.equal(parseInt(expressionResultValue));
-    });
-
-    this.Then(/^the response should contain the random number generator name "(.*)"$/, function (randomNumberGeneratorName) {
-        expect(this.response.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
     });
 };
 
