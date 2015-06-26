@@ -80,6 +80,7 @@ var diceTest = {
      *      otherwise `false`.
      */
     isDiceExpressionEqual: function (first, second) {
+        // istanbul ignore else
         if (_.has(first, "typeId")
                 && _.has(first, "evaluate")
                 && _.has(second, "typeId")
@@ -99,6 +100,7 @@ var diceTest = {
      *      equal; otherwise `false`.
      */
     isDiceExpressionResultEqual: function (first, second) {
+        // istanbul ignore else
         if (_.has(first, "typeId")
                 && _.has(first, "value")
                 && _.has(second, "typeId")
