@@ -31,7 +31,7 @@ DICE_EXPRESSION_JISON = $(SRC_DIR)/dice-expression.jison
 DICE_EXPRESSION_PARSER_JS = $(SRC_DIR)/dice-expression-parser.js
 JSDOC_CONFIG = jsdoc-conf.json
 
-all: build check unit-test docs
+all: build check unit-test
 
 acceptance-test:
 	$(CUCUMBER)

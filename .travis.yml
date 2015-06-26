@@ -18,7 +18,8 @@ script:
     - make start-app
     - make acceptance-test
     - make stop-app
-after_script:
+    - make docs
     - make coverage
+after_script:
     - make publish-coverage
 
