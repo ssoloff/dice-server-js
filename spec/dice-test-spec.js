@@ -26,9 +26,15 @@ var diceTest = require("./dice-test");
 
 describe("diceTest", function () {
     describe(".createBagThatProvidesDiceThatAlwaysRollOne", function () {
+        var bag;
+
+        beforeEach(function () {
+            bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
+        });
+
         describe("when die has 3 sides", function () {
             it("should always roll 1", function () {
-                var d3 = diceTest.createBagThatProvidesDiceThatAlwaysRollOne().d(3);
+                var d3 = bag.d(3);
                 expect(d3.roll()).toBe(1);
                 expect(d3.roll()).toBe(1);
                 expect(d3.roll()).toBe(1);
@@ -37,7 +43,7 @@ describe("diceTest", function () {
 
         describe("when die has 6 sides", function () {
             it("should always roll 1", function () {
-                var d6 = diceTest.createBagThatProvidesDiceThatAlwaysRollOne().d(6);
+                var d6 = bag.d(6);
                 expect(d6.roll()).toBe(1);
                 expect(d6.roll()).toBe(1);
                 expect(d6.roll()).toBe(1);
