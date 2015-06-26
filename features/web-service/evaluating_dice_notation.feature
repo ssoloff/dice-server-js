@@ -52,3 +52,24 @@ When the evaluate service is invoked
 Then the response should contain the expression result text "4 - 3"
     And the response should contain the expression result value 1
 
+Scenario: Evaluating dice rolls
+Given a request with the expression "3d6"
+    And a request with the random number generator named "constantMax"
+When the evaluate service is invoked
+Then the response should contain the expression result text "6 [d6] + 6 [d6] + 6 [d6]"
+    And the response should contain the expression result value 18
+
+Scenario: Evaluating the addition of dice rolls and constants
+Given a request with the expression "3d6+4"
+    And a request with the random number generator named "constantMax"
+When the evaluate service is invoked
+Then the response should contain the expression result text "6 [d6] + 6 [d6] + 6 [d6] + 4"
+    And the response should contain the expression result value 22
+
+Scenario: Evaluating the subtraction of dice rolls and constants
+Given a request with the expression "3d6-4"
+    And a request with the random number generator named "constantMax"
+When the evaluate service is invoked
+Then the response should contain the expression result text "6 [d6] + 6 [d6] + 6 [d6] - 4"
+    And the response should contain the expression result value 14
+

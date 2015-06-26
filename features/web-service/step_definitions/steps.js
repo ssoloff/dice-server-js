@@ -28,50 +28,53 @@ var EvaluateService = require("../support/evaluate-service");
 var expect = chai.expect;
 
 module.exports = function () {
-    var evaluateService = new EvaluateService();
-    var response = null;
+    this.Before(function (callback) {
+        this.evaluateService = new EvaluateService();
+        this.response = null;
+        callback();
+    });
 
     this.Given(/^a request with an unspecified random number generator$/, function () {
         // do nothing
     });
 
     this.Given(/^a request with the expression "(.*)"$/, function (expression) {
-        evaluateService.setExpression(expression);
+        this.evaluateService.setExpression(expression);
     });
 
     this.Given(/^a request with the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
-        evaluateService.setRandomNumberGenerator(randomNumberGeneratorName);
+        this.evaluateService.setRandomNumberGenerator(randomNumberGeneratorName);
     });
 
     this.When(/^the evaluate service is invoked$/, function (callback) {
-        evaluateService.call(function (res) {
-            response = res;
+        this.evaluateService.call(function (res) {
+            this.response = res;
             callback();
-        });
+        }.bind(this));
     });
 
     this.Then(/^the response should be$/, function (jsonResponse) {
-        expect(response).to.deep.equal(JSON.parse(jsonResponse));
+        expect(this.response).to.deep.equal(JSON.parse(jsonResponse));
     });
 
     this.Then(/^the response should contain an error$/, function () {
-        expect(response.error).to.exist;
+        expect(this.response.error).to.exist;
     });
 
     this.Then(/^the response should contain an expression result value within (\d+) and (\d+)$/, function (lowerExpressionResultValueInclusive, upperExpressionResultValueInclusive) {
-        expect(response.expressionResult.value).to.be.within(parseInt(lowerExpressionResultValueInclusive), parseInt(upperExpressionResultValueInclusive));
+        expect(this.response.expressionResult.value).to.be.within(parseInt(lowerExpressionResultValueInclusive), parseInt(upperExpressionResultValueInclusive));
     });
 
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-        expect(response.expressionResult.text).to.equal(expressionResultText);
+        expect(this.response.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (\d+)$/, function (expressionResultValue) {
-        expect(response.expressionResult.value).to.equal(parseInt(expressionResultValue));
+        expect(this.response.expressionResult.value).to.equal(parseInt(expressionResultValue));
     });
 
     this.Then(/^the response should contain the random number generator name "(.*)"$/, function (randomNumberGeneratorName) {
-        expect(response.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
+        expect(this.response.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
     });
 };
 
