@@ -22,7 +22,7 @@
 
 "use strict";
 
-var dice = require("../lib/dice");
+var dice = require("../../lib/dice");
 
 describe("diceExpressionFormatter", function () {
     var d3;

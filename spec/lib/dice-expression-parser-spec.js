@@ -22,7 +22,7 @@
 
 "use strict";
 
-var dice = require("../lib/dice");
+var dice = require("../../lib/dice");
 var diceTest = require("./dice-test");
 
 describe("diceExpressionParser", function () {

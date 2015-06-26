@@ -22,9 +22,9 @@
 
 "use strict";
 
-var dice = require("../lib/dice");
+var dice = require("../../lib/dice");
 var diceTest = require("./dice-test");
-var numberUtils = require("../lib/number-utils");
+var numberUtils = require("../../lib/number-utils");
 
 describe("diceExpression", function () {
     var d3;

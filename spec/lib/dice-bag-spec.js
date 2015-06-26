@@ -22,8 +22,8 @@
 
 "use strict";
 
-var dice = require("../lib/dice");
-var numberUtils = require("../lib/number-utils");
+var dice = require("../../lib/dice");
+var numberUtils = require("../../lib/number-utils");
 
 describe("DiceBag", function () {
     var bag;

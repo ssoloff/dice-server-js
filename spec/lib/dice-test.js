@@ -23,7 +23,7 @@
 "use strict";
 
 var _ = require("underscore");
-var dice = require("../lib/dice");
+var dice = require("../../lib/dice");
 
 /**
  * @namespace
