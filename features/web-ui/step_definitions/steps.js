@@ -73,6 +73,30 @@ module.exports = function () {
         });
     });
 
+    this.Then(/^an expression result should be displayed$/, function () {
+        return this.homePage.isExpressionResultDisplayed().then(function (isDisplayed) {
+            expect(isDisplayed).to.be.true;
+        });
+    });
+
+    this.Then(/^an expression result should not be displayed$/, function () {
+        return this.homePage.isExpressionResultDisplayed().then(function (isDisplayed) {
+            expect(isDisplayed).to.be.false;
+        });
+    });
+
+    this.Then(/^the evaluated expression text should be "(.*)"$/, function (evaluatedExpressionText) {
+        return this.homePage.getEvaluatedExpressionText().then(function (text) {
+            expect(text).to.equal(evaluatedExpressionText);
+        });
+    });
+
+    this.Then(/^the expression result text should be "(.*)"$/, function (expressionResultText) {
+        return this.homePage.getExpressionResultText().then(function (text) {
+            expect(text).to.equal(expressionResultText);
+        });
+    });
+
     this.Then(/^the expression result value should be "(.*)"$/, function (expressionResultValue) {
         return this.homePage.getExpressionResultValue().then(function (text) {
             expect(text).to.equal(expressionResultValue);

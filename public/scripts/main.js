@@ -1,6 +1,8 @@
 function main() {
     "use strict";
 
+    var $expressionResult = $("#expressionResult");
+    $expressionResult.hide();
     var $errorMessage = $("#errorMessage");
     $errorMessage.hide();
 
@@ -15,13 +17,18 @@ function main() {
             }
         };
         $.post("/evaluate", request, function (response) {
-            var $expressionResultValue = $("#expressionResultValue");
             if (response.error) {
-                $expressionResultValue.text("");
+                $expressionResult.hide();
+
                 $errorMessage.text(response.error.message).show();
             } else {
                 $expressionText.val("");
-                $expressionResultValue.text(response.expressionResult.value.toString());
+
+                $("#evaluatedExpressionText").text(response.expression.text);
+                $("#expressionResultText").text(response.expressionResult.text);
+                $("#expressionResultValue").text(response.expressionResult.value.toString());
+                $expressionResult.show();
+
                 $errorMessage.hide();
             }
         });

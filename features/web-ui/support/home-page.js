@@ -42,12 +42,24 @@ HomePage.prototype.getErrorMessage = function () {
     return this.driver.findElement(By.id("errorMessage")).getText();
 };
 
+HomePage.prototype.getEvaluatedExpressionText = function () {
+    return this.driver.findElement(By.id("evaluatedExpressionText")).getText();
+};
+
+HomePage.prototype.getExpressionResultText = function () {
+    return this.driver.findElement(By.id("expressionResultText")).getText();
+};
+
 HomePage.prototype.getExpressionResultValue = function () {
     return this.driver.findElement(By.id("expressionResultValue")).getText();
 };
 
 HomePage.prototype.isErrorMessageDisplayed = function () {
     return this.driver.findElement(By.id("errorMessage")).isDisplayed();
+};
+
+HomePage.prototype.isExpressionResultDisplayed = function () {
+    return this.driver.findElement(By.id("expressionResult")).isDisplayed();
 };
 
 HomePage.prototype.open = function () {
