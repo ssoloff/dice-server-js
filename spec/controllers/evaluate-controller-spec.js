@@ -22,7 +22,9 @@
 
 "use strict";
 
+var _ = require("underscore");
 var evaluateController = require("../../controllers/evaluate-controller");
+var ja = require("json-assert");
 
 describe("evaluateController", function () {
     var req;
@@ -30,7 +32,16 @@ describe("evaluateController", function () {
     var request;
     var response;
 
+    function isJsonEqual(actual, expected) {
+        if ((_.has(actual, "expression") || _.has(actual, "error"))
+                && (_.has(expected, "expression") || _.has(expected, "error"))) {
+            return ja.isEqual(expected, actual, true);
+        }
+    }
+
     beforeEach(function () {
+        jasmine.addCustomEqualityTester(isJsonEqual);
+
         request = {
             expression: {
                 text: "3d6+4"
@@ -86,7 +97,7 @@ describe("evaluateController", function () {
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
                     error: {
-                        message: "illegal character"
+                        message: ja.matchType("string")
                     }
                 });
             });
