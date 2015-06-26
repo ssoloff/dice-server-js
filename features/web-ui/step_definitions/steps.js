@@ -45,16 +45,16 @@ module.exports = function () {
     });
 
     this.When(/^the ENTER key is pressed$/, function () {
-        return this.homePage.typeExpression("\n");
+        return this.homePage.typeExpressionText("\n");
     });
 
     this.When(/^the expression "(.*)" is entered$/, function (expression) {
-        return this.homePage.typeExpression(expression);
+        return this.homePage.typeExpressionText(expression);
     });
 
     this.When(/^the expression "(.*)" is evaluated$/, function (expression) {
-        this.homePage.clearExpression();
-        this.homePage.typeExpression(expression);
+        this.homePage.clearExpressionText();
+        this.homePage.typeExpressionText(expression);
         return this.homePage.evaluate();
     });
 

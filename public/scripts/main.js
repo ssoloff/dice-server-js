@@ -5,9 +5,11 @@ function main() {
     $errorMessage.hide();
 
     $("#expressionForm").submit(function (event) {
-        var $expression = $("#expression");
+        var $expressionText = $("#expressionText");
         var request = {
-            expression: $expression.val(),
+            expression: {
+                text: $expressionText.val()
+            },
             randomNumberGenerator: {
                 name: $("#randomNumberGeneratorName").val()
             }
@@ -18,7 +20,7 @@ function main() {
                 $expressionResultValue.text("");
                 $errorMessage.text(response.error.message).show();
             } else {
-                $expression.val("");
+                $expressionText.val("");
                 $expressionResultValue.text(response.expressionResult.value.toString());
                 $errorMessage.hide();
             }

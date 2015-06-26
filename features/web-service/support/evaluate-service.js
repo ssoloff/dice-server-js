@@ -42,8 +42,10 @@ EvaluateService.prototype.call = function (callback) {
     });
 };
 
-EvaluateService.prototype.setExpression = function (expression) {
-    this.request.expression = expression;
+EvaluateService.prototype.setExpression = function (expressionText) {
+    this.request.expression = {
+        text: expressionText
+    }
 };
 
 EvaluateService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {

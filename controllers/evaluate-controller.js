@@ -47,7 +47,7 @@ function evaluate(req, res) {
         var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
         dice.expressionParser.setBag(new dice.Bag(createRandomNumberGenerator(randomNumberGeneratorSpecification)));
 
-        var expression = dice.expressionParser.parse(request.expression);
+        var expression = dice.expressionParser.parse(request.expression.text);
         response.expression = {
             text: dice.expressionFormatter.format(expression)
         };

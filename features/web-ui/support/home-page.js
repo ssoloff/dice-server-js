@@ -30,8 +30,8 @@ function HomePage(driver) {
     this.driver = driver;
 }
 
-HomePage.prototype.clearExpression = function () {
-    return this.driver.findElement(By.id("expression")).clear();
+HomePage.prototype.clearExpressionText = function () {
+    return this.driver.findElement(By.id("expressionText")).clear();
 };
 
 HomePage.prototype.evaluate = function () {
@@ -58,8 +58,8 @@ HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorNam
     return this.driver.executeScript("$('#randomNumberGeneratorName').val('" + randomNumberGeneratorName + "');");
 };
 
-HomePage.prototype.typeExpression = function (expression) {
-    return this.driver.findElement(By.id("expression")).sendKeys(expression);
+HomePage.prototype.typeExpressionText = function (expression) {
+    return this.driver.findElement(By.id("expressionText")).sendKeys(expression);
 };
 
 module.exports = HomePage;
