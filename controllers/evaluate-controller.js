@@ -39,39 +39,41 @@ function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
     throw new Error("unknown random number generator '" + randomNumberGeneratorSpecification.name + "'");
 }
 
+function evaluate(req, res) {
+    var request = req.body;
+    var response = {};
+
+    try {
+        var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
+        dice.expressionParser.setBag(new dice.Bag(createRandomNumberGenerator(randomNumberGeneratorSpecification)));
+
+        var expression = dice.expressionParser.parse(request.expression);
+        response.expression = {
+            text: dice.expressionFormatter.format(expression)
+        };
+
+        response.randomNumberGenerator = randomNumberGeneratorSpecification;
+
+        var expressionResult = expression.evaluate();
+        response.expressionResult = {
+            text: dice.expressionResultFormatter.format(expressionResult),
+            value: expressionResult.value()
+        };
+    }
+    catch (e) {
+        response.error = {
+            message: (e instanceof Error) ? e.message : e.toString()
+        };
+    }
+
+    res.status(200).json(response);
+}
+
 function getRandomNumberGeneratorSpecification(request) {
     return request.randomNumberGenerator || {name: "uniform"};
 }
 
 module.exports = {
-    evaluate: function (req, res) {
-        var request = req.body;
-        var response = {};
-
-        try {
-            var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
-            dice.expressionParser.setBag(new dice.Bag(createRandomNumberGenerator(randomNumberGeneratorSpecification)));
-
-            var expression = dice.expressionParser.parse(request.expression);
-            response.expression = {
-                text: dice.expressionFormatter.format(expression)
-            };
-
-            response.randomNumberGenerator = randomNumberGeneratorSpecification;
-
-            var expressionResult = expression.evaluate();
-            response.expressionResult = {
-                text: dice.expressionResultFormatter.format(expressionResult),
-                value: expressionResult.value()
-            };
-        }
-        catch (e) {
-            response.error = {
-                message: (e instanceof Error) ? e.message : e.toString()
-            };
-        }
-
-        res.status(200).json(response);
-    }
+    evaluate: evaluate
 };
 
