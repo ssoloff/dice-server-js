@@ -48,7 +48,7 @@ clean:
 	$(RMDIR) $(JSDOC_OUTPUT_DIR)
 
 coverage:
-	$(ISTANBUL) cover $(JASMINE) --captureExceptions
+	$(ISTANBUL) cover -x $(DICE_EXPRESSION_PARSER_JS) $(JASMINE) --captureExceptions
 
 docs:
 	$(JSDOC) -c $(JSDOC_CONFIG)
