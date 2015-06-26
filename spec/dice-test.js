@@ -32,21 +32,6 @@ var dice = require("../lib/dice");
  */
 var diceTest = {
     /**
-     * Represents the difference between one and the smallest value greater
-     * than one that can be represented as a `Number`.
-     *
-     * @constant {Number}
-     */
-    EPSILON: 2.2204460492503130808472633361816E-16,
-
-    /**
-     * Represents the minimum safe integer in JavaScript (-(2<sup>53</sup> - 1)).
-     *
-     * @constant {Number}
-     */
-    MIN_SAFE_INTEGER: -9007199254740991,
-
-    /**
      * Creates a new dice bag that produces dice that will deterministically
      * and repeatedly roll 1.
      *
