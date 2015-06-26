@@ -29,45 +29,48 @@ var world = require("../../support/world");
 var expect = chai.expect;
 
 module.exports = function () {
-    var homePage = new HomePage(world.getDriver());
-
     this.World = world.World;
 
+    this.Before(function (callback) {
+        this.homePage = new HomePage(world.getDriver());
+        callback();
+    });
+
     this.Given(/^the home page is open$/, function () {
-        return homePage.open();
+        return this.homePage.open();
     });
 
     this.When(/^the ENTER key is pressed$/, function () {
-        return homePage.typeExpression("\n");
+        return this.homePage.typeExpression("\n");
     });
 
     this.When(/^the expression "(.*)" is entered$/, function (expression) {
-        return homePage.typeExpression(expression);
+        return this.homePage.typeExpression(expression);
     });
 
     this.When(/^the expression "(.*)" is evaluated$/, function (expression) {
-        homePage.clearExpression();
-        homePage.typeExpression(expression);
-        return homePage.evaluate();
+        this.homePage.clearExpression();
+        this.homePage.typeExpression(expression);
+        return this.homePage.evaluate();
     });
 
     this.Then(/^an error message should be displayed$/, function () {
-        homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
+        this.homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
             expect(isDisplayed).to.be.true;
         });
-        return homePage.getErrorMessage().then(function (text) {
+        return this.homePage.getErrorMessage().then(function (text) {
             expect(text).to.have.length.above(0);
         });
     });
 
     this.Then(/^an error message should not be displayed$/, function () {
-        return homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
+        return this.homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
             expect(isDisplayed).to.be.false;
         });
     });
 
     this.Then(/^the expression result value should be "(.*)"$/, function (expressionResultValue) {
-        return homePage.getExpressionResultValue().then(function (text) {
+        return this.homePage.getExpressionResultValue().then(function (text) {
             expect(text).to.equal(expressionResultValue);
         });
     });
