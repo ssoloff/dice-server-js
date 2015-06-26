@@ -1,11 +1,13 @@
-.PHONY: acceptance-test all build check clean docs start-app stop-app unit-test
+.PHONY: acceptance-test all build check clean coverage docs publish-coverage start-app stop-app unit-test
 
 CAT = cat
+COVERALLS = node_modules/coveralls/bin/coveralls.js
 CSSLINT = csslint
 CUCUMBER = cucumber.js
 ECHO = echo
 FIND = find
 HTML_VALIDATOR = html-validator
+ISTANBUL = istanbul
 JASMINE = jasmine
 JISON = jison
 JSCS = jscs
@@ -17,6 +19,7 @@ RM = rm -f
 RMDIR = $(RM) -r
 XARGS = xargs
 
+ISTANBUL_OUTPUT_DIR = coverage
 JSDOC_OUTPUT_DIR = out
 PUBLIC_DIR = public
 SRC_DIR = lib
@@ -41,10 +44,17 @@ check: build
 
 clean:
 	$(RM) $(DICE_EXPRESSION_PARSER_JS)
+	$(RMDIR) $(ISTANBUL_OUTPUT_DIR)
 	$(RMDIR) $(JSDOC_OUTPUT_DIR)
+
+coverage:
+	$(ISTANBUL) cover $(JASMINE) --captureExceptions
 
 docs:
 	$(JSDOC) -c $(JSDOC_CONFIG)
+
+publish-coverage:
+	$(CAT) $(ISTANBUL_OUTPUT_DIR)/lcov.info | $(COVERALLS)
 
 start-app:
 	$(NODE) $(APP_JS) & $(ECHO) $$! > $(APP_PID)
