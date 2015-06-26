@@ -1,0 +1,3 @@
+instrumentation:
+    excludes: ["lib/dice-expression-parser.js"]
+
