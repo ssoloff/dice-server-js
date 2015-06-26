@@ -58,8 +58,8 @@ HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorNam
     return this.driver.executeScript("$('#randomNumberGeneratorName').val('" + randomNumberGeneratorName + "');");
 };
 
-HomePage.prototype.typeExpressionText = function (expression) {
-    return this.driver.findElement(By.id("expressionText")).sendKeys(expression);
+HomePage.prototype.typeExpressionText = function (expressionText) {
+    return this.driver.findElement(By.id("expressionText")).sendKeys(expressionText);
 };
 
 module.exports = HomePage;
