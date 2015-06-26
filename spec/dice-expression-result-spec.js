@@ -32,12 +32,42 @@ describe("diceExpressionResult", function () {
     var four;
 
     beforeEach(function () {
+        jasmine.addCustomEqualityTester(diceTest.isDiceExpressionResultEqual);
         d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
         three = dice.expressionResult.forConstant(3);
         four = dice.expressionResult.forConstant(4);
     });
 
     describe(".for", function () {
+        describe("when expression is for addition", function () {
+            it("should return an expression result for addition", function () {
+                var expression = dice.expression.forAddition(dice.expression.forConstant(3), dice.expression.forConstant(4));
+                expect(dice.expressionResult.for(expression)).toEqual(dice.expressionResult.forAddition(three, four));
+            });
+        });
+
+        describe("when expression is for a constant", function () {
+            it("should return an expression result for a constant", function () {
+                var expression = dice.expression.forConstant(3);
+                expect(dice.expressionResult.for(expression)).toEqual(three);
+            });
+        });
+
+        describe("when expression is for a roll", function () {
+            it("should return an expression result for a roll", function () {
+                var d6 = diceTest.createBagThatProvidesDiceThatAlwaysRollOne().d(6);
+                var expression = dice.expression.forRoll(2, d6);
+                expect(dice.expressionResult.for(expression)).toEqual(dice.expressionResult.forRoll(2, d6));
+            });
+        });
+
+        describe("when expression is for subtraction", function () {
+            it("should return an expression result for subtraction", function () {
+                var expression = dice.expression.forSubtraction(dice.expression.forConstant(3), dice.expression.forConstant(4));
+                expect(dice.expressionResult.for(expression)).toEqual(dice.expressionResult.forSubtraction(three, four));
+            });
+        });
+
         describe("when expression is of an unknown type", function () {
             it("should throw an exception", function () {
                 function createUnknownExpressionResult() {

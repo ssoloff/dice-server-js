@@ -22,25 +22,14 @@
 
 "use strict";
 
-var _ = require("underscore");
 var dice = require("../lib/dice");
 var diceTest = require("./dice-test");
 
 describe("diceExpressionParser", function () {
     var bag;
 
-    function isDiceExpressionEqual(first, second) {
-        if (_.has(first, "typeId")
-                && _.has(first, "evaluate")
-                && _.has(second, "typeId")
-                && _.has(second, "evaluate")) {
-            // do not consider function members when testing for equality
-            return JSON.stringify(first) === JSON.stringify(second);
-        }
-    }
-
     beforeEach(function () {
-        jasmine.addCustomEqualityTester(isDiceExpressionEqual);
+        jasmine.addCustomEqualityTester(diceTest.isDiceExpressionEqual);
         bag = new dice.Bag();
     });
 
