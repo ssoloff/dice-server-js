@@ -58,11 +58,15 @@ module.exports = function () {
         expect(response.error).to.exist;
     });
 
+    this.Then(/^the response should contain an expression result value within (\d+) and (\d+)$/, function (lowerExpressionResultValueInclusive, upperExpressionResultValueInclusive) {
+        expect(response.expressionResult.value).to.be.within(parseInt(lowerExpressionResultValueInclusive), parseInt(upperExpressionResultValueInclusive));
+    });
+
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
         expect(response.expressionResult.text).to.equal(expressionResultText);
     });
 
-    this.Then(/^the response should contain the expression result value "(.*)"$/, function (expressionResultValue) {
+    this.Then(/^the response should contain the expression result value (\d+)$/, function (expressionResultValue) {
         expect(response.expressionResult.value).to.equal(parseInt(expressionResultValue));
     });
 

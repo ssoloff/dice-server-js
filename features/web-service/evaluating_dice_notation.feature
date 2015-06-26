@@ -38,17 +38,17 @@ Scenario: Evaluating constants
 Given a request with the expression "5"
 When the evaluate service is invoked
 Then the response should contain the expression result text "5"
-    And the response should contain the expression result value "5"
+    And the response should contain the expression result value 5
 
 Scenario: Evaluating the addition of constants
 Given a request with the expression "4 + 3"
 When the evaluate service is invoked
 Then the response should contain the expression result text "4 + 3"
-    And the response should contain the expression result value "7"
+    And the response should contain the expression result value 7
 
 Scenario: Evaluating the subtraction of constants
 Given a request with the expression "4 - 3"
 When the evaluate service is invoked
 Then the response should contain the expression result text "4 - 3"
-    And the response should contain the expression result value "1"
+    And the response should contain the expression result value 1
 

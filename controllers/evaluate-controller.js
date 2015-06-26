@@ -26,6 +26,12 @@ var dice = require("../lib/dice");
 
 function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
     switch (randomNumberGeneratorSpecification.name) {
+        case "constantMax":
+            return function () {
+                var EPSILON = 2.2204460492503130808472633361816E-16;
+                return 1.0 - EPSILON;
+            };
+
         case "uniform":
             return Math.random;
     }
