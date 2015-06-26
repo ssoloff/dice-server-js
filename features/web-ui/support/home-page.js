@@ -54,6 +54,10 @@ HomePage.prototype.open = function () {
     return this.driver.get("http://localhost:3000/");
 };
 
+HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
+    return this.driver.executeScript("$('#randomNumberGeneratorName').val('" + randomNumberGeneratorName + "');");
+};
+
 HomePage.prototype.typeExpression = function (expression) {
     return this.driver.findElement(By.id("expression")).sendKeys(expression);
 };

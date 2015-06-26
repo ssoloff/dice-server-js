@@ -40,6 +40,10 @@ module.exports = function () {
         return this.homePage.open();
     });
 
+    this.Given(/^the random number generator name is "(.*)"$/, function (randomNumberGeneratorName) {
+        return this.homePage.setRandomNumberGenerator(randomNumberGeneratorName);
+    });
+
     this.When(/^the ENTER key is pressed$/, function () {
         return this.homePage.typeExpression("\n");
     });

@@ -18,6 +18,18 @@ Given the home page is open
 When the expression "4 - 3" is evaluated
 Then the expression result value should be "1"
 
+Scenario: Evaluating dice rolls
+Given the home page is open
+    And the random number generator name is "constantMax"
+When the expression "3d6" is evaluated
+Then the expression result value should be "18"
+
+Scenario: Evaluating dice rolls and constants
+Given the home page is open
+    And the random number generator name is "constantMax"
+When the expression "3d6+4" is evaluated
+Then the expression result value should be "22"
+
 Scenario: Pressing ENTER should cause evaluation
 Given the home page is open
 When the expression "5" is entered

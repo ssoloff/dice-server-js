@@ -7,7 +7,10 @@ function main() {
     $("#expressionForm").submit(function (event) {
         var $expression = $("#expression");
         var request = {
-            expression: $expression.val()
+            expression: $expression.val(),
+            randomNumberGenerator: {
+                name: $("#randomNumberGeneratorName").val()
+            }
         };
         $.post("/evaluate", request, function (response) {
             var $expressionResultValue = $("#expressionResultValue");
