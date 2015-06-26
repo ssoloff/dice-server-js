@@ -72,7 +72,7 @@ var diceTest = {
      */
     createDieThatRollsEachSideSuccessively: function (sides) {
         var rollCount = 0;
-        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator").and.callFake(function () {
+        function randomNumberGenerator() {
             function getRandomNumberForIndex(index) {
                 return index / sides;
             }
@@ -80,7 +80,7 @@ var diceTest = {
             var roll = randomNumbers[rollCount];
             rollCount = (rollCount + 1) % randomNumbers.length;
             return roll;
-        });
+        }
         var bag = new dice.Bag(randomNumberGenerator);
         return bag.d(sides);
     }
