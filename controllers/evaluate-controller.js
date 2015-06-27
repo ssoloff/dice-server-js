@@ -45,14 +45,14 @@ function evaluate(req, res) {
 
     try {
         var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
-        dice.expressionParser.setBag(new dice.Bag(createRandomNumberGenerator(randomNumberGeneratorSpecification)));
+        response.randomNumberGenerator = randomNumberGeneratorSpecification;
 
-        var expression = dice.expressionParser.parse(request.expression.text);
+        var bag = new dice.Bag(createRandomNumberGenerator(randomNumberGeneratorSpecification));
+        var expressionParser = dice.expressionParser.create(bag);
+        var expression = expressionParser.parse(request.expression.text);
         response.expression = {
             text: dice.expressionFormatter.format(expression)
         };
-
-        response.randomNumberGenerator = randomNumberGeneratorSpecification;
 
         var expressionResult = expression.evaluate();
         response.expressionResult = {

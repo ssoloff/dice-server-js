@@ -68,7 +68,7 @@ literal
             var components = yytext.split("d");
             var count = components[0] ? Number(components[0]) : 1;
             var sides = (components[1] === "%") ? 100 : Number(components[1]);
-            $$ = diceExpression.forRoll(count, bag.d(sides));
+            $$ = diceExpression.forRoll(count, yy.__bag.d(sides));
         }
     | INTEGER_LITERAL
         {
@@ -81,13 +81,9 @@ literal
 var DiceBag = require("./dice-bag");
 var diceExpression = require("./dice-expression");
 
-var bag = new DiceBag();
-
-module.exports.setBag = function (newBag) {
-    if (!newBag) {
-        throw new Error("bag must be specified");
-    }
-
-    bag = newBag;
-};
+module.exports.create = function (bag) {
+    var parser = new Parser();
+    parser.yy.__bag = bag || new DiceBag();
+    return parser;
+}
 
