@@ -61,8 +61,10 @@ function evaluate(req, res) {
         };
     }
     catch (e) {
-        response.error = {
-            message: (e instanceof Error) ? e.message : e.toString()
+        response = {
+            error: {
+                message: (e instanceof Error) ? e.message : e.toString()
+            }
         };
     }
 
