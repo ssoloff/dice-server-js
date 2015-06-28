@@ -23,15 +23,12 @@
 "use strict";
 
 var dice = require("../../lib/dice");
-var diceTest = require("./dice-test");
 
 describe("diceExpressionResultFormatter", function () {
-    var d3;
     var three;
     var four;
 
     beforeEach(function () {
-        d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
         three = dice.expressionResult.forConstant(3);
         four = dice.expressionResult.forConstant(4);
     });
@@ -61,14 +58,14 @@ describe("diceExpressionResultFormatter", function () {
         describe("when expression result is a roll expression result", function () {
             describe("when count is equal to one", function () {
                 it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forRoll(1, d3);
+                    var expressionResult = dice.expressionResult.forRoll([1]);
                     expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[(1): 1]");
                 });
             });
 
             describe("when count is greater than one", function () {
                 it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forRoll(4, d3);
+                    var expressionResult = dice.expressionResult.forRoll([1, 2, 3, 1]);
                     expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[(1, 2, 3, 1): 1 + 2 + 3 + 1]");
                 });
             });

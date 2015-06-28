@@ -23,16 +23,12 @@
 "use strict";
 
 var dice = require("../../lib/dice");
-var diceTest = require("./dice-test");
-var numberUtils = require("../../lib/number-utils");
 
 describe("diceExpressionResult", function () {
-    var d3;
     var three;
     var four;
 
     beforeEach(function () {
-        d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
         three = dice.expressionResult.forConstant(3);
         four = dice.expressionResult.forConstant(4);
     });
@@ -66,35 +62,27 @@ describe("diceExpressionResult", function () {
 
     describe(".forRoll", function () {
         describe(".value", function () {
-            describe("when count less than one", function () {
+            describe("when count equals zero", function () {
                 it("should throw exception", function () {
-                    function createRollExpressionResultWithCount(count) {
-                        return function () {
-                            dice.expressionResult.forRoll(count, d3);
-                        };
+                    function createRollExpressionResult() {
+                        dice.expressionResult.forRoll([]);
                     }
-                    expect(createRollExpressionResultWithCount(0)).toThrowError(RangeError);
-                    expect(createRollExpressionResultWithCount(numberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                    expect(createRollExpressionResult).toThrowError();
                 });
             });
 
             describe("when count equals one", function () {
                 it("should return the result of a single die roll", function () {
-                    var expressionResult = dice.expressionResult.forRoll(1, d3);
+                    var expressionResult = dice.expressionResult.forRoll([1]);
                     expect(expressionResult.value()).toBe(1);
                 });
             });
 
             describe("when count greater than one", function () {
                 it("should return the result of the sum of multiple die rolls", function () {
-                    var expressionResult = dice.expressionResult.forRoll(4, d3);
+                    var expressionResult = dice.expressionResult.forRoll([1, 2, 3, 1]);
                     expect(expressionResult.value()).toBe(7);
                 });
-            });
-
-            it("should return same result for all invocations", function () {
-                var expressionResult = dice.expressionResult.forRoll(1, d3);
-                expect(expressionResult.value()).toBe(expressionResult.value());
             });
         });
     });
