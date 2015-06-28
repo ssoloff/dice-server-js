@@ -57,6 +57,15 @@ describe("diceExpressionParser", function () {
             );
         });
 
+        it("should parse the multiplication of two constants", function () {
+            expect(expressionParser.parse("3 * 2")).toEqual(
+                dice.expression.forMultiplication(
+                    dice.expression.forConstant(3),
+                    dice.expression.forConstant(2)
+                )
+            );
+        });
+
         it("should parse the subtraction of two constants", function () {
             expect(expressionParser.parse("3 - 2")).toEqual(
                 dice.expression.forSubtraction(

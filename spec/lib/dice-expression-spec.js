@@ -55,6 +55,15 @@ describe("diceExpression", function () {
         });
     });
 
+    describe(".forMultiplication", function () {
+        describe(".evaluate", function () {
+            it("should return result with value equal to product of multiplicand and multiplier", function () {
+                var expression = dice.expression.forMultiplication(four, three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(12);
+            });
+        });
+    });
+
     describe(".forRoll", function () {
         describe("when count less than one", function () {
             it("should throw exception", function () {

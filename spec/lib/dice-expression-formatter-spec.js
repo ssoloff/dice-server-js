@@ -51,6 +51,13 @@ describe("diceExpressionFormatter", function () {
             });
         });
 
+        describe("when expression is a multiplication expression", function () {
+            it("should return formatted expression", function () {
+                var expression = dice.expression.forMultiplication(three, four);
+                expect(dice.expressionFormatter.format(expression)).toBe("3 * 4");
+            });
+        });
+
         describe("when expression is a roll expression", function () {
             describe("when count is equal to one", function () {
                 it("should return formatted expression", function () {

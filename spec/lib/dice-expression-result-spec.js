@@ -53,6 +53,13 @@ describe("diceExpressionResult", function () {
             });
         });
 
+        describe("when expression is for multiplication", function () {
+            it("should return an expression result for multiplication", function () {
+                var expression = dice.expression.forMultiplication(dice.expression.forConstant(3), dice.expression.forConstant(4));
+                expect(dice.expressionResult.for(expression)).toEqual(dice.expressionResult.forMultiplication(three, four));
+            });
+        });
+
         describe("when expression is for a roll", function () {
             it("should return an expression result for a roll", function () {
                 var d6 = diceTest.createBagThatProvidesDiceThatAlwaysRollOne().d(6);
@@ -95,6 +102,15 @@ describe("diceExpressionResult", function () {
             it("should return the value of the result", function () {
                 var expressionResult = dice.expressionResult.forConstant(42);
                 expect(expressionResult.value()).toBe(42);
+            });
+        });
+    });
+
+    describe(".forMultiplication", function () {
+        describe(".value", function () {
+            it("should return the product of the multiplicand and the multiplier", function () {
+                var expressionResult = dice.expressionResult.forMultiplication(three, four);
+                expect(expressionResult.value()).toBe(12);
             });
         });
     });

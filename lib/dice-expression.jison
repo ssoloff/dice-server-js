@@ -33,12 +33,14 @@ POSITIVE_INTEGER    [1-9][0-9]*
 {DIGIT}+                                            return 'INTEGER_LITERAL'
 "-"                                                 return 'MINUS'
 "+"                                                 return 'PLUS'
+"*"                                                 return 'STAR'
 .                                                   throw 'illegal character'
 <<EOF>>                                             return 'EOF'
 
 /lex
 
 %left PLUS MINUS
+%left STAR
 %start expressions
 
 %%
@@ -58,6 +60,10 @@ expression
     | expression MINUS expression
         {
             $$ = diceExpression.forSubtraction($1, $3);
+        }
+    | expression STAR expression
+        {
+            $$ = diceExpression.forMultiplication($1, $3);
         }
     | literal
     ;
