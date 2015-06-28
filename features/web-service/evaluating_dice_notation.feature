@@ -62,27 +62,27 @@ Scenario: Evaluating dice rolls
 Given a request with the expression "3d6"
     And a request with the random number generator named "constantMax"
 When the evaluate service is invoked
-Then the response should contain the expression result text "6 [d6] + 6 [d6] + 6 [d6]"
+Then the response should contain the expression result text "[3d6: 6 + 6 + 6]"
     And the response should contain the expression result value 18
 
 Scenario: Evaluating the addition of dice rolls and constants
 Given a request with the expression "3d6+4"
     And a request with the random number generator named "constantMax"
 When the evaluate service is invoked
-Then the response should contain the expression result text "6 [d6] + 6 [d6] + 6 [d6] + 4"
+Then the response should contain the expression result text "[3d6: 6 + 6 + 6] + 4"
     And the response should contain the expression result value 22
 
 Scenario: Evaluating the subtraction of dice rolls and constants
 Given a request with the expression "3d6-4"
     And a request with the random number generator named "constantMax"
 When the evaluate service is invoked
-Then the response should contain the expression result text "6 [d6] + 6 [d6] + 6 [d6] - 4"
+Then the response should contain the expression result text "[3d6: 6 + 6 + 6] - 4"
     And the response should contain the expression result value 14
 
 Scenario: Evaluating the multiplication of dice rolls and constants
 Given a request with the expression "4*3d6"
     And a request with the random number generator named "constantMax"
 When the evaluate service is invoked
-Then the response should contain the expression result text "4 * 6 [d6] + 6 [d6] + 6 [d6]"
+Then the response should contain the expression result text "4 * [3d6: 6 + 6 + 6]"
     And the response should contain the expression result value 72
 
