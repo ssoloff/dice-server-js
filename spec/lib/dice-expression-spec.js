@@ -43,6 +43,11 @@ describe("diceExpression", function () {
                 var expression = dice.expression.forAddition(four, three);
                 expect(expression.evaluate()).toBeExpressionResultWithValue(7);
             });
+
+            it("should evaluate subexpressions", function () {
+                var expression = dice.expression.forAddition(dice.expression.forAddition(four, three), three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(10);
+            });
         });
     });
 
@@ -60,6 +65,11 @@ describe("diceExpression", function () {
             it("should return result with value equal to product of multiplicand and multiplier", function () {
                 var expression = dice.expression.forMultiplication(four, three);
                 expect(expression.evaluate()).toBeExpressionResultWithValue(12);
+            });
+
+            it("should evaluate subexpressions", function () {
+                var expression = dice.expression.forMultiplication(dice.expression.forMultiplication(four, three), three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(36);
             });
         });
     });
@@ -101,6 +111,11 @@ describe("diceExpression", function () {
             it("should return result with value equal to difference between minuend and subtrahend", function () {
                 var expression = dice.expression.forSubtraction(four, three);
                 expect(expression.evaluate()).toBeExpressionResultWithValue(1);
+            });
+
+            it("should evaluate subexpressions", function () {
+                var expression = dice.expression.forSubtraction(dice.expression.forSubtraction(four, three), three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(-2);
             });
         });
     });

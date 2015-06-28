@@ -88,26 +88,6 @@ var diceTest = {
             // do not consider function members when testing for equality
             return JSON.stringify(first) === JSON.stringify(second);
         }
-    },
-
-    /**
-     * Indicates the specified dice expression results are equal.
-     *
-     * @param {Object} first - The first dice expression result to compare.
-     * @param {Object} second - The second dice expression result to compare.
-     *
-     * @returns {Boolean} `true` if the specified dice expression results are
-     *      equal; otherwise `false`.
-     */
-    isDiceExpressionResultEqual: function (first, second) {
-        // istanbul ignore else
-        if (_.has(first, "typeId")
-                && _.has(first, "value")
-                && _.has(second, "typeId")
-                && _.has(second, "value")) {
-            // do not consider function members when testing for equality
-            return JSON.stringify(first) === JSON.stringify(second);
-        }
     }
 };
 
