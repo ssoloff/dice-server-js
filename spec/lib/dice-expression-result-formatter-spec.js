@@ -62,14 +62,14 @@ describe("diceExpressionResultFormatter", function () {
             describe("when count is equal to one", function () {
                 it("should return formatted expression result", function () {
                     var expressionResult = dice.expressionResult.forRoll(1, d3);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[d3: 1]");
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[(1): 1]");
                 });
             });
 
             describe("when count is greater than one", function () {
                 it("should return formatted expression result", function () {
                     var expressionResult = dice.expressionResult.forRoll(4, d3);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[4d3: 1 + 2 + 3 + 1]");
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[(1, 2, 3, 1): 1 + 2 + 3 + 1]");
                 });
             });
         });
