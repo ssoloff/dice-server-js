@@ -22,14 +22,15 @@
 
 "use strict";
 
+require("../lib/number-polyfills");
+
 var dice = require("../lib/dice");
-var numberUtils = require("../lib/number-utils");
 
 function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
     switch (randomNumberGeneratorSpecification.name) {
         case "constantMax":
             return function () {
-                return 1.0 - numberUtils.EPSILON;
+                return 1.0 - Number.EPSILON;
             };
 
         case "uniform":

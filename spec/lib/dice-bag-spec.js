@@ -22,8 +22,9 @@
 
 "use strict";
 
+require("../../lib/number-polyfills");
+
 var dice = require("../../lib/dice");
-var numberUtils = require("../../lib/number-utils");
 
 describe("DiceBag", function () {
     var bag;
@@ -56,7 +57,7 @@ describe("DiceBag", function () {
                     };
                 }
                 expect(createDieWithSides(0)).toThrowError(RangeError);
-                expect(createDieWithSides(numberUtils.MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                expect(createDieWithSides(Number.MIN_SAFE_INTEGER)).toThrowError(RangeError);
             });
         });
 
@@ -67,7 +68,7 @@ describe("DiceBag", function () {
             });
 
             it("should return <sides> when random number is maximum value", function () {
-                bag.randomNumberGenerator.and.returnValue(1.0 - numberUtils.EPSILON);
+                bag.randomNumberGenerator.and.returnValue(1.0 - Number.EPSILON);
                 expect(d6.roll()).toBe(6);
             });
         });
