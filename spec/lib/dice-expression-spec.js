@@ -40,6 +40,24 @@ describe("diceExpression", function () {
     });
 
     describe(".forAddition", function () {
+        describe("when augendExpression is falsy", function () {
+            it("should throw exception", function () {
+                function createAdditionExpression() {
+                    dice.expression.forAddition(undefined, three);
+                }
+                expect(createAdditionExpression).toThrow();
+            });
+        });
+
+        describe("when addendExpression is falsy", function () {
+            it("should throw exception", function () {
+                function createAdditionExpression() {
+                    dice.expression.forAddition(four, undefined);
+                }
+                expect(createAdditionExpression).toThrow();
+            });
+        });
+
         describe(".evaluate", function () {
             it("should return result with value equal to sum of augend and addend", function () {
                 var expression = dice.expression.forAddition(four, three);
@@ -54,6 +72,18 @@ describe("diceExpression", function () {
     });
 
     describe(".forConstant", function () {
+        describe("when constant is not a number", function () {
+            it("should throw exception", function () {
+                function createConstantExpression(constant) {
+                    return function () {
+                        dice.expression.forConstant(constant);
+                    };
+                }
+                expect(createConstantExpression(undefined)).toThrow();
+                expect(createConstantExpression("3")).toThrow();
+            });
+        });
+
         describe(".evaluate", function () {
             it("should return result with value equal to constant", function () {
                 var expression = dice.expression.forConstant(5);
@@ -63,6 +93,24 @@ describe("diceExpression", function () {
     });
 
     describe(".forDivision", function () {
+        describe("when dividendExpression is falsy", function () {
+            it("should throw exception", function () {
+                function createDivisionExpression() {
+                    dice.expression.forDivision(undefined, three);
+                }
+                expect(createDivisionExpression).toThrow();
+            });
+        });
+
+        describe("when divisorExpression is falsy", function () {
+            it("should throw exception", function () {
+                function createDivisionExpression() {
+                    dice.expression.forDivision(four, undefined);
+                }
+                expect(createDivisionExpression).toThrow();
+            });
+        });
+
         describe(".evaluate", function () {
             it("should return result with value equal to quotient of dividend and divisor", function () {
                 var expression = dice.expression.forDivision(three, four);
@@ -136,6 +184,24 @@ describe("diceExpression", function () {
     });
 
     describe(".forMultiplication", function () {
+        describe("when multiplicandExpression is falsy", function () {
+            it("should throw exception", function () {
+                function createMultiplicationExpression() {
+                    dice.expression.forMultiplication(undefined, three);
+                }
+                expect(createMultiplicationExpression).toThrow();
+            });
+        });
+
+        describe("when multiplierExpression is falsy", function () {
+            it("should throw exception", function () {
+                function createMultiplicationExpression() {
+                    dice.expression.forMultiplication(four, undefined);
+                }
+                expect(createMultiplicationExpression).toThrow();
+            });
+        });
+
         describe(".evaluate", function () {
             it("should return result with value equal to product of multiplicand and multiplier", function () {
                 var expression = dice.expression.forMultiplication(four, three);
@@ -150,6 +216,18 @@ describe("diceExpression", function () {
     });
 
     describe(".forRoll", function () {
+        describe("when count is not a number", function () {
+            it("should throw exception", function () {
+                function createRollExpression(count) {
+                    return function () {
+                        dice.expression.forRoll(count, d3);
+                    };
+                }
+                expect(createRollExpression(undefined)).toThrow();
+                expect(createRollExpression("3")).toThrow();
+            });
+        });
+
         describe("when count less than one", function () {
             it("should throw exception", function () {
                 function createRollExpressionWithCount(count) {
@@ -159,6 +237,15 @@ describe("diceExpression", function () {
                 }
                 expect(createRollExpressionWithCount(0)).toThrowError(RangeError);
                 expect(createRollExpressionWithCount(Number.MIN_SAFE_INTEGER)).toThrowError(RangeError);
+            });
+        });
+
+        describe("when die is falsy", function () {
+            it("should throw exception", function () {
+                function createRollExpression() {
+                    dice.expression.forRoll(3, undefined);
+                }
+                expect(createRollExpression).toThrow();
             });
         });
 
@@ -182,6 +269,24 @@ describe("diceExpression", function () {
     });
 
     describe(".forSubtraction", function () {
+        describe("when minuendExpression is falsy", function () {
+            it("should throw exception", function () {
+                function createSubtractionExpression() {
+                    dice.expression.forSubtraction(undefined, three);
+                }
+                expect(createSubtractionExpression).toThrow();
+            });
+        });
+
+        describe("when subtrahendExpression is falsy", function () {
+            it("should throw exception", function () {
+                function createSubtractionExpression() {
+                    dice.expression.forSubtraction(four, undefined);
+                }
+                expect(createSubtractionExpression).toThrow();
+            });
+        });
+
         describe(".evaluate", function () {
             it("should return result with value equal to difference between minuend and subtrahend", function () {
                 var expression = dice.expression.forSubtraction(four, three);
