@@ -48,6 +48,13 @@ describe("diceExpressionResultFormatter", function () {
             });
         });
 
+        describe("when expression result is a division expression result", function () {
+            it("should return formatted expression result", function () {
+                var expressionResult = dice.expressionResult.forDivision(three, four);
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("3 / 4");
+            });
+        });
+
         describe("when expression result is a multiplication expression result", function () {
             it("should return formatted expression result", function () {
                 var expressionResult = dice.expressionResult.forMultiplication(three, four);

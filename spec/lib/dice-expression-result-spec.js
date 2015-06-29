@@ -51,6 +51,15 @@ describe("diceExpressionResult", function () {
         });
     });
 
+    describe(".forDivision", function () {
+        describe(".value", function () {
+            it("should return the quotient of the dividend and the divisor", function () {
+                var expressionResult = dice.expressionResult.forDivision(three, four);
+                expect(expressionResult.value()).toBe(0.75);
+            });
+        });
+    });
+
     describe(".forMultiplication", function () {
         describe(".value", function () {
             it("should return the product of the multiplicand and the multiplier", function () {

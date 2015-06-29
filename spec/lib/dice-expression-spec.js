@@ -60,6 +60,20 @@ describe("diceExpression", function () {
         });
     });
 
+    describe(".forDivision", function () {
+        describe(".evaluate", function () {
+            it("should return result with value equal to quotient of dividend and divisor", function () {
+                var expression = dice.expression.forDivision(three, four);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(0.75);
+            });
+
+            it("should evaluate subexpressions", function () {
+                var expression = dice.expression.forDivision(dice.expression.forDivision(three, four), four);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(0.1875);
+            });
+        });
+    });
+
     describe(".forMultiplication", function () {
         describe(".evaluate", function () {
             it("should return result with value equal to product of multiplicand and multiplier", function () {

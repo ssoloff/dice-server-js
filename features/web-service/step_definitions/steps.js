@@ -57,8 +57,8 @@ module.exports = function () {
         expect(this.response.expressionResult.text).to.equal(expressionResultText);
     });
 
-    this.Then(/^the response should contain the expression result value (\d+)$/, function (expressionResultValue) {
-        expect(this.response.expressionResult.value).to.equal(parseInt(expressionResultValue));
+    this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
+        expect(this.response.expressionResult.value).to.equal(parseFloat(expressionResultValue));
     });
 };
 
