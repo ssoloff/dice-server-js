@@ -86,25 +86,28 @@ describe("diceExpression", function () {
 
         describe("when name is falsy", function () {
             it("should throw exception", function () {
-                expect(function () {
+                function createFunctionCallExpression() {
                     dice.expression.forFunctionCall(undefined, f, []);
-                }).toThrow();
+                }
+                expect(createFunctionCallExpression).toThrow();
             });
         });
 
         describe("when func is falsy", function () {
             it("should throw exception", function () {
-                expect(function () {
+                function createFunctionCallExpression() {
                     dice.expression.forFunctionCall("f", undefined, []);
-                }).toThrow();
+                }
+                expect(createFunctionCallExpression).toThrow();
             });
         });
 
         describe("when argumentListExpressions is falsy", function () {
             it("should throw exception", function () {
-                expect(function () {
+                function createFunctionCallExpression() {
                     dice.expression.forFunctionCall("f", f, undefined);
-                }).toThrow();
+                }
+                expect(createFunctionCallExpression).toThrow();
             });
         });
 
