@@ -58,6 +58,29 @@ describe("diceExpressionFormatter", function () {
             });
         });
 
+        describe("when expression is a function call expression", function () {
+            describe("when zero arguments specified", function () {
+                it("should return formatted expression", function () {
+                    var expression = dice.expression.forFunctionCall("max", Math.max, []);
+                    expect(dice.expressionFormatter.format(expression)).toBe("max()");
+                });
+            });
+
+            describe("when one argument specified", function () {
+                it("should return formatted expression", function () {
+                    var expression = dice.expression.forFunctionCall("max", Math.max, [three]);
+                    expect(dice.expressionFormatter.format(expression)).toBe("max(3)");
+                });
+            });
+
+            describe("when two arguments specified", function () {
+                it("should return formatted expression", function () {
+                    var expression = dice.expression.forFunctionCall("max", Math.max, [three, four]);
+                    expect(dice.expressionFormatter.format(expression)).toBe("max(3, 4)");
+                });
+            });
+        });
+
         describe("when expression is a multiplication expression", function () {
             it("should return formatted expression", function () {
                 var expression = dice.expression.forMultiplication(three, four);
