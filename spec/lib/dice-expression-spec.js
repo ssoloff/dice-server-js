@@ -109,21 +109,21 @@ describe("diceExpression", function () {
         });
 
         describe(".evaluate", function () {
-            describe("when function takes zero parameters", function () {
+            describe("when zero arguments specified", function () {
                 it("should return result with value equal to function return value", function () {
                     var expression = dice.expression.forFunctionCall("f", f, []);
                     expect(expression.evaluate()).toBeExpressionResultWithValue(42);
                 });
             });
 
-            describe("when function takes one parameter", function () {
+            describe("when one argument specified", function () {
                 it("should return result with value equal to function return value", function () {
                     var expression = dice.expression.forFunctionCall("f", f, [three]);
                     expect(expression.evaluate()).toBeExpressionResultWithValue(45);
                 });
             });
 
-            describe("when function takes two parameters", function () {
+            describe("when two arguments specified", function () {
                 it("should return result with value equal to function return value", function () {
                     var expression = dice.expression.forFunctionCall("f", f, [three, four]);
                     expect(expression.evaluate()).toBeExpressionResultWithValue(49);
