@@ -23,16 +23,21 @@
 %lex
 
 DIGIT               [0-9]
+IDENTIFIER          [_A-Za-z][_0-9A-Za-z]*
 PERCENT             [%]
 POSITIVE_INTEGER    [1-9][0-9]*
 
 %%
 
 \s+                                                 /* skip whitespace */
+","                                                 return 'COMMA'
 {POSITIVE_INTEGER}?d({POSITIVE_INTEGER}|{PERCENT})  return 'DICE_LITERAL'
+{IDENTIFIER}                                        return 'IDENTIFIER'
 {DIGIT}+                                            return 'INTEGER_LITERAL'
+"("                                                 return 'LPAREN'
 "-"                                                 return 'MINUS'
 "+"                                                 return 'PLUS'
+")"                                                 return 'RPAREN'
 "/"                                                 return 'SLASH'
 "*"                                                 return 'STAR'
 .                                                   throw 'illegal character'
@@ -53,6 +58,21 @@ expressions
         }
     ;
 
+argument_list
+    : /* empty */
+        {
+            $$ = [];
+        }
+    | expression
+        {
+            $$ = [$1];
+        }
+    | argument_list COMMA expression
+        {
+            $$.push($3);
+        }
+    ;
+
 expression
     : expression PLUS expression
         {
@@ -70,20 +90,29 @@ expression
         {
             $$ = diceExpression.forDivision($1, $3);
         }
+    | function_call
     | literal
+    ;
+
+function_call
+    : IDENTIFIER LPAREN argument_list RPAREN
+        {
+            var func = yy.__context.functions[$1];
+            $$ = diceExpression.forFunctionCall($1, func, $3);
+        }
     ;
 
 literal
     : DICE_LITERAL
         {
-            var components = yytext.split("d");
+            var components = $1.split("d");
             var count = components[0] ? Number(components[0]) : 1;
             var sides = (components[1] === "%") ? 100 : Number(components[1]);
-            $$ = diceExpression.forRoll(count, yy.__bag.d(sides));
+            $$ = diceExpression.forRoll(count, yy.__context.bag.d(sides));
         }
     | INTEGER_LITERAL
         {
-            $$ = diceExpression.forConstant(Number(yytext));
+            $$ = diceExpression.forConstant(Number($1));
         }
     ;
 
@@ -92,9 +121,19 @@ literal
 var DiceBag = require("./dice-bag");
 var diceExpression = require("./dice-expression");
 
-module.exports.create = function (bag) {
+function createDefaultContext() {
+    return {
+        bag: new DiceBag(),
+        functions: {}
+    };
+}
+
+function createParser(context) {
     var parser = new Parser();
-    parser.yy.__bag = bag || new DiceBag();
+    parser.yy.__context = context || createDefaultContext();
     return parser;
 }
+
+module.exports.create = createParser;
+module.exports.createDefaultContext = createDefaultContext;
 

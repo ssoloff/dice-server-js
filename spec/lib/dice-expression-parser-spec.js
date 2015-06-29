@@ -27,17 +27,19 @@ var diceTest = require("./dice-test");
 
 describe("diceExpressionParser", function () {
     var expressionParser;
-    var bag;
+    var expressionParserContext;
+    var f = Math.max;
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(diceTest.isDiceExpressionEqual);
-        expressionParser = dice.expressionParser.create();
-        bag = new dice.Bag();
+        expressionParserContext = dice.expressionParser.createDefaultContext();
+        expressionParserContext.functions.f = f;
+        expressionParser = dice.expressionParser.create(expressionParserContext);
     });
 
     describe(".create", function () {
-        it("should use specified dice bag", function () {
-            expressionParser = dice.expressionParser.create(diceTest.createBagThatProvidesDiceThatAlwaysRollOne());
+        it("should use the dice bag in the context", function () {
+            expressionParserContext.bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
             var expression = expressionParser.parse("3d6");
             expect(expression.evaluate().value()).toBe(3);
         });
@@ -85,15 +87,45 @@ describe("diceExpressionParser", function () {
         });
 
         it("should parse a die roll with an explicit count", function () {
-            expect(expressionParser.parse("3d6")).toEqual(dice.expression.forRoll(3, bag.d(6)));
+            expect(expressionParser.parse("3d6")).toEqual(dice.expression.forRoll(3, expressionParserContext.bag.d(6)));
         });
 
         it("should parse a die roll with an implicit count", function () {
-            expect(expressionParser.parse("d6")).toEqual(dice.expression.forRoll(1, bag.d(6)));
+            expect(expressionParser.parse("d6")).toEqual(dice.expression.forRoll(1, expressionParserContext.bag.d(6)));
         });
 
         it("should parse a percentile die roll", function () {
-            expect(expressionParser.parse("2d%")).toEqual(dice.expression.forRoll(2, bag.d(100)));
+            expect(expressionParser.parse("2d%")).toEqual(dice.expression.forRoll(2, expressionParserContext.bag.d(100)));
+        });
+
+        it("should parse a function with zero arguments", function () {
+            expect(expressionParser.parse("f()")).toEqual(
+                dice.expression.forFunctionCall(
+                    "f",
+                    f,
+                    []
+                )
+            );
+        });
+
+        it("should parse a function with one argument", function () {
+            expect(expressionParser.parse("f(1)")).toEqual(
+                dice.expression.forFunctionCall(
+                    "f",
+                    f,
+                    [dice.expression.forConstant(1)]
+                )
+            );
+        });
+
+        it("should parse a function with two arguments", function () {
+            expect(expressionParser.parse("f(1, 2)")).toEqual(
+                dice.expression.forFunctionCall(
+                    "f",
+                     f,
+                     [dice.expression.forConstant(1), dice.expression.forConstant(2)]
+                )
+            );
         });
 
         describe("when source empty", function () {

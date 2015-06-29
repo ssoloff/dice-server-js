@@ -24,6 +24,7 @@
 
 require("../../lib/number-polyfills");
 
+var _ = require("underscore");
 var dice = require("../../lib/dice");
 var diceTest = require("./dice-test");
 
@@ -71,6 +72,62 @@ describe("diceExpression", function () {
             it("should evaluate subexpressions", function () {
                 var expression = dice.expression.forDivision(dice.expression.forDivision(three, four), four);
                 expect(expression.evaluate()).toBeExpressionResultWithValue(0.1875);
+            });
+        });
+    });
+
+    describe(".forFunctionCall", function () {
+        function f() {
+            function sum(first, second) {
+                return first + second;
+            }
+            return 42 + _.toArray(arguments).reduce(sum, 0);
+        }
+
+        describe("when name is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expression.forFunctionCall(undefined, f, []);
+                }).toThrow();
+            });
+        });
+
+        describe("when func is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expression.forFunctionCall("f", undefined, []);
+                }).toThrow();
+            });
+        });
+
+        describe("when argumentListExpressions is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expression.forFunctionCall("f", f, undefined);
+                }).toThrow();
+            });
+        });
+
+        describe(".evaluate", function () {
+            describe("when function takes zero parameters", function () {
+                it("should return result with value equal to function return value", function () {
+                    var expression = dice.expression.forFunctionCall("f", f, []);
+                    expect(expression.evaluate()).toBeExpressionResultWithValue(42);
+                });
+            });
+
+            describe("when function takes one parameter", function () {
+                it("should return result with value equal to function return value", function () {
+                    var expression = dice.expression.forFunctionCall("f", f, [three]);
+                    expect(expression.evaluate()).toBeExpressionResultWithValue(45);
+                });
+            });
+
+            describe("when function takes two parameters", function () {
+                it("should return result with value equal to function return value", function () {
+                    var expression = dice.expression.forFunctionCall("f", f, [three, four]);
+                    expect(expression.evaluate()).toBeExpressionResultWithValue(49);
+                });
             });
         });
     });
