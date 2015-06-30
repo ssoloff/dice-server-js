@@ -110,13 +110,11 @@ describe("diceExpressionResultFormatter", function () {
 
         describe("when expression result is of an unknown type", function () {
             it("should throw an exception", function () {
-                function formatUnknownExpressionResult() {
-                    var expressionResult = {
+                expect(function () {
+                    dice.expressionResultFormatter.format({
                         typeId: "__unknown__"
-                    };
-                    dice.expressionResultFormatter.format(expressionResult);
-                }
-                expect(formatUnknownExpressionResult).toThrow();
+                    });
+                }).toThrow();
             });
         });
     });

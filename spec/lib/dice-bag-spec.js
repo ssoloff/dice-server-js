@@ -35,11 +35,10 @@ describe("DiceBag", function () {
     });
 
     it("should use a default random number generator", function () {
-        function rollDie() {
-            bag = new dice.Bag();
+        expect(function () {
+            var bag = new dice.Bag();
             bag.d(6).roll();
-        }
-        expect(rollDie).not.toThrow();
+        }).not.toThrow();
     });
 
     describe("#d", function () {
@@ -51,13 +50,12 @@ describe("DiceBag", function () {
 
         describe("when sides less than one", function () {
             it("should throw exception", function () {
-                function createDieWithSides(sides) {
-                    return function () {
-                        bag.d(sides);
-                    };
-                }
-                expect(createDieWithSides(0)).toThrowError(RangeError);
-                expect(createDieWithSides(Number.MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                expect(function () {
+                    bag.d(0);
+                }).toThrowError(RangeError);
+                expect(function () {
+                    bag.d(Number.MIN_SAFE_INTEGER);
+                }).toThrowError(RangeError);
             });
         });
 

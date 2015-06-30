@@ -54,10 +54,9 @@ describe("diceExpressionParser", function () {
     describe("#parse", function () {
         describe("when source empty", function () {
             it("should throw exception", function () {
-                function parseEmptySource() {
+                expect(function () {
                     expressionParser.parse("");
-                }
-                expect(parseEmptySource).toThrow();
+                }).toThrow();
             });
         });
 

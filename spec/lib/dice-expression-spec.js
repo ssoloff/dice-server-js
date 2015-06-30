@@ -42,19 +42,17 @@ describe("diceExpression", function () {
     describe(".forAddition", function () {
         describe("when augend expression is falsy", function () {
             it("should throw exception", function () {
-                function createAdditionExpression() {
+                expect(function () {
                     dice.expression.forAddition(undefined, three);
-                }
-                expect(createAdditionExpression).toThrow();
+                }).toThrow();
             });
         });
 
         describe("when addend expression is falsy", function () {
             it("should throw exception", function () {
-                function createAdditionExpression() {
+                expect(function () {
                     dice.expression.forAddition(four, undefined);
-                }
-                expect(createAdditionExpression).toThrow();
+                }).toThrow();
             });
         });
 
@@ -74,13 +72,12 @@ describe("diceExpression", function () {
     describe(".forConstant", function () {
         describe("when constant is not a number", function () {
             it("should throw exception", function () {
-                function createConstantExpression(constant) {
-                    return function () {
-                        dice.expression.forConstant(constant);
-                    };
-                }
-                expect(createConstantExpression(undefined)).toThrow();
-                expect(createConstantExpression("3")).toThrow();
+                expect(function () {
+                    dice.expression.forConstant(undefined);
+                }).toThrow();
+                expect(function () {
+                    dice.expression.forConstant("3");
+                }).toThrow();
             });
         });
 
@@ -95,19 +92,17 @@ describe("diceExpression", function () {
     describe(".forDivision", function () {
         describe("when dividend expression is falsy", function () {
             it("should throw exception", function () {
-                function createDivisionExpression() {
+                expect(function () {
                     dice.expression.forDivision(undefined, three);
-                }
-                expect(createDivisionExpression).toThrow();
+                }).toThrow();
             });
         });
 
         describe("when divisor expression is falsy", function () {
             it("should throw exception", function () {
-                function createDivisionExpression() {
+                expect(function () {
                     dice.expression.forDivision(four, undefined);
-                }
-                expect(createDivisionExpression).toThrow();
+                }).toThrow();
             });
         });
 
@@ -134,28 +129,25 @@ describe("diceExpression", function () {
 
         describe("when function name is falsy", function () {
             it("should throw exception", function () {
-                function createFunctionCallExpression() {
+                expect(function () {
                     dice.expression.forFunctionCall(undefined, f, []);
-                }
-                expect(createFunctionCallExpression).toThrow();
+                }).toThrow();
             });
         });
 
         describe("when function is falsy", function () {
             it("should throw exception", function () {
-                function createFunctionCallExpression() {
+                expect(function () {
                     dice.expression.forFunctionCall("f", undefined, []);
-                }
-                expect(createFunctionCallExpression).toThrow();
+                }).toThrow();
             });
         });
 
         describe("when function argument list expressions is falsy", function () {
             it("should throw exception", function () {
-                function createFunctionCallExpression() {
+                expect(function () {
                     dice.expression.forFunctionCall("f", f, undefined);
-                }
-                expect(createFunctionCallExpression).toThrow();
+                }).toThrow();
             });
         });
 
@@ -186,19 +178,17 @@ describe("diceExpression", function () {
     describe(".forMultiplication", function () {
         describe("when multiplicand expression is falsy", function () {
             it("should throw exception", function () {
-                function createMultiplicationExpression() {
+                expect(function () {
                     dice.expression.forMultiplication(undefined, three);
-                }
-                expect(createMultiplicationExpression).toThrow();
+                }).toThrow();
             });
         });
 
         describe("when multiplier expression is falsy", function () {
             it("should throw exception", function () {
-                function createMultiplicationExpression() {
+                expect(function () {
                     dice.expression.forMultiplication(four, undefined);
-                }
-                expect(createMultiplicationExpression).toThrow();
+                }).toThrow();
             });
         });
 
@@ -218,34 +208,31 @@ describe("diceExpression", function () {
     describe(".forRoll", function () {
         describe("when count is not a number", function () {
             it("should throw exception", function () {
-                function createRollExpression(count) {
-                    return function () {
-                        dice.expression.forRoll(count, d3);
-                    };
-                }
-                expect(createRollExpression(undefined)).toThrow();
-                expect(createRollExpression("3")).toThrow();
+                expect(function () {
+                    dice.expression.forRoll(undefined, d3);
+                }).toThrow();
+                expect(function () {
+                    dice.expression.forRoll("3", d3);
+                }).toThrow();
             });
         });
 
         describe("when count less than one", function () {
             it("should throw exception", function () {
-                function createRollExpressionWithCount(count) {
-                    return function () {
-                        dice.expression.forRoll(count, d3);
-                    };
-                }
-                expect(createRollExpressionWithCount(0)).toThrowError(RangeError);
-                expect(createRollExpressionWithCount(Number.MIN_SAFE_INTEGER)).toThrowError(RangeError);
+                expect(function () {
+                    dice.expression.forRoll(0, d3);
+                }).toThrowError(RangeError);
+                expect(function () {
+                    dice.expression.forRoll(Number.MIN_SAFE_INTEGER, d3);
+                }).toThrowError(RangeError);
             });
         });
 
         describe("when die is falsy", function () {
             it("should throw exception", function () {
-                function createRollExpression() {
+                expect(function () {
                     dice.expression.forRoll(3, undefined);
-                }
-                expect(createRollExpression).toThrow();
+                }).toThrow();
             });
         });
 
@@ -271,19 +258,17 @@ describe("diceExpression", function () {
     describe(".forSubtraction", function () {
         describe("when minuend expression is falsy", function () {
             it("should throw exception", function () {
-                function createSubtractionExpression() {
+                expect(function () {
                     dice.expression.forSubtraction(undefined, three);
-                }
-                expect(createSubtractionExpression).toThrow();
+                }).toThrow();
             });
         });
 
         describe("when subtrahend expression is falsy", function () {
             it("should throw exception", function () {
-                function createSubtractionExpression() {
+                expect(function () {
                     dice.expression.forSubtraction(four, undefined);
-                }
-                expect(createSubtractionExpression).toThrow();
+                }).toThrow();
             });
         });
 
