@@ -48,6 +48,17 @@ describe("DiceBag", function () {
             d6 = bag.d(6);
         });
 
+        describe("when sides not a number", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    bag.d(undefined);
+                }).toThrow();
+                expect(function () {
+                    bag.d("3");
+                }).toThrow();
+            });
+        });
+
         describe("when sides less than one", function () {
             it("should throw exception", function () {
                 expect(function () {
