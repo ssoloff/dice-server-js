@@ -65,6 +65,28 @@ describe("diceExpressionParser", function () {
             it("should parse an integer literal", function () {
                 expect(expressionParser.parse("2")).toEqual(two);
             });
+
+            it("should parse a dice roll literal", function () {
+                expect(expressionParser.parse("3d6")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                            dice.expression.forConstant(3),
+                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                        ])
+                    ])
+                );
+            });
+
+            it("should parse a percentile dice roll literal", function () {
+                expect(expressionParser.parse("2d%")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                            dice.expression.forConstant(2),
+                            dice.expression.forDie(expressionParserContext.bag.d(100))
+                        ])
+                    ])
+                );
+            });
         });
 
         describe("arithmetic operators", function () {
@@ -82,41 +104,6 @@ describe("diceExpressionParser", function () {
 
             it("should parse the division of two constants", function () {
                 expect(expressionParser.parse("1 / 2")).toEqual(dice.expression.forDivision(one, two));
-            });
-        });
-
-        describe("dice rolls", function () {
-            it("should parse a dice roll with an explicit count", function () {
-                expect(expressionParser.parse("3d6")).toEqual(
-                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
-                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
-                            dice.expression.forConstant(3),
-                            dice.expression.forDie(expressionParserContext.bag.d(6))
-                        ])
-                    ])
-                );
-            });
-
-            it("should parse a dice roll with an implicit count", function () {
-                expect(expressionParser.parse("d6")).toEqual(
-                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
-                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
-                            dice.expression.forConstant(1),
-                            dice.expression.forDie(expressionParserContext.bag.d(6))
-                        ])
-                    ])
-                );
-            });
-
-            it("should parse a percentile dice roll", function () {
-                expect(expressionParser.parse("2d%")).toEqual(
-                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
-                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
-                            dice.expression.forConstant(2),
-                            dice.expression.forDie(expressionParserContext.bag.d(100))
-                        ])
-                    ])
-                );
             });
         });
 

@@ -31,7 +31,7 @@ POSITIVE_INTEGER    [1-9][0-9]*
 
 \s+                                                 /* skip whitespace */
 ","                                                 return "COMMA"
-{POSITIVE_INTEGER}?d({POSITIVE_INTEGER}|{PERCENT})  return "DICE_LITERAL"
+{POSITIVE_INTEGER}d({POSITIVE_INTEGER}|{PERCENT})   return "DICE_ROLL_LITERAL"
 {IDENTIFIER}                                        return "IDENTIFIER"
 {DIGIT}+                                            return "INTEGER_LITERAL"
 "("                                                 return "LPAREN"
@@ -103,10 +103,10 @@ function_call
     ;
 
 literal
-    : DICE_LITERAL
+    : DICE_ROLL_LITERAL
         {
             var components = $1.split("d");
-            var count = components[0] ? Number(components[0]) : 1;
+            var count = Number(components[0]);
             var sides = (components[1] === "%") ? 100 : Number(components[1]);
             $$ = diceExpression.forFunctionCall("sum", getFunction(yy.__context, "sum"), [
                 diceExpression.forFunctionCall("roll", getFunction(yy.__context, "roll"), [

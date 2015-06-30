@@ -65,8 +65,8 @@ Scenario Outline: Evaluating dice rolls
     Examples:
         | expression | result text                      | result value |
         | 3d6        | [sum([roll(3, d6): 6,6,6]): 18]  | 18           |
-        | d10        | [sum([roll(1, d10): 10]): 10]    | 10           |
-        | d%         | [sum([roll(1, d100): 100]): 100] | 100          |
+        | 1d10       | [sum([roll(1, d10): 10]): 10]    | 10           |
+        | 1d%        | [sum([roll(1, d100): 100]): 100] | 100          |
 
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"
