@@ -35,6 +35,24 @@ describe("diceExpressionResult", function () {
     });
 
     describe(".forAddition", function () {
+        describe("when augendExpressionResult is falsy", function () {
+            it("should throw exception", function () {
+                function createAdditionExpressionResult() {
+                    dice.expressionResult.forAddition(undefined, three);
+                }
+                expect(createAdditionExpressionResult).toThrow();
+            });
+        });
+
+        describe("when addendExpressionResult is falsy", function () {
+            it("should throw exception", function () {
+                function createAdditionExpressionResult() {
+                    dice.expressionResult.forAddition(four, undefined);
+                }
+                expect(createAdditionExpressionResult).toThrow();
+            });
+        });
+
         describe(".value", function () {
             it("should return the sum of the augend and the addend", function () {
                 var expressionResult = dice.expressionResult.forAddition(three, four);
@@ -44,6 +62,18 @@ describe("diceExpressionResult", function () {
     });
 
     describe(".forConstant", function () {
+        describe("when constant is not a number", function () {
+            it("should throw exception", function () {
+                function createConstantExpressionResult(constant) {
+                    return function () {
+                        dice.expressionResult.forConstant(constant);
+                    };
+                }
+                expect(createConstantExpressionResult(undefined)).toThrow();
+                expect(createConstantExpressionResult("3")).toThrow();
+            });
+        });
+
         describe(".value", function () {
             it("should return the value of the result", function () {
                 var expressionResult = dice.expressionResult.forConstant(42);
@@ -53,6 +83,24 @@ describe("diceExpressionResult", function () {
     });
 
     describe(".forDivision", function () {
+        describe("when dividendExpressionResult is falsy", function () {
+            it("should throw exception", function () {
+                function createDivisionExpressionResult() {
+                    dice.expressionResult.forDivision(undefined, three);
+                }
+                expect(createDivisionExpressionResult).toThrow();
+            });
+        });
+
+        describe("when divisorExpressionResult is falsy", function () {
+            it("should throw exception", function () {
+                function createDivisionExpressionResult() {
+                    dice.expressionResult.forDivision(four, undefined);
+                }
+                expect(createDivisionExpressionResult).toThrow();
+            });
+        });
+
         describe(".value", function () {
             it("should return the quotient of the dividend and the divisor", function () {
                 var expressionResult = dice.expressionResult.forDivision(three, four);
@@ -121,6 +169,24 @@ describe("diceExpressionResult", function () {
     });
 
     describe(".forMultiplication", function () {
+        describe("when multiplicandExpressionResult is falsy", function () {
+            it("should throw exception", function () {
+                function createMultiplicationExpressionResult() {
+                    dice.expressionResult.forMultiplication(undefined, three);
+                }
+                expect(createMultiplicationExpressionResult).toThrow();
+            });
+        });
+
+        describe("when multiplierExpressionResult is falsy", function () {
+            it("should throw exception", function () {
+                function createMultiplicationExpressionResult() {
+                    dice.expressionResult.forMultiplication(four, undefined);
+                }
+                expect(createMultiplicationExpressionResult).toThrow();
+            });
+        });
+
         describe(".value", function () {
             it("should return the product of the multiplicand and the multiplier", function () {
                 var expressionResult = dice.expressionResult.forMultiplication(three, four);
@@ -130,6 +196,18 @@ describe("diceExpressionResult", function () {
     });
 
     describe(".forRoll", function () {
+        describe("when rolls has less than one element", function () {
+            it("should throw exception", function () {
+                function createRollExpressionResult(rolls) {
+                    return function () {
+                        dice.expressionResult.forRoll(rolls);
+                    };
+                }
+                expect(createRollExpressionResult(undefined)).toThrow();
+                expect(createRollExpressionResult([])).toThrow();
+            });
+        });
+
         describe(".value", function () {
             describe("when count equals zero", function () {
                 it("should throw exception", function () {
@@ -157,6 +235,24 @@ describe("diceExpressionResult", function () {
     });
 
     describe(".forSubtraction", function () {
+        describe("when minuendExpressionResult is falsy", function () {
+            it("should throw exception", function () {
+                function createSubtractionExpressionResult() {
+                    dice.expressionResult.forSubtraction(undefined, three);
+                }
+                expect(createSubtractionExpressionResult).toThrow();
+            });
+        });
+
+        describe("when subtrahendExpressionResult is falsy", function () {
+            it("should throw exception", function () {
+                function createSubtractionExpressionResult() {
+                    dice.expressionResult.forSubtraction(four, undefined);
+                }
+                expect(createSubtractionExpressionResult).toThrow();
+            });
+        });
+
         describe(".value", function () {
             it("should return the difference between the minuend and the subtrahend", function () {
                 var expressionResult = dice.expressionResult.forSubtraction(three, four);
