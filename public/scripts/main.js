@@ -3,13 +3,22 @@ function evaluate() {
 
     var request = {
         expression: {
-            text: $("#expressionText").val()
+            text: getExpressionText()
         },
         randomNumberGenerator: {
             name: $("#randomNumberGeneratorName").val()
         }
     };
     $.post("/evaluate", request, processResponse);
+}
+
+function getExpressionText() {
+    var expressionText = $("#expressionText").val();
+    var roundingFunction = $("input[name='roundingMode']:checked").val();
+    if (roundingFunction) {
+        expressionText = roundingFunction + "(" + expressionText + ")";
+    }
+    return expressionText;
 }
 
 function initialize() {

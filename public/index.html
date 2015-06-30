@@ -12,10 +12,20 @@
         </header>
         <main>
             <form id="expressionForm">
-                <label for="expressionText">Expression:</label>
-                <input id="expressionText" required="required" type="text" />
+                <div>
+                    <label for="expressionText">Expression:</label>
+                    <input id="expressionText" required="required" type="text" />
+                    <button id="evaluate" type="submit">Evaluate</button>
+                </div>
+                <div>
+                    <label>Rounding mode:</label>
+                    <input checked="checked" id="roundingModeNone" name="roundingMode" type="radio" value="" />No rounding
+                    <input id="roundingModeTruncate" name="roundingMode" type="radio" value="trunc" />Round towards zero
+                    <input id="roundingModeFloor" name="roundingMode" type="radio" value="floor" />Round down
+                    <input id="roundingModeCeiling" name="roundingMode" type="radio" value="ceil" />Round up
+                    <input id="roundingModeNearest" name="roundingMode" type="radio" value="round" />Round to nearest
+                </div>
                 <input id="randomNumberGeneratorName" type="hidden" value="uniform" />
-                <button id="evaluate" type="submit">Evaluate</button>
             </form>
             <div id="expressionResult">
                 <span id="evaluatedExpressionText"></span> = <span id="expressionResultText"></span> = <span id="expressionResultValue"></span>

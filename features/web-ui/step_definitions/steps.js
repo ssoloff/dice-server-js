@@ -58,6 +58,10 @@ module.exports = function () {
         return this.homePage.evaluate();
     });
 
+    this.When(/^the rounding mode is "(.*)"$/, function (roundingMode) {
+        return this.homePage.setRoundingMode(roundingMode);
+    });
+
     this.Then(/^an error message should be displayed$/, function () {
         this.homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
             expect(isDisplayed).to.be.true;

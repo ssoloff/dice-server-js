@@ -45,3 +45,18 @@ Scenario: Stale error messages are hidden
     Then an expression result should be displayed
         And an error message should not be displayed
 
+Scenario Outline: Rounding mode
+    Given the home page is open
+    When the rounding mode is "<rounding mode>"
+        And the expression "<expression>" is evaluated
+    Then the evaluated expression text should be "<evaluated expression>"
+        And the expression result text should be "<result text>"
+        And the expression result value should be "<result value>"
+    Examples:
+        | rounding mode | expression | evaluated expression | result text       | result value |
+        | None          | 3/2        | 3 / 2                | 3 / 2             | 1.5          |
+        | Truncate      | 3/2        | trunc(3 / 2)         | [trunc(3 / 2): 1] | 1            |
+        | Floor         | 3/2        | floor(3 / 2)         | [floor(3 / 2): 1] | 1            |
+        | Ceiling       | 3/2        | ceil(3 / 2)          | [ceil(3 / 2): 2]  | 2            |
+        | Nearest       | 3/2        | round(3 / 2)         | [round(3 / 2): 2] | 2            |
+

@@ -70,6 +70,10 @@ HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorNam
     return this.driver.executeScript("$('#randomNumberGeneratorName').val('" + randomNumberGeneratorName + "');");
 };
 
+HomePage.prototype.setRoundingMode = function (roundingMode) {
+    return this.driver.findElement(By.id("roundingMode" + roundingMode)).click();
+};
+
 HomePage.prototype.typeExpressionText = function (expressionText) {
     return this.driver.findElement(By.id("expressionText")).sendKeys(expressionText);
 };
