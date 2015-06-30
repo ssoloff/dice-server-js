@@ -118,7 +118,7 @@ describe("diceExpressionParser", function () {
                 it("should use the function from the context", function () {
                     expressionParserContext.functions.ceil = function () {
                         return 42;
-                    }
+                    };
                     var expression = expressionParser.parse("ceil(1)");
                     expect(expression.evaluate()).toBeExpressionResultWithValue(42);
                 });
