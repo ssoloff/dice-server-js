@@ -97,7 +97,7 @@ expression
 function_call
     : IDENTIFIER LPAREN argument_list RPAREN
         {
-            var func = yy.__context.functions[$1];
+            var func = getFunction(yy.__context, $1);
             $$ = diceExpression.forFunctionCall($1, func, $3);
         }
     ;
@@ -120,6 +120,7 @@ literal
 
 var DiceBag = require("./dice-bag");
 var diceExpression = require("./dice-expression");
+var diceExpressionFunctions = require("./dice-expression-functions");
 
 function createDefaultContext() {
     return {
@@ -132,6 +133,10 @@ function createParser(context) {
     var parser = new Parser();
     parser.yy.__context = context || createDefaultContext();
     return parser;
+}
+
+function getFunction(context, name) {
+    return context.functions[name] || diceExpressionFunctions[name];
 }
 
 module.exports.create = createParser;
