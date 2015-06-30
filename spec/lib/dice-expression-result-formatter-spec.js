@@ -66,22 +66,22 @@ describe("diceExpressionResultFormatter", function () {
         describe("when expression is a function call expression", function () {
             describe("when zero arguments specified", function () {
                 it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall("max", Math.max, []);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[max(): -Infinity]");
+                    var expressionResult = dice.expressionResult.forFunctionCall("f", [], 0);
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(): 0]");
                 });
             });
 
             describe("when one argument specified", function () {
                 it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall("max", Math.max, [three]);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[max(3): 3]");
+                    var expressionResult = dice.expressionResult.forFunctionCall("f", [three], 1);
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(3): 1]");
                 });
             });
 
             describe("when two arguments specified", function () {
                 it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall("max", Math.max, [three, four]);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[max(3, 4): 4]");
+                    var expressionResult = dice.expressionResult.forFunctionCall("f", [three, four], 2);
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(3, 4): 2]");
                 });
             });
         });

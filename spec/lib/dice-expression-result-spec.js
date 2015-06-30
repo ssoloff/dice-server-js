@@ -22,7 +22,6 @@
 
 "use strict";
 
-var _ = require("underscore");
 var dice = require("../../lib/dice");
 
 describe("diceExpressionResult", function () {
@@ -123,25 +122,10 @@ describe("diceExpressionResult", function () {
     });
 
     describe(".forFunctionCall", function () {
-        function f() {
-            function sum(first, second) {
-                return first + second;
-            }
-            return 42 + _.toArray(arguments).reduce(sum, 0);
-        }
-
         describe("when function name is falsy", function () {
             it("should throw exception", function () {
                 expect(function () {
-                    dice.expressionResult.forFunctionCall(undefined, f, []);
-                }).toThrow();
-            });
-        });
-
-        describe("when function is falsy", function () {
-            it("should throw exception", function () {
-                expect(function () {
-                    dice.expressionResult.forFunctionCall("f", undefined, []);
+                    dice.expressionResult.forFunctionCall(undefined, [], 0);
                 }).toThrow();
             });
         });
@@ -149,31 +133,15 @@ describe("diceExpressionResult", function () {
         describe("when function argument list expression results is falsy", function () {
             it("should throw exception", function () {
                 expect(function () {
-                    dice.expressionResult.forFunctionCall("f", f, undefined);
+                    dice.expressionResult.forFunctionCall("f", undefined, 0);
                 }).toThrow();
             });
         });
 
         describe(".value", function () {
-            describe("when zero arguments specified", function () {
-                it("should return the function return value", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall("f", f, []);
-                    expect(expressionResult.value()).toBe(42);
-                });
-            });
-
-            describe("when one argument specified", function () {
-                it("should return the function return value", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall("f", f, [three]);
-                    expect(expressionResult.value()).toBe(45);
-                });
-            });
-
-            describe("when two arguments specified", function () {
-                it("should return the function return value", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall("f", f, [three, four]);
-                    expect(expressionResult.value()).toBe(49);
-                });
+            it("should return the function return value", function () {
+                var expressionResult = dice.expressionResult.forFunctionCall("f", [], 42);
+                expect(expressionResult.value()).toBe(42);
             });
         });
     });
