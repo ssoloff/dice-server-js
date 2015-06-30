@@ -99,3 +99,17 @@ When the evaluate service is invoked
 Then the response should contain the expression result text "[(6, 6, 6): 6 + 6 + 6] / 4"
     And the response should contain the expression result value 4.5
 
+Scenario Outline: Rounding fractional values
+Given a request with the expression "<expression>"
+    And a request with the random number generator named "constantMax"
+When the evaluate service is invoked
+Then the response should contain the expression result value <value>
+Examples:
+| expression   | value |
+| ceil(1/2)    | 1     |
+| floor(1/2)   | 0     |
+| round(1/3)   | 0     |
+| round(1/2)   | 1     |
+| trunc(1/2)   | 0     |
+| trunc(3d6/4) | 4     |
+
