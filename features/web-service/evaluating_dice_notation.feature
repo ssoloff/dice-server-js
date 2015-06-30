@@ -63,10 +63,11 @@ Scenario Outline: Evaluating dice rolls
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text                      | result value |
-        | 3d6        | [sum([roll(3, d6): 6,6,6]): 18]  | 18           |
-        | 1d10       | [sum([roll(1, d10): 10]): 10]    | 10           |
-        | 1d%        | [sum([roll(1, d100): 100]): 100] | 100          |
+        | expression       | result text                      | result value |
+        | 3d6              | [sum([roll(3, d6): 6,6,6]): 18]  | 18           |
+        | 1d10             | [sum([roll(1, d10): 10]): 10]    | 10           |
+        | 1d%              | [sum([roll(1, d100): 100]): 100] | 100          |
+        | sum(roll(2, d8)) | [sum([roll(2, d8): 8,8]): 16]    | 16           |
 
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"

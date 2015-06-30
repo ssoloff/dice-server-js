@@ -66,6 +66,10 @@ describe("diceExpressionParser", function () {
                 expect(expressionParser.parse("2")).toEqual(two);
             });
 
+            it("should parse a die literal", function () {
+                expect(expressionParser.parse("d6")).toEqual(dice.expression.forDie(expressionParserContext.bag.d(6)));
+            });
+
             it("should parse a dice roll literal", function () {
                 expect(expressionParser.parse("3d6")).toEqual(
                     dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
@@ -127,25 +131,44 @@ describe("diceExpressionParser", function () {
                     expressionParserContext.functions.ceil = function () {
                         return 42;
                     };
-                    var expression = expressionParser.parse("ceil(1)");
-                    expect(expression.evaluate()).toBeExpressionResultWithValue(42);
+                    expect(expressionParser.parse("ceil(1)").evaluate()).toBeExpressionResultWithValue(42);
                 });
             });
 
+            it("should parse the built-in roll() function", function () {
+                expect(expressionParser.parse("roll(3, d6)")).toEqual(
+                    dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                        dice.expression.forConstant(3),
+                        dice.expression.forDie(expressionParserContext.bag.d(6))
+                    ])
+                );
+            });
+
+            it("should parse the built-in sum() function", function () {
+                expect(expressionParser.parse("sum(roll(2, d8))")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                            dice.expression.forConstant(2),
+                            dice.expression.forDie(expressionParserContext.bag.d(8))
+                        ])
+                    ])
+                );
+            });
+
             it("should parse the built-in ceil() function", function () {
-                expect(expressionParser.parse("ceil(1)")).toEqual(dice.expression.forFunctionCall("ceil", Math.ceil, [one]));
+                expect(expressionParser.parse("ceil(1)")).toEqual(dice.expression.forFunctionCall("ceil", diceExpressionFunctions.ceil, [one]));
             });
 
             it("should parse the built-in floor() function", function () {
-                expect(expressionParser.parse("floor(1)")).toEqual(dice.expression.forFunctionCall("floor", Math.floor, [one]));
+                expect(expressionParser.parse("floor(1)")).toEqual(dice.expression.forFunctionCall("floor", diceExpressionFunctions.floor, [one]));
             });
 
             it("should parse the built-in round() function", function () {
-                expect(expressionParser.parse("round(1)")).toEqual(dice.expression.forFunctionCall("round", Math.round, [one]));
+                expect(expressionParser.parse("round(1)")).toEqual(dice.expression.forFunctionCall("round", diceExpressionFunctions.round, [one]));
             });
 
             it("should parse the built-in trunc() function", function () {
-                expect(expressionParser.parse("trunc(1)")).toEqual(dice.expression.forFunctionCall("trunc", Math.trunc, [one]));
+                expect(expressionParser.parse("trunc(1)")).toEqual(dice.expression.forFunctionCall("trunc", diceExpressionFunctions.trunc, [one]));
             });
         });
     });

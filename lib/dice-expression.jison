@@ -32,6 +32,7 @@ POSITIVE_INTEGER    [1-9][0-9]*
 \s+                                                 /* skip whitespace */
 ","                                                 return "COMMA"
 {POSITIVE_INTEGER}d({POSITIVE_INTEGER}|{PERCENT})   return "DICE_ROLL_LITERAL"
+d({POSITIVE_INTEGER}|{PERCENT})                     return "DIE_LITERAL"
 {IDENTIFIER}                                        return "IDENTIFIER"
 {DIGIT}+                                            return "INTEGER_LITERAL"
 "("                                                 return "LPAREN"
@@ -97,27 +98,32 @@ expression
 function_call
     : IDENTIFIER LPAREN argument_list RPAREN
         {
-            var func = getFunction(yy.__context, $1);
-            $$ = diceExpression.forFunctionCall($1, func, $3);
+            $$ = createFunctionCallExpression(yy.__context, $1, $3);
         }
     ;
 
 literal
-    : DICE_ROLL_LITERAL
+    : DIE_LITERAL
+        {
+            var sides = Number($1.substr(1));
+            $$ = createDieExpression(yy.__context, sides);
+        }
+    | DICE_ROLL_LITERAL
         {
             var components = $1.split("d");
             var count = Number(components[0]);
             var sides = (components[1] === "%") ? 100 : Number(components[1]);
-            $$ = diceExpression.forFunctionCall("sum", getFunction(yy.__context, "sum"), [
-                diceExpression.forFunctionCall("roll", getFunction(yy.__context, "roll"), [
+            $$ = createFunctionCallExpression(yy.__context, "sum", [
+                createFunctionCallExpression(yy.__context, "roll", [
                     diceExpression.forConstant(count),
-                    diceExpression.forDie(yy.__context.bag.d(sides))
+                    createDieExpression(yy.__context, sides)
                 ])
             ]);
         }
     | INTEGER_LITERAL
         {
-            $$ = diceExpression.forConstant(Number($1));
+            var constant = Number($1);
+            $$ = diceExpression.forConstant(constant);
         }
     ;
 
@@ -134,14 +140,19 @@ function createDefaultContext() {
     };
 }
 
+function createDieExpression(context, sides) {
+    return diceExpression.forDie(context.bag.d(sides));
+}
+
+function createFunctionCallExpression(context, name, argumentListExpressions) {
+    var func = context.functions[name] || diceExpressionFunctions[name];
+    return diceExpression.forFunctionCall(name, func, argumentListExpressions);
+}
+
 function createParser(context) {
     var parser = new Parser();
     parser.yy.__context = context || createDefaultContext();
     return parser;
-}
-
-function getFunction(context, name) {
-    return context.functions[name] || diceExpressionFunctions[name];
 }
 
 module.exports.create = createParser;
