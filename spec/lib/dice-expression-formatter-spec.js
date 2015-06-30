@@ -51,6 +51,13 @@ describe("diceExpressionFormatter", function () {
             });
         });
 
+        describe("when expression is a die expression", function () {
+            it("should return formatted expression", function () {
+                var expression = dice.expression.forDie(d3);
+                expect(dice.expressionFormatter.format(expression)).toBe("d3");
+            });
+        });
+
         describe("when expression is a division expression", function () {
             it("should return formatted expression", function () {
                 var expression = dice.expression.forDivision(three, four);

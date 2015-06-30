@@ -23,6 +23,7 @@
 "use strict";
 
 var dice = require("../../lib/dice");
+var diceTest = require("./dice-test");
 
 describe("diceExpressionResultFormatter", function () {
     var three;
@@ -45,6 +46,14 @@ describe("diceExpressionResultFormatter", function () {
             it("should return formatted expression result", function () {
                 var expressionResult = dice.expressionResult.forConstant(42);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe("42");
+            });
+        });
+
+        describe("when expression result is a die expression result", function () {
+            it("should return formatted expression result", function () {
+                var d3 = diceTest.createBagThatProvidesDiceThatAlwaysRollOne().d(3);
+                var expressionResult = dice.expressionResult.forDie(d3);
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("d3");
             });
         });
 

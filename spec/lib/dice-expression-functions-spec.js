@@ -22,7 +22,10 @@
 
 "use strict";
 
+require("../../lib/number-polyfills");
+
 var diceExpressionFunctions = require("../../lib/dice-expression-functions");
+var diceTest = require("./dice-test");
 
 describe("diceExpressionFunctions", function () {
     describe(".ceil", function () {
@@ -65,6 +68,50 @@ describe("diceExpressionFunctions", function () {
         });
     });
 
+    describe(".roll", function () {
+        var d3;
+
+        beforeEach(function () {
+            d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
+        });
+
+        describe("when count is not a number", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.roll(undefined, d3);
+                }).toThrow();
+                expect(function () {
+                    diceExpressionFunctions.roll("3", d3);
+                }).toThrow();
+            });
+        });
+
+        describe("when count less than one", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.roll(0, d3);
+                }).toThrowError(RangeError);
+                expect(function () {
+                    diceExpressionFunctions.roll(Number.MIN_SAFE_INTEGER, d3);
+                }).toThrowError(RangeError);
+            });
+        });
+
+        describe("when die is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.roll(3, undefined);
+                }).toThrow();
+            });
+        });
+
+        it("should return collection of individual rolls", function () {
+            expect(diceExpressionFunctions.roll(1, d3)).toEqual([1]);
+            expect(diceExpressionFunctions.roll(2, d3)).toEqual([2, 3]);
+            expect(diceExpressionFunctions.roll(3, d3)).toEqual([1, 2, 3]);
+        });
+    });
+
     describe(".round", function () {
         describe("when value is negative", function () {
             it("should round to nearest", function () {
@@ -82,6 +129,25 @@ describe("diceExpressionFunctions", function () {
                 expect(diceExpressionFunctions.round(1.5)).toBe(2.0);
                 expect(diceExpressionFunctions.round(1.75)).toBe(2.0);
             });
+        });
+    });
+
+    describe(".sum", function () {
+        describe("when rolls has less than one element", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.sum(undefined);
+                }).toThrow();
+                expect(function () {
+                    diceExpressionFunctions.sum([]);
+                }).toThrow();
+            });
+        });
+
+        it("should return sum of rolls", function () {
+            expect(diceExpressionFunctions.sum([1])).toBe(1);
+            expect(diceExpressionFunctions.sum([1, 2])).toBe(3);
+            expect(diceExpressionFunctions.sum([1, 2, 3])).toBe(6);
         });
     });
 

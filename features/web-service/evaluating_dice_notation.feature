@@ -63,10 +63,10 @@ Scenario Outline: Evaluating dice rolls
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text            | result value |
-        | 3d6        | [(6, 6, 6): 6 + 6 + 6] | 18           |
-        | d10        | [(10): 10]             | 10           |
-        | d%         | [(100): 100]           | 100          |
+        | expression | result text                      | result value |
+        | 3d6        | [sum([roll(3, d6): 6,6,6]): 18]  | 18           |
+        | d10        | [sum([roll(1, d10): 10]): 10]    | 10           |
+        | d%         | [sum([roll(1, d100): 100]): 100] | 100          |
 
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"
@@ -75,11 +75,11 @@ Scenario Outline: Evaluating arithmetic expressions with dice rolls and constant
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text                | result value |
-        | 3d6+4      | [(6, 6, 6): 6 + 6 + 6] + 4 | 22           |
-        | 3d6-4      | [(6, 6, 6): 6 + 6 + 6] - 4 | 14           |
-        | 4*3d6      | 4 * [(6, 6, 6): 6 + 6 + 6] | 72           |
-        | 3d6/4      | [(6, 6, 6): 6 + 6 + 6] / 4 | 4.5          |
+        | expression | result text                         | result value |
+        | 3d6+4      | [sum([roll(3, d6): 6,6,6]): 18] + 4 | 22           |
+        | 3d6-4      | [sum([roll(3, d6): 6,6,6]): 18] - 4 | 14           |
+        | 4*3d6      | 4 * [sum([roll(3, d6): 6,6,6]): 18] | 72           |
+        | 3d6/4      | [sum([roll(3, d6): 6,6,6]): 18] / 4 | 4.5          |
 
 Scenario Outline: Rounding fractional values
     Given a request with the expression "<expression>"
@@ -88,11 +88,11 @@ Scenario Outline: Rounding fractional values
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression   | result text                            | result value |
-        | ceil(1/2)    | [ceil(1 / 2): 1]                       | 1            |
-        | floor(1/2)   | [floor(1 / 2): 0]                      | 0            |
-        | round(1/3)   | [round(1 / 3): 0]                      | 0            |
-        | round(1/2)   | [round(1 / 2): 1]                      | 1            |
-        | trunc(1/2)   | [trunc(1 / 2): 0]                      | 0            |
-        | trunc(3d6/4) | [trunc([(6, 6, 6): 6 + 6 + 6] / 4): 4] | 4            |
+        | expression   | result text                                     | result value |
+        | ceil(1/2)    | [ceil(1 / 2): 1]                                | 1            |
+        | floor(1/2)   | [floor(1 / 2): 0]                               | 0            |
+        | round(1/3)   | [round(1 / 3): 0]                               | 0            |
+        | round(1/2)   | [round(1 / 2): 1]                               | 1            |
+        | trunc(1/2)   | [trunc(1 / 2): 0]                               | 0            |
+        | trunc(3d6/4) | [trunc([sum([roll(3, d6): 6,6,6]): 18] / 4): 4] | 4            |
 

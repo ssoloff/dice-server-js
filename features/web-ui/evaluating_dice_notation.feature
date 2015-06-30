@@ -8,8 +8,8 @@ Scenario: Evaluating well-formed expressions
         And the random number generator name is "constantMax"
     When the expression "3d6+4" is evaluated
     Then an expression result should be displayed
-        And the evaluated expression text should be "3d6 + 4"
-        And the expression result text should be "[(6, 6, 6): 6 + 6 + 6] + 4"
+        And the evaluated expression text should be "sum(roll(3, d6)) + 4"
+        And the expression result text should be "[sum([roll(3, d6): 6,6,6]): 18] + 4"
         And the expression result value should be "22"
         And an error message should not be displayed
 

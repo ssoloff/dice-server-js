@@ -89,6 +89,23 @@ describe("diceExpression", function () {
         });
     });
 
+    describe(".forDie", function () {
+        describe("when die is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expression.forDie(undefined);
+                }).toThrow();
+            });
+        });
+
+        describe(".evaluate", function () {
+            it("should return result with value equal to die", function () {
+                var expression = dice.expression.forDie(d3);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(d3);
+            });
+        });
+    });
+
     describe(".forDivision", function () {
         describe("when dividend expression is falsy", function () {
             it("should throw exception", function () {

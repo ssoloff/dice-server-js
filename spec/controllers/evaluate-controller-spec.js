@@ -75,10 +75,10 @@ describe("evaluateController", function () {
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
                     expression: {
-                        text: "3d6 + 4"
+                        text: "sum(roll(3, d6)) + 4"
                     },
                     expressionResult: {
-                        text: "[(6, 6, 6): 6 + 6 + 6] + 4",
+                        text: "[sum([roll(3, d6): 6,6,6]): 18] + 4",
                         value: 22
                     },
                     randomNumberGenerator: {

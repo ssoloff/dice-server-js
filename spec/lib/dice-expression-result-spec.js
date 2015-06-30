@@ -24,6 +24,7 @@
 
 var _ = require("underscore");
 var dice = require("../../lib/dice");
+var diceTest = require("./dice-test");
 
 describe("diceExpressionResult", function () {
     var three;
@@ -75,6 +76,29 @@ describe("diceExpressionResult", function () {
             it("should return the value of the result", function () {
                 var expressionResult = dice.expressionResult.forConstant(42);
                 expect(expressionResult.value()).toBe(42);
+            });
+        });
+    });
+
+    describe(".forDie", function () {
+        var d3;
+
+        beforeEach(function () {
+            d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
+        });
+
+        describe("when die is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expressionResult.forDie(undefined);
+                }).toThrow();
+            });
+        });
+
+        describe(".value", function () {
+            it("should return the die", function () {
+                var expressionResult = dice.expressionResult.forDie(d3);
+                expect(expressionResult.value()).toBe(d3);
             });
         });
     });

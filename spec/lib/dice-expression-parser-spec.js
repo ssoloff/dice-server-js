@@ -25,6 +25,7 @@
 require("../../lib/math-polyfills");
 
 var dice = require("../../lib/dice");
+var diceExpressionFunctions = require("../../lib/dice-expression-functions");
 var diceTest = require("./dice-test");
 
 describe("diceExpressionParser", function () {
@@ -86,15 +87,36 @@ describe("diceExpressionParser", function () {
 
         describe("dice rolls", function () {
             it("should parse a dice roll with an explicit count", function () {
-                expect(expressionParser.parse("3d6")).toEqual(dice.expression.forRoll(3, expressionParserContext.bag.d(6)));
+                expect(expressionParser.parse("3d6")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                            dice.expression.forConstant(3),
+                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                        ])
+                    ])
+                );
             });
 
             it("should parse a dice roll with an implicit count", function () {
-                expect(expressionParser.parse("d6")).toEqual(dice.expression.forRoll(1, expressionParserContext.bag.d(6)));
+                expect(expressionParser.parse("d6")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                            dice.expression.forConstant(1),
+                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                        ])
+                    ])
+                );
             });
 
             it("should parse a percentile dice roll", function () {
-                expect(expressionParser.parse("2d%")).toEqual(dice.expression.forRoll(2, expressionParserContext.bag.d(100)));
+                expect(expressionParser.parse("2d%")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                            dice.expression.forConstant(2),
+                            dice.expression.forDie(expressionParserContext.bag.d(100))
+                        ])
+                    ])
+                );
             });
         });
 

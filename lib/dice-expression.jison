@@ -108,7 +108,12 @@ literal
             var components = $1.split("d");
             var count = components[0] ? Number(components[0]) : 1;
             var sides = (components[1] === "%") ? 100 : Number(components[1]);
-            $$ = diceExpression.forRoll(count, yy.__context.bag.d(sides));
+            $$ = diceExpression.forFunctionCall("sum", getFunction(yy.__context, "sum"), [
+                diceExpression.forFunctionCall("roll", getFunction(yy.__context, "roll"), [
+                    diceExpression.forConstant(count),
+                    diceExpression.forDie(yy.__context.bag.d(sides))
+                ])
+            ]);
         }
     | INTEGER_LITERAL
         {
