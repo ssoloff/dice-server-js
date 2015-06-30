@@ -24,7 +24,6 @@
 
 var _ = require("underscore");
 var dice = require("../../lib/dice");
-var diceTest = require("./dice-test");
 
 describe("diceExpressionResult", function () {
     var three;
@@ -81,12 +80,6 @@ describe("diceExpressionResult", function () {
     });
 
     describe(".forDie", function () {
-        var d3;
-
-        beforeEach(function () {
-            d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
-        });
-
         describe("when die is falsy", function () {
             it("should throw exception", function () {
                 expect(function () {
@@ -97,6 +90,7 @@ describe("diceExpressionResult", function () {
 
         describe(".value", function () {
             it("should return the die", function () {
+                var d3 = new dice.Bag().d(3);
                 var expressionResult = dice.expressionResult.forDie(d3);
                 expect(expressionResult.value()).toBe(d3);
             });
@@ -205,43 +199,6 @@ describe("diceExpressionResult", function () {
             it("should return the product of the multiplicand and the multiplier", function () {
                 var expressionResult = dice.expressionResult.forMultiplication(three, four);
                 expect(expressionResult.value()).toBe(12);
-            });
-        });
-    });
-
-    describe(".forRoll", function () {
-        describe("when rolls has less than one element", function () {
-            it("should throw exception", function () {
-                expect(function () {
-                    dice.expressionResult.forRoll(undefined);
-                }).toThrow();
-                expect(function () {
-                    dice.expressionResult.forRoll([]);
-                }).toThrow();
-            });
-        });
-
-        describe(".value", function () {
-            describe("when count equals zero", function () {
-                it("should throw exception", function () {
-                    expect(function () {
-                        dice.expressionResult.forRoll([]);
-                    }).toThrowError();
-                });
-            });
-
-            describe("when count equals one", function () {
-                it("should return the result of a single die roll", function () {
-                    var expressionResult = dice.expressionResult.forRoll([1]);
-                    expect(expressionResult.value()).toBe(1);
-                });
-            });
-
-            describe("when count greater than one", function () {
-                it("should return the result of the sum of multiple die rolls", function () {
-                    var expressionResult = dice.expressionResult.forRoll([1, 2, 3, 1]);
-                    expect(expressionResult.value()).toBe(7);
-                });
             });
         });
     });

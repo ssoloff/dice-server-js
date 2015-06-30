@@ -22,19 +22,14 @@
 
 "use strict";
 
-require("../../lib/number-polyfills");
-
 var _ = require("underscore");
 var dice = require("../../lib/dice");
-var diceTest = require("./dice-test");
 
 describe("diceExpression", function () {
-    var d3;
     var three;
     var four;
 
     beforeEach(function () {
-        d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
         three = dice.expression.forConstant(3);
         four = dice.expression.forConstant(4);
     });
@@ -100,6 +95,7 @@ describe("diceExpression", function () {
 
         describe(".evaluate", function () {
             it("should return result with value equal to die", function () {
+                var d3 = new dice.Bag().d(3);
                 var expression = dice.expression.forDie(d3);
                 expect(expression.evaluate()).toBeExpressionResultWithValue(d3);
             });
@@ -218,56 +214,6 @@ describe("diceExpression", function () {
             it("should evaluate subexpressions", function () {
                 var expression = dice.expression.forMultiplication(dice.expression.forMultiplication(four, three), three);
                 expect(expression.evaluate()).toBeExpressionResultWithValue(36);
-            });
-        });
-    });
-
-    describe(".forRoll", function () {
-        describe("when count is not a number", function () {
-            it("should throw exception", function () {
-                expect(function () {
-                    dice.expression.forRoll(undefined, d3);
-                }).toThrow();
-                expect(function () {
-                    dice.expression.forRoll("3", d3);
-                }).toThrow();
-            });
-        });
-
-        describe("when count less than one", function () {
-            it("should throw exception", function () {
-                expect(function () {
-                    dice.expression.forRoll(0, d3);
-                }).toThrowError(RangeError);
-                expect(function () {
-                    dice.expression.forRoll(Number.MIN_SAFE_INTEGER, d3);
-                }).toThrowError(RangeError);
-            });
-        });
-
-        describe("when die is falsy", function () {
-            it("should throw exception", function () {
-                expect(function () {
-                    dice.expression.forRoll(3, undefined);
-                }).toThrow();
-            });
-        });
-
-        describe("when count equals one", function () {
-            describe(".evaluate", function () {
-                it("should return result with value equal to single die roll", function () {
-                    var expression = dice.expression.forRoll(1, d3);
-                    expect(expression.evaluate()).toBeExpressionResultWithValue(1);
-                });
-            });
-        });
-
-        describe("when count greater than one", function () {
-            describe(".evaluate", function () {
-                it("should return result with value equal to sum of multiple die rolls", function () {
-                    var expression = dice.expression.forRoll(4, d3);
-                    expect(expression.evaluate()).toBeExpressionResultWithValue(7);
-                });
             });
         });
     });

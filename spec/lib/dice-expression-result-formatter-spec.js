@@ -23,7 +23,6 @@
 "use strict";
 
 var dice = require("../../lib/dice");
-var diceTest = require("./dice-test");
 
 describe("diceExpressionResultFormatter", function () {
     var three;
@@ -51,7 +50,7 @@ describe("diceExpressionResultFormatter", function () {
 
         describe("when expression result is a die expression result", function () {
             it("should return formatted expression result", function () {
-                var d3 = diceTest.createBagThatProvidesDiceThatAlwaysRollOne().d(3);
+                var d3 = new dice.Bag().d(3);
                 var expressionResult = dice.expressionResult.forDie(d3);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe("d3");
             });
@@ -91,22 +90,6 @@ describe("diceExpressionResultFormatter", function () {
             it("should return formatted expression result", function () {
                 var expressionResult = dice.expressionResult.forMultiplication(three, four);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe("3 * 4");
-            });
-        });
-
-        describe("when expression result is a roll expression result", function () {
-            describe("when count is equal to one", function () {
-                it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forRoll([1]);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[(1): 1]");
-                });
-            });
-
-            describe("when count is greater than one", function () {
-                it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forRoll([1, 2, 3, 1]);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[(1, 2, 3, 1): 1 + 2 + 3 + 1]");
-                });
             });
         });
 
