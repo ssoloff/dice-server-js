@@ -48,7 +48,7 @@ describe("diceExpressionParser", function () {
         it("should use the dice bag in the context", function () {
             expressionParserContext.bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
             var expression = expressionParser.parse("3d6");
-            expect(expression.evaluate().value()).toBe(3);
+            expect(expression.evaluate()).toBeExpressionResultWithValue(3);
         });
     });
 

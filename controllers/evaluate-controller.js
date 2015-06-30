@@ -59,7 +59,7 @@ function evaluate(req, res) {
         var expressionResult = expression.evaluate();
         response.expressionResult = {
             text: dice.expressionResultFormatter.format(expressionResult),
-            value: expressionResult.value()
+            value: expressionResult.value
         };
     }
     catch (e) {

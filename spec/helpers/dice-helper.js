@@ -28,8 +28,8 @@ beforeEach(function () {
             return {
                 compare: function (actualExpressionResult, expectedExpressionResultValue) {
                     return {
-                        message: "Expected expression result with value " + actualExpressionResult.value().toString() + " to be expression result with value " + expectedExpressionResultValue.toString() + ".",
-                        pass: expectedExpressionResultValue === actualExpressionResult.value()
+                        message: "Expected expression result with value " + actualExpressionResult.value.toString() + " to be expression result with value " + expectedExpressionResultValue.toString() + ".",
+                        pass: expectedExpressionResultValue === actualExpressionResult.value
                     };
                 }
             };
