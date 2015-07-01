@@ -48,61 +48,49 @@ d({POSITIVE_INTEGER}|{PERCENT})                     return "DIE_LITERAL"
 
 %left PLUS MINUS
 %left STAR SLASH
-%start expressions
+%start Statement
 
 %%
 
-expressions
-    : expression EOF
+AdditiveExpression
+    : MultiplicativeExpression PLUS MultiplicativeExpression
         {
-            return $1;
+            $$ = diceExpression.forAddition($1, $3);
         }
+    | MultiplicativeExpression MINUS MultiplicativeExpression
+        {
+            $$ = diceExpression.forSubtraction($1, $3);
+        }
+    | MultiplicativeExpression
     ;
 
-argument_list
+ArgumentList
     : /* empty */
         {
             $$ = [];
         }
-    | expression
+    | Expression
         {
             $$ = [$1];
         }
-    | argument_list COMMA expression
+    | ArgumentList COMMA Expression
         {
             $$.push($3);
         }
     ;
 
-expression
-    : expression PLUS expression
-        {
-            $$ = diceExpression.forAddition($1, $3);
-        }
-    | expression MINUS expression
-        {
-            $$ = diceExpression.forSubtraction($1, $3);
-        }
-    | expression STAR expression
-        {
-            $$ = diceExpression.forMultiplication($1, $3);
-        }
-    | expression SLASH expression
-        {
-            $$ = diceExpression.forDivision($1, $3);
-        }
-    | function_call
-    | literal
+Expression
+    : AdditiveExpression
     ;
 
-function_call
-    : IDENTIFIER LPAREN argument_list RPAREN
+FunctionCall
+    : IDENTIFIER LPAREN ArgumentList RPAREN
         {
             $$ = createFunctionCallExpression(yy.__context, $1, $3);
         }
     ;
 
-literal
+Literal
     : DIE_LITERAL
         {
             var sides = Number($1.substr(1));
@@ -124,6 +112,30 @@ literal
         {
             var constant = Number($1);
             $$ = diceExpression.forConstant(constant);
+        }
+    ;
+
+MultiplicativeExpression
+    : PrimaryExpression STAR PrimaryExpression
+        {
+            $$ = diceExpression.forMultiplication($1, $3);
+        }
+    | PrimaryExpression SLASH PrimaryExpression
+        {
+            $$ = diceExpression.forDivision($1, $3);
+        }
+    | PrimaryExpression
+    ;
+
+PrimaryExpression
+    : Literal
+    | FunctionCall
+    ;
+
+Statement
+    : Expression EOF
+        {
+            return $1;
         }
     ;
 
