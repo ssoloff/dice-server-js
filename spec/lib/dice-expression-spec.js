@@ -188,6 +188,23 @@ describe("diceExpression", function () {
         });
     });
 
+    describe(".forGroup", function () {
+        describe("when child expression is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expression.forGroup(undefined);
+                }).toThrow();
+            });
+        });
+
+        describe(".evaluate", function () {
+            it("should return result with value equal to child expression result value", function () {
+                var expression = dice.expression.forGroup(three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(3);
+            });
+        });
+    });
+
     describe(".forMultiplication", function () {
         describe("when multiplicand expression is falsy", function () {
             it("should throw exception", function () {

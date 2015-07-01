@@ -98,3 +98,14 @@ Scenario Outline: Rounding fractional values
         | trunc(1/2)   | [trunc(1 / 2): 0]                               | 0            |
         | trunc(3d6/4) | [trunc([sum([roll(3, d6): 6,6,6]): 18] / 4): 4] | 4            |
 
+Scenario Outline: Evaluating grouped expressions
+    Given a request with the expression "<expression>"
+        And a request with the random number generator named "constantMax"
+    When the evaluate service is invoked
+    Then the response should contain the expression result text "<result text>"
+        And the response should contain the expression result value <result value>
+    Examples:
+        | expression | result text                               | result value |
+        | 3*(2+1)    | 3 * (2 + 1)                               | 9            |
+        | (3d6+1)*2  | ([sum([roll(3, d6): 6,6,6]): 18] + 1) * 2 | 38           |
+

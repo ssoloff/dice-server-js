@@ -130,6 +130,10 @@ MultiplicativeExpression
 PrimaryExpression
     : Literal
     | FunctionCall
+    | LPAREN Expression RPAREN
+        {
+            $$ = diceExpression.forGroup($2);
+        }
     ;
 
 Program

@@ -34,6 +34,7 @@ describe("diceExpressionParser", function () {
     var f = Math.max;
     var one;
     var two;
+    var three;
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(diceTest.isDiceExpressionEqual);
@@ -42,6 +43,7 @@ describe("diceExpressionParser", function () {
         expressionParser = dice.expressionParser.create(expressionParserContext);
         one = dice.expression.forConstant(1);
         two = dice.expression.forConstant(2);
+        three = dice.expression.forConstant(3);
     });
 
     describe(".create", function () {
@@ -108,6 +110,57 @@ describe("diceExpressionParser", function () {
 
             it("should parse the division of two constants", function () {
                 expect(expressionParser.parse("1 / 2")).toEqual(dice.expression.forDivision(one, two));
+            });
+        });
+
+        describe("operator precedence", function () {
+            it("should give precedence to multiplication over addition", function () {
+                expect(expressionParser.parse("3*1+1*3")).toEqual(
+                    dice.expression.forAddition(
+                        dice.expression.forMultiplication(three, one),
+                        dice.expression.forMultiplication(one, three)
+                    )
+                );
+            });
+
+            it("should allow grouping to override operator precedence", function () {
+                expect(expressionParser.parse("(3*1)+(1*3)")).toEqual(
+                    dice.expression.forAddition(
+                        dice.expression.forGroup(dice.expression.forMultiplication(three, one)),
+                        dice.expression.forGroup(dice.expression.forMultiplication(one, three))
+                    )
+                );
+                expect(expressionParser.parse("3*(1+1)*3")).toEqual(
+                    dice.expression.forMultiplication(
+                        dice.expression.forMultiplication(
+                            three,
+                            dice.expression.forGroup(dice.expression.forAddition(one, one))
+                        ),
+                        three
+                    )
+                );
+                expect(expressionParser.parse("3*((1+1)*3)")).toEqual(
+                    dice.expression.forMultiplication(
+                        three,
+                        dice.expression.forGroup(
+                            dice.expression.forMultiplication(
+                                dice.expression.forGroup(dice.expression.forAddition(one, one)),
+                                three
+                            )
+                        )
+                    )
+                );
+                expect(expressionParser.parse("(3*(1+1))*3")).toEqual(
+                    dice.expression.forMultiplication(
+                        dice.expression.forGroup(
+                            dice.expression.forMultiplication(
+                                three,
+                                dice.expression.forGroup(dice.expression.forAddition(one, one))
+                            )
+                        ),
+                        three
+                    )
+                );
             });
         });
 

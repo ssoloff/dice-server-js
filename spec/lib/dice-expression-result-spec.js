@@ -140,6 +140,16 @@ describe("diceExpressionResult", function () {
         });
     });
 
+    describe(".forGroup", function () {
+        describe("when child expression result is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expressionResult.forGroup(undefined);
+                }).toThrow();
+            });
+        });
+    });
+
     describe(".forMultiplication", function () {
         describe("when product is not a number", function () {
             it("should throw exception", function () {

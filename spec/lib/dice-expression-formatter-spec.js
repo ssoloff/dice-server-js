@@ -86,6 +86,13 @@ describe("diceExpressionFormatter", function () {
             });
         });
 
+        describe("when expression is a group expression", function () {
+            it("should return formatted expression", function () {
+                var expression = dice.expression.forGroup(three);
+                expect(dice.expressionFormatter.format(expression)).toBe("(3)");
+            });
+        });
+
         describe("when expression is a multiplication expression", function () {
             it("should return formatted expression", function () {
                 var expression = dice.expression.forMultiplication(three, four);
