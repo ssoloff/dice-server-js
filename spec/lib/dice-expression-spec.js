@@ -235,6 +235,40 @@ describe("diceExpression", function () {
         });
     });
 
+    describe(".forNegative", function () {
+        describe("when child expression is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expression.forNegative(undefined);
+                }).toThrow();
+            });
+        });
+
+        describe(".evaluate", function () {
+            it("should return result with value equal to negative of child expression result value", function () {
+                var expression = dice.expression.forNegative(three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(-3);
+            });
+        });
+    });
+
+    describe(".forPositive", function () {
+        describe("when child expression is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expression.forPositive(undefined);
+                }).toThrow();
+            });
+        });
+
+        describe(".evaluate", function () {
+            it("should return result with value equal to child expression result value", function () {
+                var expression = dice.expression.forPositive(three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(3);
+            });
+        });
+    });
+
     describe(".forSubtraction", function () {
         describe("when minuend expression is falsy", function () {
             it("should throw exception", function () {

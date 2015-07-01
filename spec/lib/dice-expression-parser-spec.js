@@ -147,6 +147,16 @@ describe("diceExpressionParser", function () {
             });
         });
 
+        describe("unary operators", function () {
+            it("should parse positive", function () {
+                expect(expressionParser.parse("+1")).toEqual(dice.expression.forPositive(one));
+            });
+
+            it("should parse negative", function () {
+                expect(expressionParser.parse("-1")).toEqual(dice.expression.forNegative(one));
+            });
+        });
+
         describe("operator precedence", function () {
             it("should give precedence to multiplication over addition", function () {
                 expect(expressionParser.parse("3*1+1*3")).toEqual(
@@ -194,6 +204,28 @@ describe("diceExpressionParser", function () {
                         ),
                         three
                     )
+                );
+            });
+
+            it("should give precedence to divide and round down operator over unary negative operator", function () {
+                expect(expressionParser.parse("1/-2")).toEqual(
+                    dice.expression.forFunctionCall("floor", diceExpressionFunctions.floor, [
+                        dice.expression.forDivision(one, two)
+                    ])
+                );
+                expect(expressionParser.parse("1/ -2")).toEqual(
+                    dice.expression.forDivision(one, dice.expression.forNegative(two))
+                );
+            });
+
+            it("should give precedence to divide and round up operator over unary positive operator", function () {
+                expect(expressionParser.parse("1/+2")).toEqual(
+                    dice.expression.forFunctionCall("ceil", diceExpressionFunctions.ceil, [
+                        dice.expression.forDivision(one, two)
+                    ])
+                );
+                expect(expressionParser.parse("1/ +2")).toEqual(
+                    dice.expression.forDivision(one, dice.expression.forPositive(two))
                 );
             });
         });

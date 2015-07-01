@@ -100,6 +100,20 @@ describe("diceExpressionFormatter", function () {
             });
         });
 
+        describe("when expression is a negative expression", function () {
+            it("should return formatted expression", function () {
+                var expression = dice.expression.forNegative(three);
+                expect(dice.expressionFormatter.format(expression)).toBe("-3");
+            });
+        });
+
+        describe("when expression is a positive expression", function () {
+            it("should return formatted expression", function () {
+                var expression = dice.expression.forPositive(three);
+                expect(dice.expressionFormatter.format(expression)).toBe("+3");
+            });
+        });
+
         describe("when expression is a subtraction expression", function () {
             it("should return formatted expression", function () {
                 var expression = dice.expression.forSubtraction(three, four);

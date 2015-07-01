@@ -122,3 +122,14 @@ Scenario Outline: Evaluating division expressions with extended divide and round
         | 1 /- 2     | [floor(1 / 2): 0]                               | 0            |
         | 1 /+ 2     | [ceil(1 / 2): 1]                                | 1            |
 
+Scenario Outline: Evaluating expressions with unary operators
+    Given a request with the expression "<expression>"
+    When the evaluate service is invoked
+    Then the response should contain the expression result text "<result text>"
+        And the response should contain the expression result value <result value>
+    Examples:
+        | expression | result text                      | result value |
+        | -1         | -1                               | -1           |
+        | +1         | 1                                | 1            |
+        | -3d6       | -[sum([roll(3, d6): 6,6,6]): 18] | -18          |
+

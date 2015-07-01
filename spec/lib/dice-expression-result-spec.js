@@ -179,6 +179,26 @@ describe("diceExpressionResult", function () {
         });
     });
 
+    describe(".forNegative", function () {
+        describe("when child expression result is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expressionResult.forNegative(undefined);
+                }).toThrow();
+            });
+        });
+    });
+
+    describe(".forPositive", function () {
+        describe("when child expression result is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    dice.expressionResult.forPositive(undefined);
+                }).toThrow();
+            });
+        });
+    });
+
     describe(".forSubtraction", function () {
         describe("when difference is not a number", function () {
             it("should throw exception", function () {

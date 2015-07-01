@@ -120,31 +120,31 @@ Literal
     ;
 
 MultiplicativeExpression
-    : MultiplicativeExpression STAR PrimaryExpression
+    : MultiplicativeExpression STAR UnaryExpression
         {
             $$ = diceExpression.forMultiplication($1, $3);
         }
-    | MultiplicativeExpression SLASH PrimaryExpression
+    | MultiplicativeExpression SLASH UnaryExpression
         {
             $$ = diceExpression.forDivision($1, $3);
         }
-    | MultiplicativeExpression SLASH_SLASH PrimaryExpression
+    | MultiplicativeExpression SLASH_SLASH UnaryExpression
         {
             $$ = createFunctionCallExpression(yy.__context, "trunc", [diceExpression.forDivision($1, $3)]);
         }
-    | MultiplicativeExpression SLASH_TILDE PrimaryExpression
+    | MultiplicativeExpression SLASH_TILDE UnaryExpression
         {
             $$ = createFunctionCallExpression(yy.__context, "round", [diceExpression.forDivision($1, $3)]);
         }
-    | MultiplicativeExpression SLASH_MINUS PrimaryExpression
+    | MultiplicativeExpression SLASH_MINUS UnaryExpression
         {
             $$ = createFunctionCallExpression(yy.__context, "floor", [diceExpression.forDivision($1, $3)]);
         }
-    | MultiplicativeExpression SLASH_PLUS PrimaryExpression
+    | MultiplicativeExpression SLASH_PLUS UnaryExpression
         {
             $$ = createFunctionCallExpression(yy.__context, "ceil", [diceExpression.forDivision($1, $3)]);
         }
-    | PrimaryExpression
+    | UnaryExpression
     ;
 
 PrimaryExpression
@@ -161,6 +161,18 @@ Program
         {
             return $1;
         }
+    ;
+
+UnaryExpression
+    : PLUS PrimaryExpression
+        {
+            $$ = diceExpression.forPositive($2);
+        }
+    | MINUS PrimaryExpression
+        {
+            $$ = diceExpression.forNegative($2);
+        }
+    | PrimaryExpression
     ;
 
 %%
