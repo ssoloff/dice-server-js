@@ -43,7 +43,7 @@ function processResponse(response) {
     } else {
         $("#expressionText").val("");
 
-        $("#evaluatedExpressionText").text(response.expression.text);
+        $("#expressionCanonicalText").text(response.expression.canonicalText);
         $("#expressionResultText").text(response.expressionResult.text);
         $("#expressionResultValue").text(response.expressionResult.value.toString());
         $("#expressionResult").show();

@@ -42,8 +42,8 @@ HomePage.prototype.getErrorMessage = function () {
     return this.driver.findElement(By.id("errorMessage")).getText();
 };
 
-HomePage.prototype.getEvaluatedExpressionText = function () {
-    return this.driver.findElement(By.id("evaluatedExpressionText")).getText();
+HomePage.prototype.getExpressionCanonicalText = function () {
+    return this.driver.findElement(By.id("expressionCanonicalText")).getText();
 };
 
 HomePage.prototype.getExpressionResultText = function () {

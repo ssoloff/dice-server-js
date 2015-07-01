@@ -10,6 +10,7 @@ Scenario: Evaluating well-formed expressions
         """
         {
             "expression": {
+                "canonicalText": "5",
                 "text": "5"
             },
             "expressionResult": {

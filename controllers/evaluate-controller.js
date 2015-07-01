@@ -53,7 +53,8 @@ function evaluate(req, res) {
         var expressionParser = dice.expressionParser.create(expressionParserContext);
         var expression = expressionParser.parse(request.expression.text);
         response.expression = {
-            text: dice.expressionFormatter.format(expression)
+            canonicalText: dice.expressionFormatter.format(expression),
+            text: request.expression.text
         };
 
         var expressionResult = expression.evaluate();

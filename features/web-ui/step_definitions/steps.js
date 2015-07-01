@@ -89,9 +89,9 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^the evaluated expression text should be "(.*)"$/, function (evaluatedExpressionText) {
-        return this.homePage.getEvaluatedExpressionText().then(function (text) {
-            expect(text).to.equal(evaluatedExpressionText);
+    this.Then(/^the expression canonical text should be "(.*)"$/, function (expressionCanonicalText) {
+        return this.homePage.getExpressionCanonicalText().then(function (text) {
+            expect(text).to.equal(expressionCanonicalText);
         });
     });
 
