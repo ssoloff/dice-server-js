@@ -133,3 +133,13 @@ Scenario Outline: Evaluating expressions with unary operators
         | +1         | 1                                | 1            |
         | -3d6       | -[sum([roll(3, d6): 6,6,6]): 18] | -18          |
 
+Scenario Outline: Evaluating expressions that result in non-finite values
+    Given a request with the expression "<expression>"
+    When the evaluate service is invoked
+    Then the response should contain an error
+    Examples:
+        | expression  |
+        | d6          |
+        | round(d6)   |
+        | roll(3, d6) |
+

@@ -55,6 +55,10 @@ module.exports = function () {
         expect(this.response).to.deep.equal(JSON.parse(jsonResponse));
     });
 
+    this.Then(/^the response should contain an error$/, function () {
+        expect(this.response.error).to.exist;
+    });
+
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
         expect(this.response.expressionResult.text).to.equal(expressionResultText);
     });

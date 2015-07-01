@@ -148,7 +148,31 @@ describe("evaluateController", function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.error.message.length).toBeGreaterThan(0);
+                    expect(response.error).toBeDefined();
+                });
+            });
+        });
+
+        describe("evaluating an expression whose result value is not a finite number", function () {
+            describe("when result value is not a number", function () {
+                it("should respond with an error", function () {
+                    request.expression.text = "d6";
+
+                    evaluateController.evaluate(req, res);
+
+                    expect(res.status).toHaveBeenCalledWith(200);
+                    expect(response.error).toBeDefined();
+                });
+            });
+
+            describe("when result value is NaN", function () {
+                it("should respond with an error", function () {
+                    request.expression.text = "round(d6)";
+
+                    evaluateController.evaluate(req, res);
+
+                    expect(res.status).toHaveBeenCalledWith(200);
+                    expect(response.error).toBeDefined();
                 });
             });
         });

@@ -24,6 +24,7 @@
 
 require("../lib/number-polyfills");
 
+var _ = require("underscore");
 var dice = require("../lib/dice");
 
 function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
@@ -58,6 +59,9 @@ function evaluate(req, res) {
         };
 
         var expressionResult = expression.evaluate();
+        if (!_.isFinite(expressionResult.value)) {
+            throw new Error("expression does not evaluate to a finite number");
+        }
         response.expressionResult = {
             text: dice.expressionResultFormatter.format(expressionResult),
             value: expressionResult.value
