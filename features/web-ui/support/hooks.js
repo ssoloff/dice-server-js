@@ -22,7 +22,7 @@
 
 "use strict";
 
-var driver = require("./world").getDriver();
+var driver = require("../../support/world").getDriver();
 
 module.exports = function () {
     this.registerHandler("AfterFeatures", function (event, callback) {
