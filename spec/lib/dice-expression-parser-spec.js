@@ -113,6 +113,40 @@ describe("diceExpressionParser", function () {
             });
         });
 
+        describe("extended divide and round operators", function () {
+            it("should parse divide and round towards zero", function () {
+                expect(expressionParser.parse("1 // 2")).toEqual(
+                    dice.expression.forFunctionCall("trunc", diceExpressionFunctions.trunc, [
+                        dice.expression.forDivision(one, two)
+                    ])
+                );
+            });
+
+            it("should parse divide and round to nearest", function () {
+                expect(expressionParser.parse("1 /~ 2")).toEqual(
+                    dice.expression.forFunctionCall("round", diceExpressionFunctions.round, [
+                        dice.expression.forDivision(one, two)
+                    ])
+                );
+            });
+
+            it("should parse divide and round up", function () {
+                expect(expressionParser.parse("1 /+ 2")).toEqual(
+                    dice.expression.forFunctionCall("ceil", diceExpressionFunctions.ceil, [
+                        dice.expression.forDivision(one, two)
+                    ])
+                );
+            });
+
+            it("should parse divide and round down", function () {
+                expect(expressionParser.parse("1 /- 2")).toEqual(
+                    dice.expression.forFunctionCall("floor", diceExpressionFunctions.floor, [
+                        dice.expression.forDivision(one, two)
+                    ])
+                );
+            });
+        });
+
         describe("operator precedence", function () {
             it("should give precedence to multiplication over addition", function () {
                 expect(expressionParser.parse("3*1+1*3")).toEqual(

@@ -39,6 +39,10 @@ d({POSITIVE_INTEGER}|{PERCENT})                     return "DIE_LITERAL"
 "-"                                                 return "MINUS"
 "+"                                                 return "PLUS"
 ")"                                                 return "RPAREN"
+"/-"                                                return "SLASH_MINUS"
+"/+"                                                return "SLASH_PLUS"
+"//"                                                return "SLASH_SLASH"
+"/~"                                                return "SLASH_TILDE"
 "/"                                                 return "SLASH"
 "*"                                                 return "STAR"
 .                                                   throw "illegal character"
@@ -47,7 +51,7 @@ d({POSITIVE_INTEGER}|{PERCENT})                     return "DIE_LITERAL"
 /lex
 
 %left PLUS MINUS
-%left STAR SLASH
+%left STAR SLASH SLASH_SLASH
 %start Program
 
 %%
@@ -123,6 +127,22 @@ MultiplicativeExpression
     | MultiplicativeExpression SLASH PrimaryExpression
         {
             $$ = diceExpression.forDivision($1, $3);
+        }
+    | MultiplicativeExpression SLASH_SLASH PrimaryExpression
+        {
+            $$ = createFunctionCallExpression(yy.__context, "trunc", [diceExpression.forDivision($1, $3)]);
+        }
+    | MultiplicativeExpression SLASH_TILDE PrimaryExpression
+        {
+            $$ = createFunctionCallExpression(yy.__context, "round", [diceExpression.forDivision($1, $3)]);
+        }
+    | MultiplicativeExpression SLASH_MINUS PrimaryExpression
+        {
+            $$ = createFunctionCallExpression(yy.__context, "floor", [diceExpression.forDivision($1, $3)]);
+        }
+    | MultiplicativeExpression SLASH_PLUS PrimaryExpression
+        {
+            $$ = createFunctionCallExpression(yy.__context, "ceil", [diceExpression.forDivision($1, $3)]);
         }
     | PrimaryExpression
     ;

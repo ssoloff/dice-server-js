@@ -108,3 +108,17 @@ Scenario Outline: Evaluating grouped expressions
         | 3*(2+1)    | 3 * (2 + 1)                               | 9            |
         | (3d6+1)*2  | ([sum([roll(3, d6): 6,6,6]): 18] + 1) * 2 | 38           |
 
+Scenario Outline: Evaluating division expressions with extended divide and round operators
+    Given a request with the expression "<expression>"
+    When the evaluate service is invoked
+    Then the response should contain the expression result text "<result text>"
+        And the response should contain the expression result value <result value>
+    Examples:
+        | expression | result text                                     | result value |
+        | 1 // 2     | [trunc(1 / 2): 0]                               | 0            |
+        | 3d6 // 4   | [trunc([sum([roll(3, d6): 6,6,6]): 18] / 4): 4] | 4            |
+        | 1 /~ 3     | [round(1 / 3): 0]                               | 0            |
+        | 1 /~ 2     | [round(1 / 2): 1]                               | 1            |
+        | 1 /- 2     | [floor(1 / 2): 0]                               | 0            |
+        | 1 /+ 2     | [ceil(1 / 2): 1]                                | 1            |
+
