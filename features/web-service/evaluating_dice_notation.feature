@@ -130,7 +130,7 @@ Scenario Outline: Evaluating expressions with unary operators
     Examples:
         | expression | result text                      | result value |
         | -1         | -1                               | -1           |
-        | +1         | 1                                | 1            |
+        | +1         | +1                               | 1            |
         | -3d6       | -[sum([roll(3, d6): 6,6,6]): 18] | -18          |
 
 Scenario Outline: Evaluating expressions that result in non-finite values

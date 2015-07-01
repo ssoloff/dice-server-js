@@ -110,7 +110,7 @@ describe("diceExpressionResultFormatter", function () {
         describe("when expression result is a positive expression result", function () {
             it("should return formatted expression result", function () {
                 var expressionResult = dice.expressionResult.forPositive(three);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("3");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("+3");
             });
         });
 
