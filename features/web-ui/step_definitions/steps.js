@@ -23,8 +23,7 @@
 "use strict";
 
 var chai = require("chai");
-var HomePage = require("../support/home-page");
-var world = require("../../support/world");
+var world = require("../support/world");
 
 var expect = chai.expect;
 
@@ -32,7 +31,7 @@ module.exports = function () {
     this.World = world.World;
 
     this.Before(function (callback) {
-        this.homePage = new HomePage(world.getDriver());
+        this.homePage = world.createHomePage();
         callback();
     });
 

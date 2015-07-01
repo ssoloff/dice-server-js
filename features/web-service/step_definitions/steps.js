@@ -23,13 +23,15 @@
 "use strict";
 
 var chai = require("chai");
-var EvaluateService = require("../support/evaluate-service");
+var world = require("../support/world");
 
 var expect = chai.expect;
 
 module.exports = function () {
+    this.World = world.World;
+
     this.Before(function (callback) {
-        this.evaluateService = new EvaluateService();
+        this.evaluateService = world.createEvaluateService();
         this.response = null;
         callback();
     });

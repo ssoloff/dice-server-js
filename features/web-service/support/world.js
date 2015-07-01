@@ -22,24 +22,16 @@
 
 "use strict";
 
-var webdriver = require("selenium-webdriver");
+var EvaluateService = require("../support/evaluate-service");
 
-var driver = new webdriver.Builder()
-    .withCapabilities(webdriver.Capabilities.firefox())
-    .build();
-
-function getDriver() {
-    return driver;
+function createEvaluateService() {
+    return new EvaluateService();
 }
 
 function World(callback) {
-    this.driver = driver;
-    // NB: wait until browser is open before proceeding
-    this.driver.getTitle().then(function () {
-        callback();
-    });
+    callback();
 }
 
 module.exports.World = World;
-module.exports.getDriver = getDriver;
+module.exports.createEvaluateService = createEvaluateService;
 
