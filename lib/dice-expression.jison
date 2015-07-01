@@ -48,16 +48,16 @@ d({POSITIVE_INTEGER}|{PERCENT})                     return "DIE_LITERAL"
 
 %left PLUS MINUS
 %left STAR SLASH
-%start Statement
+%start Program
 
 %%
 
 AdditiveExpression
-    : MultiplicativeExpression PLUS MultiplicativeExpression
+    : AdditiveExpression PLUS MultiplicativeExpression
         {
             $$ = diceExpression.forAddition($1, $3);
         }
-    | MultiplicativeExpression MINUS MultiplicativeExpression
+    | AdditiveExpression MINUS MultiplicativeExpression
         {
             $$ = diceExpression.forSubtraction($1, $3);
         }
@@ -116,11 +116,11 @@ Literal
     ;
 
 MultiplicativeExpression
-    : PrimaryExpression STAR PrimaryExpression
+    : MultiplicativeExpression STAR PrimaryExpression
         {
             $$ = diceExpression.forMultiplication($1, $3);
         }
-    | PrimaryExpression SLASH PrimaryExpression
+    | MultiplicativeExpression SLASH PrimaryExpression
         {
             $$ = diceExpression.forDivision($1, $3);
         }
@@ -132,7 +132,7 @@ PrimaryExpression
     | FunctionCall
     ;
 
-Statement
+Program
     : Expression EOF
         {
             return $1;
