@@ -3,9 +3,11 @@ Feature: Evaluating dice notation via web UI
     As a player
     I want to be able to evaluate a dice notation expression via a web UI
 
-Scenario: Evaluating well-formed expressions
+Background: The home page is open and produces deterministic results
     Given the home page is open
         And the random number generator name is "constantMax"
+
+Scenario: Evaluating well-formed expressions
     When the expression "3d6+4" is evaluated
     Then an expression result should be displayed
         And the expression canonical text should be "sum(roll(3, d6)) + 4"
@@ -14,18 +16,15 @@ Scenario: Evaluating well-formed expressions
         And an error message should not be displayed
 
 Scenario: Evaluating malformed expressions
-    Given the home page is open
     When the expression "<<INVALID>>" is evaluated
     Then an expression result should not be displayed
         And an error message should be displayed
 
 Scenario: Evaluating empty expressions
-    Given the home page is open
     When the expression "" is evaluated
     Then an error message should not be displayed
 
 Scenario: Pressing ENTER should cause evaluation
-    Given the home page is open
     When the expression "5" is entered
         And the ENTER key is pressed
     Then the expression canonical text should be "5"
@@ -33,20 +32,17 @@ Scenario: Pressing ENTER should cause evaluation
         And the expression result value should be "5"
 
 Scenario: Stale results are removed when an error occurs
-    Given the home page is open
     When the expression "5" is evaluated
         And the expression "<<INVALID>>" is evaluated
     Then an expression result should not be displayed
 
 Scenario: Stale error messages are hidden
-    Given the home page is open
     When the expression "<<INVALID>>" is evaluated
         And the expression "5" is evaluated
     Then an expression result should be displayed
         And an error message should not be displayed
 
 Scenario Outline: Rounding mode
-    Given the home page is open
     When the rounding mode is "<rounding mode>"
         And the expression "<expression>" is evaluated
     Then the expression canonical text should be "<canonical text>"

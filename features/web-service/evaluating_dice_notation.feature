@@ -3,6 +3,9 @@ Feature: Evaluating dice notation via web service
     As a tool developer
     I want to be able to evaluate a dice notation expression via a web service
 
+Background: The service produces deterministic results
+    Given a request with the random number generator named "constantMax"
+
 Scenario: Evaluating well-formed expressions
     Given a request with the expression "5"
     When the evaluate service is invoked
@@ -18,7 +21,7 @@ Scenario: Evaluating well-formed expressions
                 "value": 5
             },
             "randomNumberGenerator": {
-                "name": "uniform"
+                "name": "constantMax"
             }
         }
         """
@@ -59,7 +62,6 @@ Scenario Outline: Evaluating arithmetic expressions with constants
 
 Scenario Outline: Evaluating dice rolls
     Given a request with the expression "<expression>"
-        And a request with the random number generator named "constantMax"
     When the evaluate service is invoked
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
@@ -72,7 +74,6 @@ Scenario Outline: Evaluating dice rolls
 
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"
-        And a request with the random number generator named "constantMax"
     When the evaluate service is invoked
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
@@ -85,7 +86,6 @@ Scenario Outline: Evaluating arithmetic expressions with dice rolls and constant
 
 Scenario Outline: Rounding fractional values
     Given a request with the expression "<expression>"
-        And a request with the random number generator named "constantMax"
     When the evaluate service is invoked
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
@@ -100,7 +100,6 @@ Scenario Outline: Rounding fractional values
 
 Scenario Outline: Evaluating grouped expressions
     Given a request with the expression "<expression>"
-        And a request with the random number generator named "constantMax"
     When the evaluate service is invoked
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
