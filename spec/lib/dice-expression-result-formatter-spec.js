@@ -67,21 +67,21 @@ describe("diceExpressionResultFormatter", function () {
             describe("when zero arguments specified", function () {
                 it("should return formatted expression result", function () {
                     var expressionResult = dice.expressionResult.forFunctionCall(0, "f", []);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(): 0]");
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f() -> 0]");
                 });
             });
 
             describe("when one argument specified", function () {
                 it("should return formatted expression result", function () {
                     var expressionResult = dice.expressionResult.forFunctionCall(1, "f", [three]);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(3): 1]");
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(3) -> 1]");
                 });
             });
 
             describe("when two arguments specified", function () {
                 it("should return formatted expression result", function () {
                     var expressionResult = dice.expressionResult.forFunctionCall(2, "f", [three, four]);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(3, 4): 2]");
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(3, 4) -> 2]");
                 });
             });
         });
