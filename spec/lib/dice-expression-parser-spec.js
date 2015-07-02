@@ -93,6 +93,20 @@ describe("diceExpressionParser", function () {
                     ])
                 );
             });
+
+            it("should parse a dice roll and drop lowest literal", function () {
+                expect(expressionParser.parse("4d6-L")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("dropLowestRolls", diceExpressionFunctions.dropLowestRolls, [
+                            dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                                dice.expression.forConstant(4),
+                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                            ]),
+                            dice.expression.forConstant(1)
+                        ])
+                    ])
+                );
+            });
         });
 
         describe("arithmetic operators", function () {
@@ -252,6 +266,18 @@ describe("diceExpressionParser", function () {
                     };
                     expect(expressionParser.parse("ceil(1)").evaluate()).toBeExpressionResultWithValue(42);
                 });
+            });
+
+            it("should parse the built-in dropLowestRolls() function", function () {
+                expect(expressionParser.parse("dropLowestRolls(roll(3, d6), 2)")).toEqual(
+                    dice.expression.forFunctionCall("dropLowestRolls", diceExpressionFunctions.dropLowestRolls, [
+                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                            dice.expression.forConstant(3),
+                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                        ]),
+                        dice.expression.forConstant(2)
+                    ])
+                );
             });
 
             it("should parse the built-in roll() function", function () {

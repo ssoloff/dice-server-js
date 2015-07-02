@@ -29,24 +29,24 @@ POSITIVE_INTEGER    [1-9][0-9]*
 
 %%
 
-\s+                                                 /* skip whitespace */
-","                                                 return "COMMA"
-{POSITIVE_INTEGER}d({POSITIVE_INTEGER}|{PERCENT})   return "DICE_ROLL_LITERAL"
-d({POSITIVE_INTEGER}|{PERCENT})                     return "DIE_LITERAL"
-{IDENTIFIER}                                        return "IDENTIFIER"
-{DIGIT}+                                            return "INTEGER_LITERAL"
-"("                                                 return "LPAREN"
-"-"                                                 return "MINUS"
-"+"                                                 return "PLUS"
-")"                                                 return "RPAREN"
-"/-"                                                return "SLASH_MINUS"
-"/+"                                                return "SLASH_PLUS"
-"//"                                                return "SLASH_SLASH"
-"/~"                                                return "SLASH_TILDE"
-"/"                                                 return "SLASH"
-"*"                                                 return "STAR"
-.                                                   throw "illegal character"
-<<EOF>>                                             return "EOF"
+\s+                                                         /* skip whitespace */
+","                                                         return "COMMA"
+{POSITIVE_INTEGER}"d"({POSITIVE_INTEGER}|{PERCENT})("-"L)?  return "DICE_ROLL_LITERAL"
+"d"({POSITIVE_INTEGER}|{PERCENT})                           return "DIE_LITERAL"
+{IDENTIFIER}                                                return "IDENTIFIER"
+{DIGIT}+                                                    return "INTEGER_LITERAL"
+"("                                                         return "LPAREN"
+"-"                                                         return "MINUS"
+"+"                                                         return "PLUS"
+")"                                                         return "RPAREN"
+"/-"                                                        return "SLASH_MINUS"
+"/+"                                                        return "SLASH_PLUS"
+"//"                                                        return "SLASH_SLASH"
+"/~"                                                        return "SLASH_TILDE"
+"/"                                                         return "SLASH"
+"*"                                                         return "STAR"
+.                                                           throw "illegal character"
+<<EOF>>                                                     return "EOF"
 
 /lex
 
@@ -102,15 +102,21 @@ Literal
         }
     | DICE_ROLL_LITERAL
         {
-            var components = $1.split("d");
-            var count = Number(components[0]);
-            var sides = (components[1] === "%") ? 100 : Number(components[1]);
-            $$ = createFunctionCallExpression(yy.__context, "sum", [
-                createFunctionCallExpression(yy.__context, "roll", [
-                    diceExpression.forConstant(count),
-                    createDieExpression(yy.__context, sides)
-                ])
+            var components = $1.match(/^(\d+)d([\d%]+)(-L)?$/);
+            var count = Number(components[1]);
+            var sides = (components[2] === "%") ? 100 : Number(components[2]);
+            var rollExpression = createFunctionCallExpression(yy.__context, "roll", [
+                diceExpression.forConstant(count),
+                createDieExpression(yy.__context, sides)
             ]);
+            var andDropLowest = components[3] !== undefined;
+            if (andDropLowest) {
+                rollExpression = createFunctionCallExpression(yy.__context, "dropLowestRolls", [
+                    rollExpression,
+                    diceExpression.forConstant(1)
+                ]);
+            }
+            $$ = createFunctionCallExpression(yy.__context, "sum", [rollExpression]);
         }
     | INTEGER_LITERAL
         {

@@ -72,17 +72,28 @@ Scenario Outline: Evaluating dice rolls
         | 1d%              | [sum([roll(1, d100) -> 100]) -> 100] | 100          |
         | sum(roll(2, d8)) | [sum([roll(2, d8) -> 8,8]) -> 16]    | 16           |
 
+Scenario Outline: Evaluating modified dice rolls
+    Given a request with the expression "<expression>"
+    When the evaluate service is invoked
+    Then the response should contain the expression result text "<result text>"
+        And the response should contain the expression result value <result value>
+    Examples:
+        | expression                           | result text                                                      | result value |
+        | 3d6-L                                | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
+        | sum(dropLowestRolls(roll(3, d6), 1)) | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
+
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"
     When the evaluate service is invoked
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text                             | result value |
-        | 3d6+4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] + 4 | 22           |
-        | 3d6-4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] - 4 | 14           |
-        | 4*3d6      | 4 * [sum([roll(3, d6) -> 6,6,6]) -> 18] | 72           |
-        | 3d6/4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] / 4 | 4.5          |
+        | expression | result text                                                     | result value |
+        | 3d6+4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] + 4                         | 22           |
+        | 3d6-4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] - 4                         | 14           |
+        | 4*3d6      | 4 * [sum([roll(3, d6) -> 6,6,6]) -> 18]                         | 72           |
+        | 3d6/4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] / 4                         | 4.5          |
+        | 2d6-L-1    | [sum([dropLowestRolls([roll(2, d6) -> 6,6], 1) -> 6]) -> 6] - 1 | 5            |
 
 Scenario Outline: Rounding fractional values
     Given a request with the expression "<expression>"
@@ -142,13 +153,4 @@ Scenario Outline: Evaluating expressions that result in non-finite values
         | d6          |
         | round(d6)   |
         | roll(3, d6) |
-
-Scenario Outline: Evaluating expressions that contain functions which modify dice rolls
-    Given a request with the expression "<expression>"
-    When the evaluate service is invoked
-    Then the response should contain the expression result text "<result text>"
-        And the response should contain the expression result value <result value>
-    Examples:
-        | expression                           | result text                                                      | result value |
-        | sum(dropLowestRolls(roll(3, d6), 1)) | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
 
