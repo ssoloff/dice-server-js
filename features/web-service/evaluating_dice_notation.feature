@@ -80,6 +80,7 @@ Scenario Outline: Evaluating modified dice rolls
     Examples:
         | expression                           | result text                                                      | result value |
         | 3d6-L                                | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
+        | 3d6-2L                               | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 2) -> 6]) -> 6]    | 6            |
         | sum(dropLowestRolls(roll(3, d6), 1)) | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
 
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants

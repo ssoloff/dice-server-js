@@ -29,24 +29,24 @@ POSITIVE_INTEGER    [1-9][0-9]*
 
 %%
 
-\s+                                                         /* skip whitespace */
-","                                                         return "COMMA"
-{POSITIVE_INTEGER}"d"({POSITIVE_INTEGER}|{PERCENT})("-"L)?  return "DICE_ROLL_LITERAL"
-"d"({POSITIVE_INTEGER}|{PERCENT})                           return "DIE_LITERAL"
-{IDENTIFIER}                                                return "IDENTIFIER"
-{DIGIT}+                                                    return "INTEGER_LITERAL"
-"("                                                         return "LPAREN"
-"-"                                                         return "MINUS"
-"+"                                                         return "PLUS"
-")"                                                         return "RPAREN"
-"/-"                                                        return "SLASH_MINUS"
-"/+"                                                        return "SLASH_PLUS"
-"//"                                                        return "SLASH_SLASH"
-"/~"                                                        return "SLASH_TILDE"
-"/"                                                         return "SLASH"
-"*"                                                         return "STAR"
-.                                                           throw "illegal character"
-<<EOF>>                                                     return "EOF"
+\s+                                                                             /* skip whitespace */
+","                                                                             return "COMMA"
+{POSITIVE_INTEGER}"d"({POSITIVE_INTEGER}|{PERCENT})("-"{POSITIVE_INTEGER}?L)?   return "DICE_ROLL_LITERAL"
+"d"({POSITIVE_INTEGER}|{PERCENT})                                               return "DIE_LITERAL"
+{IDENTIFIER}                                                                    return "IDENTIFIER"
+{DIGIT}+                                                                        return "INTEGER_LITERAL"
+"("                                                                             return "LPAREN"
+"-"                                                                             return "MINUS"
+"+"                                                                             return "PLUS"
+")"                                                                             return "RPAREN"
+"/-"                                                                            return "SLASH_MINUS"
+"/+"                                                                            return "SLASH_PLUS"
+"//"                                                                            return "SLASH_SLASH"
+"/~"                                                                            return "SLASH_TILDE"
+"/"                                                                             return "SLASH"
+"*"                                                                             return "STAR"
+.                                                                               throw "illegal character"
+<<EOF>>                                                                         return "EOF"
 
 /lex
 
@@ -102,21 +102,7 @@ Literal
         }
     | DICE_ROLL_LITERAL
         {
-            var components = $1.match(/^(\d+)d([\d%]+)(-L)?$/);
-            var count = Number(components[1]);
-            var sides = (components[2] === "%") ? 100 : Number(components[2]);
-            var rollExpression = createFunctionCallExpression(yy.__context, "roll", [
-                diceExpression.forConstant(count),
-                createDieExpression(yy.__context, sides)
-            ]);
-            var andDropLowest = components[3] !== undefined;
-            if (andDropLowest) {
-                rollExpression = createFunctionCallExpression(yy.__context, "dropLowestRolls", [
-                    rollExpression,
-                    diceExpression.forConstant(1)
-                ]);
-            }
-            $$ = createFunctionCallExpression(yy.__context, "sum", [rollExpression]);
+            $$ = createDiceRollExpression(yy.__context, $1);
         }
     | INTEGER_LITERAL
         {
@@ -192,6 +178,27 @@ function createDefaultContext() {
         bag: new DiceBag(),
         functions: {}
     };
+}
+
+function createDiceRollExpression(context, literal) {
+    var components = literal.match(/^(\d+)d([\d%]+)(-(\d*)L)?$/);
+    var rollCount = Number(components[1]);
+    var dieSides = (components[2] === "%") ? 100 : Number(components[2]);
+    var isRollModifierPresent = (components[3] !== undefined);
+
+    var rollExpression = createFunctionCallExpression(context, "roll", [
+        diceExpression.forConstant(rollCount),
+        createDieExpression(context, dieSides)
+    ]);
+    if (isRollModifierPresent) {
+        var rollModifierCount = components[4] ? Number(components[4]) : 1;
+        rollExpression = createFunctionCallExpression(context, "dropLowestRolls", [
+            rollExpression,
+            diceExpression.forConstant(rollModifierCount)
+        ]);
+    }
+
+    return createFunctionCallExpression(context, "sum", [rollExpression]);
 }
 
 function createDieExpression(context, sides) {

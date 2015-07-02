@@ -106,6 +106,17 @@ describe("diceExpressionParser", function () {
                         ])
                     ])
                 );
+                expect(expressionParser.parse("4d6-2L")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("dropLowestRolls", diceExpressionFunctions.dropLowestRolls, [
+                            dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                                dice.expression.forConstant(4),
+                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                            ]),
+                            dice.expression.forConstant(2)
+                        ])
+                    ])
+                );
             });
         });
 
@@ -268,6 +279,10 @@ describe("diceExpressionParser", function () {
                 });
             });
 
+            it("should parse the built-in ceil() function", function () {
+                expect(expressionParser.parse("ceil(1)")).toEqual(dice.expression.forFunctionCall("ceil", diceExpressionFunctions.ceil, [one]));
+            });
+
             it("should parse the built-in dropLowestRolls() function", function () {
                 expect(expressionParser.parse("dropLowestRolls(roll(3, d6), 2)")).toEqual(
                     dice.expression.forFunctionCall("dropLowestRolls", diceExpressionFunctions.dropLowestRolls, [
@@ -280,6 +295,10 @@ describe("diceExpressionParser", function () {
                 );
             });
 
+            it("should parse the built-in floor() function", function () {
+                expect(expressionParser.parse("floor(1)")).toEqual(dice.expression.forFunctionCall("floor", diceExpressionFunctions.floor, [one]));
+            });
+
             it("should parse the built-in roll() function", function () {
                 expect(expressionParser.parse("roll(3, d6)")).toEqual(
                     dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
@@ -287,6 +306,10 @@ describe("diceExpressionParser", function () {
                         dice.expression.forDie(expressionParserContext.bag.d(6))
                     ])
                 );
+            });
+
+            it("should parse the built-in round() function", function () {
+                expect(expressionParser.parse("round(1)")).toEqual(dice.expression.forFunctionCall("round", diceExpressionFunctions.round, [one]));
             });
 
             it("should parse the built-in sum() function", function () {
@@ -298,18 +321,6 @@ describe("diceExpressionParser", function () {
                         ])
                     ])
                 );
-            });
-
-            it("should parse the built-in ceil() function", function () {
-                expect(expressionParser.parse("ceil(1)")).toEqual(dice.expression.forFunctionCall("ceil", diceExpressionFunctions.ceil, [one]));
-            });
-
-            it("should parse the built-in floor() function", function () {
-                expect(expressionParser.parse("floor(1)")).toEqual(dice.expression.forFunctionCall("floor", diceExpressionFunctions.floor, [one]));
-            });
-
-            it("should parse the built-in round() function", function () {
-                expect(expressionParser.parse("round(1)")).toEqual(dice.expression.forFunctionCall("round", diceExpressionFunctions.round, [one]));
             });
 
             it("should parse the built-in trunc() function", function () {
