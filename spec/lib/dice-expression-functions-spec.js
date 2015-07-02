@@ -48,6 +48,68 @@ describe("diceExpressionFunctions", function () {
         });
     });
 
+    describe(".dropLowestRolls", function () {
+        describe("when rolls is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.dropLowestRolls(undefined, 1);
+                }).toThrow();
+            });
+        });
+
+        describe("when count is not a number", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.dropLowestRolls([], "3");
+                }).toThrow();
+            });
+        });
+
+        describe("when count less than zero", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.dropLowestRolls([], -1);
+                }).toThrow();
+            });
+        });
+
+        describe("when count equals zero", function () {
+            it("should return the collection unmodified", function () {
+                expect(diceExpressionFunctions.dropLowestRolls([], 0)).toEqual([]);
+                expect(diceExpressionFunctions.dropLowestRolls([1], 0)).toEqual([1]);
+                expect(diceExpressionFunctions.dropLowestRolls([1, 2], 0)).toEqual([1, 2]);
+            });
+        });
+
+        describe("when count equals one", function () {
+            it("should return the collection without the lowest roll", function () {
+                expect(diceExpressionFunctions.dropLowestRolls([], 1)).toEqual([]);
+                expect(diceExpressionFunctions.dropLowestRolls([1], 1)).toEqual([]);
+                expect(diceExpressionFunctions.dropLowestRolls([1, 2], 1)).toEqual([2]);
+                expect(diceExpressionFunctions.dropLowestRolls([2, 1, 3], 1)).toEqual([2, 3]);
+            });
+        });
+
+        describe("when count equals two", function () {
+            it("should return the collection without the lowest two rolls", function () {
+                expect(diceExpressionFunctions.dropLowestRolls([], 2)).toEqual([]);
+                expect(diceExpressionFunctions.dropLowestRolls([1], 2)).toEqual([]);
+                expect(diceExpressionFunctions.dropLowestRolls([1, 2], 2)).toEqual([]);
+                expect(diceExpressionFunctions.dropLowestRolls([2, 1, 3], 2)).toEqual([3]);
+                expect(diceExpressionFunctions.dropLowestRolls([4, 2, 1, 3], 2)).toEqual([4, 3]);
+            });
+        });
+
+        describe("when rolls contains duplicates", function () {
+            it("should return the collection without the earliest occurrences of the lowest rolls", function () {
+                expect(diceExpressionFunctions.dropLowestRolls([1, 1], 2)).toEqual([]);
+                expect(diceExpressionFunctions.dropLowestRolls([1, 1, 3, 1], 2)).toEqual([3, 1]);
+                expect(diceExpressionFunctions.dropLowestRolls([2, 1, 1], 2)).toEqual([2]);
+                expect(diceExpressionFunctions.dropLowestRolls([2, 1, 3, 2], 2)).toEqual([3, 2]);
+            });
+        });
+    });
+
     describe(".floor", function () {
         describe("when value is negative", function () {
             it("should round down", function () {
