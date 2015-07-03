@@ -47,7 +47,7 @@ d({POSITIVE_INTEGER}|{PERCENT})                                                 
 "/~"                                                                              return 'SLASH_TILDE'
 "/"                                                                               return 'SLASH'
 "*"                                                                               return 'STAR'
-.                                                                                 throw 'illegal character'
+.                                                                                 throw new Error('illegal character')
 <<EOF>>                                                                           return 'EOF'
 
 /lex
