@@ -31,7 +31,7 @@ POSITIVE_INTEGER    [1-9][0-9]*
 
 \s+                                                                               /* skip whitespace */
 ","                                                                               return "COMMA"
-{POSITIVE_INTEGER}d({POSITIVE_INTEGER}|{PERCENT})("-"{POSITIVE_INTEGER}?[HL])?    return "DICE_ROLL_LITERAL"
+{POSITIVE_INTEGER}d({POSITIVE_INTEGER}|{PERCENT})([-+]{POSITIVE_INTEGER}?[HL])?   return "DICE_ROLL_LITERAL"
 d({POSITIVE_INTEGER}|{PERCENT})                                                   return "DIE_LITERAL"
 {IDENTIFIER}                                                                      return "IDENTIFIER"
 {DIGIT}+                                                                          return "INTEGER_LITERAL"
@@ -181,7 +181,7 @@ function createDefaultContext() {
 }
 
 function createDiceRollExpression(context, literal) {
-    var components = literal.match(/^(\d+)d([\d%]+)(-(\d*)([HL]))?$/);
+    var components = literal.match(/^(\d+)d([\d%]+)(([-+])(\d*)([HL]))?$/);
     var rollCount = Number(components[1]);
     var dieSides = (components[2] === "%") ? 100 : Number(components[2]);
     var isRollModifierPresent = (components[3] !== undefined);
@@ -191,9 +191,10 @@ function createDiceRollExpression(context, literal) {
         createDieExpression(context, dieSides)
     ]);
     if (isRollModifierPresent) {
-        var rollModifierCount = components[4] ? Number(components[4]) : 1;
-        var rollModifierDieType = components[5];
-        var rollModifierFunctionName = (rollModifierDieType === "H") ? "dropHighestRolls" : "dropLowestRolls";
+        var rollModifierOperation = components[4];
+        var rollModifierCount = components[5] ? Number(components[5]) : 1;
+        var rollModifierDieType = components[6];
+        var rollModifierFunctionName = getRollModifierFunctionName(rollModifierOperation, rollModifierDieType);
         rollExpression = createFunctionCallExpression(context, rollModifierFunctionName, [
             rollExpression,
             diceExpression.forConstant(rollModifierCount)
@@ -216,6 +217,19 @@ function createParser(context) {
     var parser = new Parser();
     parser.yy.__context = context || createDefaultContext();
     return parser;
+}
+
+function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType) {
+    var rollModifierFunctionNames = {
+        "+": {
+            L: "cloneLowestRolls"
+        },
+        "-": {
+            H: "dropHighestRolls",
+            L: "dropLowestRolls"
+        }
+    };
+    return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType];
 }
 
 module.exports.create = createParser;

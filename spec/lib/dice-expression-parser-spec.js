@@ -94,6 +94,31 @@ describe("diceExpressionParser", function () {
                 );
             });
 
+            it("should parse a dice roll and clone lowest literal", function () {
+                expect(expressionParser.parse("4d6+L")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("cloneLowestRolls", diceExpressionFunctions.cloneLowestRolls, [
+                            dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                                dice.expression.forConstant(4),
+                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                            ]),
+                            dice.expression.forConstant(1)
+                        ])
+                    ])
+                );
+                expect(expressionParser.parse("4d6+2L")).toEqual(
+                    dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
+                        dice.expression.forFunctionCall("cloneLowestRolls", diceExpressionFunctions.cloneLowestRolls, [
+                            dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                                dice.expression.forConstant(4),
+                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                            ]),
+                            dice.expression.forConstant(2)
+                        ])
+                    ])
+                );
+            });
+
             it("should parse a dice roll and drop highest literal", function () {
                 expect(expressionParser.parse("4d6-H")).toEqual(
                     dice.expression.forFunctionCall("sum", diceExpressionFunctions.sum, [
@@ -306,6 +331,18 @@ describe("diceExpressionParser", function () {
 
             it("should parse the built-in ceil() function", function () {
                 expect(expressionParser.parse("ceil(1)")).toEqual(dice.expression.forFunctionCall("ceil", diceExpressionFunctions.ceil, [one]));
+            });
+
+            it("should parse the built-in cloneLowestRolls() function", function () {
+                expect(expressionParser.parse("cloneLowestRolls(roll(3, d6), 2)")).toEqual(
+                    dice.expression.forFunctionCall("cloneLowestRolls", diceExpressionFunctions.cloneLowestRolls, [
+                        dice.expression.forFunctionCall("roll", diceExpressionFunctions.roll, [
+                            dice.expression.forConstant(3),
+                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                        ]),
+                        dice.expression.forConstant(2)
+                    ])
+                );
             });
 
             it("should parse the built-in dropHighestRolls() function", function () {

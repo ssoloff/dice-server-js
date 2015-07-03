@@ -48,6 +48,59 @@ describe("diceExpressionFunctions", function () {
         });
     });
 
+    describe(".cloneLowestRolls", function () {
+        describe("when rolls is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.cloneLowestRolls(undefined, 1);
+                }).toThrow();
+            });
+        });
+
+        describe("when count is not a number", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.cloneLowestRolls([], "3");
+                }).toThrow();
+            });
+        });
+
+        describe("when count less than zero", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.cloneLowestRolls([], -1);
+                }).toThrow();
+            });
+        });
+
+        describe("when count equals zero", function () {
+            it("should return the collection unmodified", function () {
+                expect(diceExpressionFunctions.cloneLowestRolls([], 0)).toEqual([]);
+                expect(diceExpressionFunctions.cloneLowestRolls([1], 0)).toEqual([1]);
+                expect(diceExpressionFunctions.cloneLowestRolls([1, 2], 0)).toEqual([1, 2]);
+            });
+        });
+
+        describe("when count equals one", function () {
+            it("should return the collection with the lowest roll appended", function () {
+                expect(diceExpressionFunctions.cloneLowestRolls([], 1)).toEqual([]);
+                expect(diceExpressionFunctions.cloneLowestRolls([1], 1)).toEqual([1, 1]);
+                expect(diceExpressionFunctions.cloneLowestRolls([1, 2], 1)).toEqual([1, 2, 1]);
+                expect(diceExpressionFunctions.cloneLowestRolls([2, 1, 3], 1)).toEqual([2, 1, 3, 1]);
+            });
+        });
+
+        describe("when count equals two", function () {
+            it("should return the collection with the lowest two rolls appended", function () {
+                expect(diceExpressionFunctions.cloneLowestRolls([], 2)).toEqual([]);
+                expect(diceExpressionFunctions.cloneLowestRolls([1], 2)).toEqual([1, 1]);
+                expect(diceExpressionFunctions.cloneLowestRolls([1, 2], 2)).toEqual([1, 2, 1, 2]);
+                expect(diceExpressionFunctions.cloneLowestRolls([2, 1, 3], 2)).toEqual([2, 1, 3, 1, 2]);
+                expect(diceExpressionFunctions.cloneLowestRolls([4, 2, 1, 3], 2)).toEqual([4, 2, 1, 3, 1, 2]);
+            });
+        });
+    });
+
     describe(".dropHighestRolls", function () {
         describe("when rolls is falsy", function () {
             it("should throw exception", function () {
