@@ -78,6 +78,10 @@ describe('diceExpressionParser', function () {
                 expect(expressionParser.parse('d6')).toEqual(dice.expression.forDie(expressionParserContext.bag.d(6)));
             });
 
+            it('should parse a percentile die literal', function () {
+                expect(expressionParser.parse('d%')).toEqual(dice.expression.forDie(expressionParserContext.bag.d(100)));
+            });
+
             it('should parse a dice roll literal', function () {
                 expect(expressionParser.parse('3d6')).toEqual(
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [

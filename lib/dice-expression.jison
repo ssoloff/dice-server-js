@@ -106,7 +106,8 @@ FunctionCall
 Literal
     : DIE_LITERAL
         {
-            var sides = Number($1.substr(1));
+            var formattedSides = $1.substr(1);
+            var sides = (formattedSides === '%') ? 100 : Number(formattedSides);
             $$ = createDieExpression(yy.__context, sides);
         }
     | DICE_ROLL_LITERAL
