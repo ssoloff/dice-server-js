@@ -106,9 +106,7 @@ FunctionCall
 Literal
     : DIE_LITERAL
         {
-            var formattedSides = $1.substr(1);
-            var sides = (formattedSides === '%') ? 100 : Number(formattedSides);
-            $$ = createDieExpression(yy.__context, sides);
+            $$ = createDieExpression(yy.__context, $1);
         }
     | DICE_ROLL_LITERAL
         {
@@ -192,14 +190,14 @@ function createDefaultContext() {
 }
 
 function createDiceRollExpression(context, literal) {
-    var components = literal.match(/^(\d+)d([\d%]+)(([-+])(\d*)([HL]))?$/);
+    var components = literal.match(/^(\d+)(d[\d%]+)(([-+])(\d*)([HL]))?$/);
     var rollCount = Number(components[1]);
-    var dieSides = (components[2] === '%') ? 100 : Number(components[2]);
+    var dieLiteral = components[2];
     var isRollModifierPresent = (components[3] !== undefined);
 
     var rollExpression = createFunctionCallExpression(context, 'roll', [
         diceExpression.forConstant(rollCount),
-        createDieExpression(context, dieSides)
+        createDieExpression(context, dieLiteral)
     ]);
     if (isRollModifierPresent) {
         var rollModifierOperation = components[4];
@@ -215,7 +213,9 @@ function createDiceRollExpression(context, literal) {
     return createFunctionCallExpression(context, 'sum', [rollExpression]);
 }
 
-function createDieExpression(context, sides) {
+function createDieExpression(context, literal) {
+    var formattedSides = literal.substr(1);
+    var sides = (formattedSides === '%') ? 100 : Number(formattedSides);
     return diceExpression.forDie(context.bag.d(sides));
 }
 
