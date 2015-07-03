@@ -38,6 +38,7 @@ d({POSITIVE_INTEGER}|{PERCENT})                                                 
 "("                                                                               return 'LPAREN'
 "["                                                                               return 'LSQUAREBRACE'
 "-"                                                                               return 'MINUS'
+"%"                                                                               return 'PERCENT'
 "+"                                                                               return 'PLUS'
 ")"                                                                               return 'RPAREN'
 "]"                                                                               return 'RSQUAREBRACE'
@@ -53,7 +54,7 @@ d({POSITIVE_INTEGER}|{PERCENT})                                                 
 /lex
 
 %left PLUS MINUS
-%left STAR SLASH SLASH_SLASH
+%left STAR SLASH SLASH_SLASH SLASH_TILDE SLASH_PLUS SLASH_MINUS PERCENT
 %start Program
 
 %%
@@ -143,6 +144,10 @@ MultiplicativeExpression
     | MultiplicativeExpression SLASH_PLUS UnaryExpression
         {
             $$ = createFunctionCallExpression(yy.__context, 'ceil', [diceExpression.forDivision($1, $3)]);
+        }
+    | MultiplicativeExpression PERCENT UnaryExpression
+        {
+            $$ = diceExpression.forModulo($1, $3);
         }
     | UnaryExpression
     ;

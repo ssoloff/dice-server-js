@@ -171,6 +171,35 @@ describe('diceExpressionResult', function () {
         });
     });
 
+    describe('.forModulo', function () {
+        describe('when remainder is not a number', function () {
+            it('should throw exception', function () {
+                expect(function () {
+                    dice.expressionResult.forModulo(undefined, four, three);
+                }).toThrow();
+                expect(function () {
+                    dice.expressionResult.forModulo('1', four, three);
+                }).toThrow();
+            });
+        });
+
+        describe('when dividend expression result is falsy', function () {
+            it('should throw exception', function () {
+                expect(function () {
+                    dice.expressionResult.forModulo(1, undefined, three);
+                }).toThrow();
+            });
+        });
+
+        describe('when divisor expression result is falsy', function () {
+            it('should throw exception', function () {
+                expect(function () {
+                    dice.expressionResult.forModulo(1, four, undefined);
+                }).toThrow();
+            });
+        });
+    });
+
     describe('.forMultiplication', function () {
         describe('when product is not a number', function () {
             it('should throw exception', function () {

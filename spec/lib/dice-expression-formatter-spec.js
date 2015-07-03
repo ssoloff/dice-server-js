@@ -109,6 +109,13 @@ describe('diceExpressionFormatter', function () {
             });
         });
 
+        describe('when expression is a modulo expression', function () {
+            it('should return formatted expression', function () {
+                var expression = dice.expression.forModulo(four, three);
+                expect(dice.expressionFormatter.format(expression)).toBe('4 % 3');
+            });
+        });
+
         describe('when expression is a multiplication expression', function () {
             it('should return formatted expression', function () {
                 var expression = dice.expression.forMultiplication(three, four);

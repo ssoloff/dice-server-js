@@ -70,6 +70,8 @@ Scenario Outline: Evaluating arithmetic expressions with constants
         | 3*4        | 3 * 4       | 12                 |
         | 4/3        | 4 / 3       | 1.3333333333333333 |
         | 3/4        | 3 / 4       | 0.75               |
+        | 4%3        | 4 % 3       | 1                  |
+        | 3%4        | 3 % 4       | 3                  |
 
 Scenario Outline: Evaluating dice rolls
     Given a request with the expression "<expression>"
@@ -114,6 +116,8 @@ Scenario Outline: Evaluating arithmetic expressions with dice rolls and constant
         | 3d6-4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] - 4                          | 14           |
         | 4*3d6      | 4 * [sum([roll(3, d6) -> [6, 6, 6]]) -> 18]                          | 72           |
         | 3d6/4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] / 4                          | 4.5          |
+        | 3d6%4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] % 4                          | 2            |
+        | 1d%%3      | [sum([roll(1, d100) -> [100]]) -> 100] % 3                           | 1            |
         | 2d6-L-1    | [sum([dropLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6]]) -> 6] - 1 | 5            |
 
 Scenario Outline: Rounding fractional values

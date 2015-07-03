@@ -221,6 +221,10 @@ describe('diceExpressionParser', function () {
             it('should parse the division of two constants', function () {
                 expect(expressionParser.parse('1 / 2')).toEqual(dice.expression.forDivision(one, two));
             });
+
+            it('should parse the modulo of two constants', function () {
+                expect(expressionParser.parse('3 % 2')).toEqual(dice.expression.forModulo(three, two));
+            });
         });
 
         describe('extended divide and round operators', function () {

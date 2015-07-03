@@ -225,6 +225,36 @@ describe('diceExpression', function () {
         });
     });
 
+    describe('.forModulo', function () {
+        describe('when dividend expression is falsy', function () {
+            it('should throw exception', function () {
+                expect(function () {
+                    dice.expression.forModulo(undefined, three);
+                }).toThrow();
+            });
+        });
+
+        describe('when divisor expression is falsy', function () {
+            it('should throw exception', function () {
+                expect(function () {
+                    dice.expression.forModulo(four, undefined);
+                }).toThrow();
+            });
+        });
+
+        describe('.evaluate', function () {
+            it('should return result with value equal to remainder of division of dividend and divisor', function () {
+                var expression = dice.expression.forModulo(four, three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(1);
+            });
+
+            it('should evaluate subexpressions', function () {
+                var expression = dice.expression.forModulo(dice.expression.forModulo(three, four), three);
+                expect(expression.evaluate()).toBeExpressionResultWithValue(0);
+            });
+        });
+    });
+
     describe('.forMultiplication', function () {
         describe('when multiplicand expression is falsy', function () {
             it('should throw exception', function () {
