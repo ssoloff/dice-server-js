@@ -111,14 +111,15 @@ Scenario Outline: Evaluating arithmetic expressions with dice rolls and constant
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text                                                          | result value |
-        | 3d6+4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4                          | 22           |
-        | 3d6-4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] - 4                          | 14           |
-        | 4*3d6      | 4 * [sum([roll(3, d6) -> [6, 6, 6]]) -> 18]                          | 72           |
-        | 3d6/4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] / 4                          | 4.5          |
-        | 3d6%4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] % 4                          | 2            |
-        | 1d%%3      | [sum([roll(1, d100) -> [100]]) -> 100] % 3                           | 1            |
-        | 2d6-L-1    | [sum([dropLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6]]) -> 6] - 1 | 5            |
+        | expression | result text                                                            | result value |
+        | 3d6+4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4                            | 22           |
+        | 3d6-4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] - 4                            | 14           |
+        | 4*3d6      | 4 * [sum([roll(3, d6) -> [6, 6, 6]]) -> 18]                            | 72           |
+        | 3d6/4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] / 4                            | 4.5          |
+        | 3d6%4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] % 4                            | 2            |
+        | 1d%%3      | [sum([roll(1, d100) -> [100]]) -> 100] % 3                             | 1            |
+        | 2d6-L-1    | [sum([dropLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6]]) -> 6] - 1   | 5            |
+        | 1d6+L+1    | [sum([cloneLowestRolls([roll(1, d6) -> [6]], 1) -> [6, 6]]) -> 12] + 1 | 13           |
 
 Scenario Outline: Rounding fractional values
     Given a request with the expression "<expression>"
