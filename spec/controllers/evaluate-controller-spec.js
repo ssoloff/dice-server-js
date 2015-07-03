@@ -79,7 +79,7 @@ describe('evaluateController', function () {
                         text: '3d6+4'
                     },
                     expressionResult: {
-                        text: '[sum([roll(3, d6) -> 6,6,6]) -> 18] + 4',
+                        text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
                         value: 22
                     },
                     randomNumberGenerator: {

@@ -66,11 +66,11 @@ Scenario Outline: Evaluating dice rolls
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression       | result text                          | result value |
-        | 3d6              | [sum([roll(3, d6) -> 6,6,6]) -> 18]  | 18           |
-        | 1d10             | [sum([roll(1, d10) -> 10]) -> 10]    | 10           |
-        | 1d%              | [sum([roll(1, d100) -> 100]) -> 100] | 100          |
-        | sum(roll(2, d8)) | [sum([roll(2, d8) -> 8,8]) -> 16]    | 16           |
+        | expression       | result text                             | result value |
+        | 3d6              | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] | 18           |
+        | 1d10             | [sum([roll(1, d10) -> [10]]) -> 10]     | 10           |
+        | 1d%              | [sum([roll(1, d100) -> [100]]) -> 100]  | 100          |
+        | sum(roll(2, d8)) | [sum([roll(2, d8) -> [8, 8]]) -> 16]    | 16           |
 
 Scenario Outline: Evaluating modified dice rolls
     Given a request with the expression "<expression>"
@@ -78,19 +78,19 @@ Scenario Outline: Evaluating modified dice rolls
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression                             | result text                                                          | result value |
-        | 2d6+L                                  | [sum([cloneLowestRolls([roll(2, d6) -> 6,6], 1) -> 6,6,6]) -> 18]    | 18           |
-        | 2d6+2L                                 | [sum([cloneLowestRolls([roll(2, d6) -> 6,6], 2) -> 6,6,6,6]) -> 24]  | 24           |
-        | 2d6+H                                  | [sum([cloneHighestRolls([roll(2, d6) -> 6,6], 1) -> 6,6,6]) -> 18]   | 18           |
-        | 2d6+2H                                 | [sum([cloneHighestRolls([roll(2, d6) -> 6,6], 2) -> 6,6,6,6]) -> 24] | 24           |
-        | 3d6-L                                  | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12]     | 12           |
-        | 3d6-2L                                 | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 2) -> 6]) -> 6]        | 6            |
-        | 3d6-H                                  | [sum([dropHighestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12]    | 12           |
-        | 3d6-2H                                 | [sum([dropHighestRolls([roll(3, d6) -> 6,6,6], 2) -> 6]) -> 6]       | 6            |
-        | sum(cloneLowestRolls(roll(2, d6), 1))  | [sum([cloneLowestRolls([roll(2, d6) -> 6,6], 1) -> 6,6,6]) -> 18]    | 18           |
-        | sum(cloneHighestRolls(roll(2, d6), 1)) | [sum([cloneHighestRolls([roll(2, d6) -> 6,6], 1) -> 6,6,6]) -> 18]   | 18           |
-        | sum(dropLowestRolls(roll(3, d6), 1))   | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12]     | 12           |
-        | sum(dropHighestRolls(roll(3, d6), 1))  | [sum([dropHighestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12]    | 12           |
+        | expression                             | result text                                                                  | result value |
+        | 2d6+L                                  | [sum([cloneLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]     | 18           |
+        | 2d6+2L                                 | [sum([cloneLowestRolls([roll(2, d6) -> [6, 6]], 2) -> [6, 6, 6, 6]]) -> 24]  | 24           |
+        | 2d6+H                                  | [sum([cloneHighestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]    | 18           |
+        | 2d6+2H                                 | [sum([cloneHighestRolls([roll(2, d6) -> [6, 6]], 2) -> [6, 6, 6, 6]]) -> 24] | 24           |
+        | 3d6-L                                  | [sum([dropLowestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]      | 12           |
+        | 3d6-2L                                 | [sum([dropLowestRolls([roll(3, d6) -> [6, 6, 6]], 2) -> [6]]) -> 6]          | 6            |
+        | 3d6-H                                  | [sum([dropHighestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]     | 12           |
+        | 3d6-2H                                 | [sum([dropHighestRolls([roll(3, d6) -> [6, 6, 6]], 2) -> [6]]) -> 6]         | 6            |
+        | sum(cloneLowestRolls(roll(2, d6), 1))  | [sum([cloneLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]     | 18           |
+        | sum(cloneHighestRolls(roll(2, d6), 1)) | [sum([cloneHighestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]    | 18           |
+        | sum(dropLowestRolls(roll(3, d6), 1))   | [sum([dropLowestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]      | 12           |
+        | sum(dropHighestRolls(roll(3, d6), 1))  | [sum([dropHighestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]     | 12           |
 
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"
@@ -98,12 +98,12 @@ Scenario Outline: Evaluating arithmetic expressions with dice rolls and constant
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text                                                     | result value |
-        | 3d6+4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] + 4                         | 22           |
-        | 3d6-4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] - 4                         | 14           |
-        | 4*3d6      | 4 * [sum([roll(3, d6) -> 6,6,6]) -> 18]                         | 72           |
-        | 3d6/4      | [sum([roll(3, d6) -> 6,6,6]) -> 18] / 4                         | 4.5          |
-        | 2d6-L-1    | [sum([dropLowestRolls([roll(2, d6) -> 6,6], 1) -> 6]) -> 6] - 1 | 5            |
+        | expression | result text                                                          | result value |
+        | 3d6+4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4                          | 22           |
+        | 3d6-4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] - 4                          | 14           |
+        | 4*3d6      | 4 * [sum([roll(3, d6) -> [6, 6, 6]]) -> 18]                          | 72           |
+        | 3d6/4      | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] / 4                          | 4.5          |
+        | 2d6-L-1    | [sum([dropLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6]]) -> 6] - 1 | 5            |
 
 Scenario Outline: Rounding fractional values
     Given a request with the expression "<expression>"
@@ -111,13 +111,13 @@ Scenario Outline: Rounding fractional values
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression   | result text                                           | result value |
-        | ceil(1/2)    | [ceil(1 / 2) -> 1]                                    | 1            |
-        | floor(1/2)   | [floor(1 / 2) -> 0]                                   | 0            |
-        | round(1/3)   | [round(1 / 3) -> 0]                                   | 0            |
-        | round(1/2)   | [round(1 / 2) -> 1]                                   | 1            |
-        | trunc(1/2)   | [trunc(1 / 2) -> 0]                                   | 0            |
-        | trunc(3d6/4) | [trunc([sum([roll(3, d6) -> 6,6,6]) -> 18] / 4) -> 4] | 4            |
+        | expression   | result text                                               | result value |
+        | ceil(1/2)    | [ceil(1 / 2) -> 1]                                        | 1            |
+        | floor(1/2)   | [floor(1 / 2) -> 0]                                       | 0            |
+        | round(1/3)   | [round(1 / 3) -> 0]                                       | 0            |
+        | round(1/2)   | [round(1 / 2) -> 1]                                       | 1            |
+        | trunc(1/2)   | [trunc(1 / 2) -> 0]                                       | 0            |
+        | trunc(3d6/4) | [trunc([sum([roll(3, d6) -> [6, 6, 6]]) -> 18] / 4) -> 4] | 4            |
 
 Scenario Outline: Evaluating grouped expressions
     Given a request with the expression "<expression>"
@@ -125,9 +125,9 @@ Scenario Outline: Evaluating grouped expressions
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text                                   | result value |
-        | 3*(2+1)    | 3 * (2 + 1)                                   | 9            |
-        | (3d6+1)*2  | ([sum([roll(3, d6) -> 6,6,6]) -> 18] + 1) * 2 | 38           |
+        | expression | result text                                       | result value |
+        | 3*(2+1)    | 3 * (2 + 1)                                       | 9            |
+        | (3d6+1)*2  | ([sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 1) * 2 | 38           |
 
 Scenario Outline: Evaluating division expressions with extended divide and round operators
     Given a request with the expression "<expression>"
@@ -135,13 +135,13 @@ Scenario Outline: Evaluating division expressions with extended divide and round
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text                                           | result value |
-        | 1 // 2     | [trunc(1 / 2) -> 0]                                   | 0            |
-        | 3d6 // 4   | [trunc([sum([roll(3, d6) -> 6,6,6]) -> 18] / 4) -> 4] | 4            |
-        | 1 /~ 3     | [round(1 / 3) -> 0]                                   | 0            |
-        | 1 /~ 2     | [round(1 / 2) -> 1]                                   | 1            |
-        | 1 /- 2     | [floor(1 / 2) -> 0]                                   | 0            |
-        | 1 /+ 2     | [ceil(1 / 2) -> 1]                                    | 1            |
+        | expression | result text                                               | result value |
+        | 1 // 2     | [trunc(1 / 2) -> 0]                                       | 0            |
+        | 3d6 // 4   | [trunc([sum([roll(3, d6) -> [6, 6, 6]]) -> 18] / 4) -> 4] | 4            |
+        | 1 /~ 3     | [round(1 / 3) -> 0]                                       | 0            |
+        | 1 /~ 2     | [round(1 / 2) -> 1]                                       | 1            |
+        | 1 /- 2     | [floor(1 / 2) -> 0]                                       | 0            |
+        | 1 /+ 2     | [ceil(1 / 2) -> 1]                                        | 1            |
 
 Scenario Outline: Evaluating expressions with unary operators
     Given a request with the expression "<expression>"
@@ -149,10 +149,10 @@ Scenario Outline: Evaluating expressions with unary operators
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression | result text                          | result value |
-        | -1         | -1                                   | -1           |
-        | +1         | +1                                   | 1            |
-        | -3d6       | -[sum([roll(3, d6) -> 6,6,6]) -> 18] | -18          |
+        | expression | result text                              | result value |
+        | -1         | -1                                       | -1           |
+        | +1         | +1                                       | 1            |
+        | -3d6       | -[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] | -18          |
 
 Scenario Outline: Evaluating expressions that result in non-finite values
     Given a request with the expression "<expression>"
