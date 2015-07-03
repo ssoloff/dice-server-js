@@ -48,6 +48,68 @@ describe("diceExpressionFunctions", function () {
         });
     });
 
+    describe(".dropHighestRolls", function () {
+        describe("when rolls is falsy", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.dropHighestRolls(undefined, 1);
+                }).toThrow();
+            });
+        });
+
+        describe("when count is not a number", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.dropHighestRolls([], "3");
+                }).toThrow();
+            });
+        });
+
+        describe("when count less than zero", function () {
+            it("should throw exception", function () {
+                expect(function () {
+                    diceExpressionFunctions.dropHighestRolls([], -1);
+                }).toThrow();
+            });
+        });
+
+        describe("when count equals zero", function () {
+            it("should return the collection unmodified", function () {
+                expect(diceExpressionFunctions.dropHighestRolls([], 0)).toEqual([]);
+                expect(diceExpressionFunctions.dropHighestRolls([1], 0)).toEqual([1]);
+                expect(diceExpressionFunctions.dropHighestRolls([1, 2], 0)).toEqual([1, 2]);
+            });
+        });
+
+        describe("when count equals one", function () {
+            it("should return the collection without the highest roll", function () {
+                expect(diceExpressionFunctions.dropHighestRolls([], 1)).toEqual([]);
+                expect(diceExpressionFunctions.dropHighestRolls([1], 1)).toEqual([]);
+                expect(diceExpressionFunctions.dropHighestRolls([1, 2], 1)).toEqual([1]);
+                expect(diceExpressionFunctions.dropHighestRolls([2, 1, 3], 1)).toEqual([2, 1]);
+            });
+        });
+
+        describe("when count equals two", function () {
+            it("should return the collection without the highest two rolls", function () {
+                expect(diceExpressionFunctions.dropHighestRolls([], 2)).toEqual([]);
+                expect(diceExpressionFunctions.dropHighestRolls([1], 2)).toEqual([]);
+                expect(diceExpressionFunctions.dropHighestRolls([1, 2], 2)).toEqual([]);
+                expect(diceExpressionFunctions.dropHighestRolls([2, 1, 3], 2)).toEqual([1]);
+                expect(diceExpressionFunctions.dropHighestRolls([4, 2, 1, 3], 2)).toEqual([2, 1]);
+            });
+        });
+
+        describe("when rolls contains duplicates", function () {
+            it("should return the collection without the earliest occurrences of the highest rolls", function () {
+                expect(diceExpressionFunctions.dropHighestRolls([1, 1], 2)).toEqual([]);
+                expect(diceExpressionFunctions.dropHighestRolls([3, 3, 1, 3], 2)).toEqual([1, 3]);
+                expect(diceExpressionFunctions.dropHighestRolls([1, 2, 2], 2)).toEqual([1]);
+                expect(diceExpressionFunctions.dropHighestRolls([2, 3, 1, 2], 2)).toEqual([1, 2]);
+            });
+        });
+    });
+
     describe(".dropLowestRolls", function () {
         describe("when rolls is falsy", function () {
             it("should throw exception", function () {

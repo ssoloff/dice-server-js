@@ -29,24 +29,24 @@ POSITIVE_INTEGER    [1-9][0-9]*
 
 %%
 
-\s+                                                                             /* skip whitespace */
-","                                                                             return "COMMA"
-{POSITIVE_INTEGER}"d"({POSITIVE_INTEGER}|{PERCENT})("-"{POSITIVE_INTEGER}?L)?   return "DICE_ROLL_LITERAL"
-"d"({POSITIVE_INTEGER}|{PERCENT})                                               return "DIE_LITERAL"
-{IDENTIFIER}                                                                    return "IDENTIFIER"
-{DIGIT}+                                                                        return "INTEGER_LITERAL"
-"("                                                                             return "LPAREN"
-"-"                                                                             return "MINUS"
-"+"                                                                             return "PLUS"
-")"                                                                             return "RPAREN"
-"/-"                                                                            return "SLASH_MINUS"
-"/+"                                                                            return "SLASH_PLUS"
-"//"                                                                            return "SLASH_SLASH"
-"/~"                                                                            return "SLASH_TILDE"
-"/"                                                                             return "SLASH"
-"*"                                                                             return "STAR"
-.                                                                               throw "illegal character"
-<<EOF>>                                                                         return "EOF"
+\s+                                                                               /* skip whitespace */
+","                                                                               return "COMMA"
+{POSITIVE_INTEGER}d({POSITIVE_INTEGER}|{PERCENT})("-"{POSITIVE_INTEGER}?[HL])?    return "DICE_ROLL_LITERAL"
+d({POSITIVE_INTEGER}|{PERCENT})                                                   return "DIE_LITERAL"
+{IDENTIFIER}                                                                      return "IDENTIFIER"
+{DIGIT}+                                                                          return "INTEGER_LITERAL"
+"("                                                                               return "LPAREN"
+"-"                                                                               return "MINUS"
+"+"                                                                               return "PLUS"
+")"                                                                               return "RPAREN"
+"/-"                                                                              return "SLASH_MINUS"
+"/+"                                                                              return "SLASH_PLUS"
+"//"                                                                              return "SLASH_SLASH"
+"/~"                                                                              return "SLASH_TILDE"
+"/"                                                                               return "SLASH"
+"*"                                                                               return "STAR"
+.                                                                                 throw "illegal character"
+<<EOF>>                                                                           return "EOF"
 
 /lex
 
@@ -181,7 +181,7 @@ function createDefaultContext() {
 }
 
 function createDiceRollExpression(context, literal) {
-    var components = literal.match(/^(\d+)d([\d%]+)(-(\d*)L)?$/);
+    var components = literal.match(/^(\d+)d([\d%]+)(-(\d*)([HL]))?$/);
     var rollCount = Number(components[1]);
     var dieSides = (components[2] === "%") ? 100 : Number(components[2]);
     var isRollModifierPresent = (components[3] !== undefined);
@@ -192,7 +192,9 @@ function createDiceRollExpression(context, literal) {
     ]);
     if (isRollModifierPresent) {
         var rollModifierCount = components[4] ? Number(components[4]) : 1;
-        rollExpression = createFunctionCallExpression(context, "dropLowestRolls", [
+        var rollModifierDieType = components[5];
+        var rollModifierFunctionName = (rollModifierDieType === "H") ? "dropHighestRolls" : "dropLowestRolls";
+        rollExpression = createFunctionCallExpression(context, rollModifierFunctionName, [
             rollExpression,
             diceExpression.forConstant(rollModifierCount)
         ]);

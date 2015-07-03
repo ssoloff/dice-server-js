@@ -78,10 +78,13 @@ Scenario Outline: Evaluating modified dice rolls
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression                           | result text                                                      | result value |
-        | 3d6-L                                | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
-        | 3d6-2L                               | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 2) -> 6]) -> 6]    | 6            |
-        | sum(dropLowestRolls(roll(3, d6), 1)) | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
+        | expression                            | result text                                                       | result value |
+        | 3d6-L                                 | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12]  | 12           |
+        | 3d6-2L                                | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 2) -> 6]) -> 6]     | 6            |
+        | 3d6-H                                 | [sum([dropHighestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
+        | 3d6-2H                                | [sum([dropHighestRolls([roll(3, d6) -> 6,6,6], 2) -> 6]) -> 6]    | 6            |
+        | sum(dropLowestRolls(roll(3, d6), 1))  | [sum([dropLowestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12]  | 12           |
+        | sum(dropHighestRolls(roll(3, d6), 1)) | [sum([dropHighestRolls([roll(3, d6) -> 6,6,6], 1) -> 6,6]) -> 12] | 12           |
 
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"
