@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
 beforeEach(function () {
     jasmine.addMatchers({
@@ -28,7 +28,7 @@ beforeEach(function () {
             return {
                 compare: function (actualExpressionResult, expectedExpressionResultValue) {
                     return {
-                        message: "Expected expression result with value " + actualExpressionResult.value.toString() + " to be expression result with value " + expectedExpressionResultValue.toString() + ".",
+                        message: 'Expected expression result with value ' + actualExpressionResult.value.toString() + ' to be expression result with value ' + expectedExpressionResultValue.toString() + '.',
                         pass: expectedExpressionResultValue === actualExpressionResult.value
                     };
                 }

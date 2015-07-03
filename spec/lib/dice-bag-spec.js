@@ -20,47 +20,47 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-require("../../lib/number-polyfills");
+require('../../lib/number-polyfills');
 
-var dice = require("../../lib/dice");
+var dice = require('../../lib/dice');
 
-describe("DiceBag", function () {
+describe('DiceBag', function () {
     var bag;
 
     beforeEach(function () {
-        var randomNumberGenerator = jasmine.createSpy("randomNumberGenerator");
+        var randomNumberGenerator = jasmine.createSpy('randomNumberGenerator');
         bag = new dice.Bag(randomNumberGenerator);
     });
 
-    it("should use a default random number generator", function () {
+    it('should use a default random number generator', function () {
         expect(function () {
             var bag = new dice.Bag();
             bag.d(6).roll();
         }).not.toThrow();
     });
 
-    describe("#d", function () {
+    describe('#d', function () {
         var d6;
 
         beforeEach(function () {
             d6 = bag.d(6);
         });
 
-        describe("when sides not a number", function () {
-            it("should throw exception", function () {
+        describe('when sides not a number', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     bag.d(undefined);
                 }).toThrow();
                 expect(function () {
-                    bag.d("3");
+                    bag.d('3');
                 }).toThrow();
             });
         });
 
-        describe("when sides less than one", function () {
-            it("should throw exception", function () {
+        describe('when sides less than one', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     bag.d(0);
                 }).toThrowError(RangeError);
@@ -70,20 +70,20 @@ describe("DiceBag", function () {
             });
         });
 
-        describe(".roll", function () {
-            it("should return 1 when random number is minimum value", function () {
+        describe('.roll', function () {
+            it('should return 1 when random number is minimum value', function () {
                 bag.randomNumberGenerator.and.returnValue(0.0);
                 expect(d6.roll()).toBe(1);
             });
 
-            it("should return <sides> when random number is maximum value", function () {
+            it('should return <sides> when random number is maximum value', function () {
                 bag.randomNumberGenerator.and.returnValue(1.0 - Number.EPSILON);
                 expect(d6.roll()).toBe(6);
             });
         });
 
-        describe(".sides", function () {
-            it("should return the die sides", function () {
+        describe('.sides', function () {
+            it('should return the die sides', function () {
                 expect(d6.sides).toBe(6);
             });
         });

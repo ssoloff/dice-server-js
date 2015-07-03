@@ -20,11 +20,11 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var dice = require("../../lib/dice");
+var dice = require('../../lib/dice');
 
-describe("diceExpressionResult", function () {
+describe('diceExpressionResult', function () {
     var three;
     var four;
 
@@ -33,28 +33,28 @@ describe("diceExpressionResult", function () {
         four = dice.expressionResult.forConstant(4);
     });
 
-    describe(".forAddition", function () {
-        describe("when sum is not a number", function () {
-            it("should throw exception", function () {
+    describe('.forAddition', function () {
+        describe('when sum is not a number', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forAddition(undefined, four, three);
                 }).toThrow();
                 expect(function () {
-                    dice.expressionResult.forAddition("7", four, three);
+                    dice.expressionResult.forAddition('7', four, three);
                 }).toThrow();
             });
         });
 
-        describe("when augend expression result is falsy", function () {
-            it("should throw exception", function () {
+        describe('when augend expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forAddition(7, undefined, three);
                 }).toThrow();
             });
         });
 
-        describe("when addend expression result is falsy", function () {
-            it("should throw exception", function () {
+        describe('when addend expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forAddition(7, four, undefined);
                 }).toThrow();
@@ -62,22 +62,22 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe(".forConstant", function () {
-        describe("when constant is not a number", function () {
-            it("should throw exception", function () {
+    describe('.forConstant', function () {
+        describe('when constant is not a number', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forConstant(undefined);
                 }).toThrow();
                 expect(function () {
-                    dice.expressionResult.forConstant("3");
+                    dice.expressionResult.forConstant('3');
                 }).toThrow();
             });
         });
     });
 
-    describe(".forDie", function () {
-        describe("when die is falsy", function () {
-            it("should throw exception", function () {
+    describe('.forDie', function () {
+        describe('when die is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forDie(undefined);
                 }).toThrow();
@@ -85,28 +85,28 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe(".forDivision", function () {
-        describe("when quotient is not a number", function () {
-            it("should throw exception", function () {
+    describe('.forDivision', function () {
+        describe('when quotient is not a number', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forDivision(undefined, four, three);
                 }).toThrow();
                 expect(function () {
-                    dice.expressionResult.forDivision("0.75", four, three);
+                    dice.expressionResult.forDivision('0.75', four, three);
                 }).toThrow();
             });
         });
 
-        describe("when dividend expression result is falsy", function () {
-            it("should throw exception", function () {
+        describe('when dividend expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forDivision(0.75, undefined, three);
                 }).toThrow();
             });
         });
 
-        describe("when divisor expression result is falsy", function () {
-            it("should throw exception", function () {
+        describe('when divisor expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forDivision(0.75, four, undefined);
                 }).toThrow();
@@ -114,35 +114,35 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe(".forFunctionCall", function () {
-        describe("when return value is not defined", function () {
-            it("should throw exception", function () {
+    describe('.forFunctionCall', function () {
+        describe('when return value is not defined', function () {
+            it('should throw exception', function () {
                 expect(function () {
-                    dice.expressionResult.forFunctionCall(undefined, "f", []);
+                    dice.expressionResult.forFunctionCall(undefined, 'f', []);
                 }).toThrow();
             });
         });
 
-        describe("when name is falsy", function () {
-            it("should throw exception", function () {
+        describe('when name is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forFunctionCall(0, undefined, []);
                 }).toThrow();
             });
         });
 
-        describe("when argument list expression results is falsy", function () {
-            it("should throw exception", function () {
+        describe('when argument list expression results is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
-                    dice.expressionResult.forFunctionCall(0, "f", undefined);
+                    dice.expressionResult.forFunctionCall(0, 'f', undefined);
                 }).toThrow();
             });
         });
     });
 
-    describe(".forGroup", function () {
-        describe("when child expression result is falsy", function () {
-            it("should throw exception", function () {
+    describe('.forGroup', function () {
+        describe('when child expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forGroup(undefined);
                 }).toThrow();
@@ -150,28 +150,28 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe(".forMultiplication", function () {
-        describe("when product is not a number", function () {
-            it("should throw exception", function () {
+    describe('.forMultiplication', function () {
+        describe('when product is not a number', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forMultiplication(undefined, four, three);
                 }).toThrow();
                 expect(function () {
-                    dice.expressionResult.forMultiplication("12", four, three);
+                    dice.expressionResult.forMultiplication('12', four, three);
                 }).toThrow();
             });
         });
 
-        describe("when multiplicand expression result is falsy", function () {
-            it("should throw exception", function () {
+        describe('when multiplicand expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forMultiplication(12, undefined, three);
                 }).toThrow();
             });
         });
 
-        describe("when multiplier expression result is falsy", function () {
-            it("should throw exception", function () {
+        describe('when multiplier expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forMultiplication(12, four, undefined);
                 }).toThrow();
@@ -179,9 +179,9 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe(".forNegative", function () {
-        describe("when child expression result is falsy", function () {
-            it("should throw exception", function () {
+    describe('.forNegative', function () {
+        describe('when child expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forNegative(undefined);
                 }).toThrow();
@@ -189,9 +189,9 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe(".forPositive", function () {
-        describe("when child expression result is falsy", function () {
-            it("should throw exception", function () {
+    describe('.forPositive', function () {
+        describe('when child expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forPositive(undefined);
                 }).toThrow();
@@ -199,28 +199,28 @@ describe("diceExpressionResult", function () {
         });
     });
 
-    describe(".forSubtraction", function () {
-        describe("when difference is not a number", function () {
-            it("should throw exception", function () {
+    describe('.forSubtraction', function () {
+        describe('when difference is not a number', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forSubtraction(undefined, four, three);
                 }).toThrow();
                 expect(function () {
-                    dice.expressionResult.forSubtraction("-1", four, three);
+                    dice.expressionResult.forSubtraction('-1', four, three);
                 }).toThrow();
             });
         });
 
-        describe("when minuend expression result is falsy", function () {
-            it("should throw exception", function () {
+        describe('when minuend expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forSubtraction(-1, undefined, three);
                 }).toThrow();
             });
         });
 
-        describe("when subtrahend expression result is falsy", function () {
-            it("should throw exception", function () {
+        describe('when subtrahend expression result is falsy', function () {
+            it('should throw exception', function () {
                 expect(function () {
                     dice.expressionResult.forSubtraction(-1, four, undefined);
                 }).toThrow();

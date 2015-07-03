@@ -20,21 +20,21 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var _ = require("underscore");
-var evaluateController = require("../../controllers/evaluate-controller");
-var ja = require("json-assert");
+var _ = require('underscore');
+var evaluateController = require('../../controllers/evaluate-controller');
+var ja = require('json-assert');
 
-describe("evaluateController", function () {
+describe('evaluateController', function () {
     var req;
     var res;
     var request;
     var response;
 
     function isJsonEqual(actual, expected) {
-        if ((_.has(actual, "expression") || _.has(actual, "error"))
-                && (_.has(expected, "expression") || _.has(expected, "error"))) {
+        if ((_.has(actual, 'expression') || _.has(actual, 'error'))
+                && (_.has(expected, 'expression') || _.has(expected, 'error'))) {
             return ja.isEqual(expected, actual, true);
         }
     }
@@ -44,10 +44,10 @@ describe("evaluateController", function () {
 
         request = {
             expression: {
-                text: "3d6+4"
+                text: '3d6+4'
             },
             randomNumberGenerator: {
-                name: "constantMax"
+                name: 'constantMax'
             }
         };
         req = {
@@ -63,87 +63,87 @@ describe("evaluateController", function () {
                 return this;
             }
         };
-        spyOn(res, "json").and.callThrough();
-        spyOn(res, "status").and.callThrough();
+        spyOn(res, 'json').and.callThrough();
+        spyOn(res, 'status').and.callThrough();
     });
 
-    describe(".evaluate", function () {
-        describe("when expression is well-formed", function () {
-            it("should respond with the expression result", function () {
+    describe('.evaluate', function () {
+        describe('when expression is well-formed', function () {
+            it('should respond with the expression result', function () {
                 evaluateController.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
                     expression: {
-                        canonicalText: "sum(roll(3, d6)) + 4",
-                        text: "3d6+4"
+                        canonicalText: 'sum(roll(3, d6)) + 4',
+                        text: '3d6+4'
                     },
                     expressionResult: {
-                        text: "[sum([roll(3, d6) -> 6,6,6]) -> 18] + 4",
+                        text: '[sum([roll(3, d6) -> 6,6,6]) -> 18] + 4',
                         value: 22
                     },
                     randomNumberGenerator: {
-                        name: "constantMax"
+                        name: 'constantMax'
                     }
                 });
             });
         });
 
-        describe("when expression is malformed", function () {
-            it("should respond with an error", function () {
-                request.expression.text = "<<INVALID>>";
+        describe('when expression is malformed', function () {
+            it('should respond with an error', function () {
+                request.expression.text = '<<INVALID>>';
 
                 evaluateController.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
                     error: {
-                        message: ja.matchType("string")
+                        message: ja.matchType('string')
                     }
                 });
             });
         });
 
-        describe("specifying a random number generator", function () {
-            describe("when the random number generator is not specified", function () {
-                it("should use the default random number generator", function () {
+        describe('specifying a random number generator', function () {
+            describe('when the random number generator is not specified', function () {
+                it('should use the default random number generator', function () {
                     delete request.randomNumberGenerator;
 
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.randomNumberGenerator.name).toBe("uniform");
+                    expect(response.randomNumberGenerator.name).toBe('uniform');
                 });
             });
 
-            describe("when the uniform random number generator is specified", function () {
-                it("should use the uniform random number generator", function () {
-                    request.randomNumberGenerator.name = "uniform";
+            describe('when the uniform random number generator is specified', function () {
+                it('should use the uniform random number generator', function () {
+                    request.randomNumberGenerator.name = 'uniform';
 
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.randomNumberGenerator.name).toBe("uniform");
+                    expect(response.randomNumberGenerator.name).toBe('uniform');
                     expect(response.expressionResult.value).toBeGreaterThan(2 + 4);
                     expect(response.expressionResult.value).toBeLessThan(19 + 4);
                 });
             });
 
-            describe("when the constantMax random number generator is specified", function () {
-                it("should use the constantMax random number generator", function () {
-                    request.randomNumberGenerator.name = "constantMax";
+            describe('when the constantMax random number generator is specified', function () {
+                it('should use the constantMax random number generator', function () {
+                    request.randomNumberGenerator.name = 'constantMax';
 
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.randomNumberGenerator.name).toBe("constantMax");
+                    expect(response.randomNumberGenerator.name).toBe('constantMax');
                     expect(response.expressionResult.value).toBe(22);
                 });
             });
 
-            describe("when an unknown random number generator is specified", function () {
-                it("should respond with an error", function () {
-                    request.randomNumberGenerator.name = "<<UNKNOWN>>";
+            describe('when an unknown random number generator is specified', function () {
+                it('should respond with an error', function () {
+                    request.randomNumberGenerator.name = '<<UNKNOWN>>';
 
                     evaluateController.evaluate(req, res);
 
@@ -153,10 +153,10 @@ describe("evaluateController", function () {
             });
         });
 
-        describe("evaluating an expression whose result value is not a finite number", function () {
-            describe("when result value is not a number", function () {
-                it("should respond with an error", function () {
-                    request.expression.text = "d6";
+        describe('evaluating an expression whose result value is not a finite number', function () {
+            describe('when result value is not a number', function () {
+                it('should respond with an error', function () {
+                    request.expression.text = 'd6';
 
                     evaluateController.evaluate(req, res);
 
@@ -165,9 +165,9 @@ describe("evaluateController", function () {
                 });
             });
 
-            describe("when result value is NaN", function () {
-                it("should respond with an error", function () {
-                    request.expression.text = "round(d6)";
+            describe('when result value is NaN', function () {
+                it('should respond with an error', function () {
+                    request.expression.text = 'round(d6)';
 
                     evaluateController.evaluate(req, res);
 

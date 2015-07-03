@@ -20,11 +20,11 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var dice = require("../../lib/dice");
+var dice = require('../../lib/dice');
 
-describe("diceExpressionFormatter", function () {
+describe('diceExpressionFormatter', function () {
     var three;
     var four;
 
@@ -33,99 +33,99 @@ describe("diceExpressionFormatter", function () {
         four = dice.expression.forConstant(4);
     });
 
-    describe(".format", function () {
-        describe("when expression is an addition expression", function () {
-            it("should return formatted expression", function () {
+    describe('.format', function () {
+        describe('when expression is an addition expression', function () {
+            it('should return formatted expression', function () {
                 var expression = dice.expression.forAddition(three, four);
-                expect(dice.expressionFormatter.format(expression)).toBe("3 + 4");
+                expect(dice.expressionFormatter.format(expression)).toBe('3 + 4');
             });
         });
 
-        describe("when expression is a constant expression", function () {
-            it("should return formatted expression", function () {
+        describe('when expression is a constant expression', function () {
+            it('should return formatted expression', function () {
                 var expression = dice.expression.forConstant(42);
-                expect(dice.expressionFormatter.format(expression)).toBe("42");
+                expect(dice.expressionFormatter.format(expression)).toBe('42');
             });
         });
 
-        describe("when expression is a die expression", function () {
-            it("should return formatted expression", function () {
+        describe('when expression is a die expression', function () {
+            it('should return formatted expression', function () {
                 var d3 = new dice.Bag().d(3);
                 var expression = dice.expression.forDie(d3);
-                expect(dice.expressionFormatter.format(expression)).toBe("d3");
+                expect(dice.expressionFormatter.format(expression)).toBe('d3');
             });
         });
 
-        describe("when expression is a division expression", function () {
-            it("should return formatted expression", function () {
+        describe('when expression is a division expression', function () {
+            it('should return formatted expression', function () {
                 var expression = dice.expression.forDivision(three, four);
-                expect(dice.expressionFormatter.format(expression)).toBe("3 / 4");
+                expect(dice.expressionFormatter.format(expression)).toBe('3 / 4');
             });
         });
 
-        describe("when expression is a function call expression", function () {
-            describe("when zero arguments specified", function () {
-                it("should return formatted expression", function () {
-                    var expression = dice.expression.forFunctionCall("max", Math.max, []);
-                    expect(dice.expressionFormatter.format(expression)).toBe("max()");
+        describe('when expression is a function call expression', function () {
+            describe('when zero arguments specified', function () {
+                it('should return formatted expression', function () {
+                    var expression = dice.expression.forFunctionCall('max', Math.max, []);
+                    expect(dice.expressionFormatter.format(expression)).toBe('max()');
                 });
             });
 
-            describe("when one argument specified", function () {
-                it("should return formatted expression", function () {
-                    var expression = dice.expression.forFunctionCall("max", Math.max, [three]);
-                    expect(dice.expressionFormatter.format(expression)).toBe("max(3)");
+            describe('when one argument specified', function () {
+                it('should return formatted expression', function () {
+                    var expression = dice.expression.forFunctionCall('max', Math.max, [three]);
+                    expect(dice.expressionFormatter.format(expression)).toBe('max(3)');
                 });
             });
 
-            describe("when two arguments specified", function () {
-                it("should return formatted expression", function () {
-                    var expression = dice.expression.forFunctionCall("max", Math.max, [three, four]);
-                    expect(dice.expressionFormatter.format(expression)).toBe("max(3, 4)");
+            describe('when two arguments specified', function () {
+                it('should return formatted expression', function () {
+                    var expression = dice.expression.forFunctionCall('max', Math.max, [three, four]);
+                    expect(dice.expressionFormatter.format(expression)).toBe('max(3, 4)');
                 });
             });
         });
 
-        describe("when expression is a group expression", function () {
-            it("should return formatted expression", function () {
+        describe('when expression is a group expression', function () {
+            it('should return formatted expression', function () {
                 var expression = dice.expression.forGroup(three);
-                expect(dice.expressionFormatter.format(expression)).toBe("(3)");
+                expect(dice.expressionFormatter.format(expression)).toBe('(3)');
             });
         });
 
-        describe("when expression is a multiplication expression", function () {
-            it("should return formatted expression", function () {
+        describe('when expression is a multiplication expression', function () {
+            it('should return formatted expression', function () {
                 var expression = dice.expression.forMultiplication(three, four);
-                expect(dice.expressionFormatter.format(expression)).toBe("3 * 4");
+                expect(dice.expressionFormatter.format(expression)).toBe('3 * 4');
             });
         });
 
-        describe("when expression is a negative expression", function () {
-            it("should return formatted expression", function () {
+        describe('when expression is a negative expression', function () {
+            it('should return formatted expression', function () {
                 var expression = dice.expression.forNegative(three);
-                expect(dice.expressionFormatter.format(expression)).toBe("-3");
+                expect(dice.expressionFormatter.format(expression)).toBe('-3');
             });
         });
 
-        describe("when expression is a positive expression", function () {
-            it("should return formatted expression", function () {
+        describe('when expression is a positive expression', function () {
+            it('should return formatted expression', function () {
                 var expression = dice.expression.forPositive(three);
-                expect(dice.expressionFormatter.format(expression)).toBe("+3");
+                expect(dice.expressionFormatter.format(expression)).toBe('+3');
             });
         });
 
-        describe("when expression is a subtraction expression", function () {
-            it("should return formatted expression", function () {
+        describe('when expression is a subtraction expression', function () {
+            it('should return formatted expression', function () {
                 var expression = dice.expression.forSubtraction(three, four);
-                expect(dice.expressionFormatter.format(expression)).toBe("3 - 4");
+                expect(dice.expressionFormatter.format(expression)).toBe('3 - 4');
             });
         });
 
-        describe("when expression is of an unknown type", function () {
-            it("should throw an exception", function () {
+        describe('when expression is of an unknown type', function () {
+            it('should throw an exception', function () {
                 expect(function () {
                     dice.expressionFormatter.format({
-                        typeId: "__unknown__"
+                        typeId: '__unknown__'
                     });
                 }).toThrow();
             });

@@ -20,11 +20,11 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var dice = require("../../lib/dice");
+var dice = require('../../lib/dice');
 
-describe("diceExpressionResultFormatter", function () {
+describe('diceExpressionResultFormatter', function () {
     var three;
     var four;
 
@@ -33,99 +33,99 @@ describe("diceExpressionResultFormatter", function () {
         four = dice.expressionResult.forConstant(4);
     });
 
-    describe(".format", function () {
-        describe("when expression result is an addition expression result", function () {
-            it("should return formatted expression result", function () {
+    describe('.format', function () {
+        describe('when expression result is an addition expression result', function () {
+            it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forAddition(7, three, four);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("3 + 4");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('3 + 4');
             });
         });
 
-        describe("when expression result is a constant expression result", function () {
-            it("should return formatted expression result", function () {
+        describe('when expression result is a constant expression result', function () {
+            it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forConstant(42);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("42");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('42');
             });
         });
 
-        describe("when expression result is a die expression result", function () {
-            it("should return formatted expression result", function () {
+        describe('when expression result is a die expression result', function () {
+            it('should return formatted expression result', function () {
                 var d3 = new dice.Bag().d(3);
                 var expressionResult = dice.expressionResult.forDie(d3);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("d3");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('d3');
             });
         });
 
-        describe("when expression result is a division expression result", function () {
-            it("should return formatted expression result", function () {
+        describe('when expression result is a division expression result', function () {
+            it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forDivision(0.75, three, four);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("3 / 4");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('3 / 4');
             });
         });
 
-        describe("when expression is a function call expression", function () {
-            describe("when zero arguments specified", function () {
-                it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall(0, "f", []);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f() -> 0]");
+        describe('when expression is a function call expression', function () {
+            describe('when zero arguments specified', function () {
+                it('should return formatted expression result', function () {
+                    var expressionResult = dice.expressionResult.forFunctionCall(0, 'f', []);
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe('[f() -> 0]');
                 });
             });
 
-            describe("when one argument specified", function () {
-                it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall(1, "f", [three]);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(3) -> 1]");
+            describe('when one argument specified', function () {
+                it('should return formatted expression result', function () {
+                    var expressionResult = dice.expressionResult.forFunctionCall(1, 'f', [three]);
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe('[f(3) -> 1]');
                 });
             });
 
-            describe("when two arguments specified", function () {
-                it("should return formatted expression result", function () {
-                    var expressionResult = dice.expressionResult.forFunctionCall(2, "f", [three, four]);
-                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe("[f(3, 4) -> 2]");
+            describe('when two arguments specified', function () {
+                it('should return formatted expression result', function () {
+                    var expressionResult = dice.expressionResult.forFunctionCall(2, 'f', [three, four]);
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe('[f(3, 4) -> 2]');
                 });
             });
         });
 
-        describe("when expression result is a group expression result", function () {
-            it("should return formatted expression result", function () {
+        describe('when expression result is a group expression result', function () {
+            it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forGroup(three);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("(3)");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('(3)');
             });
         });
 
-        describe("when expression result is a multiplication expression result", function () {
-            it("should return formatted expression result", function () {
+        describe('when expression result is a multiplication expression result', function () {
+            it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forMultiplication(12, three, four);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("3 * 4");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('3 * 4');
             });
         });
 
-        describe("when expression result is a negative expression result", function () {
-            it("should return formatted expression result", function () {
+        describe('when expression result is a negative expression result', function () {
+            it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forNegative(three);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("-3");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('-3');
             });
         });
 
-        describe("when expression result is a positive expression result", function () {
-            it("should return formatted expression result", function () {
+        describe('when expression result is a positive expression result', function () {
+            it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forPositive(three);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("+3");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('+3');
             });
         });
 
-        describe("when expression result is a subtraction expression result", function () {
-            it("should return formatted expression result", function () {
+        describe('when expression result is a subtraction expression result', function () {
+            it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forSubtraction(-1, three, four);
-                expect(dice.expressionResultFormatter.format(expressionResult)).toBe("3 - 4");
+                expect(dice.expressionResultFormatter.format(expressionResult)).toBe('3 - 4');
             });
         });
 
-        describe("when expression result is of an unknown type", function () {
-            it("should throw an exception", function () {
+        describe('when expression result is of an unknown type', function () {
+            it('should throw an exception', function () {
                 expect(function () {
                     dice.expressionResultFormatter.format({
-                        typeId: "__unknown__"
+                        typeId: '__unknown__'
                     });
                 }).toThrow();
             });

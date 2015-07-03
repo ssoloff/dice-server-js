@@ -30,23 +30,23 @@ POSITIVE_INTEGER    [1-9][0-9]*
 %%
 
 \s+                                                                               /* skip whitespace */
-","                                                                               return "COMMA"
-{POSITIVE_INTEGER}d({POSITIVE_INTEGER}|{PERCENT})([-+]{POSITIVE_INTEGER}?[HL])?   return "DICE_ROLL_LITERAL"
-d({POSITIVE_INTEGER}|{PERCENT})                                                   return "DIE_LITERAL"
-{IDENTIFIER}                                                                      return "IDENTIFIER"
-{DIGIT}+                                                                          return "INTEGER_LITERAL"
-"("                                                                               return "LPAREN"
-"-"                                                                               return "MINUS"
-"+"                                                                               return "PLUS"
-")"                                                                               return "RPAREN"
-"/-"                                                                              return "SLASH_MINUS"
-"/+"                                                                              return "SLASH_PLUS"
-"//"                                                                              return "SLASH_SLASH"
-"/~"                                                                              return "SLASH_TILDE"
-"/"                                                                               return "SLASH"
-"*"                                                                               return "STAR"
-.                                                                                 throw "illegal character"
-<<EOF>>                                                                           return "EOF"
+","                                                                               return 'COMMA'
+{POSITIVE_INTEGER}d({POSITIVE_INTEGER}|{PERCENT})([-+]{POSITIVE_INTEGER}?[HL])?   return 'DICE_ROLL_LITERAL'
+d({POSITIVE_INTEGER}|{PERCENT})                                                   return 'DIE_LITERAL'
+{IDENTIFIER}                                                                      return 'IDENTIFIER'
+{DIGIT}+                                                                          return 'INTEGER_LITERAL'
+"("                                                                               return 'LPAREN'
+"-"                                                                               return 'MINUS'
+"+"                                                                               return 'PLUS'
+")"                                                                               return 'RPAREN'
+"/-"                                                                              return 'SLASH_MINUS'
+"/+"                                                                              return 'SLASH_PLUS'
+"//"                                                                              return 'SLASH_SLASH'
+"/~"                                                                              return 'SLASH_TILDE'
+"/"                                                                               return 'SLASH'
+"*"                                                                               return 'STAR'
+.                                                                                 throw 'illegal character'
+<<EOF>>                                                                           return 'EOF'
 
 /lex
 
@@ -122,19 +122,19 @@ MultiplicativeExpression
         }
     | MultiplicativeExpression SLASH_SLASH UnaryExpression
         {
-            $$ = createFunctionCallExpression(yy.__context, "trunc", [diceExpression.forDivision($1, $3)]);
+            $$ = createFunctionCallExpression(yy.__context, 'trunc', [diceExpression.forDivision($1, $3)]);
         }
     | MultiplicativeExpression SLASH_TILDE UnaryExpression
         {
-            $$ = createFunctionCallExpression(yy.__context, "round", [diceExpression.forDivision($1, $3)]);
+            $$ = createFunctionCallExpression(yy.__context, 'round', [diceExpression.forDivision($1, $3)]);
         }
     | MultiplicativeExpression SLASH_MINUS UnaryExpression
         {
-            $$ = createFunctionCallExpression(yy.__context, "floor", [diceExpression.forDivision($1, $3)]);
+            $$ = createFunctionCallExpression(yy.__context, 'floor', [diceExpression.forDivision($1, $3)]);
         }
     | MultiplicativeExpression SLASH_PLUS UnaryExpression
         {
-            $$ = createFunctionCallExpression(yy.__context, "ceil", [diceExpression.forDivision($1, $3)]);
+            $$ = createFunctionCallExpression(yy.__context, 'ceil', [diceExpression.forDivision($1, $3)]);
         }
     | UnaryExpression
     ;
@@ -169,9 +169,9 @@ UnaryExpression
 
 %%
 
-var DiceBag = require("./dice-bag");
-var diceExpression = require("./dice-expression");
-var diceExpressionFunctions = require("./dice-expression-functions");
+var DiceBag = require('./dice-bag');
+var diceExpression = require('./dice-expression');
+var diceExpressionFunctions = require('./dice-expression-functions');
 
 function createDefaultContext() {
     return {
@@ -183,10 +183,10 @@ function createDefaultContext() {
 function createDiceRollExpression(context, literal) {
     var components = literal.match(/^(\d+)d([\d%]+)(([-+])(\d*)([HL]))?$/);
     var rollCount = Number(components[1]);
-    var dieSides = (components[2] === "%") ? 100 : Number(components[2]);
+    var dieSides = (components[2] === '%') ? 100 : Number(components[2]);
     var isRollModifierPresent = (components[3] !== undefined);
 
-    var rollExpression = createFunctionCallExpression(context, "roll", [
+    var rollExpression = createFunctionCallExpression(context, 'roll', [
         diceExpression.forConstant(rollCount),
         createDieExpression(context, dieSides)
     ]);
@@ -201,7 +201,7 @@ function createDiceRollExpression(context, literal) {
         ]);
     }
 
-    return createFunctionCallExpression(context, "sum", [rollExpression]);
+    return createFunctionCallExpression(context, 'sum', [rollExpression]);
 }
 
 function createDieExpression(context, sides) {
@@ -221,13 +221,13 @@ function createParser(context) {
 
 function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType) {
     var rollModifierFunctionNames = {
-        "+": {
-            H: "cloneHighestRolls",
-            L: "cloneLowestRolls"
+        '+': {
+            H: 'cloneHighestRolls',
+            L: 'cloneLowestRolls'
         },
-        "-": {
-            H: "dropHighestRolls",
-            L: "dropLowestRolls"
+        '-': {
+            H: 'dropHighestRolls',
+            L: 'dropLowestRolls'
         }
     };
     return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType];

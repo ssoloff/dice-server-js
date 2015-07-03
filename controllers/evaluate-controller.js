@@ -20,25 +20,25 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-require("../lib/number-polyfills");
+require('../lib/number-polyfills');
 
-var _ = require("underscore");
-var dice = require("../lib/dice");
+var _ = require('underscore');
+var dice = require('../lib/dice');
 
 function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
     switch (randomNumberGeneratorSpecification.name) {
-        case "constantMax":
+        case 'constantMax':
             return function () {
                 return 1.0 - Number.EPSILON;
             };
 
-        case "uniform":
+        case 'uniform':
             return Math.random;
     }
 
-    throw new Error("unknown random number generator '" + randomNumberGeneratorSpecification.name + "'");
+    throw new Error('unknown random number generator "' + randomNumberGeneratorSpecification.name + '"');
 }
 
 function evaluate(req, res) {
@@ -60,7 +60,7 @@ function evaluate(req, res) {
 
         var expressionResult = expression.evaluate();
         if (!_.isFinite(expressionResult.value)) {
-            throw new Error("expression does not evaluate to a finite number");
+            throw new Error('expression does not evaluate to a finite number');
         }
         response.expressionResult = {
             text: dice.expressionResultFormatter.format(expressionResult),
@@ -79,7 +79,7 @@ function evaluate(req, res) {
 }
 
 function getRandomNumberGeneratorSpecification(request) {
-    return request.randomNumberGenerator || {name: "uniform"};
+    return request.randomNumberGenerator || {name: 'uniform'};
 }
 
 module.exports = {

@@ -1,59 +1,59 @@
 function evaluate() {
-    "use strict";
+    'use strict';
 
     var request = {
         expression: {
             text: getExpressionText()
         },
         randomNumberGenerator: {
-            name: $("#randomNumberGeneratorName").val()
+            name: $('#randomNumberGeneratorName').val()
         }
     };
-    $.post("/evaluate", request, processResponse);
+    $.post('/evaluate', request, processResponse);
 }
 
 function getExpressionText() {
-    var expressionText = $("#expressionText").val();
-    var roundingFunction = $("input[name='roundingMode']:checked").val();
+    var expressionText = $('#expressionText').val();
+    var roundingFunction = $('input[name="roundingMode"]:checked').val();
     if (roundingFunction) {
-        expressionText = roundingFunction + "(" + expressionText + ")";
+        expressionText = roundingFunction + '(' + expressionText + ')';
     }
     return expressionText;
 }
 
 function initialize() {
-    "use strict";
+    'use strict';
 
-    $("#expressionResult").hide();
-    $("#errorMessage").hide();
+    $('#expressionResult').hide();
+    $('#errorMessage').hide();
 
-    $("#expressionForm").submit(function (event) {
+    $('#expressionForm').submit(function (event) {
         evaluate();
         event.preventDefault();
     });
 }
 
 function processResponse(response) {
-    "use strict";
+    'use strict';
 
     if (response.error) {
-        $("#expressionResult").hide();
+        $('#expressionResult').hide();
 
-        $("#errorMessage").text(response.error.message).show();
+        $('#errorMessage').text(response.error.message).show();
     } else {
-        $("#expressionText").val("");
+        $('#expressionText').val('');
 
-        $("#expressionCanonicalText").text(response.expression.canonicalText);
-        $("#expressionResultText").text(response.expressionResult.text);
-        $("#expressionResultValue").text(response.expressionResult.value.toString());
-        $("#expressionResult").show();
+        $('#expressionCanonicalText').text(response.expression.canonicalText);
+        $('#expressionResultText').text(response.expressionResult.text);
+        $('#expressionResultValue').text(response.expressionResult.value.toString());
+        $('#expressionResult').show();
 
-        $("#errorMessage").hide();
+        $('#errorMessage').hide();
     }
 }
 
 function main() {
-    "use strict";
+    'use strict';
 
     initialize();
 }
