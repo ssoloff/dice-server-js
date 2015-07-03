@@ -222,6 +222,7 @@ function createParser(context) {
 function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType) {
     var rollModifierFunctionNames = {
         "+": {
+            H: "cloneHighestRolls",
             L: "cloneLowestRolls"
         },
         "-": {
