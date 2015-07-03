@@ -22,6 +22,8 @@
 
 'use strict';
 
+var _ = require('underscore');
+
 beforeEach(function () {
     jasmine.addMatchers({
         toBeExpressionResultWithValue: function () {
@@ -29,7 +31,7 @@ beforeEach(function () {
                 compare: function (actualExpressionResult, expectedExpressionResultValue) {
                     return {
                         message: 'Expected expression result with value ' + actualExpressionResult.value.toString() + ' to be expression result with value ' + expectedExpressionResultValue.toString() + '.',
-                        pass: expectedExpressionResultValue === actualExpressionResult.value
+                        pass: _.isEqual(expectedExpressionResultValue, actualExpressionResult.value)
                     };
                 }
             };

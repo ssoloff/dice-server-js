@@ -64,6 +64,26 @@ describe('diceExpression', function () {
         });
     });
 
+    describe('.forArray', function () {
+        describe('when expressions is not an array', function () {
+            it('should throw exception', function () {
+                expect(function () {
+                    dice.expression.forArray(undefined);
+                }).toThrow();
+                expect(function () {
+                    dice.expression.forArray('3');
+                }).toThrow();
+            });
+        });
+
+        describe('.evaluate', function () {
+            it('should return result with value equal to array of expression result values', function () {
+                var expression = dice.expression.forArray([three, four]);
+                expect(expression.evaluate()).toBeExpressionResultWithValue([3, 4]);
+            });
+        });
+    });
+
     describe('.forConstant', function () {
         describe('when constant is not a number', function () {
             it('should throw exception', function () {

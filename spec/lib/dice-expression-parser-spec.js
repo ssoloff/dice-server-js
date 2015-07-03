@@ -68,6 +68,12 @@ describe('diceExpressionParser', function () {
                 expect(expressionParser.parse('2')).toEqual(two);
             });
 
+            it('should parse an array literal', function () {
+                expect(expressionParser.parse('[]')).toEqual(dice.expression.forArray([]));
+                expect(expressionParser.parse('[1]')).toEqual(dice.expression.forArray([one]));
+                expect(expressionParser.parse('[1, 2]')).toEqual(dice.expression.forArray([one, two]));
+            });
+
             it('should parse a die literal', function () {
                 expect(expressionParser.parse('d6')).toEqual(dice.expression.forDie(expressionParserContext.bag.d(6)));
             });

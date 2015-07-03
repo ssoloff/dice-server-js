@@ -36,9 +36,11 @@ d({POSITIVE_INTEGER}|{PERCENT})                                                 
 {IDENTIFIER}                                                                      return 'IDENTIFIER'
 {DIGIT}+                                                                          return 'INTEGER_LITERAL'
 "("                                                                               return 'LPAREN'
+"["                                                                               return 'LSQUAREBRACE'
 "-"                                                                               return 'MINUS'
 "+"                                                                               return 'PLUS'
 ")"                                                                               return 'RPAREN'
+"]"                                                                               return 'RSQUAREBRACE'
 "/-"                                                                              return 'SLASH_MINUS'
 "/+"                                                                              return 'SLASH_PLUS'
 "//"                                                                              return 'SLASH_SLASH'
@@ -68,7 +70,18 @@ AdditiveExpression
     | MultiplicativeExpression
     ;
 
-ArgumentList
+ArrayLiteral
+    : LSQUAREBRACE ExpressionList RSQUAREBRACE
+        {
+            $$ = diceExpression.forArray($2);
+        }
+    ;
+
+Expression
+    : AdditiveExpression
+    ;
+
+ExpressionList
     : /* empty */
         {
             $$ = [];
@@ -77,18 +90,14 @@ ArgumentList
         {
             $$ = [$1];
         }
-    | ArgumentList COMMA Expression
+    | ExpressionList COMMA Expression
         {
             $$.push($3);
         }
     ;
 
-Expression
-    : AdditiveExpression
-    ;
-
 FunctionCall
-    : IDENTIFIER LPAREN ArgumentList RPAREN
+    : IDENTIFIER LPAREN ExpressionList RPAREN
         {
             $$ = createFunctionCallExpression(yy.__context, $1, $3);
         }
@@ -141,6 +150,7 @@ MultiplicativeExpression
 
 PrimaryExpression
     : Literal
+    | ArrayLiteral
     | FunctionCall
     | LPAREN Expression RPAREN
         {

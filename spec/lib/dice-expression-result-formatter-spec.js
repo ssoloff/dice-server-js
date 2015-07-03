@@ -41,6 +41,22 @@ describe('diceExpressionResultFormatter', function () {
             });
         });
 
+        describe('when expression result is an array expression result', function () {
+            describe('when array contains one element', function () {
+                it('should return formatted expression result', function () {
+                    var expressionResult = dice.expressionResult.forArray([3], [three]);
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe('[3]');
+                });
+            });
+
+            describe('when array contains two elements', function () {
+                it('should return formatted expression result', function () {
+                    var expressionResult = dice.expressionResult.forArray([3, 4], [three, four]);
+                    expect(dice.expressionResultFormatter.format(expressionResult)).toBe('[3, 4]');
+                });
+            });
+        });
+
         describe('when expression result is a constant expression result', function () {
             it('should return formatted expression result', function () {
                 var expressionResult = dice.expressionResult.forConstant(42);

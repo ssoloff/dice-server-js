@@ -44,6 +44,17 @@ Scenario: Evaluating constants
     Then the response should contain the expression result text "5"
         And the response should contain the expression result value 5
 
+Scenario Outline: Evaluating expressions containing array literals
+    Given a request with the expression "<expression>"
+    When the evaluate service is invoked
+    Then the response should contain the expression result text "<result text>"
+        And the response should contain the expression result value <result value>
+    Examples:
+        | expression      | result text                | result value |
+        | sum([1])        | [sum([1]) -> 1]            | 1            |
+        | sum([1, 2])     | [sum([1, 2]) -> 3]         | 3            |
+        | sum([1+1, 3-1]) | [sum([1 + 1, 3 - 1]) -> 4] | 4            |
+
 Scenario Outline: Evaluating arithmetic expressions with constants
     Given a request with the expression "<expression>"
     When the evaluate service is invoked
@@ -78,19 +89,19 @@ Scenario Outline: Evaluating modified dice rolls
     Then the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
-        | expression                             | result text                                                                  | result value |
-        | 2d6+L                                  | [sum([cloneLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]     | 18           |
-        | 2d6+2L                                 | [sum([cloneLowestRolls([roll(2, d6) -> [6, 6]], 2) -> [6, 6, 6, 6]]) -> 24]  | 24           |
-        | 2d6+H                                  | [sum([cloneHighestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]    | 18           |
-        | 2d6+2H                                 | [sum([cloneHighestRolls([roll(2, d6) -> [6, 6]], 2) -> [6, 6, 6, 6]]) -> 24] | 24           |
-        | 3d6-L                                  | [sum([dropLowestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]      | 12           |
-        | 3d6-2L                                 | [sum([dropLowestRolls([roll(3, d6) -> [6, 6, 6]], 2) -> [6]]) -> 6]          | 6            |
-        | 3d6-H                                  | [sum([dropHighestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]     | 12           |
-        | 3d6-2H                                 | [sum([dropHighestRolls([roll(3, d6) -> [6, 6, 6]], 2) -> [6]]) -> 6]         | 6            |
-        | sum(cloneLowestRolls(roll(2, d6), 1))  | [sum([cloneLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]     | 18           |
-        | sum(cloneHighestRolls(roll(2, d6), 1)) | [sum([cloneHighestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]    | 18           |
-        | sum(dropLowestRolls(roll(3, d6), 1))   | [sum([dropLowestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]      | 12           |
-        | sum(dropHighestRolls(roll(3, d6), 1))  | [sum([dropHighestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]     | 12           |
+        | expression                          | result text                                                                  | result value |
+        | 2d6+L                               | [sum([cloneLowestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]     | 18           |
+        | 2d6+2L                              | [sum([cloneLowestRolls([roll(2, d6) -> [6, 6]], 2) -> [6, 6, 6, 6]]) -> 24]  | 24           |
+        | 2d6+H                               | [sum([cloneHighestRolls([roll(2, d6) -> [6, 6]], 1) -> [6, 6, 6]]) -> 18]    | 18           |
+        | 2d6+2H                              | [sum([cloneHighestRolls([roll(2, d6) -> [6, 6]], 2) -> [6, 6, 6, 6]]) -> 24] | 24           |
+        | 3d6-L                               | [sum([dropLowestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]      | 12           |
+        | 3d6-2L                              | [sum([dropLowestRolls([roll(3, d6) -> [6, 6, 6]], 2) -> [6]]) -> 6]          | 6            |
+        | 3d6-H                               | [sum([dropHighestRolls([roll(3, d6) -> [6, 6, 6]], 1) -> [6, 6]]) -> 12]     | 12           |
+        | 3d6-2H                              | [sum([dropHighestRolls([roll(3, d6) -> [6, 6, 6]], 2) -> [6]]) -> 6]         | 6            |
+        | sum(cloneLowestRolls([1, 6], 1))    | [sum([cloneLowestRolls([1, 6], 1) -> [1, 6, 1]]) -> 8]                       | 8            |
+        | sum(cloneHighestRolls([1, 6], 1))   | [sum([cloneHighestRolls([1, 6], 1) -> [1, 6, 6]]) -> 13]                     | 13           |
+        | sum(dropLowestRolls([1, 3, 6], 1))  | [sum([dropLowestRolls([1, 3, 6], 1) -> [3, 6]]) -> 9]                        | 9            |
+        | sum(dropHighestRolls([1, 3, 6], 1)) | [sum([dropHighestRolls([1, 3, 6], 1) -> [1, 3]]) -> 4]                       | 4            |
 
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"
@@ -161,6 +172,7 @@ Scenario Outline: Evaluating expressions that result in non-finite values
     Examples:
         | expression  |
         | d6          |
+        | [1, 2, 3]   |
         | round(d6)   |
         | roll(3, d6) |
 
