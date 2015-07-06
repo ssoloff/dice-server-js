@@ -26,17 +26,17 @@ require('../../lib/number-polyfills');
 
 var dice = require('../../lib/dice');
 
-describe('DiceBag', function () {
+describe('diceBag', function () {
     var bag;
 
     beforeEach(function () {
         var randomNumberGenerator = jasmine.createSpy('randomNumberGenerator');
-        bag = new dice.Bag(randomNumberGenerator);
+        bag = dice.bag.create(randomNumberGenerator);
     });
 
     it('should use a default random number generator', function () {
         expect(function () {
-            var bag = new dice.Bag();
+            var bag = dice.bag.create();
             bag.d(6).roll();
         }).not.toThrow();
     });

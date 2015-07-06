@@ -183,13 +183,13 @@ UnaryExpression
 
 %%
 
-var DiceBag = require('./dice-bag');
+var diceBag = require('./dice-bag');
 var diceExpression = require('./dice-expression');
 var diceExpressionFunctions = require('./dice-expression-functions');
 
 function createDefaultContext() {
     return {
-        bag: new DiceBag(),
+        bag: diceBag.create(),
         functions: {}
     };
 }

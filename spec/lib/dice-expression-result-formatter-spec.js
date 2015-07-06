@@ -66,7 +66,7 @@ describe('diceExpressionResultFormatter', function () {
 
         describe('when expression result is a die expression result', function () {
             it('should return formatted expression result', function () {
-                var d3 = new dice.Bag().d(3);
+                var d3 = dice.bag.create().d(3);
                 var expressionResult = dice.expressionResult.forDie(d3);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe('d3');
             });

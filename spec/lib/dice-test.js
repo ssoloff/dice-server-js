@@ -35,13 +35,13 @@ var diceTest = {
      * Creates a new dice bag that produces dice that will deterministically
      * and repeatedly roll 1.
      *
-     * @returns {DiceBag} The new dice bag.
+     * @returns {bag} The new dice bag.
      */
     createBagThatProvidesDiceThatAlwaysRollOne: function () {
         function randomNumberGenerator() {
             return 0.0;
         }
-        return new dice.Bag(randomNumberGenerator);
+        return dice.bag.create(randomNumberGenerator);
     },
 
     /**
@@ -66,7 +66,7 @@ var diceTest = {
             rollCount = (rollCount + 1) % randomNumbers.length;
             return roll;
         }
-        var bag = new dice.Bag(randomNumberGenerator);
+        var bag = dice.bag.create(randomNumberGenerator);
         return bag.d(sides);
     },
 

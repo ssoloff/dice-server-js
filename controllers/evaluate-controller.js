@@ -50,7 +50,7 @@ function evaluate(req, res) {
         response.randomNumberGenerator = randomNumberGeneratorSpecification;
 
         var expressionParserContext = dice.expressionParser.createDefaultContext();
-        expressionParserContext.bag = new dice.Bag(createRandomNumberGenerator(randomNumberGeneratorSpecification));
+        expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
         var expressionParser = dice.expressionParser.create(expressionParserContext);
         var expression = expressionParser.parse(request.expression.text);
         response.expression = {
