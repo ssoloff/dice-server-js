@@ -37,16 +37,17 @@ function processResponse(response) {
     'use strict';
 
     if (response.error) {
-        $('#expressionResult').hide();
-
         $('#errorMessage').text(response.error.message).show();
     } else {
         $('#expressionText').val('');
 
-        $('#expressionCanonicalText').text(response.expression.canonicalText);
-        $('#expressionResultText').text(response.expressionResult.text);
-        $('#expressionResultValue').text(response.expressionResult.value.toString());
-        $('#expressionResult').show();
+        var $expressionCanonicalTextColumn = $('<td>').text(response.expression.canonicalText);
+        var $expressionResultTextColumn = $('<td>').text(response.expressionResult.text);
+        var $expressionResultValueColumn = $('<td>').text(response.expressionResult.value.toString());
+        var $expressionResultRow = $('<tr>').append($expressionCanonicalTextColumn, $expressionResultTextColumn, $expressionResultValueColumn);
+        var $expressionResults = $('#expressionResults');
+        $expressionResults.empty();
+        $expressionResults.append($expressionResultRow);
 
         $('#errorMessage').hide();
     }

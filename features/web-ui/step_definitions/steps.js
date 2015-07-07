@@ -76,32 +76,20 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^an expression result should be displayed$/, function () {
-        return this.homePage.isExpressionResultDisplayed().then(function (isDisplayed) {
-            expect(isDisplayed).to.be.true;
-        });
-    });
-
-    this.Then(/^an expression result should not be displayed$/, function () {
-        return this.homePage.isExpressionResultDisplayed().then(function (isDisplayed) {
-            expect(isDisplayed).to.be.false;
-        });
-    });
-
-    this.Then(/^the expression canonical text should be "(.*)"$/, function (expressionCanonicalText) {
-        return this.homePage.getExpressionCanonicalText().then(function (text) {
+    this.Then(/^the latest expression canonical text should be "(.*)"$/, function (expressionCanonicalText) {
+        return this.homePage.getLatestExpressionCanonicalText().then(function (text) {
             expect(text).to.equal(expressionCanonicalText);
         });
     });
 
-    this.Then(/^the expression result text should be "(.*)"$/, function (expressionResultText) {
-        return this.homePage.getExpressionResultText().then(function (text) {
+    this.Then(/^the latest expression result text should be "(.*)"$/, function (expressionResultText) {
+        return this.homePage.getLatestExpressionResultText().then(function (text) {
             expect(text).to.equal(expressionResultText);
         });
     });
 
-    this.Then(/^the expression result value should be "(.*)"$/, function (expressionResultValue) {
-        return this.homePage.getExpressionResultValue().then(function (text) {
+    this.Then(/^the latest expression result value should be "(.*)"$/, function (expressionResultValue) {
+        return this.homePage.getLatestExpressionResultValue().then(function (text) {
             expect(text).to.equal(expressionResultValue);
         });
     });

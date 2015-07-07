@@ -3,7 +3,28 @@ body {
     font-family: sans-serif;
 }
 
+table {
+    width: 100%;
+}
+
+td, th {
+    border: black 1px solid;
+    padding: 5px;
+}
+
 .error {
     color: red;
+}
+
+.expressionCanonicalText {
+    width: 45%;
+}
+
+.expressionResultText {
+    width: 45%;
+}
+
+.expressionResultValue {
+    width: 10%;
 }
 

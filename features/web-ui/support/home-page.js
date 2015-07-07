@@ -42,24 +42,20 @@ HomePage.prototype.getErrorMessage = function () {
     return this.driver.findElement(By.id("errorMessage")).getText();
 };
 
-HomePage.prototype.getExpressionCanonicalText = function () {
-    return this.driver.findElement(By.id("expressionCanonicalText")).getText();
+HomePage.prototype.getLatestExpressionCanonicalText = function () {
+    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(1) td:nth-child(1)")).getText();
 };
 
-HomePage.prototype.getExpressionResultText = function () {
-    return this.driver.findElement(By.id("expressionResultText")).getText();
+HomePage.prototype.getLatestExpressionResultText = function () {
+    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(1) td:nth-child(2)")).getText();
 };
 
-HomePage.prototype.getExpressionResultValue = function () {
-    return this.driver.findElement(By.id("expressionResultValue")).getText();
+HomePage.prototype.getLatestExpressionResultValue = function () {
+    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(1) td:nth-child(3)")).getText();
 };
 
 HomePage.prototype.isErrorMessageDisplayed = function () {
     return this.driver.findElement(By.id("errorMessage")).isDisplayed();
-};
-
-HomePage.prototype.isExpressionResultDisplayed = function () {
-    return this.driver.findElement(By.id("expressionResult")).isDisplayed();
 };
 
 HomePage.prototype.open = function () {

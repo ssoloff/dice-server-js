@@ -27,11 +27,24 @@
                 </div>
                 <input id="randomNumberGeneratorName" type="hidden" value="uniform" />
             </form>
-            <div id="expressionResult">
-                <span id="expressionCanonicalText"></span> = <span id="expressionResultText"></span> = <span id="expressionResultValue"></span>
-            </div>
             <div class="error" id="errorMessage">
             </div>
+            <table>
+                <colgroup>
+                    <col class="expressionCanonicalText" />
+                    <col class="expressionResultText" />
+                    <col class="expressionResultValue" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Expression</th>
+                        <th>Expression Result Text</th>
+                        <th>Expression Result Value</th>
+                    </tr>
+                </thead>
+                <tbody id="expressionResults">
+                </tbody>
+            </table>
         </main>
         <script src="/scripts/jquery-2.1.4.min.js"></script>
         <script src="/scripts/main.js"></script>
