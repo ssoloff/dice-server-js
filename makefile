@@ -6,6 +6,7 @@ CSSLINT = csslint
 CUCUMBER = cucumber.js
 ECHO = echo
 FIND = find
+GREP = grep
 HTML_VALIDATOR = html-validator
 ISTANBUL = istanbul
 JASMINE = jasmine
@@ -17,6 +18,8 @@ KILL = kill
 NODE = node
 RM = rm -f
 RMDIR = $(RM) -r
+TEE = tee
+TEST = test
 XARGS = xargs
 
 ISTANBUL_OUTPUT_DIR = coverage
@@ -68,7 +71,7 @@ unit-test: build
 	$(JASMINE)
 
 web-lint:
-	$(FIND) $(PUBLIC_DIR) -name "*.html" | $(XARGS) -I {} $(HTML_VALIDATOR) --file={}
+	$(FIND) $(PUBLIC_DIR) -name "*.html" | $(XARGS) -I {} $(HTML_VALIDATOR) --file={} | $(TEE) /dev/tty | { $(GREP) -q -E "^(Error|Warning):"; $(TEST) $$? -eq 1; }
 	$(CSSLINT) $(STYLES_DIR)
 
 $(DICE_EXPRESSION_PARSER_JS): $(DICE_EXPRESSION_JISON)
