@@ -13,6 +13,8 @@ function evaluate() {
 }
 
 function getExpressionText() {
+    'use strict';
+
     var expressionText = $('#expressionText').val();
     var roundingFunction = $('input[name="roundingMode"]:checked').val();
     if (roundingFunction) {
@@ -33,6 +35,8 @@ function initialize() {
 }
 
 function installJQueryPlugins() {
+    'use strict';
+
     jQuery.fn.visible = function () {
         return this.css('visibility', 'visible');
     };
@@ -54,11 +58,16 @@ function processResponse(response) {
         var $expressionCanonicalTextColumn = $('<td>').text(response.expression.canonicalText);
         var $expressionResultTextColumn = $('<td>').text(response.expressionResult.text);
         var $expressionResultValueColumn = $('<td>').text(response.expressionResult.value.toString());
+        var $removeHistoryRowButton = $('<button>').text('Remove').click(function (event) {
+            $(event.target).closest('tr').remove();
+        });
+        var $actionsColumn = $('<td>').append($removeHistoryRowButton);
         var $expressionResultRow = $('<tr>').append(
             $expressionTextColumn,
             $expressionCanonicalTextColumn,
             $expressionResultTextColumn,
-            $expressionResultValueColumn
+            $expressionResultValueColumn,
+            $actionsColumn
         );
         var $expressionResults = $('#expressionResults');
         $expressionResults.prepend($expressionResultRow);

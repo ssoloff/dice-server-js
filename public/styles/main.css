@@ -31,10 +31,14 @@ th {
 }
 
 .expressionResultText {
-    width: 40%;
+    width: 35%;
 }
 
 .expressionResultValue {
     width: 10%;
+}
+
+.expressionResultsActions {
+    width: 5%;
 }
 
