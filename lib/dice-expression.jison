@@ -219,7 +219,7 @@ function createDiceRollExpression(context, literal) {
 }
 
 function createDieExpression(context, literal) {
-    var formattedSides = literal.substr(1);
+    var formattedSides = literal.slice(1);
     var sides = (formattedSides === '%') ? 100 : Number(formattedSides);
     return diceExpression.forDie(context.bag.d(sides));
 }
