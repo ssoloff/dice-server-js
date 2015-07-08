@@ -57,6 +57,14 @@ module.exports = function () {
         return this.homePage.evaluate();
     });
 
+    this.When(/^the reevaluate button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (index) {
+        return this.homePage.reevaluateResultAtIndex(index);
+    });
+
+    this.When(/^the remove button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (index) {
+        return this.homePage.removeResultAtIndex(index);
+    });
+
     this.When(/^the rounding mode is "(.*)"$/, function (roundingMode) {
         return this.homePage.setRoundingMode(roundingMode);
     });

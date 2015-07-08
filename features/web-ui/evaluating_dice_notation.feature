@@ -39,18 +39,6 @@ Scenario: Results table is not modified when an error occurs
         And the 1st expression result text should be "5"
         And the 1st expression result value should be "5"
 
-Scenario: Results table keeps a history of past evaluations
-    When the expression "5" is evaluated
-        And the expression "6" is evaluated
-    Then the 1st expression text should be "6"
-        And the 1st expression canonical text should be "6"
-        And the 1st expression result text should be "6"
-        And the 1st expression result value should be "6"
-        And the 2nd expression text should be "5"
-        And the 2nd expression canonical text should be "5"
-        And the 2nd expression result text should be "5"
-        And the 2nd expression result value should be "5"
-
 Scenario: Stale error messages are hidden
     When the expression "<<INVALID>>" is evaluated
         And the expression "5" is evaluated
@@ -70,4 +58,37 @@ Scenario Outline: Rounding mode
         | Floor         | 3/2        | floor(3/2) | floor(3 / 2)   | [floor(3 / 2) -> 1] | 1            |
         | Ceiling       | 3/2        | ceil(3/2)  | ceil(3 / 2)    | [ceil(3 / 2) -> 2]  | 2            |
         | Nearest       | 3/2        | round(3/2) | round(3 / 2)   | [round(3 / 2) -> 2] | 2            |
+
+Scenario: Results table keeps a history of past evaluations
+    When the expression "5" is evaluated
+        And the expression "6" is evaluated
+    Then the 1st expression text should be "6"
+        And the 1st expression canonical text should be "6"
+        And the 1st expression result text should be "6"
+        And the 1st expression result value should be "6"
+        And the 2nd expression text should be "5"
+        And the 2nd expression canonical text should be "5"
+        And the 2nd expression result text should be "5"
+        And the 2nd expression result value should be "5"
+
+Scenario: Reevaluating a result in the results table
+    When the expression "5" is evaluated
+        And the reevaluate button on the 1st row is clicked
+    Then the 1st expression text should be "5"
+        And the 1st expression canonical text should be "5"
+        And the 1st expression result text should be "5"
+        And the 1st expression result value should be "5"
+        And the 2nd expression text should be "5"
+        And the 2nd expression canonical text should be "5"
+        And the 2nd expression result text should be "5"
+        And the 2nd expression result value should be "5"
+
+Scenario: Removing a result from the results table
+    When the expression "5" is evaluated
+        And the expression "6" is evaluated
+        And the remove button on the 1st row is clicked
+    Then the 1st expression text should be "5"
+        And the 1st expression canonical text should be "5"
+        And the 1st expression result text should be "5"
+        And the 1st expression result value should be "5"
 

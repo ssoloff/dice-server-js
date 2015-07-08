@@ -6,10 +6,10 @@ function addExpressionResult(response) {
     var $expressionResultTextCell = $('<td>').text(response.expressionResult.text);
     var $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
 
-    var $reevaluateButton = $('<button>').text('Reevaluate').click(function () {
+    var $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
         evaluate($expressionTextCell.text());
     });
-    var $removeButton = $('<button>').text('Remove').click(function (event) {
+    var $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
         $(event.target).closest('tr').remove();
     });
     var $actionsCell = $('<td>').append($reevaluateButton, $removeButton);

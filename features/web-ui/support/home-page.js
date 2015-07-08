@@ -43,19 +43,31 @@ HomePage.prototype.getErrorMessage = function () {
 };
 
 HomePage.prototype.getExpressionCanonicalTextAtIndex = function (index) {
-    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(" + index + ") td:nth-child(2)")).getText();
+    return this.driver
+        .findElement(By.id("expressionResults"))
+        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(2)"))
+        .getText();
 };
 
 HomePage.prototype.getExpressionTextAtIndex = function (index) {
-    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(" + index + ") td:nth-child(1)")).getText();
+    return this.driver
+        .findElement(By.id("expressionResults"))
+        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(1)"))
+        .getText();
 };
 
 HomePage.prototype.getExpressionResultTextAtIndex = function (index) {
-    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(" + index + ") td:nth-child(3)")).getText();
+    return this.driver
+        .findElement(By.id("expressionResults"))
+        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(3)"))
+        .getText();
 };
 
 HomePage.prototype.getExpressionResultValueAtIndex = function (index) {
-    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(" + index + ") td:nth-child(4)")).getText();
+    return this.driver
+        .findElement(By.id("expressionResults"))
+        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(4)"))
+        .getText();
 };
 
 HomePage.prototype.isErrorMessageDisplayed = function () {
@@ -64,6 +76,22 @@ HomePage.prototype.isErrorMessageDisplayed = function () {
 
 HomePage.prototype.open = function () {
     return this.driver.get("http://localhost:3000/");
+};
+
+HomePage.prototype.reevaluateResultAtIndex = function (index) {
+    return this.driver
+        .findElement(By.id("expressionResults"))
+        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(5)"))
+        .findElement(By.name("reevaluate"))
+        .click();
+};
+
+HomePage.prototype.removeResultAtIndex = function (index) {
+    return this.driver
+        .findElement(By.id("expressionResults"))
+        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(5)"))
+        .findElement(By.name("remove"))
+        .click();
 };
 
 HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
