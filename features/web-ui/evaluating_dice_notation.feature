@@ -9,9 +9,9 @@ Background: The home page is open and produces deterministic results
 
 Scenario: Evaluating well-formed expressions
     When the expression "3d6+4" is evaluated
-    Then the latest expression canonical text should be "sum(roll(3, d6)) + 4"
-        And the latest expression result text should be "[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4"
-        And the latest expression result value should be "22"
+    Then the 1st expression canonical text should be "sum(roll(3, d6)) + 4"
+        And the 1st expression result text should be "[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4"
+        And the 1st expression result value should be "22"
         And an error message should not be displayed
 
 Scenario: Evaluating malformed expressions
@@ -25,16 +25,16 @@ Scenario: Evaluating empty expressions
 Scenario: Pressing ENTER should cause evaluation
     When the expression "5" is entered
         And the ENTER key is pressed
-    Then the latest expression canonical text should be "5"
-        And the latest expression result text should be "5"
-        And the latest expression result value should be "5"
+    Then the 1st expression canonical text should be "5"
+        And the 1st expression result text should be "5"
+        And the 1st expression result value should be "5"
 
 Scenario: Results table is not modified when an error occurs
     When the expression "5" is evaluated
         And the expression "<<INVALID>>" is evaluated
-    Then the latest expression canonical text should be "5"
-        And the latest expression result text should be "5"
-        And the latest expression result value should be "5"
+    Then the 1st expression canonical text should be "5"
+        And the 1st expression result text should be "5"
+        And the 1st expression result value should be "5"
 
 Scenario: Results table keeps a history of past evaluations
     When the expression "5" is evaluated
@@ -54,9 +54,9 @@ Scenario: Stale error messages are hidden
 Scenario Outline: Rounding mode
     When the rounding mode is "<rounding mode>"
         And the expression "<expression>" is evaluated
-    Then the latest expression canonical text should be "<canonical text>"
-        And the latest expression result text should be "<result text>"
-        And the latest expression result value should be "<result value>"
+    Then the 1st expression canonical text should be "<canonical text>"
+        And the 1st expression result text should be "<result text>"
+        And the 1st expression result value should be "<result value>"
     Examples:
         | rounding mode | expression | canonical text | result text         | result value |
         | None          | 3/2        | 3 / 2          | 3 / 2               | 1.5          |

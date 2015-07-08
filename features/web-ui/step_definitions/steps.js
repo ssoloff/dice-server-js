@@ -76,24 +76,6 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^the latest expression canonical text should be "(.*)"$/, function (expressionCanonicalText) {
-        return this.homePage.getLatestExpressionCanonicalText().then(function (text) {
-            expect(text).to.equal(expressionCanonicalText);
-        });
-    });
-
-    this.Then(/^the latest expression result text should be "(.*)"$/, function (expressionResultText) {
-        return this.homePage.getLatestExpressionResultText().then(function (text) {
-            expect(text).to.equal(expressionResultText);
-        });
-    });
-
-    this.Then(/^the latest expression result value should be "(.*)"$/, function (expressionResultValue) {
-        return this.homePage.getLatestExpressionResultValue().then(function (text) {
-            expect(text).to.equal(expressionResultValue);
-        });
-    });
-
     this.Then(/^the (\d+)(?:st|nd|rd|th) expression canonical text should be "(.*)"$/, function (index, expressionCanonicalText) {
         return this.homePage.getExpressionCanonicalTextAtIndex(parseInt(index)).then(function (text) {
             expect(text).to.equal(expressionCanonicalText);
