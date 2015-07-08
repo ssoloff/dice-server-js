@@ -24,8 +24,7 @@ function getExpressionText() {
 function initialize() {
     'use strict';
 
-    $('#expressionResult').hide();
-    $('#errorMessage').hide();
+    $('#errorMessage').invisible();
 
     $('#expressionForm').submit(function (event) {
         evaluate();
@@ -33,11 +32,21 @@ function initialize() {
     });
 }
 
+function installJQueryPlugins() {
+    jQuery.fn.visible = function () {
+        return this.css('visibility', 'visible');
+    };
+
+    jQuery.fn.invisible = function () {
+        return this.css('visibility', 'hidden');
+    };
+}
+
 function processResponse(response) {
     'use strict';
 
     if (response.error) {
-        $('#errorMessage').text(response.error.message).show();
+        $('#errorMessage').text(response.error.message).visible();
     } else {
         $('#expressionText').val('');
 
@@ -54,13 +63,14 @@ function processResponse(response) {
         var $expressionResults = $('#expressionResults');
         $expressionResults.prepend($expressionResultRow);
 
-        $('#errorMessage').hide();
+        $('#errorMessage').invisible();
     }
 }
 
 function main() {
     'use strict';
 
+    installJQueryPlugins();
     initialize();
 }
 
