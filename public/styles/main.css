@@ -12,16 +12,26 @@ td, th {
     padding: 5px;
 }
 
+th {
+    background: brown;
+    color: white;
+    font-weight: bold;
+}
+
 .error {
     color: red;
 }
 
 .expressionCanonicalText {
-    width: 45%;
+    width: 35%;
+}
+
+.expressionText {
+    width: 15%;
 }
 
 .expressionResultText {
-    width: 45%;
+    width: 40%;
 }
 
 .expressionResultValue {

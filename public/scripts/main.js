@@ -41,10 +41,16 @@ function processResponse(response) {
     } else {
         $('#expressionText').val('');
 
+        var $expressionTextColumn = $('<td>').text(response.expression.text);
         var $expressionCanonicalTextColumn = $('<td>').text(response.expression.canonicalText);
         var $expressionResultTextColumn = $('<td>').text(response.expressionResult.text);
         var $expressionResultValueColumn = $('<td>').text(response.expressionResult.value.toString());
-        var $expressionResultRow = $('<tr>').append($expressionCanonicalTextColumn, $expressionResultTextColumn, $expressionResultValueColumn);
+        var $expressionResultRow = $('<tr>').append(
+            $expressionTextColumn,
+            $expressionCanonicalTextColumn,
+            $expressionResultTextColumn,
+            $expressionResultValueColumn
+        );
         var $expressionResults = $('#expressionResults');
         $expressionResults.prepend($expressionResultRow);
 

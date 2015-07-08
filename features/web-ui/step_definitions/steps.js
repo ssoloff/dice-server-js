@@ -82,6 +82,12 @@ module.exports = function () {
         });
     });
 
+    this.Then(/^the (\d+)(?:st|nd|rd|th) expression text should be "(.*)"$/, function (index, expressionText) {
+        return this.homePage.getExpressionTextAtIndex(parseInt(index)).then(function (text) {
+            expect(text).to.equal(expressionText);
+        });
+    });
+
     this.Then(/^the (\d+)(?:st|nd|rd|th) expression result text should be "(.*)"$/, function (index, expressionResultText) {
         return this.homePage.getExpressionResultTextAtIndex(parseInt(index)).then(function (text) {
             expect(text).to.equal(expressionResultText);
