@@ -93,5 +93,23 @@ module.exports = function () {
             expect(text).to.equal(expressionResultValue);
         });
     });
+
+    this.Then(/^the (\d+)(?:st|nd|rd|th) expression canonical text should be "(.*)"$/, function (index, expressionCanonicalText) {
+        return this.homePage.getExpressionCanonicalTextAtIndex(parseInt(index)).then(function (text) {
+            expect(text).to.equal(expressionCanonicalText);
+        });
+    });
+
+    this.Then(/^the (\d+)(?:st|nd|rd|th) expression result text should be "(.*)"$/, function (index, expressionResultText) {
+        return this.homePage.getExpressionResultTextAtIndex(parseInt(index)).then(function (text) {
+            expect(text).to.equal(expressionResultText);
+        });
+    });
+
+    this.Then(/^the (\d+)(?:st|nd|rd|th) expression result value should be "(.*)"$/, function (index, expressionResultValue) {
+        return this.homePage.getExpressionResultValueAtIndex(parseInt(index)).then(function (text) {
+            expect(text).to.equal(expressionResultValue);
+        });
+    });
 };
 

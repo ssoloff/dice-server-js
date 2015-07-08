@@ -36,6 +36,16 @@ Scenario: Results table is not modified when an error occurs
         And the latest expression result text should be "5"
         And the latest expression result value should be "5"
 
+Scenario: Results table keeps a history of past evaluations
+    When the expression "5" is evaluated
+        And the expression "6" is evaluated
+    Then the 1st expression canonical text should be "6"
+        And the 1st expression result text should be "6"
+        And the 1st expression result value should be "6"
+        And the 2nd expression canonical text should be "5"
+        And the 2nd expression result text should be "5"
+        And the 2nd expression result value should be "5"
+
 Scenario: Stale error messages are hidden
     When the expression "<<INVALID>>" is evaluated
         And the expression "5" is evaluated

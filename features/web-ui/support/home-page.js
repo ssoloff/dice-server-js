@@ -42,6 +42,18 @@ HomePage.prototype.getErrorMessage = function () {
     return this.driver.findElement(By.id("errorMessage")).getText();
 };
 
+HomePage.prototype.getExpressionCanonicalTextAtIndex = function (index) {
+    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(" + index + ") td:nth-child(1)")).getText();
+};
+
+HomePage.prototype.getExpressionResultTextAtIndex = function (index) {
+    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(" + index + ") td:nth-child(2)")).getText();
+};
+
+HomePage.prototype.getExpressionResultValueAtIndex = function (index) {
+    return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(" + index + ") td:nth-child(3)")).getText();
+};
+
 HomePage.prototype.getLatestExpressionCanonicalText = function () {
     return this.driver.findElement(By.id("expressionResults")).findElement(By.css("tr:nth-child(1) td:nth-child(1)")).getText();
 };

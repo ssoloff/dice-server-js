@@ -46,8 +46,7 @@ function processResponse(response) {
         var $expressionResultValueColumn = $('<td>').text(response.expressionResult.value.toString());
         var $expressionResultRow = $('<tr>').append($expressionCanonicalTextColumn, $expressionResultTextColumn, $expressionResultValueColumn);
         var $expressionResults = $('#expressionResults');
-        $expressionResults.empty();
-        $expressionResults.append($expressionResultRow);
+        $expressionResults.prepend($expressionResultRow);
 
         $('#errorMessage').hide();
     }
