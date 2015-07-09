@@ -70,6 +70,7 @@ function initialize() {
         evaluate(getExpressionText());
         event.preventDefault();
     });
+    $('#removeAllResults').click(removeAllResults);
 }
 
 function installJQueryPlugins() {
@@ -94,6 +95,10 @@ function processResponse(response) {
         addExpressionResult(response);
         hideErrorMessage();
     }
+}
+
+function removeAllResults() {
+    $('#expressionResults').empty();
 }
 
 function showErrorMessage(message) {

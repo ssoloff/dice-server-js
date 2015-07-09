@@ -71,6 +71,12 @@ Scenario: Results table keeps a history of past evaluations
         And the 2nd expression result text should be "5"
         And the 2nd expression result value should be "5"
 
+Scenario: Removing all results from the results table
+    When the expression "5" is evaluated
+        And the expression "6" is evaluated
+        And the remove all button is clicked
+    Then the results table should be empty
+
 Scenario: Reevaluating a result in the results table
     When the expression "5" is evaluated
         And the reevaluate button on the 1st row is clicked

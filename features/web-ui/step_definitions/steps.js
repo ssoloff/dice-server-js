@@ -61,6 +61,10 @@ module.exports = function () {
         return this.homePage.reevaluateResultAtIndex(index);
     });
 
+    this.When(/^the remove all button is clicked$/, function () {
+        return this.homePage.removeAllResults();
+    });
+
     this.When(/^the remove button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (index) {
         return this.homePage.removeResultAtIndex(index);
     });
@@ -105,6 +109,12 @@ module.exports = function () {
     this.Then(/^the (\d+)(?:st|nd|rd|th) expression result value should be "(.*)"$/, function (index, expressionResultValue) {
         return this.homePage.getExpressionResultValueAtIndex(parseInt(index)).then(function (text) {
             expect(text).to.equal(expressionResultValue);
+        });
+    });
+
+    this.Then(/^the results table should be empty$/, function () {
+        return this.homePage.getExpressionResultCount().then(function (expressionResultCount) {
+            expect(expressionResultCount).to.equal(0);
         });
     });
 };

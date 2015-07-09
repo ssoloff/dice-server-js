@@ -49,11 +49,13 @@ HomePage.prototype.getExpressionCanonicalTextAtIndex = function (index) {
         .getText();
 };
 
-HomePage.prototype.getExpressionTextAtIndex = function (index) {
+HomePage.prototype.getExpressionResultCount = function () {
     return this.driver
         .findElement(By.id("expressionResults"))
-        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(1)"))
-        .getText();
+        .findElements(By.css("tr"))
+        .then(function (elements) {
+            return elements.length;
+        });
 };
 
 HomePage.prototype.getExpressionResultTextAtIndex = function (index) {
@@ -67,6 +69,13 @@ HomePage.prototype.getExpressionResultValueAtIndex = function (index) {
     return this.driver
         .findElement(By.id("expressionResults"))
         .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(4)"))
+        .getText();
+};
+
+HomePage.prototype.getExpressionTextAtIndex = function (index) {
+    return this.driver
+        .findElement(By.id("expressionResults"))
+        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(1)"))
         .getText();
 };
 
@@ -84,6 +93,10 @@ HomePage.prototype.reevaluateResultAtIndex = function (index) {
         .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(5)"))
         .findElement(By.name("reevaluate"))
         .click();
+};
+
+HomePage.prototype.removeAllResults = function () {
+    return this.driver.findElement(By.id("removeAllResults")).click();
 };
 
 HomePage.prototype.removeResultAtIndex = function (index) {
