@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var request = require("request");
+var request = require('request');
 
 function EvaluateService() {
     this.request = {};
@@ -31,13 +31,13 @@ function EvaluateService() {
 EvaluateService.prototype.call = function (callback) {
     var requestData = {
         form: this.request,
-        uri: "http://localhost:3000/evaluate"
+        uri: 'http://localhost:3000/evaluate'
     };
     request.post(requestData, function (error, response, body) {
         if (!error && (response.statusCode === 200)) {
             callback(JSON.parse(body));
         } else {
-            throw new Error("unexpected response from evaluate service");
+            throw new Error('unexpected response from evaluate service');
         }
     });
 };

@@ -20,12 +20,12 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var driver = require("../support/world").getDriver();
+var driver = require('../support/world').getDriver();
 
 module.exports = function () {
-    this.registerHandler("AfterFeatures", function (event, callback) {
+    this.registerHandler('AfterFeatures', function (event, callback) {
         driver.quit().then(function () {
             callback();
         });

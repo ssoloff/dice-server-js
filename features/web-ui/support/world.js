@@ -20,10 +20,10 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var HomePage = require("../support/home-page");
-var webdriver = require("selenium-webdriver");
+var HomePage = require('../support/home-page');
+var webdriver = require('selenium-webdriver');
 
 var driver = new webdriver.Builder()
     .withCapabilities(webdriver.Capabilities.firefox())

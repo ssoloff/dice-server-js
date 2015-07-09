@@ -20,10 +20,10 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var chai = require("chai");
-var world = require("../support/world");
+var chai = require('chai');
+var world = require('../support/world');
 
 var expect = chai.expect;
 

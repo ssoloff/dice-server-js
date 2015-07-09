@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var webdriver = require("selenium-webdriver");
+var webdriver = require('selenium-webdriver');
 
 var By = webdriver.By;
 
@@ -31,28 +31,28 @@ function HomePage(driver) {
 }
 
 HomePage.prototype.clearExpressionText = function () {
-    return this.driver.findElement(By.id("expressionText")).clear();
+    return this.driver.findElement(By.id('expressionText')).clear();
 };
 
 HomePage.prototype.evaluate = function () {
-    return this.driver.findElement(By.id("evaluate")).click();
+    return this.driver.findElement(By.id('evaluate')).click();
 };
 
 HomePage.prototype.getErrorMessage = function () {
-    return this.driver.findElement(By.id("errorMessage")).getText();
+    return this.driver.findElement(By.id('errorMessage')).getText();
 };
 
 HomePage.prototype.getExpressionCanonicalTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id("expressionResults"))
-        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(2)"))
+        .findElement(By.id('expressionResults'))
+        .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(2)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionResultCount = function () {
     return this.driver
-        .findElement(By.id("expressionResults"))
-        .findElements(By.css("tr"))
+        .findElement(By.id('expressionResults'))
+        .findElements(By.css('tr'))
         .then(function (elements) {
             return elements.length;
         });
@@ -60,63 +60,63 @@ HomePage.prototype.getExpressionResultCount = function () {
 
 HomePage.prototype.getExpressionResultTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id("expressionResults"))
-        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(3)"))
+        .findElement(By.id('expressionResults'))
+        .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(3)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionResultValueAtIndex = function (index) {
     return this.driver
-        .findElement(By.id("expressionResults"))
-        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(4)"))
+        .findElement(By.id('expressionResults'))
+        .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(4)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id("expressionResults"))
-        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(1)"))
+        .findElement(By.id('expressionResults'))
+        .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(1)'))
         .getText();
 };
 
 HomePage.prototype.isErrorMessageDisplayed = function () {
-    return this.driver.findElement(By.id("errorMessage")).isDisplayed();
+    return this.driver.findElement(By.id('errorMessage')).isDisplayed();
 };
 
 HomePage.prototype.open = function () {
-    return this.driver.get("http://localhost:3000/");
+    return this.driver.get('http://localhost:3000/');
 };
 
 HomePage.prototype.reevaluateResultAtIndex = function (index) {
     return this.driver
-        .findElement(By.id("expressionResults"))
-        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(5)"))
-        .findElement(By.name("reevaluate"))
+        .findElement(By.id('expressionResults'))
+        .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(5)'))
+        .findElement(By.name('reevaluate'))
         .click();
 };
 
 HomePage.prototype.removeAllResults = function () {
-    return this.driver.findElement(By.id("removeAllResults")).click();
+    return this.driver.findElement(By.id('removeAllResults')).click();
 };
 
 HomePage.prototype.removeResultAtIndex = function (index) {
     return this.driver
-        .findElement(By.id("expressionResults"))
-        .findElement(By.css("tr:nth-child(" + index + ") td:nth-child(5)"))
-        .findElement(By.name("remove"))
+        .findElement(By.id('expressionResults'))
+        .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(5)'))
+        .findElement(By.name('remove'))
         .click();
 };
 
 HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
-    return this.driver.executeScript("$('#randomNumberGeneratorName').val('" + randomNumberGeneratorName + "');");
+    return this.driver.executeScript('$("#randomNumberGeneratorName").val("' + randomNumberGeneratorName + '");');
 };
 
 HomePage.prototype.setRoundingMode = function (roundingMode) {
-    return this.driver.findElement(By.id("roundingMode" + roundingMode)).click();
+    return this.driver.findElement(By.id('roundingMode' + roundingMode)).click();
 };
 
 HomePage.prototype.typeExpressionText = function (expressionText) {
-    return this.driver.findElement(By.id("expressionText")).sendKeys(expressionText);
+    return this.driver.findElement(By.id('expressionText')).sendKeys(expressionText);
 };
 
 module.exports = HomePage;

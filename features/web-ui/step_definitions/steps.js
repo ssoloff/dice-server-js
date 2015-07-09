@@ -20,10 +20,10 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var chai = require("chai");
-var world = require("../support/world");
+var chai = require('chai');
+var world = require('../support/world');
 
 var expect = chai.expect;
 
@@ -44,7 +44,7 @@ module.exports = function () {
     });
 
     this.When(/^the ENTER key is pressed$/, function () {
-        return this.homePage.typeExpressionText("\n");
+        return this.homePage.typeExpressionText('\n');
     });
 
     this.When(/^the expression "(.*)" is entered$/, function (expression) {
