@@ -57,6 +57,10 @@ module.exports = function () {
         return this.homePage.evaluate();
     });
 
+    this.When(/^the(?: hide)? help link is clicked$/, function () {
+        return this.homePage.toggleHelp();
+    });
+
     this.When(/^the reevaluate button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (index) {
         return this.homePage.reevaluateResultAtIndex(index);
     });
@@ -88,6 +92,14 @@ module.exports = function () {
         });
     });
 
+    this.Then(/^help should( not)? be displayed$/, function (negate) {
+        return this.homePage.isHelpDisplayed().then(function (isDisplayed) {
+            negate
+                ? expect(isDisplayed).to.be.false
+                : expect(isDisplayed).to.be.true;
+        });
+    });
+
     this.Then(/^the (\d+)(?:st|nd|rd|th) expression canonical text should be "(.*)"$/, function (index, expressionCanonicalText) {
         return this.homePage.getExpressionCanonicalTextAtIndex(parseInt(index)).then(function (text) {
             expect(text).to.equal(expressionCanonicalText);
@@ -109,6 +121,12 @@ module.exports = function () {
     this.Then(/^the (\d+)(?:st|nd|rd|th) expression result value should be "(.*)"$/, function (index, expressionResultValue) {
         return this.homePage.getExpressionResultValueAtIndex(parseInt(index)).then(function (text) {
             expect(text).to.equal(expressionResultValue);
+        });
+    });
+
+    this.Then(/^the help link text should be "(.*)"$/, function (helpLinkText) {
+        return this.homePage.getHelpLinkText().then(function (text) {
+            expect(text).to.equal(helpLinkText);
         });
     });
 

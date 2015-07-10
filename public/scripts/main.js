@@ -61,15 +61,23 @@ function hideErrorMessage() {
     $('#errorMessage').invisible();
 }
 
+function hideHelp() {
+    'use strict';
+
+    $('#help').hide();
+}
+
 function initialize() {
     'use strict';
 
+    hideHelp();
     hideErrorMessage();
 
     $('#expressionForm').submit(function (event) {
         evaluate(getExpressionText());
         event.preventDefault();
     });
+    $('#toggleHelp').click(toggleHelp);
     $('#removeAllResults').click(removeAllResults);
 }
 
@@ -105,6 +113,17 @@ function showErrorMessage(message) {
     'use strict';
 
     $('#errorMessage').text(message).visible();
+}
+
+function toggleHelp() {
+    'use strict';
+
+    var $help = $('#help');
+    var wasHelpVisible = $help.is(':visible');
+    $help.toggle();
+
+    var isHelpVisible = !wasHelpVisible;
+    $('#toggleHelp').text(isHelpVisible ? 'hide help' : 'help');
 }
 
 function main() {

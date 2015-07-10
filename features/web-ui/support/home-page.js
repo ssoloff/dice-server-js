@@ -79,8 +79,16 @@ HomePage.prototype.getExpressionTextAtIndex = function (index) {
         .getText();
 };
 
+HomePage.prototype.getHelpLinkText = function () {
+    return this.driver.findElement(By.id('toggleHelp')).getText();
+};
+
 HomePage.prototype.isErrorMessageDisplayed = function () {
     return this.driver.findElement(By.id('errorMessage')).isDisplayed();
+};
+
+HomePage.prototype.isHelpDisplayed = function () {
+    return this.driver.findElement(By.id('help')).isDisplayed();
 };
 
 HomePage.prototype.open = function () {
@@ -113,6 +121,10 @@ HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorNam
 
 HomePage.prototype.setRoundingMode = function (roundingMode) {
     return this.driver.findElement(By.id('roundingMode' + roundingMode)).click();
+};
+
+HomePage.prototype.toggleHelp = function () {
+    return this.driver.findElement(By.id('toggleHelp')).click();
 };
 
 HomePage.prototype.typeExpressionText = function (expressionText) {
