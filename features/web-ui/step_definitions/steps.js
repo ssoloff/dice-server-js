@@ -93,11 +93,15 @@ module.exports = function () {
     });
 
     this.Then(/^help should( not)? be displayed$/, function (negate) {
-        return this.homePage.isHelpDisplayed().then(function (isDisplayed) {
-            negate
-                ? expect(isDisplayed).to.be.false
-                : expect(isDisplayed).to.be.true;
-        });
+        if (negate) {
+            this.homePage.waitUntilHelpIsNotDisplayed().then(function (isNotDisplayed) {
+                expect(isNotDisplayed).to.be.true;
+            });
+        } else {
+            this.homePage.waitUntilHelpIsDisplayed().then(function (isDisplayed) {
+                expect(isDisplayed).to.be.true;
+            });
+        }
     });
 
     this.Then(/^the (\d+)(?:st|nd|rd|th) expression canonical text should be "(.*)"$/, function (index, expressionCanonicalText) {

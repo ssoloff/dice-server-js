@@ -25,6 +25,7 @@
 var webdriver = require('selenium-webdriver');
 
 var By = webdriver.By;
+var until = webdriver.until;
 
 function HomePage(driver) {
     this.driver = driver;
@@ -87,10 +88,6 @@ HomePage.prototype.isErrorMessageDisplayed = function () {
     return this.driver.findElement(By.id('errorMessage')).isDisplayed();
 };
 
-HomePage.prototype.isHelpDisplayed = function () {
-    return this.driver.findElement(By.id('help')).isDisplayed();
-};
-
 HomePage.prototype.open = function () {
     return this.driver.get('http://localhost:3000/');
 };
@@ -129,6 +126,14 @@ HomePage.prototype.toggleHelp = function () {
 
 HomePage.prototype.typeExpressionText = function (expressionText) {
     return this.driver.findElement(By.id('expressionText')).sendKeys(expressionText);
+};
+
+HomePage.prototype.waitUntilHelpIsDisplayed = function () {
+    return this.driver.wait(until.elementIsVisible(this.driver.findElement(By.id('help'))), 5000);
+};
+
+HomePage.prototype.waitUntilHelpIsNotDisplayed = function () {
+    return this.driver.wait(until.elementIsNotVisible(this.driver.findElement(By.id('help'))), 5000);
 };
 
 module.exports = HomePage;

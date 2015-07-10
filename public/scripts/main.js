@@ -120,7 +120,7 @@ function toggleHelp() {
 
     var $help = $('#help');
     var wasHelpVisible = $help.is(':visible');
-    $help.toggle();
+    $help.toggle(400);
 
     var isHelpVisible = !wasHelpVisible;
     $('#toggleHelp').text(isHelpVisible ? 'hide help' : 'help');
