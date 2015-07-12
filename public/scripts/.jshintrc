@@ -7,7 +7,6 @@
     "freeze": true,
     "jquery": true,
     "latedef": "nofunc",
-    "laxbreak": true,
     "noarg": true,
     "nocomma": true,
     "nonbsp": true,

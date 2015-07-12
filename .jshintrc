@@ -5,7 +5,6 @@
     "forin": true,
     "freeze": true,
     "latedef": "nofunc",
-    "laxbreak": true,
     "noarg": true,
     "nocomma": true,
     "node": true,

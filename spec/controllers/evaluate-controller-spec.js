@@ -33,8 +33,8 @@ describe('evaluateController', function () {
     var response;
 
     function isJsonEqual(actual, expected) {
-        if ((_.has(actual, 'expression') || _.has(actual, 'error'))
-                && (_.has(expected, 'expression') || _.has(expected, 'error'))) {
+        if ((_.has(actual, 'expression') || _.has(actual, 'error')) &&
+                (_.has(expected, 'expression') || _.has(expected, 'error'))) {
             return ja.isEqual(expected, actual, true);
         }
     }

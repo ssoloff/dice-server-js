@@ -81,10 +81,10 @@ var diceTest = {
      */
     isDiceExpressionEqual: function (first, second) {
         // istanbul ignore else
-        if (_.has(first, 'typeId')
-                && _.has(first, 'evaluate')
-                && _.has(second, 'typeId')
-                && _.has(second, 'evaluate')) {
+        if (_.has(first, 'typeId') &&
+                _.has(first, 'evaluate') &&
+                _.has(second, 'typeId') &&
+                _.has(second, 'evaluate')) {
             // do not consider function members when testing for equality
             return JSON.stringify(first) === JSON.stringify(second);
         }
