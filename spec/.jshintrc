@@ -1,13 +1,13 @@
 {
-    "jasmine": true,
-    "node": true,
     "bitwise": true,
     "curly": true,
     "eqeqeq": true,
     "forin": true,
     "freeze": true,
+    "jasmine": true,
     "laxbreak": true,
     "noarg": true,
+    "node": true,
     "undef": true,
     "unused": true
 }

@@ -1,11 +1,11 @@
 {
-    "browser": true,
-    "jquery": true,
     "bitwise": true,
+    "browser": true,
     "curly": true,
     "eqeqeq": true,
     "forin": true,
     "freeze": true,
+    "jquery": true,
     "laxbreak": true,
     "noarg": true,
     "undef": true,
