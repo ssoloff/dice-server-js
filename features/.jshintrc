@@ -9,6 +9,7 @@
     "nocomma": true,
     "node": true,
     "nonbsp": true,
+    "nonew": true,
     "undef": true,
     "unused": true
 }
