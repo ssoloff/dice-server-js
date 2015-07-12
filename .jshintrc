@@ -1,5 +1,6 @@
 {
     "node": true,
+    "bitwise": true,
     "curly": true,
     "eqeqeq": true,
     "laxbreak": true,
