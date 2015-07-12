@@ -6,6 +6,7 @@
     "freeze": true,
     "laxbreak": true,
     "noarg": true,
+    "nocomma": true,
     "node": true,
     "undef": true,
     "unused": true

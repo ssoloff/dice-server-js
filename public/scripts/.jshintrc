@@ -8,6 +8,7 @@
     "jquery": true,
     "laxbreak": true,
     "noarg": true,
+    "nocomma": true,
     "undef": true,
     "unused": true
 }
