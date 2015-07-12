@@ -1,8 +1,11 @@
 {
     "jasmine": true,
     "node": true,
+    "bitwise": true,
     "curly": true,
     "eqeqeq": true,
+    "forin": true,
+    "freeze": true,
     "laxbreak": true,
     "undef": true,
     "unused": true
