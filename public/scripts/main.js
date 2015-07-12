@@ -106,6 +106,8 @@ function processResponse(response) {
 }
 
 function removeAllResults() {
+    'use strict';
+
     $('#expressionResults').empty();
 }
 

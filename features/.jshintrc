@@ -11,6 +11,7 @@
     "nonbsp": true,
     "nonew": true,
     "singleGroups": true,
+    "strict": true,
     "undef": true,
     "unused": true
 }
