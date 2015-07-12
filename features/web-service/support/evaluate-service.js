@@ -34,7 +34,7 @@ EvaluateService.prototype.call = function (callback) {
         uri: 'http://localhost:3000/evaluate'
     };
     request.post(requestData, function (error, response, body) {
-        if (!error && (response.statusCode === 200)) {
+        if (!error && response.statusCode === 200) {
             callback(JSON.parse(body));
         } else {
             throw new Error('unexpected response from evaluate service');
