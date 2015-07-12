@@ -3,7 +3,6 @@
     "bitwise": true,
     "curly": true,
     "eqeqeq": true,
-    "expr": true,
     "forin": true,
     "freeze": true,
     "laxbreak": true,

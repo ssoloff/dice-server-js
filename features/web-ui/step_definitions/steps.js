@@ -79,6 +79,7 @@ module.exports = function () {
 
     this.Then(/^an error message should be displayed$/, function () {
         this.homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
+            // jshint expr: true
             expect(isDisplayed).to.be.true;
         });
         return this.homePage.getErrorMessage().then(function (text) {
@@ -88,6 +89,7 @@ module.exports = function () {
 
     this.Then(/^an error message should not be displayed$/, function () {
         return this.homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
+            // jshint expr: true
             expect(isDisplayed).to.be.false;
         });
     });
@@ -95,10 +97,12 @@ module.exports = function () {
     this.Then(/^help should( not)? be displayed$/, function (negate) {
         if (negate) {
             this.homePage.waitUntilHelpIsNotDisplayed().then(function (isNotDisplayed) {
+                // jshint expr: true
                 expect(isNotDisplayed).to.be.true;
             });
         } else {
             this.homePage.waitUntilHelpIsDisplayed().then(function (isDisplayed) {
+                // jshint expr: true
                 expect(isDisplayed).to.be.true;
             });
         }

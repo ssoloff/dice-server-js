@@ -56,6 +56,7 @@ module.exports = function () {
     });
 
     this.Then(/^the response should contain an error$/, function () {
+        // jshint expr: true
         expect(this.response.error).to.exist;
     });
 
