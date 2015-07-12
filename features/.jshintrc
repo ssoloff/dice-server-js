@@ -8,6 +8,7 @@
     "noarg": true,
     "nocomma": true,
     "node": true,
+    "nonbsp": true,
     "undef": true,
     "unused": true
 }
