@@ -9,10 +9,10 @@ Background: The home page is open and produces deterministic results
 
 Scenario: Evaluating well-formed expressions
     When the expression "3d6+4" is evaluated
-    Then the 1st expression text should be "3d6+4"
-        And the 1st expression canonical text should be "sum(roll(3, d6)) + 4"
-        And the 1st expression result text should be "[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4"
-        And the 1st expression result value should be "22"
+    Then the expression text should be "3d6+4"
+        And the expression canonical text should be "sum(roll(3, d6)) + 4"
+        And the expression result text should be "[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4"
+        And the expression result value should be "22"
         And an error message should not be displayed
 
 Scenario: Evaluating malformed expressions
@@ -26,18 +26,18 @@ Scenario: Evaluating empty expressions
 Scenario: Pressing ENTER should cause evaluation
     When the expression "5" is entered
         And the ENTER key is pressed
-    Then the 1st expression text should be "5"
-        And the 1st expression canonical text should be "5"
-        And the 1st expression result text should be "5"
-        And the 1st expression result value should be "5"
+    Then the expression text should be "5"
+        And the expression canonical text should be "5"
+        And the expression result text should be "5"
+        And the expression result value should be "5"
 
-Scenario: Results table is not modified when an error occurs
+Scenario: Results are not modified when an error occurs
     When the expression "5" is evaluated
         And the expression "<<INVALID>>" is evaluated
-    Then the 1st expression text should be "5"
-        And the 1st expression canonical text should be "5"
-        And the 1st expression result text should be "5"
-        And the 1st expression result value should be "5"
+    Then the expression text should be "5"
+        And the expression canonical text should be "5"
+        And the expression result text should be "5"
+        And the expression result value should be "5"
 
 Scenario: Stale error messages are hidden
     When the expression "<<INVALID>>" is evaluated
@@ -47,10 +47,10 @@ Scenario: Stale error messages are hidden
 Scenario Outline: Rounding mode
     When the rounding mode is "<rounding mode>"
         And the expression "<expression>" is evaluated
-    Then the 1st expression text should be "<text>"
-        And the 1st expression canonical text should be "<canonical text>"
-        And the 1st expression result text should be "<result text>"
-        And the 1st expression result value should be "<result value>"
+    Then the expression text should be "<text>"
+        And the expression canonical text should be "<canonical text>"
+        And the expression result text should be "<result text>"
+        And the expression result value should be "<result value>"
     Examples:
         | rounding mode | expression | text       | canonical text | result text         | result value |
         | None          | 3/2        | 3/2        | 3 / 2          | 3 / 2               | 1.5          |
@@ -58,43 +58,4 @@ Scenario Outline: Rounding mode
         | Floor         | 3/2        | floor(3/2) | floor(3 / 2)   | [floor(3 / 2) -> 1] | 1            |
         | Ceiling       | 3/2        | ceil(3/2)  | ceil(3 / 2)    | [ceil(3 / 2) -> 2]  | 2            |
         | Nearest       | 3/2        | round(3/2) | round(3 / 2)   | [round(3 / 2) -> 2] | 2            |
-
-Scenario: Results table keeps a history of past evaluations
-    When the expression "5" is evaluated
-        And the expression "6" is evaluated
-    Then the 1st expression text should be "6"
-        And the 1st expression canonical text should be "6"
-        And the 1st expression result text should be "6"
-        And the 1st expression result value should be "6"
-        And the 2nd expression text should be "5"
-        And the 2nd expression canonical text should be "5"
-        And the 2nd expression result text should be "5"
-        And the 2nd expression result value should be "5"
-
-Scenario: Removing all results from the results table
-    When the expression "5" is evaluated
-        And the expression "6" is evaluated
-        And the remove all button is clicked
-    Then the results table should be empty
-
-Scenario: Reevaluating a result in the results table
-    When the expression "5" is evaluated
-        And the reevaluate button on the 1st row is clicked
-    Then the 1st expression text should be "5"
-        And the 1st expression canonical text should be "5"
-        And the 1st expression result text should be "5"
-        And the 1st expression result value should be "5"
-        And the 2nd expression text should be "5"
-        And the 2nd expression canonical text should be "5"
-        And the 2nd expression result text should be "5"
-        And the 2nd expression result value should be "5"
-
-Scenario: Removing a result from the results table
-    When the expression "5" is evaluated
-        And the expression "6" is evaluated
-        And the remove button on the 1st row is clicked
-    Then the 1st expression text should be "5"
-        And the 1st expression canonical text should be "5"
-        And the 1st expression result text should be "5"
-        And the 1st expression result value should be "5"
 

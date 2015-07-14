@@ -108,26 +108,26 @@ module.exports = function () {
         }
     });
 
-    this.Then(/^the (\d+)(?:st|nd|rd|th) expression canonical text should be "(.*)"$/, function (index, expressionCanonicalText) {
-        return this.homePage.getExpressionCanonicalTextAtIndex(Number(index)).then(function (text) {
+    this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "(.*)"$/, function (index, expressionCanonicalText) {
+        return this.homePage.getExpressionCanonicalTextAtIndex(Number(index ? index : "1")).then(function (text) {
             expect(text).to.equal(expressionCanonicalText);
         });
     });
 
-    this.Then(/^the (\d+)(?:st|nd|rd|th) expression text should be "(.*)"$/, function (index, expressionText) {
-        return this.homePage.getExpressionTextAtIndex(Number(index)).then(function (text) {
+    this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "(.*)"$/, function (index, expressionText) {
+        return this.homePage.getExpressionTextAtIndex(Number(index ? index : "1")).then(function (text) {
             expect(text).to.equal(expressionText);
         });
     });
 
-    this.Then(/^the (\d+)(?:st|nd|rd|th) expression result text should be "(.*)"$/, function (index, expressionResultText) {
-        return this.homePage.getExpressionResultTextAtIndex(Number(index)).then(function (text) {
+    this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression result text should be "(.*)"$/, function (index, expressionResultText) {
+        return this.homePage.getExpressionResultTextAtIndex(Number(index ? index : "1")).then(function (text) {
             expect(text).to.equal(expressionResultText);
         });
     });
 
-    this.Then(/^the (\d+)(?:st|nd|rd|th) expression result value should be "(.*)"$/, function (index, expressionResultValue) {
-        return this.homePage.getExpressionResultValueAtIndex(Number(index)).then(function (text) {
+    this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression result value should be "(.*)"$/, function (index, expressionResultValue) {
+        return this.homePage.getExpressionResultValueAtIndex(Number(index ? index : "1")).then(function (text) {
             expect(text).to.equal(expressionResultValue);
         });
     });
