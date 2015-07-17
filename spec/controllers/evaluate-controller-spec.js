@@ -23,7 +23,6 @@
 'use strict';
 
 var _ = require('underscore');
-var crypto = require('crypto');
 var evaluateController = require('../../controllers/evaluate-controller');
 var fs = require('fs');
 var ja = require('json-assert');
@@ -40,13 +39,6 @@ describe('evaluateController', function () {
                 (_.has(expected, 'expression') || _.has(expected, 'error'))) {
             return ja.isEqual(expected, actual, true);
         }
-    }
-
-    function hasValidSignature(response) {
-        var verify = crypto.createVerify(response.signature.algorithm);
-        verify.update(JSON.stringify(response.content));
-        var publicKey = new Buffer(response.signature.publicKey, 'base64');
-        return verify.verify(publicKey, response.signature.signature, 'base64');
     }
 
     beforeEach(function () {
@@ -104,7 +96,7 @@ describe('evaluateController', function () {
             });
 
             it('should respond with a signature', function () {
-                expect(hasValidSignature(response)).toBe(true);
+                expect(response).toBeSigned();
             });
         });
 
@@ -123,7 +115,7 @@ describe('evaluateController', function () {
             });
 
             it('should respond with a signature', function () {
-                expect(hasValidSignature(response)).toBe(true);
+                expect(response).toBeSigned();
             });
         });
 

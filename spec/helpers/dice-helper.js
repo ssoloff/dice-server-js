@@ -23,6 +23,14 @@
 'use strict';
 
 var _ = require('underscore');
+var crypto = require('crypto');
+
+function hasValidSignature(response) {
+    var verify = crypto.createVerify(response.signature.algorithm);
+    verify.update(JSON.stringify(response.content));
+    var publicKey = new Buffer(response.signature.publicKey, 'base64');
+    return verify.verify(publicKey, response.signature.signature, 'base64');
+}
 
 beforeEach(function () {
     jasmine.addMatchers({
@@ -32,6 +40,16 @@ beforeEach(function () {
                     return {
                         message: 'Expected expression result with value ' + actualExpressionResult.value.toString() + ' to be expression result with value ' + expectedExpressionResultValue.toString() + '.',
                         pass: _.isEqual(expectedExpressionResultValue, actualExpressionResult.value)
+                    };
+                }
+            };
+        },
+        toBeSigned: function () {
+            return {
+                compare: function (response) {
+                    return {
+                        message: 'Expected response to have a valid signature.',
+                        pass: hasValidSignature(response)
                     };
                 }
             };
