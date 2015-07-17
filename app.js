@@ -20,20 +20,20 @@
  * THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-var bodyParser = require("body-parser");
-var express = require("express");
-var http = require("http");
-var path = require("path");
+var bodyParser = require('body-parser');
+var express = require('express');
+var http = require('http');
+var path = require('path');
 
-var evaluateController = require("./controllers/evaluate-controller.js");
+var evaluateController = require('./controllers/evaluate-controller.js');
 
 var app = express();
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({extended: true}));
 
 http.createServer(app).listen(3000);
 
-app.post("/evaluate", evaluateController.evaluate);
+app.post('/evaluate', evaluateController.evaluate);
 
