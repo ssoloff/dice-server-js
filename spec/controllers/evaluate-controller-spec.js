@@ -69,8 +69,8 @@ describe('evaluateController', function () {
         spyOn(res, 'status').and.callThrough();
 
         evaluateController.setKeys(
-            fs.readFileSync(path.join(__dirname, 'private-test-key.pem')),
-            fs.readFileSync(path.join(__dirname, 'public-test-key.pem'))
+            fs.readFileSync(path.join(__dirname, '../../test/private-key.pem')),
+            fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'))
         );
     });
 
