@@ -11,6 +11,7 @@
     "node": true,
     "nonbsp": true,
     "nonew": true,
+    "plusplus": true,
     "singleGroups": true,
     "strict": true,
     "undef": true,
