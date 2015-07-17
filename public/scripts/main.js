@@ -96,11 +96,12 @@ function installJQueryPlugins() {
 function processResponse(response) {
     'use strict';
 
-    if (response.error) {
-        showErrorMessage(response.error.message);
+    var content = response.content;
+    if (content.error) {
+        showErrorMessage(content.error.message);
     } else {
         clearExpressionText();
-        addExpressionResult(response);
+        addExpressionResult(content);
         hideErrorMessage();
     }
 }

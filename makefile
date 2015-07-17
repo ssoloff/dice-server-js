@@ -25,6 +25,7 @@ XARGS = xargs
 ISTANBUL_OUTPUT_DIR = coverage
 JSDOC_OUTPUT_DIR = out
 PUBLIC_DIR = public
+SPEC_DIR = spec
 SRC_DIR = lib
 STYLES_DIR = $(PUBLIC_DIR)/styles
 
@@ -33,6 +34,8 @@ APP_PID = app.pid
 DICE_EXPRESSION_JISON = $(SRC_DIR)/dice-expression.jison
 DICE_EXPRESSION_PARSER_JS = $(SRC_DIR)/dice-expression-parser.js
 JSDOC_CONFIG = jsdoc-conf.json
+PRIVATE_TEST_KEY = $(SPEC_DIR)/controllers/private-test-key.pem
+PUBLIC_TEST_KEY = $(SPEC_DIR)/controllers/public-test-key.pem
 
 all: build check unit-test
 
@@ -60,7 +63,7 @@ publish-coverage:
 	$(CAT) $(ISTANBUL_OUTPUT_DIR)/lcov.info | $(COVERALLS)
 
 start-app:
-	$(NODE) $(APP_JS) & $(ECHO) $$! > $(APP_PID)
+	$(NODE) $(APP_JS) $(PRIVATE_TEST_KEY) $(PUBLIC_TEST_KEY) & $(ECHO) $$! > $(APP_PID)
 
 stop-app:
 	$(eval PID := $(shell $(CAT) $(APP_PID)))

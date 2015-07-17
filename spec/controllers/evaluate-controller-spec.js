@@ -23,8 +23,11 @@
 'use strict';
 
 var _ = require('underscore');
+var crypto = require('crypto');
 var evaluateController = require('../../controllers/evaluate-controller');
+var fs = require('fs');
 var ja = require('json-assert');
+var path = require('path');
 
 describe('evaluateController', function () {
     var req;
@@ -37,6 +40,13 @@ describe('evaluateController', function () {
                 (_.has(expected, 'expression') || _.has(expected, 'error'))) {
             return ja.isEqual(expected, actual, true);
         }
+    }
+
+    function hasValidSignature(response) {
+        var verify = crypto.createVerify(response.signature.algorithm);
+        verify.update(JSON.stringify(response.content));
+        var publicKey = new Buffer(response.signature.publicKey, 'base64');
+        return verify.verify(publicKey, response.signature.signature, 'base64');
     }
 
     beforeEach(function () {
@@ -65,6 +75,11 @@ describe('evaluateController', function () {
         };
         spyOn(res, 'json').and.callThrough();
         spyOn(res, 'status').and.callThrough();
+
+        evaluateController.setKeys(
+            fs.readFileSync(path.join(__dirname, 'private-test-key.pem')),
+            fs.readFileSync(path.join(__dirname, 'public-test-key.pem'))
+        );
     });
 
     describe('.evaluate', function () {
@@ -73,7 +88,7 @@ describe('evaluateController', function () {
                 evaluateController.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
-                expect(response).toEqual({
+                expect(response.content).toEqual({
                     expression: {
                         canonicalText: 'sum(roll(3, d6)) + 4',
                         text: '3d6+4'
@@ -87,6 +102,10 @@ describe('evaluateController', function () {
                     }
                 });
             });
+
+            it('should respond with a signature', function () {
+                expect(hasValidSignature(response)).toBe(true);
+            });
         });
 
         describe('when expression is malformed', function () {
@@ -96,11 +115,15 @@ describe('evaluateController', function () {
                 evaluateController.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
-                expect(response).toEqual({
+                expect(response.content).toEqual({
                     error: {
                         message: ja.matchType('string')
                     }
                 });
+            });
+
+            it('should respond with a signature', function () {
+                expect(hasValidSignature(response)).toBe(true);
             });
         });
 
@@ -112,7 +135,7 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.randomNumberGenerator.name).toBe('uniform');
+                    expect(response.content.randomNumberGenerator.name).toBe('uniform');
                 });
             });
 
@@ -123,9 +146,9 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.randomNumberGenerator.name).toBe('uniform');
-                    expect(response.expressionResult.value).toBeGreaterThan(2 + 4);
-                    expect(response.expressionResult.value).toBeLessThan(19 + 4);
+                    expect(response.content.randomNumberGenerator.name).toBe('uniform');
+                    expect(response.content.expressionResult.value).toBeGreaterThan(2 + 4);
+                    expect(response.content.expressionResult.value).toBeLessThan(19 + 4);
                 });
             });
 
@@ -136,8 +159,8 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.randomNumberGenerator.name).toBe('constantMax');
-                    expect(response.expressionResult.value).toBe(22);
+                    expect(response.content.randomNumberGenerator.name).toBe('constantMax');
+                    expect(response.content.expressionResult.value).toBe(22);
                 });
             });
 
@@ -148,7 +171,7 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.error).toBeDefined();
+                    expect(response.content.error).toBeDefined();
                 });
             });
         });
@@ -161,7 +184,7 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.error).toBeDefined();
+                    expect(response.content.error).toBeDefined();
                 });
             });
 
@@ -172,7 +195,7 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.error).toBeDefined();
+                    expect(response.content.error).toBeDefined();
                 });
             });
         });

@@ -25,7 +25,13 @@
 require('../lib/number-polyfills');
 
 var _ = require('underscore');
+var crypto = require('crypto');
 var dice = require('../lib/dice');
+
+var controller = {
+    privateKey: new Buffer(''),
+    publicKey: new Buffer('')
+};
 
 function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
     switch (randomNumberGeneratorSpecification.name) {
@@ -41,19 +47,18 @@ function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
     throw new Error('unknown random number generator "' + randomNumberGeneratorSpecification.name + '"');
 }
 
-function evaluate(req, res) {
-    var request = req.body;
-    var response = {};
+function createResponseContent(request) {
+    var content = {};
 
     try {
         var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
-        response.randomNumberGenerator = randomNumberGeneratorSpecification;
+        content.randomNumberGenerator = randomNumberGeneratorSpecification;
 
         var expressionParserContext = dice.expressionParser.createDefaultContext();
         expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
         var expressionParser = dice.expressionParser.create(expressionParserContext);
         var expression = expressionParser.parse(request.expression.text);
-        response.expression = {
+        content.expression = {
             canonicalText: dice.expressionFormatter.format(expression),
             text: request.expression.text
         };
@@ -62,19 +67,42 @@ function evaluate(req, res) {
         if (!_.isFinite(expressionResult.value)) {
             throw new Error('expression does not evaluate to a finite number');
         }
-        response.expressionResult = {
+        content.expressionResult = {
             text: dice.expressionResultFormatter.format(expressionResult),
             value: expressionResult.value
         };
     }
     catch (e) {
-        response = {
+        content = {
             error: {
                 message: e.message
             }
         };
     }
 
+    return content;
+}
+
+function createResponseSignature(content) {
+    var algorithm = 'RSA-SHA256';
+    var sign = crypto.createSign(algorithm);
+    sign.update(JSON.stringify(content));
+    var signature = sign.sign(controller.privateKey, 'base64');
+    return {
+        algorithm: algorithm,
+        by: 'dice-server-js',
+        publicKey: controller.publicKey.toString('base64'),
+        signature: signature
+    };
+}
+
+function evaluate(req, res) {
+    var request = req.body;
+    var responseContent = createResponseContent(request);
+    var response = {
+        content: responseContent,
+        signature: createResponseSignature(responseContent)
+    };
     res.status(200).json(response);
 }
 
@@ -82,7 +110,13 @@ function getRandomNumberGeneratorSpecification(request) {
     return request.randomNumberGenerator || {name: 'uniform'};
 }
 
+function setKeys(privateKey, publicKey) {
+    controller.privateKey = privateKey;
+    controller.publicKey = publicKey;
+}
+
 module.exports = {
-    evaluate: evaluate
+    evaluate: evaluate,
+    setKeys: setKeys
 };
 

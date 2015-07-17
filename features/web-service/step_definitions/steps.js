@@ -51,21 +51,26 @@ module.exports = function () {
         }.bind(this));
     });
 
-    this.Then(/^the response should be$/, function (jsonResponse) {
-        expect(this.response).to.deep.equal(JSON.parse(jsonResponse));
+    this.Then(/^the response content should be$/, function (jsonResponse) {
+        expect(this.response.content).to.deep.equal(JSON.parse(jsonResponse));
+    });
+
+    this.Then(/^the response should be signed$/, function () {
+        // jshint expr: true
+        expect(this.response.signature).to.exist;
     });
 
     this.Then(/^the response should contain an error$/, function () {
         // jshint expr: true
-        expect(this.response.error).to.exist;
+        expect(this.response.content.error).to.exist;
     });
 
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-        expect(this.response.expressionResult.text).to.equal(expressionResultText);
+        expect(this.response.content.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
-        expect(this.response.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+        expect(this.response.content.expressionResult.value).to.equal(parseFloat(expressionResultValue));
     });
 };
 

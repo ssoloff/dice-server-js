@@ -24,10 +24,15 @@
 
 var bodyParser = require('body-parser');
 var express = require('express');
+var fs = require('fs');
 var http = require('http');
 var path = require('path');
 
 var evaluateController = require('./controllers/evaluate-controller.js');
+
+var privateKey = fs.readFileSync(process.argv[2]);
+var publicKey = fs.readFileSync(process.argv[3]);
+evaluateController.setKeys(privateKey, publicKey);
 
 var app = express();
 app.use(express.static(path.join(__dirname, '/public')));

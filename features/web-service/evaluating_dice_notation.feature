@@ -9,7 +9,7 @@ Background: The service produces deterministic results
 Scenario: Evaluating well-formed expressions
     Given a request with the expression "5"
     When the evaluate service is invoked
-    Then the response should be
+    Then the response content should be
         """
         {
             "expression": {
@@ -29,7 +29,7 @@ Scenario: Evaluating well-formed expressions
 Scenario: Evaluating malformed expressions
     Given a request with the expression "<<INVALID>>"
     When the evaluate service is invoked
-    Then the response should be
+    Then the response content should be
         """
         {
             "error": {
