@@ -26,16 +26,16 @@ var _ = require('underscore');
 var dice = require('../../lib/dice');
 
 /**
- * @namespace
- * @description Provides useful properties and methods for testing the dice
- *      server.
+ * Provides useful methods for testing the dice server.
+ *
+ * @module dice-test
  */
-var diceTest = {
+module.exports = {
     /**
      * Creates a new dice bag that produces dice that will deterministically
      * and repeatedly roll 1.
      *
-     * @returns {bag} The new dice bag.
+     * @returns {module:dice-bag~Bag!} The new dice bag.
      */
     createBagThatProvidesDiceThatAlwaysRollOne: function () {
         function randomNumberGenerator() {
@@ -49,9 +49,9 @@ var diceTest = {
      * die will deterministically and repeatedly result in the sequence
      * [1,`sides`].
      *
-     * @param {Number} sides - The count of sides for the new die.
+     * @param {Number!} sides - The count of sides for the new die.
      *
-     * @returns {die} The new die.
+     * @returns {module:dice-bag~Die!} The new die.
      *
      * @throws {RangeError} If `sides` is not positive.
      */
@@ -76,7 +76,7 @@ var diceTest = {
      * @param {Object} first - The first dice expression to compare.
      * @param {Object} second - The second dice expression to compare.
      *
-     * @returns {Boolean} `true` if the specified dice expressions are equal;
+     * @returns {Boolean!} `true` if the specified dice expressions are equal;
      *      otherwise `false`.
      */
     isDiceExpressionEqual: function (first, second) {
@@ -90,6 +90,4 @@ var diceTest = {
         }
     }
 };
-
-module.exports = diceTest;
 
