@@ -3,7 +3,7 @@
 CAT = cat
 COVERALLS = node_modules/coveralls/bin/coveralls.js
 CSSLINT = csslint
-CUCUMBER = cucumber.js
+CUCUMBER = $(NODE_MODULES_BIN_DIR)/cucumber-js
 ECHO = echo
 FIND = find
 GREP = grep
