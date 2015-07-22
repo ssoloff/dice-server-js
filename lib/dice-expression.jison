@@ -249,6 +249,44 @@ function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType)
     return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType];
 }
 
+/**
+ * Provides methods for parsing dice expressions.
+ *
+ * @module dice-expression-parser
+ */
+
+/**
+ * A dice expression parser context.
+ * @typedef {Object} Context
+ *
+ * @property {module:dice-bag~Bag} bag - The dice bag used by the parser
+ *      whenever a die literal is encountered.
+ * @property {Object.<String, Function>} functions - An object used by the
+ *      parser to lookup function implementations when a function call is
+ *      encountered.  The functions in this object override any function with
+ *      the same name in the parser's default function list.
+ */
+
+/**
+ * Creates a new dice expression parser.
+ * @function module:dice-expression-parser.create
+ *
+ * @param {module:dice-expression-parser~Context=} context - The dice
+ *      expression parser context.
+ *
+ * @returns {module:dice-expression-parser~Parser!} A new dice expression
+ *      parser.
+ */
 module.exports.create = createParser;
+
+/**
+ * @function module:dice-expression-parser.createDefaultContext
+ * @summary Creates a new default dice expression parser context.
+ * @description The default context uses a default dice bag and includes no
+ *      additional function implementations.
+ *
+ * @returns {module:dice-expression-parser~Context!} A new dice expression
+ *      parser context.
+ */
 module.exports.createDefaultContext = createDefaultContext;
 
