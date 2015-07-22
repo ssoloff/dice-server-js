@@ -2,7 +2,7 @@
 
 CAT = cat
 COVERALLS = $(NODE_MODULES_BIN_DIR)/coveralls
-CSSLINT = csslint
+CSSLINT = $(NODE_MODULES_BIN_DIR)/csslint
 CUCUMBER = $(NODE_MODULES_BIN_DIR)/cucumber-js
 ECHO = echo
 FIND = find
