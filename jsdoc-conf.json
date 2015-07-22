@@ -1,5 +1,6 @@
 {
     "opts": {
+        "readme": "README.md",
         "recurse": true
     },
     "plugins": [
