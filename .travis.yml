@@ -8,7 +8,6 @@ install:
     - npm install -g cucumber
     - npm install -g istanbul
     - npm install -g jasmine
-    - npm install -g jison
     - npm install -g jshint
     - npm install
 script:
