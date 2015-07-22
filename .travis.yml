@@ -9,7 +9,6 @@ install:
     - npm install -g istanbul
     - npm install -g jasmine
     - npm install -g jison
-    - npm install -g jscs
     - npm install -g jshint
     - npm install
 script:

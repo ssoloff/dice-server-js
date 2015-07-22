@@ -11,6 +11,7 @@
   "devDependencies": {
     "chai": "^3.0.0",
     "coveralls": "^2.11.2",
+    "jscs": "^1.13.1",
     "jsdoc": "^3.3.2",
     "json-assert": "^1.0.2",
     "request": "^2.58.0",
