@@ -6,7 +6,6 @@ before_install:
     - "sh -e /etc/init.d/xvfb start"
 install:
     - npm install -g cucumber
-    - npm install -g istanbul
     - npm install -g jshint
     - npm install
 script:
