@@ -160,23 +160,29 @@ describe('diceExpression', function () {
             return 42 + _.toArray(arguments).reduce(sum, 0);
         }
 
-        describe('when function name is falsy', function () {
+        describe('when function name is not a string', function () {
             it('should throw exception', function () {
                 expect(function () {
                     dice.expression.forFunctionCall(undefined, f, []);
                 }).toThrow();
-            });
-        });
-
-        describe('when function is falsy', function () {
-            it('should throw exception', function () {
                 expect(function () {
-                    dice.expression.forFunctionCall('f', undefined, []);
+                    dice.expression.forFunctionCall(1, f, []);
                 }).toThrow();
             });
         });
 
-        describe('when function argument list expressions is falsy', function () {
+        describe('when function is not a function', function () {
+            it('should throw exception', function () {
+                expect(function () {
+                    dice.expression.forFunctionCall('f', undefined, []);
+                }).toThrow();
+                expect(function () {
+                    dice.expression.forFunctionCall('f', 'return 1;', []);
+                }).toThrow();
+            });
+        });
+
+        describe('when function argument list expressions is not an array', function () {
             it('should throw exception', function () {
                 expect(function () {
                     dice.expression.forFunctionCall('f', f, undefined);
