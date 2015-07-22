@@ -1,7 +1,7 @@
 .PHONY: acceptance-test all build check clean coverage docs publish-coverage start-app stop-app unit-test
 
 CAT = cat
-COVERALLS = node_modules/coveralls/bin/coveralls.js
+COVERALLS = $(NODE_MODULES_BIN_DIR)/coveralls
 CSSLINT = csslint
 CUCUMBER = $(NODE_MODULES_BIN_DIR)/cucumber-js
 ECHO = echo
