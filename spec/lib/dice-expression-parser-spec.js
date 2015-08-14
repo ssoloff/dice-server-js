@@ -345,6 +345,14 @@ describe('diceExpressionParser', function () {
         });
 
         describe('function calls', function () {
+            describe('when function is unknown', function () {
+                it('should throw exception', function () {
+                    expect(function () {
+                        expressionParser.parse('unknown()');
+                    }).toThrow();
+                });
+            });
+
             it('should parse a function call with zero arguments', function () {
                 expect(expressionParser.parse('f()')).toEqual(dice.expression.forFunctionCall('f', f, []));
             });
