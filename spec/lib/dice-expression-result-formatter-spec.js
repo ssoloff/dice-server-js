@@ -36,7 +36,7 @@ describe('diceExpressionResultFormatter', function () {
     describe('.format', function () {
         describe('when expression result is an addition expression result', function () {
             it('should return formatted expression result', function () {
-                var expressionResult = dice.expressionResult.forAddition(7, three, four);
+                var expressionResult = dice.expressionResult.forAddition(three, four);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe('3 + 4');
             });
         });
@@ -44,14 +44,14 @@ describe('diceExpressionResultFormatter', function () {
         describe('when expression result is an array expression result', function () {
             describe('when array contains one element', function () {
                 it('should return formatted expression result', function () {
-                    var expressionResult = dice.expressionResult.forArray([3], [three]);
+                    var expressionResult = dice.expressionResult.forArray([three]);
                     expect(dice.expressionResultFormatter.format(expressionResult)).toBe('[3]');
                 });
             });
 
             describe('when array contains two elements', function () {
                 it('should return formatted expression result', function () {
-                    var expressionResult = dice.expressionResult.forArray([3, 4], [three, four]);
+                    var expressionResult = dice.expressionResult.forArray([three, four]);
                     expect(dice.expressionResultFormatter.format(expressionResult)).toBe('[3, 4]');
                 });
             });
@@ -74,7 +74,7 @@ describe('diceExpressionResultFormatter', function () {
 
         describe('when expression result is a division expression result', function () {
             it('should return formatted expression result', function () {
-                var expressionResult = dice.expressionResult.forDivision(0.75, three, four);
+                var expressionResult = dice.expressionResult.forDivision(three, four);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe('3 / 4');
             });
         });
@@ -111,14 +111,14 @@ describe('diceExpressionResultFormatter', function () {
 
         describe('when expression result is a modulo expression result', function () {
             it('should return formatted expression result', function () {
-                var expressionResult = dice.expressionResult.forModulo(1, four, three);
+                var expressionResult = dice.expressionResult.forModulo(four, three);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe('4 % 3');
             });
         });
 
         describe('when expression result is a multiplication expression result', function () {
             it('should return formatted expression result', function () {
-                var expressionResult = dice.expressionResult.forMultiplication(12, three, four);
+                var expressionResult = dice.expressionResult.forMultiplication(three, four);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe('3 * 4');
             });
         });
@@ -139,7 +139,7 @@ describe('diceExpressionResultFormatter', function () {
 
         describe('when expression result is a subtraction expression result', function () {
             it('should return formatted expression result', function () {
-                var expressionResult = dice.expressionResult.forSubtraction(-1, three, four);
+                var expressionResult = dice.expressionResult.forSubtraction(three, four);
                 expect(dice.expressionResultFormatter.format(expressionResult)).toBe('3 - 4');
             });
         });
