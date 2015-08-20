@@ -22,7 +22,6 @@
 
 'use strict';
 
-var _ = require('underscore');
 var crypto = require('crypto');
 
 function hasValidSignature(response) {
@@ -34,16 +33,6 @@ function hasValidSignature(response) {
 
 beforeEach(function () {
     jasmine.addMatchers({
-        toBeExpressionResultWithValue: function () {
-            return {
-                compare: function (actualExpressionResult, expectedExpressionResultValue) {
-                    return {
-                        message: 'Expected expression result with value ' + actualExpressionResult.value.toString() + ' to be expression result with value ' + expectedExpressionResultValue.toString() + '.',
-                        pass: _.isEqual(expectedExpressionResultValue, actualExpressionResult.value)
-                    };
-                }
-            };
-        },
         toBeSigned: function () {
             return {
                 compare: function (response) {

@@ -50,7 +50,7 @@ describe('diceExpressionParser', function () {
         it('should use the dice bag in the context', function () {
             expressionParserContext.bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
             var expression = expressionParser.parse('3d6');
-            expect(expression.evaluate()).toBeExpressionResultWithValue(3);
+            expect(expression.evaluate().value).toBe(3);
         });
     });
 
@@ -372,7 +372,7 @@ describe('diceExpressionParser', function () {
                     expressionParserContext.functions.ceil = function () {
                         return 42;
                     };
-                    expect(expressionParser.parse('ceil(1)').evaluate()).toBeExpressionResultWithValue(42);
+                    expect(expressionParser.parse('ceil(1)').evaluate().value).toBe(42);
                 });
             });
 
