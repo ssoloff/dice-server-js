@@ -59,6 +59,7 @@ describe('evaluateController', function () {
         res = {
             json: function (json) {
                 response = json;
+                response.content = JSON.parse(new Buffer(response.encodedContent, 'base64').toString());
                 return this;
             },
             status: function () {

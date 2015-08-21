@@ -26,7 +26,7 @@ var crypto = require('crypto');
 
 function hasValidSignature(response) {
     var verify = crypto.createVerify(response.signature.algorithm);
-    verify.update(JSON.stringify(response.content));
+    verify.update(response.encodedContent);
     var publicKey = new Buffer(response.signature.publicKey, 'base64');
     return verify.verify(publicKey, response.signature.signature, 'base64');
 }

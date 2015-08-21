@@ -47,6 +47,7 @@ module.exports = function () {
     this.When(/^the evaluate service is invoked$/, function (callback) {
         this.evaluateService.call(function (res) {
             this.response = res;
+            this.response.content = JSON.parse(new Buffer(this.response.encodedContent, 'base64').toString());
             callback();
         }.bind(this));
     });

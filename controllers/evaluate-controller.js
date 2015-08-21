@@ -83,10 +83,10 @@ function createResponseContent(request) {
     return content;
 }
 
-function createResponseSignature(content) {
+function createResponseSignature(encodedContent) {
     var algorithm = 'RSA-SHA256';
     var sign = crypto.createSign(algorithm);
-    sign.update(JSON.stringify(content));
+    sign.update(encodedContent);
     var signature = sign.sign(controller.privateKey, 'base64');
     return {
         algorithm: algorithm,
@@ -96,12 +96,17 @@ function createResponseSignature(content) {
     };
 }
 
+function encodeResponseContent(content) {
+    return new Buffer(JSON.stringify(content)).toString('base64');
+}
+
 function evaluate(req, res) {
     var request = req.body;
     var responseContent = createResponseContent(request);
+    var encodedResponseContent = encodeResponseContent(responseContent);
     var response = {
-        content: responseContent,
-        signature: createResponseSignature(responseContent)
+        encodedContent: encodedResponseContent,
+        signature: createResponseSignature(encodedResponseContent)
     };
     res.status(200).json(response);
 }
