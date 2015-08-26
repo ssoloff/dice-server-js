@@ -53,6 +53,32 @@ describe('security', function () {
         });
     });
 
+    describe('.toString', function () {
+        describe('when object is a string', function () {
+            it('should return the object', function () {
+                expect(security.toString('test')).toBe('test');
+            });
+        });
+
+        describe('when object is a number', function () {
+            it('should return the object as a string', function () {
+                expect(security.toString(42)).toBe('42');
+            });
+        });
+
+        describe('when object is a buffer', function () {
+            it('should return the object as a string using UTF-8 encoding', function () {
+                expect(security.toString(new Buffer('test'))).toBe('test');
+            });
+        });
+
+        describe('when object is anything else', function () {
+            it('should return the object as a JSON string', function () {
+                expect(security.toString(payload)).toBe('{"a":1,"b":2,"c":3}');
+            });
+        });
+    });
+
     describe('.verifySignature', function () {
         describe('when signature is valid', function () {
             it('should return true', function () {

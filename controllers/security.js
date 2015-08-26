@@ -27,16 +27,6 @@ var jws = require('jws');
 
 var SIGNATURE_ALGORITHM = 'RS256';
 
-function toString(obj) {
-    if (typeof obj === 'string') {
-        return obj;
-    } else if (typeof obj === 'number' || Buffer.isBuffer(obj)) {
-        return obj.toString();
-    } else {
-        return JSON.stringify(obj);
-    }
-}
-
 module.exports = {
     /**
      * Creates a detached JSON web signature for the specified payload.
@@ -70,6 +60,25 @@ module.exports = {
     },
 
     /**
+     * Converts the specified object to a string in a format required by the
+     * other functions in this module.
+     *
+     * @param {Object!} obj - The object to be converted.
+     *
+     * @returns {String!} The string representation of the specified object in
+     *      a format required by the other functions in this module.
+     */
+    toString: function (obj) {
+        if (typeof obj === 'string') {
+            return obj;
+        } else if (typeof obj === 'number' || Buffer.isBuffer(obj)) {
+            return obj.toString();
+        } else {
+            return JSON.stringify(obj);
+        }
+    },
+
+    /**
      * Verifies a detached JSON web signature for the specified payload.
      *
      * <p>
@@ -90,7 +99,7 @@ module.exports = {
     verifySignature: function (payload, publicKey, signature) {
         var jwsSignature = signature.protected +
             '.' +
-            base64url.encode(toString(payload)) +
+            base64url.encode(this.toString(payload)) +
             '.' +
             signature.signature;
         return jws.verify(jwsSignature, SIGNATURE_ALGORITHM, publicKey);
