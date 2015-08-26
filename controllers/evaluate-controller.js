@@ -25,8 +25,8 @@
 require('../lib/number-polyfills');
 
 var _ = require('underscore');
-var crypto = require('crypto');
 var dice = require('../lib/dice');
+var security = require('./security');
 
 var controller = {
     privateKey: new Buffer(''),
@@ -84,16 +84,7 @@ function createResponseContent(request) {
 }
 
 function createResponseSignature(encodedContent) {
-    var algorithm = 'RSA-SHA256';
-    var sign = crypto.createSign(algorithm);
-    sign.update(encodedContent);
-    var signature = sign.sign(controller.privateKey, 'base64');
-    return {
-        algorithm: algorithm,
-        by: 'dice-server-js',
-        publicKey: controller.publicKey.toString('base64'),
-        signature: signature
-    };
+    return security.createSignature(encodedContent, controller.privateKey);
 }
 
 function encodeResponseContent(content) {

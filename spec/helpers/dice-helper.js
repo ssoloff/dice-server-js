@@ -22,23 +22,20 @@
 
 'use strict';
 
-var crypto = require('crypto');
+var security = require('../../controllers/security');
 
-function hasValidSignature(response) {
-    var verify = crypto.createVerify(response.signature.algorithm);
-    verify.update(response.encodedContent);
-    var publicKey = new Buffer(response.signature.publicKey, 'base64');
-    return verify.verify(publicKey, response.signature.signature, 'base64');
+function hasValidSignature(response, publicKey) {
+    return security.verifySignature(response.encodedContent, publicKey, response.signature);
 }
 
 beforeEach(function () {
     jasmine.addMatchers({
         toBeSigned: function () {
             return {
-                compare: function (response) {
+                compare: function (response, publicKey) {
                     return {
                         message: 'Expected response to have a valid signature.',
-                        pass: hasValidSignature(response)
+                        pass: hasValidSignature(response, publicKey)
                     };
                 }
             };
