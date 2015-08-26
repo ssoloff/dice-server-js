@@ -83,21 +83,16 @@ function createResponseContent(request) {
     return content;
 }
 
-function createResponseSignature(encodedContent) {
-    return security.createSignature(encodedContent, controller.privateKey, controller.publicKey);
-}
-
-function encodeResponseContent(content) {
-    return new Buffer(JSON.stringify(content)).toString('base64');
+function createResponseSignature(content) {
+    return security.createSignature(content, controller.privateKey, controller.publicKey);
 }
 
 function evaluate(req, res) {
     var request = req.body;
     var responseContent = createResponseContent(request);
-    var encodedResponseContent = encodeResponseContent(responseContent);
     var response = {
-        encodedContent: encodedResponseContent,
-        signature: createResponseSignature(encodedResponseContent)
+        content: responseContent,
+        signature: createResponseSignature(responseContent)
     };
     res.status(200).json(response);
 }

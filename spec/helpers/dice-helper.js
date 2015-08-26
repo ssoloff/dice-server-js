@@ -25,7 +25,7 @@
 var security = require('../../controllers/security');
 
 function hasValidSignature(response) {
-    return security.verifySignature(response.encodedContent, response.signature);
+    return security.verifySignature(response.content, response.signature);
 }
 
 beforeEach(function () {

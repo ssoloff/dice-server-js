@@ -96,7 +96,7 @@ function installJQueryPlugins() {
 function processResponse(response) {
     'use strict';
 
-    var content = JSON.parse(atob(response.encodedContent));
+    var content = response.content;
     if (content.error) {
         showErrorMessage(content.error.message);
     } else {

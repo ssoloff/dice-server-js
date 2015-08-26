@@ -6,6 +6,7 @@
   "dependencies": {
     "base64url": "^1.0.4",
     "body-parser": "^1.13.1",
+    "canonical-json": "0.0.4",
     "express": "^4.13.0",
     "jwk-to-pem": "^1.2.0",
     "jws": "^3.1.0",

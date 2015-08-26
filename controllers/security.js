@@ -23,6 +23,7 @@
 'use strict';
 
 var base64url = require('base64url');
+var canonicalJsonStringify = require('canonical-json');
 var jwkToPem = require('jwk-to-pem');
 var jws = require('jws');
 var rsaPemToJwk = require('rsa-pem-to-jwk');
@@ -49,12 +50,13 @@ module.exports = {
      * @returns {Object!} The detached JSON web signature.
      */
     createSignature: function (payload, privateKey, publicKey) {
+        var canonicalPayload = this.toCanonicalString(payload);
         var jwsSignature = jws.sign({
             header: {
                 alg: SIGNATURE_ALGORITHM,
                 jwk: rsaPemToJwk(publicKey, {alg: SIGNATURE_ALGORITHM, key_ops: 'verify', use: 'sig'})
             },
-            payload: payload,
+            payload: canonicalPayload,
             privateKey: privateKey
         });
         var decodedJwsSignature = jws.decode(jwsSignature);
@@ -65,21 +67,21 @@ module.exports = {
     },
 
     /**
-     * Converts the specified object to a string in a format required by the
-     * other functions in this module.
+     * Converts the specified object to a canonical string for use in
+     * calculating a reproducible signature.
      *
      * @param {Object!} obj - The object to be converted.
      *
-     * @returns {String!} The string representation of the specified object in
-     *      a format required by the other functions in this module.
+     * @returns {String!} The canonical string representation of the specified
+     *      object.
      */
-    toString: function (obj) {
+    toCanonicalString: function (obj) {
         if (typeof obj === 'string') {
             return obj;
         } else if (typeof obj === 'number' || Buffer.isBuffer(obj)) {
             return obj.toString();
         } else {
-            return JSON.stringify(obj);
+            return canonicalJsonStringify(obj);
         }
     },
 
@@ -100,9 +102,10 @@ module.exports = {
      * @returns {Boolean!} `true` if the signature is valid; otherwise `false`.
      */
     verifySignature: function (payload, signature) {
+        var canonicalPayload = this.toCanonicalString(payload);
         var jwsSignature = signature.protected +
             '.' +
-            base64url.encode(this.toString(payload)) +
+            base64url.encode(canonicalPayload) +
             '.' +
             signature.signature;
         var decodedProtectedHeader = JSON.parse(base64url.decode(signature.protected));
