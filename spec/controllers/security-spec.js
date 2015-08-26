@@ -44,7 +44,7 @@ describe('security', function () {
 
     describe('.createSignature', function () {
         it('should return a signature object using flattened JWS JSON serialization syntax with no unprotected header and no payload', function () {
-            var signature = security.createSignature(payload, privateKey);
+            var signature = security.createSignature(payload, privateKey, publicKey);
 
             expect(signature.protected).toMatch(/^[-_0-9A-Za-z]+$/);
             expect(signature.signature).toMatch(/^[-_0-9A-Za-z]+$/);
@@ -82,9 +82,9 @@ describe('security', function () {
     describe('.verifySignature', function () {
         describe('when signature is valid', function () {
             it('should return true', function () {
-                var signature = security.createSignature(payload, privateKey);
+                var signature = security.createSignature(payload, privateKey, publicKey);
 
-                var isValid = security.verifySignature(payload, publicKey, signature);
+                var isValid = security.verifySignature(payload, signature);
 
                 expect(isValid).toBe(true);
             });
@@ -92,10 +92,10 @@ describe('security', function () {
 
         describe('when signature is not valid', function () {
             it('should return false', function () {
-                var otherPublicKey = fs.readFileSync(path.join(__dirname, '../../test/other-public-key.pem'));
-                var signature = security.createSignature(payload, privateKey);
+                var signature = security.createSignature(payload, privateKey, publicKey);
+                payload.a = -payload.a; // simulate attacker modifying payload
 
-                var isValid = security.verifySignature(payload, otherPublicKey, signature);
+                var isValid = security.verifySignature(payload, signature);
 
                 expect(isValid).toBe(false);
             });

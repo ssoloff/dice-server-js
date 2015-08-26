@@ -33,7 +33,6 @@ describe('evaluateController', function () {
     var res;
     var request;
     var response;
-    var publicKey;
 
     function isJsonEqual(actual, expected) {
         if ((_.has(actual, 'expression') || _.has(actual, 'error')) &&
@@ -70,7 +69,6 @@ describe('evaluateController', function () {
         spyOn(res, 'json').and.callThrough();
         spyOn(res, 'status').and.callThrough();
 
-        publicKey = fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'));
         evaluateController.setKeys(
             fs.readFileSync(path.join(__dirname, '../../test/private-key.pem')),
             fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'))
@@ -99,7 +97,7 @@ describe('evaluateController', function () {
             });
 
             it('should respond with a signature', function () {
-                expect(response).toBeSigned(publicKey);
+                expect(response).toBeSigned();
             });
         });
 
@@ -118,7 +116,7 @@ describe('evaluateController', function () {
             });
 
             it('should respond with a signature', function () {
-                expect(response).toBeSigned(publicKey);
+                expect(response).toBeSigned();
             });
         });
 

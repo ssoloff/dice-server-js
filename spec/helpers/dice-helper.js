@@ -24,18 +24,18 @@
 
 var security = require('../../controllers/security');
 
-function hasValidSignature(response, publicKey) {
-    return security.verifySignature(response.encodedContent, publicKey, response.signature);
+function hasValidSignature(response) {
+    return security.verifySignature(response.encodedContent, response.signature);
 }
 
 beforeEach(function () {
     jasmine.addMatchers({
         toBeSigned: function () {
             return {
-                compare: function (response, publicKey) {
+                compare: function (response) {
                     return {
                         message: 'Expected response to have a valid signature.',
-                        pass: hasValidSignature(response, publicKey)
+                        pass: hasValidSignature(response)
                     };
                 }
             };

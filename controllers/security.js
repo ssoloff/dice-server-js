@@ -23,7 +23,9 @@
 'use strict';
 
 var base64url = require('base64url');
+var jwkToPem = require('jwk-to-pem');
 var jws = require('jws');
+var rsaPemToJwk = require('rsa-pem-to-jwk');
 
 var SIGNATURE_ALGORITHM = 'RS256';
 
@@ -41,13 +43,16 @@ module.exports = {
      *      it will be coerced to a string using `JSON.stringify`.
      * @param {Object!} privateKey - A string or a buffer containing the
      *      private key.
+     * @param {Object!} publicKey - A string or a buffer containing the public
+     *      key.
      *
      * @returns {Object!} The detached JSON web signature.
      */
-    createSignature: function (payload, privateKey) {
+    createSignature: function (payload, privateKey, publicKey) {
         var jwsSignature = jws.sign({
             header: {
-                alg: SIGNATURE_ALGORITHM
+                alg: SIGNATURE_ALGORITHM,
+                jwk: rsaPemToJwk(publicKey, {alg: SIGNATURE_ALGORITHM, key_ops: 'verify', use: 'sig'})
             },
             payload: payload,
             privateKey: privateKey
@@ -89,19 +94,19 @@ module.exports = {
      *
      * @param {Object!} payload - The payload.  If not a buffer or a string,
      *      it will be coerced to a string using `JSON.stringify`.
-     * @param {Object!} publicKey - A string or a buffer containing the
-     *      public key.
      * @param {Object!} signature - The detached JSON web signature to be
      *      verified for the specified payload.
      *
      * @returns {Boolean!} `true` if the signature is valid; otherwise `false`.
      */
-    verifySignature: function (payload, publicKey, signature) {
+    verifySignature: function (payload, signature) {
         var jwsSignature = signature.protected +
             '.' +
             base64url.encode(this.toString(payload)) +
             '.' +
             signature.signature;
+        var decodedProtectedHeader = JSON.parse(base64url.decode(signature.protected));
+        var publicKey = jwkToPem(decodedProtectedHeader.jwk);
         return jws.verify(jwsSignature, SIGNATURE_ALGORITHM, publicKey);
     }
 };

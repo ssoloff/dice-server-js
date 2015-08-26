@@ -84,7 +84,7 @@ function createResponseContent(request) {
 }
 
 function createResponseSignature(encodedContent) {
-    return security.createSignature(encodedContent, controller.privateKey);
+    return security.createSignature(encodedContent, controller.privateKey, controller.publicKey);
 }
 
 function encodeResponseContent(content) {
