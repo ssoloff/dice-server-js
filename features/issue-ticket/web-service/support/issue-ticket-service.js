@@ -22,26 +22,35 @@
 
 'use strict';
 
-var bodyParser = require('body-parser');
-var express = require('express');
-var fs = require('fs');
-var http = require('http');
-var path = require('path');
+var request = require('request');
 
-var evaluateController = require('./controllers/evaluate-controller.js');
-var issueTicketController = require('./controllers/issue-ticket-controller.js');
+function IssueTicketService() {
+    this.request = {};
+}
 
-var privateKey = fs.readFileSync(process.argv[2]);
-var publicKey = fs.readFileSync(process.argv[3]);
-evaluateController.setKeys(privateKey, publicKey);
-issueTicketController.setKeys(privateKey, publicKey);
+IssueTicketService.prototype.call = function (callback) {
+    var requestData = {
+        form: this.request,
+        uri: 'http://localhost:3000/issue-ticket'
+    };
+    request.post(requestData, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            callback(JSON.parse(body));
+        } else {
+            throw new Error('unexpected response from issue-ticket service');
+        }
+    });
+};
 
-var app = express();
-app.use(express.static(path.join(__dirname, '/public')));
-app.use(bodyParser.urlencoded({extended: true}));
+IssueTicketService.prototype.setDescription = function (description) {
+    this.request.description = description;
+};
 
-http.createServer(app).listen(3000);
+IssueTicketService.prototype.setExpression = function (expressionText) {
+    this.request.expression = {
+        text: expressionText
+    };
+};
 
-app.post('/evaluate', evaluateController.evaluate);
-app.post('/issue-ticket', issueTicketController.issueTicket);
+module.exports = IssueTicketService;
 

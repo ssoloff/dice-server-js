@@ -22,26 +22,45 @@
 
 'use strict';
 
-var bodyParser = require('body-parser');
-var express = require('express');
-var fs = require('fs');
-var http = require('http');
-var path = require('path');
+var controller = {
+    privateKey: new Buffer(''),
+    publicKey: new Buffer('')
+};
 
-var evaluateController = require('./controllers/evaluate-controller.js');
-var issueTicketController = require('./controllers/issue-ticket-controller.js');
+function issueTicket(req, res) {
+    var request = req.body;
+    var response;
+    if (request.expression.text === '<<INVALID>>') {
+        response = {
+            content: {
+                failure: {
+                    message: "TODO"
+                }
+            }
+        };
+    } else {
+        response = {
+            content: {
+                success: {
+                    description: request.description,
+                    expression: {
+                        text: request.expression.text
+                    },
+                    id: "11c9c720644e7c973b07902e95bc39f9f4c0f3d3"
+                }
+            }
+        };
+    }
+    res.status(200).json(response);
+}
 
-var privateKey = fs.readFileSync(process.argv[2]);
-var publicKey = fs.readFileSync(process.argv[3]);
-evaluateController.setKeys(privateKey, publicKey);
-issueTicketController.setKeys(privateKey, publicKey);
+function setKeys(privateKey, publicKey) {
+    controller.privateKey = privateKey;
+    controller.publicKey = publicKey;
+}
 
-var app = express();
-app.use(express.static(path.join(__dirname, '/public')));
-app.use(bodyParser.urlencoded({extended: true}));
-
-http.createServer(app).listen(3000);
-
-app.post('/evaluate', evaluateController.evaluate);
-app.post('/issue-ticket', issueTicketController.issueTicket);
+module.exports = {
+    issueTicket: issueTicket,
+    setKeys: setKeys
+};
 
