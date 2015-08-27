@@ -22,6 +22,7 @@ TEE = tee
 TEST = test
 XARGS = xargs
 
+FEATURES_DIR = features
 ISTANBUL_OUTPUT_DIR = coverage
 JSDOC_OUTPUT_DIR = out
 NODE_MODULES_BIN_DIR = node_modules/.bin
@@ -41,7 +42,9 @@ TEST_PUBLIC_KEY = $(TEST_DIR)/public-key.pem
 all: build check unit-test
 
 acceptance-test:
-	$(CUCUMBER)
+	$(CUCUMBER) $(FEATURES_DIR)/evaluate/web-service
+	$(CUCUMBER) $(FEATURES_DIR)/evaluate/web-ui
+	$(CUCUMBER) $(FEATURES_DIR)/issue-ticket
 
 build: $(DICE_EXPRESSION_PARSER_JS)
 
