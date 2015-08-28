@@ -24,6 +24,7 @@
 
 var crypto = require('crypto');
 var dice = require('../lib/dice');
+var security = require('./security');
 
 var controller = {
     privateKey: new Buffer(''),
@@ -58,6 +59,10 @@ function createResponseContent(request) {
     return content;
 }
 
+function createResponseSignature(content) {
+    return security.createSignature(content, controller.privateKey, controller.publicKey);
+}
+
 function createTicketId() {
     return crypto.randomBytes(20).toString('hex');
 }
@@ -66,7 +71,8 @@ function issueTicket(req, res) {
     var request = req.body;
     var responseContent = createResponseContent(request);
     var response = {
-        content: responseContent
+        content: responseContent,
+        signature: createResponseSignature(responseContent)
     };
     res.status(200).json(response);
 }

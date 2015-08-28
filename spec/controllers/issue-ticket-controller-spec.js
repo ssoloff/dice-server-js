@@ -54,6 +54,7 @@ describe('issueTicketController', function () {
             body: request
         };
 
+        response = null;
         res = {
             json: function (json) {
                 response = json;
@@ -94,12 +95,20 @@ describe('issueTicketController', function () {
 
                 expect(response.content.success.id).toMatch(/^[0-9A-Fa-f]{40}$/);
             });
+
+            it('should respond with a signature', function () {
+                issueTicketController.issueTicket(req, res);
+
+                expect(response).toBeSigned();
+            });
         });
 
         describe('when expression is malformed', function () {
-            it('should respond with failure', function () {
+            beforeEach(function () {
                 request.expression.text = '<<INVALID>>';
+            });
 
+            it('should respond with failure', function () {
                 issueTicketController.issueTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
@@ -108,6 +117,12 @@ describe('issueTicketController', function () {
                         message: ja.matchType('string')
                     }
                 });
+            });
+
+            it('should respond with a signature', function () {
+                issueTicketController.issueTicket(req, res);
+
+                expect(response).toBeSigned();
             });
         });
     });

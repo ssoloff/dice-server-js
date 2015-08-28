@@ -51,6 +51,11 @@ module.exports = function () {
         }.bind(this));
     });
 
+    this.Then(/^the response should be signed$/, function () {
+        // jshint expr: true
+        expect(this.response.signature).to.exist;
+    });
+
     this.Then(/^the response should contain a failure$/, function () {
         // jshint expr: true
         expect(this.response.content.failure).to.exist;
