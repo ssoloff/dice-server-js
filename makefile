@@ -51,6 +51,8 @@ build: $(DICE_EXPRESSION_PARSER_JS)
 check: build
 	$(JSHINT) .
 	$(JSCS) .
+	$(FIND) $(PUBLIC_DIR) -name "*.html" | $(XARGS) -I {} $(HTML_VALIDATOR) --file={} | $(TEE) /dev/tty | { $(GREP) -q -E "^(Error|Warning):"; $(TEST) $$? -eq 1; }
+	$(CSSLINT) $(STYLES_DIR)
 
 clean:
 	$(RM) $(DICE_EXPRESSION_PARSER_JS)
@@ -76,10 +78,6 @@ stop-app:
 
 unit-test: build
 	$(JASMINE)
-
-web-lint:
-	$(FIND) $(PUBLIC_DIR) -name "*.html" | $(XARGS) -I {} $(HTML_VALIDATOR) --file={} | $(TEE) /dev/tty | { $(GREP) -q -E "^(Error|Warning):"; $(TEST) $$? -eq 1; }
-	$(CSSLINT) $(STYLES_DIR)
 
 $(DICE_EXPRESSION_PARSER_JS): $(DICE_EXPRESSION_JISON)
 	$(JISON) $< -o $@
