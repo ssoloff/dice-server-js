@@ -56,7 +56,7 @@ describe('evaluateController', function () {
             body: request
         };
 
-        response = null
+        response = null;
         res = {
             json: function (json) {
                 response = json;
