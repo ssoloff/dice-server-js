@@ -42,9 +42,8 @@ TEST_PUBLIC_KEY = $(TEST_DIR)/public-key.pem
 all: build check unit-test
 
 acceptance-test:
-	$(CUCUMBER) $(FEATURES_DIR)/evaluate/web-service
-	$(CUCUMBER) $(FEATURES_DIR)/evaluate/web-ui
-	$(CUCUMBER) $(FEATURES_DIR)/issue-ticket
+	for dir in $(FEATURES_DIR)/services/*/; do $(CUCUMBER) $$dir; done
+	$(CUCUMBER) $(FEATURES_DIR)/ui
 
 build: $(DICE_EXPRESSION_PARSER_JS)
 
