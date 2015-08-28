@@ -22,10 +22,16 @@
 
 'use strict';
 
+var crypto = require('crypto');
+
 var controller = {
     privateKey: new Buffer(''),
     publicKey: new Buffer('')
 };
+
+function createTicketId() {
+    return crypto.randomBytes(20).toString('hex');
+}
 
 function issueTicket(req, res) {
     var request = req.body;
@@ -46,7 +52,7 @@ function issueTicket(req, res) {
                     expression: {
                         text: request.expression.text
                     },
-                    id: "11c9c720644e7c973b07902e95bc39f9f4c0f3d3"
+                    id: createTicketId()
                 }
             }
         };

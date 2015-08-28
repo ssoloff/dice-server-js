@@ -88,6 +88,12 @@ describe('issueTicketController', function () {
                     }
                 });
             });
+
+            it('should respond with a valid ticket identifier', function () {
+                issueTicketController.issueTicket(req, res);
+
+                expect(response.content.success.id).toMatch(/^[0-9A-Fa-f]{40}$/);
+            });
         });
 
         describe('when expression is malformed', function () {
