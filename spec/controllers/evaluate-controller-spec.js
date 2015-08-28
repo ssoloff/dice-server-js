@@ -104,9 +104,11 @@ describe('evaluateController', function () {
         });
 
         describe('when expression is malformed', function () {
-            it('should respond with an error', function () {
+            beforeEach(function () {
                 request.expression.text = '<<INVALID>>';
+            });
 
+            it('should respond with an error', function () {
                 evaluateController.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
