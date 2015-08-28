@@ -56,6 +56,7 @@ describe('evaluateController', function () {
             body: request
         };
 
+        response = null
         res = {
             json: function (json) {
                 response = json;
@@ -96,6 +97,8 @@ describe('evaluateController', function () {
             });
 
             it('should respond with a signature', function () {
+                evaluateController.evaluate(req, res);
+
                 expect(response).toBeSigned();
             });
         });
@@ -115,6 +118,8 @@ describe('evaluateController', function () {
             });
 
             it('should respond with a signature', function () {
+                evaluateController.evaluate(req, res);
+
                 expect(response).toBeSigned();
             });
         });
