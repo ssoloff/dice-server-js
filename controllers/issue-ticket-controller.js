@@ -23,11 +23,40 @@
 'use strict';
 
 var crypto = require('crypto');
+var dice = require('../lib/dice');
 
 var controller = {
     privateKey: new Buffer(''),
     publicKey: new Buffer('')
 };
+
+function createResponseContent(request) {
+    var content = {};
+
+    try {
+        var expressionParser = dice.expressionParser.create();
+        expressionParser.parse(request.expression.text); // verify expression is valid
+
+        content = {
+            success: {
+                description: request.description,
+                expression: {
+                    text: request.expression.text
+                },
+                id: createTicketId()
+            }
+        };
+    }
+    catch (e) {
+        content = {
+            failure: {
+                message: e.message
+            }
+        };
+    }
+
+    return content;
+}
 
 function createTicketId() {
     return crypto.randomBytes(20).toString('hex');
@@ -35,28 +64,10 @@ function createTicketId() {
 
 function issueTicket(req, res) {
     var request = req.body;
-    var response;
-    if (request.expression.text === '<<INVALID>>') {
-        response = {
-            content: {
-                failure: {
-                    message: "TODO"
-                }
-            }
-        };
-    } else {
-        response = {
-            content: {
-                success: {
-                    description: request.description,
-                    expression: {
-                        text: request.expression.text
-                    },
-                    id: createTicketId()
-                }
-            }
-        };
-    }
+    var responseContent = createResponseContent(request);
+    var response = {
+        content: responseContent
+    };
     res.status(200).json(response);
 }
 
