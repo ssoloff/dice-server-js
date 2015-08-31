@@ -24,9 +24,7 @@
 
 var _ = require('underscore');
 var evaluateController = require('../../controllers/evaluate-controller');
-var fs = require('fs');
 var ja = require('json-assert');
-var path = require('path');
 
 describe('evaluateController', function () {
     var req;
@@ -35,8 +33,8 @@ describe('evaluateController', function () {
     var response;
 
     function isJsonEqual(actual, expected) {
-        if ((_.has(actual, 'expression') || _.has(actual, 'error')) &&
-                (_.has(expected, 'expression') || _.has(expected, 'error'))) {
+        if ((_.has(actual, 'success') || _.has(actual, 'failure')) &&
+                (_.has(expected, 'success') || _.has(expected, 'failure'))) {
             return ja.isEqual(expected, actual, true);
         }
     }
@@ -68,11 +66,6 @@ describe('evaluateController', function () {
         };
         spyOn(res, 'json').and.callThrough();
         spyOn(res, 'status').and.callThrough();
-
-        evaluateController.setKeys(
-            fs.readFileSync(path.join(__dirname, '../../test/private-key.pem')),
-            fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'))
-        );
     });
 
     describe('.evaluate', function () {
@@ -81,25 +74,21 @@ describe('evaluateController', function () {
                 evaluateController.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
-                expect(response.content).toEqual({
-                    expression: {
-                        canonicalText: 'sum(roll(3, d6)) + 4',
-                        text: '3d6+4'
-                    },
-                    expressionResult: {
-                        text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                        value: 22
-                    },
-                    randomNumberGenerator: {
-                        name: 'constantMax'
+                expect(response).toEqual({
+                    success: {
+                        expression: {
+                            canonicalText: 'sum(roll(3, d6)) + 4',
+                            text: '3d6+4'
+                        },
+                        expressionResult: {
+                            text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
+                            value: 22
+                        },
+                        randomNumberGenerator: {
+                            name: 'constantMax'
+                        }
                     }
                 });
-            });
-
-            it('should respond with a signature', function () {
-                evaluateController.evaluate(req, res);
-
-                expect(response).toBeSigned();
             });
         });
 
@@ -112,17 +101,11 @@ describe('evaluateController', function () {
                 evaluateController.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
-                expect(response.content).toEqual({
-                    error: {
+                expect(response).toEqual({
+                    failure: {
                         message: ja.matchType('string')
                     }
                 });
-            });
-
-            it('should respond with a signature', function () {
-                evaluateController.evaluate(req, res);
-
-                expect(response).toBeSigned();
             });
         });
 
@@ -134,7 +117,7 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.content.randomNumberGenerator.name).toBe('uniform');
+                    expect(response.success.randomNumberGenerator.name).toBe('uniform');
                 });
             });
 
@@ -145,9 +128,9 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.content.randomNumberGenerator.name).toBe('uniform');
-                    expect(response.content.expressionResult.value).toBeGreaterThan(2 + 4);
-                    expect(response.content.expressionResult.value).toBeLessThan(19 + 4);
+                    expect(response.success.randomNumberGenerator.name).toBe('uniform');
+                    expect(response.success.expressionResult.value).toBeGreaterThan(2 + 4);
+                    expect(response.success.expressionResult.value).toBeLessThan(19 + 4);
                 });
             });
 
@@ -158,8 +141,8 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.content.randomNumberGenerator.name).toBe('constantMax');
-                    expect(response.content.expressionResult.value).toBe(22);
+                    expect(response.success.randomNumberGenerator.name).toBe('constantMax');
+                    expect(response.success.expressionResult.value).toBe(22);
                 });
             });
 
@@ -170,7 +153,7 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.content.error).toBeDefined();
+                    expect(response.failure).toBeDefined();
                 });
             });
         });
@@ -183,7 +166,7 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.content.error).toBeDefined();
+                    expect(response.failure).toBeDefined();
                 });
             });
 
@@ -194,7 +177,7 @@ describe('evaluateController', function () {
                     evaluateController.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
-                    expect(response.content.error).toBeDefined();
+                    expect(response.failure).toBeDefined();
                 });
             });
         });

@@ -9,19 +9,21 @@ Background: The service produces deterministic results
 Scenario: Evaluating well-formed expressions
     Given a request with the expression "5"
     When the evaluate service is invoked
-    Then the response content should be
+    Then the response should be
         """
         {
-            "expression": {
-                "canonicalText": "5",
-                "text": "5"
-            },
-            "expressionResult": {
-                "text": "5",
-                "value": 5
-            },
-            "randomNumberGenerator": {
-                "name": "constantMax"
+            "success": {
+                "expression": {
+                    "canonicalText": "5",
+                    "text": "5"
+                },
+                "expressionResult": {
+                    "text": "5",
+                    "value": 5
+                },
+                "randomNumberGenerator": {
+                    "name": "constantMax"
+                }
             }
         }
         """
@@ -29,10 +31,10 @@ Scenario: Evaluating well-formed expressions
 Scenario: Evaluating malformed expressions
     Given a request with the expression "<<INVALID>>"
     When the evaluate service is invoked
-    Then the response content should be
+    Then the response should be
         """
         {
-            "error": {
+            "failure": {
                 "message": "illegal character"
             }
         }
@@ -173,7 +175,7 @@ Scenario Outline: Evaluating expressions with unary operators
 Scenario Outline: Evaluating expressions that result in non-finite values
     Given a request with the expression "<expression>"
     When the evaluate service is invoked
-    Then the response should contain an error
+    Then the response should contain a failure
     Examples:
         | expression  |
         | d6          |

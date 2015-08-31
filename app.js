@@ -33,7 +33,6 @@ var issueTicketController = require('./controllers/issue-ticket-controller.js');
 
 var privateKey = fs.readFileSync(process.argv[2]);
 var publicKey = fs.readFileSync(process.argv[3]);
-evaluateController.setKeys(privateKey, publicKey);
 issueTicketController.setKeys(privateKey, publicKey);
 
 var app = express();

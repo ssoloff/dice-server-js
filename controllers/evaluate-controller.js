@@ -26,12 +26,6 @@ require('../lib/number-polyfills');
 
 var _ = require('underscore');
 var dice = require('../lib/dice');
-var security = require('./security');
-
-var controller = {
-    privateKey: new Buffer(''),
-    publicKey: new Buffer('')
-};
 
 function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
     switch (randomNumberGeneratorSpecification.name) {
@@ -47,10 +41,12 @@ function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
     throw new Error('unknown random number generator "' + randomNumberGeneratorSpecification.name + '"');
 }
 
-function createResponseContent(request) {
-    var content = {};
+function createResponse(request) {
+    var response = {};
 
     try {
+        var content = {};
+
         var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
         content.randomNumberGenerator = randomNumberGeneratorSpecification;
 
@@ -71,29 +67,25 @@ function createResponseContent(request) {
             text: dice.expressionResultFormatter.format(expressionResult),
             value: expressionResult.value
         };
+
+        response = {
+            success: content
+        };
     }
     catch (e) {
-        content = {
-            error: {
+        response = {
+            failure: {
                 message: e.message
             }
         };
     }
 
-    return content;
-}
-
-function createResponseSignature(content) {
-    return security.createSignature(content, controller.privateKey, controller.publicKey);
+    return response;
 }
 
 function evaluate(req, res) {
     var request = req.body;
-    var responseContent = createResponseContent(request);
-    var response = {
-        content: responseContent,
-        signature: createResponseSignature(responseContent)
-    };
+    var response = createResponse(request);
     res.status(200).json(response);
 }
 
@@ -101,13 +93,7 @@ function getRandomNumberGeneratorSpecification(request) {
     return request.randomNumberGenerator || {name: 'uniform'};
 }
 
-function setKeys(privateKey, publicKey) {
-    controller.privateKey = privateKey;
-    controller.publicKey = publicKey;
-}
-
 module.exports = {
-    evaluate: evaluate,
-    setKeys: setKeys
+    evaluate: evaluate
 };
 
