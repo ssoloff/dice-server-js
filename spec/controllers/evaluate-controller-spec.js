@@ -22,7 +22,7 @@
 
 'use strict';
 
-var _ = require('underscore');
+var controllerTest = require('./controller-test');
 var evaluateController = require('../../controllers/evaluate-controller');
 var ja = require('json-assert');
 
@@ -32,15 +32,8 @@ describe('evaluateController', function () {
     var request;
     var response;
 
-    function isJsonEqual(actual, expected) {
-        if ((_.has(actual, 'success') || _.has(actual, 'failure')) &&
-                (_.has(expected, 'success') || _.has(expected, 'failure'))) {
-            return ja.isEqual(expected, actual, true);
-        }
-    }
-
     beforeEach(function () {
-        jasmine.addCustomEqualityTester(isJsonEqual);
+        jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
 
         request = {
             expression: {
