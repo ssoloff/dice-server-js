@@ -23,8 +23,8 @@
 'use strict';
 
 var controllerTest = require('./controller-test');
-var issueTicketController = require('../../controllers/issue-ticket-controller');
 var fs = require('fs');
+var issueTicketController = require('../../controllers/issue-ticket-controller');
 var ja = require('json-assert');
 var path = require('path');
 
