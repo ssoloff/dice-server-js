@@ -22,28 +22,37 @@
 
 'use strict';
 
-var bodyParser = require('body-parser');
-var express = require('express');
-var fs = require('fs');
-var http = require('http');
-var path = require('path');
+var request = require('request');
 
-var evaluateController = require('./controllers/evaluate-controller.js');
-var issueTicketController = require('./controllers/issue-ticket-controller.js');
-var redeemTicketController = require('./controllers/redeem-ticket-controller.js');
+function RedeemTicketService() {
+    this.request = {
+        id: '00112233445566778899aabbccddeeff00112233'
+    };
+}
 
-var privateKey = fs.readFileSync(process.argv[2]);
-var publicKey = fs.readFileSync(process.argv[3]);
-issueTicketController.setKeys(privateKey, publicKey);
-redeemTicketController.setKeys(privateKey, publicKey);
+RedeemTicketService.prototype.call = function (callback) {
+    var requestData = {
+        form: this.request,
+        uri: 'http://localhost:3000/redeem-ticket'
+    };
+    request.post(requestData, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            callback(JSON.parse(body));
+        } else {
+            throw new Error('unexpected response from redeem-ticket service');
+        }
+    });
+};
 
-var app = express();
-app.use(express.static(path.join(__dirname, '/public')));
-app.use(bodyParser.urlencoded({extended: true}));
+RedeemTicketService.prototype.setDescription = function (description) {
+    this.request.description = description;
+};
 
-http.createServer(app).listen(3000);
+RedeemTicketService.prototype.setExpression = function (expressionText) {
+    this.request.expression = {
+        text: expressionText
+    };
+};
 
-app.post('/evaluate', evaluateController.evaluate);
-app.post('/issue-ticket', issueTicketController.issueTicket);
-app.post('/redeem-ticket', redeemTicketController.redeemTicket);
+module.exports = RedeemTicketService;
 
