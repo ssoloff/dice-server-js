@@ -64,6 +64,7 @@ describe('redeemTicketController', function () {
         spyOn(res, 'json').and.callThrough();
         spyOn(res, 'status').and.callThrough();
 
+        redeemTicketController.setEvaluateController(); // reset default controller
         redeemTicketController.setKeys(
             fs.readFileSync(path.join(__dirname, '../../test/private-key.pem')),
             fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'))
@@ -71,7 +72,7 @@ describe('redeemTicketController', function () {
     });
 
     describe('.redeemTicket', function () {
-        describe('when expression is well-formed', function () {
+        describe('when evaluate controller responds with success', function () {
             it('should respond with success', function () {
                 redeemTicketController.redeemTicket(req, res);
 
@@ -102,9 +103,37 @@ describe('redeemTicketController', function () {
             });
         });
 
-        describe('when expression is malformed', function () {
+        describe('when evaluate controller responds with failure', function () {
             beforeEach(function () {
                 request.expression.text = '<<INVALID>>';
+            });
+
+            it('should respond with failure', function () {
+                redeemTicketController.redeemTicket(req, res);
+
+                expect(res.status).toHaveBeenCalledWith(200);
+                expect(response.content).toEqual({
+                    failure: {
+                        message: ja.matchType('string')
+                    }
+                });
+            });
+
+            it('should respond with a signature', function () {
+                redeemTicketController.redeemTicket(req, res);
+
+                expect(response).toBeSigned();
+            });
+        });
+
+        describe('when evaluate controller responds with non-OK status', function () {
+            beforeEach(function () {
+                var stubEvaluateController = {
+                    evaluate: function (req, res) {
+                        res.status(500).json({});
+                    }
+                };
+                redeemTicketController.setEvaluateController(stubEvaluateController);
             });
 
             it('should respond with failure', function () {

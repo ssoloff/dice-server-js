@@ -22,10 +22,10 @@
 
 'use strict';
 
-var evaluateController = require('./evaluate-controller');
 var security = require('./security');
 
 var controller = {
+    evaluateController: require('./evaluate-controller'),
     privateKey: new Buffer(''),
     publicKey: new Buffer('')
 };
@@ -86,7 +86,7 @@ function evaluate(request) {
             return this;
         }
     };
-    evaluateController.evaluate(evaluateReq, evaluateRes);
+    controller.evaluateController.evaluate(evaluateReq, evaluateRes);
 
     return [evaluateStatus, evaluateResponse];
 }
@@ -101,6 +101,10 @@ function redeemTicket(req, res) {
     res.status(200).json(response);
 }
 
+function setEvaluateController(evaluateController) {
+    controller.evaluateController = evaluateController || require('./evaluate-controller');
+}
+
 function setKeys(privateKey, publicKey) {
     controller.privateKey = privateKey;
     controller.publicKey = publicKey;
@@ -108,6 +112,7 @@ function setKeys(privateKey, publicKey) {
 
 module.exports = {
     redeemTicket: redeemTicket,
+    setEvaluateController: setEvaluateController,
     setKeys: setKeys
 };
 
