@@ -3,7 +3,7 @@ Feature: Issuing a ticket
     As a game master
     I want to issue a ticket to the player that defines the dice notation expression to be evaluated
 
-Scenario Outline: Issuing a ticket
+Scenario Outline: Successfully issuing a ticket
     Given a request with the expression "<expression>"
         And a request with the description "<description>"
     When the issue ticket service is invoked
@@ -15,7 +15,7 @@ Scenario Outline: Issuing a ticket
         | 5          | attack roll |
         | 42         |             |
 
-Scenario: Issuing a ticket with an invalid expression
+Scenario: Failing to issue a ticket due to an invalid expression
     Given a request with the expression "<<INVALID>>"
     When the issue ticket service is invoked
     Then the response should contain a failure

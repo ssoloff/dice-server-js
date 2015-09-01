@@ -1,4 +1,4 @@
-Feature: Signing service response
+Feature: Signing a redeem ticket service response
     In order to verify no one has forged a redeemed ticket
     As a game master
     I want the service response to be signed
