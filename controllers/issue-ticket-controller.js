@@ -26,64 +26,61 @@ var crypto = require('crypto');
 var dice = require('../lib/dice');
 var security = require('./security');
 
-var controller = {
-    privateKey: new Buffer(''),
-    publicKey: new Buffer('')
-};
+module.exports = (function () {
+    var m_privateKey = new Buffer('');
+    var m_publicKey = new Buffer('');
 
-function createResponseContent(request) {
-    var content = {};
+    function createResponseContent(request) {
+        var content = {};
 
-    try {
-        var expressionParser = dice.expressionParser.create();
-        expressionParser.parse(request.expression.text); // verify expression is valid
+        try {
+            var expressionParser = dice.expressionParser.create();
+            expressionParser.parse(request.expression.text); // verify expression is valid
 
-        content = {
-            success: {
-                description: request.description,
-                expression: {
-                    text: request.expression.text
-                },
-                id: createTicketId()
-            }
-        };
+            content = {
+                success: {
+                    description: request.description,
+                    expression: {
+                        text: request.expression.text
+                    },
+                    id: createTicketId()
+                }
+            };
+        }
+        catch (e) {
+            content = {
+                failure: {
+                    message: e.message
+                }
+            };
+        }
+
+        return content;
     }
-    catch (e) {
-        content = {
-            failure: {
-                message: e.message
-            }
-        };
+
+    function createResponseSignature(content) {
+        return security.createSignature(content, m_privateKey, m_publicKey);
     }
 
-    return content;
-}
+    function createTicketId() {
+        return crypto.randomBytes(20).toString('hex');
+    }
 
-function createResponseSignature(content) {
-    return security.createSignature(content, controller.privateKey, controller.publicKey);
-}
+    return {
+        issueTicket: function (req, res) {
+            var request = req.body;
+            var responseContent = createResponseContent(request);
+            var response = {
+                content: responseContent,
+                signature: createResponseSignature(responseContent)
+            };
+            res.status(200).json(response);
+        },
 
-function createTicketId() {
-    return crypto.randomBytes(20).toString('hex');
-}
-
-function issueTicket(req, res) {
-    var request = req.body;
-    var responseContent = createResponseContent(request);
-    var response = {
-        content: responseContent,
-        signature: createResponseSignature(responseContent)
+        setKeys: function (privateKey, publicKey) {
+            m_privateKey = privateKey;
+            m_publicKey = publicKey;
+        }
     };
-    res.status(200).json(response);
-}
-
-function setKeys(privateKey, publicKey) {
-    controller.privateKey = privateKey;
-    controller.publicKey = publicKey;
-}
-
-module.exports = {
-    issueTicket: issueTicket,
-    setKeys: setKeys
-};
+})();
 

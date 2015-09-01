@@ -24,95 +24,95 @@
 
 var security = require('./security');
 
-var controller = {
-    evaluateController: require('./evaluate-controller'),
-    privateKey: new Buffer(''),
-    publicKey: new Buffer('')
-};
+module.exports = (function () {
+    var m_evaluateController = getDefaultEvaluateController();
+    var m_privateKey = new Buffer('');
+    var m_publicKey = new Buffer('');
 
-function createResponseContent(request) {
-    var evaluateResult = evaluate(request);
-    var evaluateResponse = evaluateResult[1];
-    if (evaluateResponse.success) {
-        return {
-            success: {
-                description: request.description,
-                expression: evaluateResponse.success.expression,
-                expressionResult: evaluateResponse.success.expressionResult,
-                id: request.id,
-                randomNumberGenerator: evaluateResponse.success.randomNumberGenerator
-            }
-        };
-    } else if (evaluateResponse.failure) {
-        return {
-            failure: {
-                message: evaluateResponse.failure.message
-            }
-        };
-    } else {
-        var evaluateStatus = evaluateResult[0];
-        return {
-            failure: {
-                message: 'evaluate controller returned status ' + evaluateStatus
-            }
-        };
+    function createResponseContent(request) {
+        var evaluateResult = evaluate(request);
+        var evaluateResponse = evaluateResult[1];
+        if (evaluateResponse.success) {
+            return {
+                success: {
+                    description: request.description,
+                    expression: evaluateResponse.success.expression,
+                    expressionResult: evaluateResponse.success.expressionResult,
+                    id: request.id,
+                    randomNumberGenerator: evaluateResponse.success.randomNumberGenerator
+                }
+            };
+        } else if (evaluateResponse.failure) {
+            return {
+                failure: {
+                    message: evaluateResponse.failure.message
+                }
+            };
+        } else {
+            var evaluateStatus = evaluateResult[0];
+            return {
+                failure: {
+                    message: 'evaluate controller returned status ' + evaluateStatus
+                }
+            };
+        }
     }
-}
 
-function createResponseSignature(content) {
-    return security.createSignature(content, controller.privateKey, controller.publicKey);
-}
+    function createResponseSignature(content) {
+        return security.createSignature(content, m_privateKey, m_publicKey);
+    }
 
-function evaluate(request) {
-    var evaluateRequest = {
-        expression: request.expression,
-        // TODO: need to get RNG from request
-        randomNumberGenerator: {
-            name: 'constantMax'
-        }
-    };
-    var evaluateReq = {
-        body: evaluateRequest
-    };
-    var evaluateResponse;
-    var evaluateStatus;
-    var evaluateRes = {
-        json: function (json) {
-            evaluateResponse = json;
-            return this;
+    function evaluate(request) {
+        var evaluateRequest = {
+            expression: request.expression,
+            // TODO: need to get RNG from request
+            randomNumberGenerator: {
+                name: 'constantMax'
+            }
+        };
+        var evaluateReq = {
+            body: evaluateRequest
+        };
+        var evaluateResponse;
+        var evaluateStatus;
+        var evaluateRes = {
+            json: function (json) {
+                evaluateResponse = json;
+                return this;
+            },
+            status: function (status) {
+                evaluateStatus = status;
+                return this;
+            }
+        };
+        m_evaluateController.evaluate(evaluateReq, evaluateRes);
+
+        return [evaluateStatus, evaluateResponse];
+    }
+
+    function getDefaultEvaluateController() {
+        return require('./evaluate-controller');
+    }
+
+    return {
+        redeemTicket: function (req, res) {
+            var request = req.body;
+            var responseContent = createResponseContent(request);
+            var response = {
+                content: responseContent,
+                signature: createResponseSignature(responseContent)
+            };
+            res.status(200).json(response);
         },
-        status: function (status) {
-            evaluateStatus = status;
-            return this;
+
+        setEvaluateController: function (evaluateController) {
+            m_evaluateController = evaluateController || getDefaultEvaluateController();
+        },
+
+        setKeys: function (privateKey, publicKey) {
+            m_privateKey = privateKey;
+            m_publicKey = publicKey;
         }
     };
-    controller.evaluateController.evaluate(evaluateReq, evaluateRes);
-
-    return [evaluateStatus, evaluateResponse];
-}
-
-function redeemTicket(req, res) {
-    var request = req.body;
-    var responseContent = createResponseContent(request);
-    var response = {
-        content: responseContent,
-        signature: createResponseSignature(responseContent)
-    };
-    res.status(200).json(response);
-}
-
-function setEvaluateController(evaluateController) {
-    controller.evaluateController = evaluateController || require('./evaluate-controller');
-}
-
-function setKeys(privateKey, publicKey) {
-    controller.privateKey = privateKey;
-    controller.publicKey = publicKey;
-}
-
-module.exports = {
-    redeemTicket: redeemTicket,
-    setEvaluateController: setEvaluateController,
-    setKeys: setKeys
-};
+})();
 

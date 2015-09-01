@@ -27,73 +27,73 @@ require('../lib/number-polyfills');
 var _ = require('underscore');
 var dice = require('../lib/dice');
 
-function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
-    switch (randomNumberGeneratorSpecification.name) {
-        case 'constantMax':
-            return function () {
-                return 1.0 - Number.EPSILON;
+module.exports = (function () {
+    function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
+        switch (randomNumberGeneratorSpecification.name) {
+            case 'constantMax':
+                return function () {
+                    return 1.0 - Number.EPSILON;
+                };
+
+            case 'uniform':
+                return Math.random;
+        }
+
+        throw new Error('unknown random number generator "' + randomNumberGeneratorSpecification.name + '"');
+    }
+
+    function createResponse(request) {
+        var response = {};
+
+        try {
+            var content = {};
+
+            var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
+            content.randomNumberGenerator = randomNumberGeneratorSpecification;
+
+            var expressionParserContext = dice.expressionParser.createDefaultContext();
+            expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
+            var expressionParser = dice.expressionParser.create(expressionParserContext);
+            var expression = expressionParser.parse(request.expression.text);
+            content.expression = {
+                canonicalText: dice.expressionFormatter.format(expression),
+                text: request.expression.text
             };
 
-        case 'uniform':
-            return Math.random;
-    }
-
-    throw new Error('unknown random number generator "' + randomNumberGeneratorSpecification.name + '"');
-}
-
-function createResponse(request) {
-    var response = {};
-
-    try {
-        var content = {};
-
-        var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
-        content.randomNumberGenerator = randomNumberGeneratorSpecification;
-
-        var expressionParserContext = dice.expressionParser.createDefaultContext();
-        expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
-        var expressionParser = dice.expressionParser.create(expressionParserContext);
-        var expression = expressionParser.parse(request.expression.text);
-        content.expression = {
-            canonicalText: dice.expressionFormatter.format(expression),
-            text: request.expression.text
-        };
-
-        var expressionResult = expression.evaluate();
-        if (!_.isFinite(expressionResult.value)) {
-            throw new Error('expression does not evaluate to a finite number');
-        }
-        content.expressionResult = {
-            text: dice.expressionResultFormatter.format(expressionResult),
-            value: expressionResult.value
-        };
-
-        response = {
-            success: content
-        };
-    }
-    catch (e) {
-        response = {
-            failure: {
-                message: e.message
+            var expressionResult = expression.evaluate();
+            if (!_.isFinite(expressionResult.value)) {
+                throw new Error('expression does not evaluate to a finite number');
             }
-        };
+            content.expressionResult = {
+                text: dice.expressionResultFormatter.format(expressionResult),
+                value: expressionResult.value
+            };
+
+            response = {
+                success: content
+            };
+        }
+        catch (e) {
+            response = {
+                failure: {
+                    message: e.message
+                }
+            };
+        }
+
+        return response;
     }
 
-    return response;
-}
+    function getRandomNumberGeneratorSpecification(request) {
+        return request.randomNumberGenerator || {name: 'uniform'};
+    }
 
-function evaluate(req, res) {
-    var request = req.body;
-    var response = createResponse(request);
-    res.status(200).json(response);
-}
-
-function getRandomNumberGeneratorSpecification(request) {
-    return request.randomNumberGenerator || {name: 'uniform'};
-}
-
-module.exports = {
-    evaluate: evaluate
-};
+    return {
+        evaluate: function (req, res) {
+            var request = req.body;
+            var response = createResponse(request);
+            res.status(200).json(response);
+        }
+    };
+})();
 
