@@ -23,9 +23,7 @@
 'use strict';
 
 var controllerTest = require('./controller-test');
-var fs = require('fs');
 var ja = require('json-assert');
-var path = require('path');
 var redeemTicketController = require('../../controllers/redeem-ticket-controller');
 
 describe('redeemTicketController', function () {
@@ -47,28 +45,15 @@ describe('redeemTicketController', function () {
                 name: 'constantMax'
             }
         };
-        req = {
-            body: request
-        };
+        req = controllerTest.createRequest(request);
 
         response = null;
-        res = {
-            json: function (json) {
-                response = json;
-                return this;
-            },
-            status: function () {
-                return this;
-            }
-        };
-        spyOn(res, 'json').and.callThrough();
-        spyOn(res, 'status').and.callThrough();
+        res = controllerTest.createResponse(function (json) {
+            response = json;
+        });
 
+        controllerTest.setKeys(redeemTicketController);
         redeemTicketController.setEvaluateController(); // reset default controller
-        redeemTicketController.setKeys(
-            fs.readFileSync(path.join(__dirname, '../../test/private-key.pem')),
-            fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'))
-        );
     });
 
     describe('.redeemTicket', function () {

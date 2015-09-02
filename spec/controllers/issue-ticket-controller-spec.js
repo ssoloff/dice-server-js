@@ -23,10 +23,8 @@
 'use strict';
 
 var controllerTest = require('./controller-test');
-var fs = require('fs');
 var issueTicketController = require('../../controllers/issue-ticket-controller');
 var ja = require('json-assert');
-var path = require('path');
 
 describe('issueTicketController', function () {
     var req;
@@ -43,27 +41,14 @@ describe('issueTicketController', function () {
                 text: '3d6+4'
             }
         };
-        req = {
-            body: request
-        };
+        req = controllerTest.createRequest(request);
 
         response = null;
-        res = {
-            json: function (json) {
-                response = json;
-                return this;
-            },
-            status: function () {
-                return this;
-            }
-        };
-        spyOn(res, 'json').and.callThrough();
-        spyOn(res, 'status').and.callThrough();
+        res = controllerTest.createResponse(function (json) {
+            response = json;
+        });
 
-        issueTicketController.setKeys(
-            fs.readFileSync(path.join(__dirname, '../../test/private-key.pem')),
-            fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'))
-        );
+        controllerTest.setKeys(issueTicketController);
     });
 
     describe('.issueTicket', function () {
