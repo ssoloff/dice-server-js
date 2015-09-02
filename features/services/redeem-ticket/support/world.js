@@ -22,7 +22,12 @@
 
 'use strict';
 
-var RedeemTicketService = require('../support/redeem-ticket-service');
+var IssueTicketService = require('../../../support/issue-ticket-service');
+var RedeemTicketService = require('../../../support/redeem-ticket-service');
+
+function createIssueTicketService() {
+    return new IssueTicketService();
+}
 
 function createRedeemTicketService() {
     return new RedeemTicketService();
@@ -33,5 +38,6 @@ function World(callback) {
 }
 
 module.exports.World = World;
+module.exports.createIssueTicketService = createIssueTicketService;
 module.exports.createRedeemTicketService = createRedeemTicketService;
 

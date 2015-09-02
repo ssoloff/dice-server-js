@@ -31,24 +31,44 @@ module.exports = function () {
     this.World = world.World;
 
     this.Before(function (callback) {
+        this.issueTicketService = world.createIssueTicketService();
         this.redeemTicketService = world.createRedeemTicketService();
         this.response = null;
+        this.ticket = {
+            description: null,
+            id: null
+        };
         callback();
     });
 
-    this.Given(/^a request with the description "(.*)"$/, function (description) {
-        this.redeemTicketService.setDescription(description);
+    this.Given(/^a ticket with the description "(.*)"$/, function (description) {
+        this.issueTicketService.setDescription(description);
     });
 
-    this.Given(/^a request with the expression "(.*)"$/, function (expression) {
-        this.redeemTicketService.setExpression(expression);
+    this.Given(/^a ticket with the expression "(.*)"$/, function (expression) {
+        this.issueTicketService.setExpression(expression);
+    });
+
+    this.Given(/^a ticket with the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
+        this.issueTicketService.setRandomNumberGenerator(randomNumberGeneratorName);
     });
 
     this.When(/^the redeem ticket service is invoked$/, function (callback) {
-        this.redeemTicketService.call(function (res) {
-            this.response = res;
-            callback();
-        }.bind(this));
+        var runner = this;
+        this.issueTicketService.call(function (res) {
+            var issueTicketResponse = res;
+            if (!issueTicketResponse.content.success) {
+                throw new Error('failed to issue ticket');
+            }
+            this.ticket.description = issueTicketResponse.content.success.description;
+            this.ticket.id = issueTicketResponse.content.success.id;
+
+            this.redeemTicketService.setRequestFromIssueTicketResponse(issueTicketResponse);
+            this.redeemTicketService.call(function (res) {
+                this.response = res;
+                callback();
+            }.bind(runner));
+        }.bind(runner));
     });
 
     this.Then(/^the response should be signed$/, function () {
@@ -61,20 +81,20 @@ module.exports = function () {
         expect(this.response.content.failure).to.exist;
     });
 
-    this.Then(/^the response should contain the ticket identifier$/, function () {
-        expect(this.response.content.success.id).to.match(/^[0-9A-Fa-f]{40}$/);
-    });
-
-    this.Then(/^the response should contain the description "(.*)"$/, function (description) {
-        expect(this.response.content.success.description).to.equal(description);
-    });
-
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
         expect(this.response.content.success.evaluateResponse.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
         expect(this.response.content.success.evaluateResponse.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+    });
+
+    this.Then(/^the response should contain the ticket description$/, function () {
+        expect(this.response.content.success.description).to.equal(this.ticket.description);
+    });
+
+    this.Then(/^the response should contain the ticket identifier$/, function () {
+        expect(this.response.content.success.id).to.equal(this.ticket.id);
     });
 };
 

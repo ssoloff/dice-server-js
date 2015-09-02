@@ -22,7 +22,7 @@
 
 'use strict';
 
-var EvaluateService = require('../support/evaluate-service');
+var EvaluateService = require('../../../support/evaluate-service');
 
 function createEvaluateService() {
     return new EvaluateService();

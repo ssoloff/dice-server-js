@@ -22,7 +22,7 @@
 
 'use strict';
 
-var IssueTicketService = require('../support/issue-ticket-service');
+var IssueTicketService = require('../../../support/issue-ticket-service');
 
 function createIssueTicketService() {
     return new IssueTicketService();

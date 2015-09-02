@@ -25,14 +25,7 @@
 var request = require('request');
 
 function RedeemTicketService() {
-    this.request = {
-        evaluateRequest: {
-            randomNumberGenerator: {
-                name: 'constantMax'
-            }
-        },
-        id: '00112233445566778899aabbccddeeff00112233'
-    };
+    this.request = undefined;
 }
 
 RedeemTicketService.prototype.call = function (callback) {
@@ -49,14 +42,8 @@ RedeemTicketService.prototype.call = function (callback) {
     });
 };
 
-RedeemTicketService.prototype.setDescription = function (description) {
-    this.request.description = description;
-};
-
-RedeemTicketService.prototype.setExpression = function (expressionText) {
-    this.request.evaluateRequest.expression = {
-        text: expressionText
-    };
+RedeemTicketService.prototype.setRequestFromIssueTicketResponse = function (issueTicketResponse) {
+    this.request = issueTicketResponse.content.success;
 };
 
 module.exports = RedeemTicketService;
