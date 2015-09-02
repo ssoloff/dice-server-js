@@ -40,8 +40,14 @@ module.exports = (function () {
             content = {
                 success: {
                     description: request.description,
-                    expression: {
-                        text: request.expression.text
+                    evaluateRequest: {
+                        expression: {
+                            text: request.expression.text
+                        },
+                        randomNumberGenerator: {
+                            // TODO: get from request and verify
+                            name: 'constantMax'
+                        }
                     },
                     id: createTicketId()
                 }

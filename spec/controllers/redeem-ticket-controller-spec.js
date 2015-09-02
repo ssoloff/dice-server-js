@@ -37,13 +37,15 @@ describe('redeemTicketController', function () {
 
         request = {
             description: 'description',
-            expression: {
-                text: '3d6+4'
+            evaluateRequest: {
+                expression: {
+                    text: '3d6+4'
+                },
+                randomNumberGenerator: {
+                    name: 'constantMax'
+                }
             },
-            id: '00112233445566778899aabbccddeeff00112233',
-            randomNumberGenerator: {
-                name: 'constantMax'
-            }
+            id: '00112233445566778899aabbccddeeff00112233'
         };
         req = controllerTest.createRequest(request);
 
@@ -90,7 +92,7 @@ describe('redeemTicketController', function () {
 
         describe('when evaluate controller responds with failure', function () {
             beforeEach(function () {
-                request.expression.text = '<<INVALID>>';
+                request.evaluateRequest.expression.text = '<<INVALID>>';
             });
 
             it('should respond with failure', function () {

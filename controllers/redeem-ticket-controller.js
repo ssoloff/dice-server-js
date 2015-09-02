@@ -63,13 +63,7 @@ module.exports = (function () {
     }
 
     function evaluate(request) {
-        var evaluateRequest = {
-            expression: request.expression,
-            // TODO: need to get RNG from request
-            randomNumberGenerator: {
-                name: 'constantMax'
-            }
-        };
+        var evaluateRequest = request.evaluateRequest;
         var evaluateReq = {
             body: evaluateRequest
         };

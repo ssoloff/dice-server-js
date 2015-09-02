@@ -26,6 +26,11 @@ var request = require('request');
 
 function RedeemTicketService() {
     this.request = {
+        evaluateRequest: {
+            randomNumberGenerator: {
+                name: 'constantMax'
+            }
+        },
         id: '00112233445566778899aabbccddeeff00112233'
     };
 }
@@ -49,7 +54,7 @@ RedeemTicketService.prototype.setDescription = function (description) {
 };
 
 RedeemTicketService.prototype.setExpression = function (expressionText) {
-    this.request.expression = {
+    this.request.evaluateRequest.expression = {
         text: expressionText
     };
 };

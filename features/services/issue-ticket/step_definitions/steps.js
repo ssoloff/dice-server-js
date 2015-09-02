@@ -70,7 +70,7 @@ module.exports = function () {
     });
 
     this.Then(/^the response should contain the expression text "(.*)"$/, function (expressionText) {
-        expect(this.response.content.success.expression.text).to.equal(expressionText);
+        expect(this.response.content.success.evaluateRequest.expression.text).to.equal(expressionText);
     });
 };
 

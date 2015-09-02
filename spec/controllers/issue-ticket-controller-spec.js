@@ -60,8 +60,13 @@ describe('issueTicketController', function () {
                 expect(response.content).toEqual({
                     success: {
                         description: 'description',
-                        expression: {
-                            text: '3d6+4'
+                        evaluateRequest: {
+                            expression: {
+                                text: '3d6+4'
+                            },
+                            randomNumberGenerator: {
+                                name: 'constantMax'
+                            }
                         },
                         id: ja.matchType('string')
                     }
