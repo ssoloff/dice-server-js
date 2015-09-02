@@ -25,7 +25,9 @@
 var request = require('request');
 
 function IssueTicketService() {
-    this.request = {};
+    this.request = {
+        evaluateRequest: {}
+    };
 }
 
 IssueTicketService.prototype.call = function (callback) {
@@ -47,8 +49,14 @@ IssueTicketService.prototype.setDescription = function (description) {
 };
 
 IssueTicketService.prototype.setExpression = function (expressionText) {
-    this.request.expression = {
+    this.request.evaluateRequest.expression = {
         text: expressionText
+    };
+};
+
+IssueTicketService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
+    this.request.evaluateRequest.randomNumberGenerator = {
+        name: randomNumberGeneratorName
     };
 };
 

@@ -37,8 +37,13 @@ describe('issueTicketController', function () {
 
         request = {
             description: 'description',
-            expression: {
-                text: '3d6+4'
+            evaluateRequest: {
+                expression: {
+                    text: '3d6+4'
+                },
+                randomNumberGenerator: {
+                    name: 'constantMax'
+                }
             }
         };
         req = controllerTest.createRequest(request);
@@ -49,10 +54,11 @@ describe('issueTicketController', function () {
         });
 
         controllerTest.setKeys(issueTicketController);
+        issueTicketController.setEvaluateController(); // reset default controller
     });
 
     describe('.issueTicket', function () {
-        describe('when expression is well-formed', function () {
+        describe('when evaluate controller responds with success', function () {
             it('should respond with success', function () {
                 issueTicketController.issueTicket(req, res);
 
@@ -86,9 +92,37 @@ describe('issueTicketController', function () {
             });
         });
 
-        describe('when expression is malformed', function () {
+        describe('when evaluate controller responds with failure', function () {
             beforeEach(function () {
-                request.expression.text = '<<INVALID>>';
+                request.evaluateRequest.expression.text = '<<INVALID>>';
+            });
+
+            it('should respond with failure', function () {
+                issueTicketController.issueTicket(req, res);
+
+                expect(res.status).toHaveBeenCalledWith(200);
+                expect(response.content).toEqual({
+                    failure: {
+                        message: ja.matchType('string')
+                    }
+                });
+            });
+
+            it('should respond with a signature', function () {
+                issueTicketController.issueTicket(req, res);
+
+                expect(response).toBeSigned();
+            });
+        });
+
+        describe('when evaluate controller responds with non-OK status', function () {
+            beforeEach(function () {
+                var stubEvaluateController = {
+                    evaluate: function (req, res) {
+                        res.status(500).json({});
+                    }
+                };
+                issueTicketController.setEvaluateController(stubEvaluateController);
             });
 
             it('should respond with failure', function () {

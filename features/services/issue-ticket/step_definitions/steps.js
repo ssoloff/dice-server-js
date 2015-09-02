@@ -44,6 +44,10 @@ module.exports = function () {
         this.issueTicketService.setExpression(expression);
     });
 
+    this.Given(/^a request with the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
+        this.issueTicketService.setRandomNumberGenerator(randomNumberGeneratorName);
+    });
+
     this.When(/^the issue ticket service is invoked$/, function (callback) {
         this.issueTicketService.call(function (res) {
             this.response = res;
@@ -71,6 +75,10 @@ module.exports = function () {
 
     this.Then(/^the response should contain the expression text "(.*)"$/, function (expressionText) {
         expect(this.response.content.success.evaluateRequest.expression.text).to.equal(expressionText);
+    });
+
+    this.Then(/^the response should contain the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
+        expect(this.response.content.success.evaluateRequest.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
     });
 };
 

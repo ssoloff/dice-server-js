@@ -23,45 +23,38 @@
 'use strict';
 
 var crypto = require('crypto');
-var dice = require('../lib/dice');
 var security = require('./security');
 
 module.exports = (function () {
+    var m_evaluateController = getDefaultEvaluateController();
     var m_privateKey = new Buffer('');
     var m_publicKey = new Buffer('');
 
     function createResponseContent(request) {
-        var content = {};
-
-        try {
-            var expressionParser = dice.expressionParser.create();
-            expressionParser.parse(request.expression.text); // verify expression is valid
-
-            content = {
+        var evaluateResult = evaluate(request);
+        var evaluateResponse = evaluateResult[1];
+        if (evaluateResponse.success) {
+            return {
                 success: {
                     description: request.description,
-                    evaluateRequest: {
-                        expression: {
-                            text: request.expression.text
-                        },
-                        randomNumberGenerator: {
-                            // TODO: get from request and verify
-                            name: 'constantMax'
-                        }
-                    },
+                    evaluateRequest: request.evaluateRequest,
                     id: createTicketId()
                 }
             };
-        }
-        catch (e) {
-            content = {
+        } else if (evaluateResponse.failure) {
+            return {
                 failure: {
-                    message: e.message
+                    message: evaluateResponse.failure.message
+                }
+            };
+        } else {
+            var evaluateStatus = evaluateResult[0];
+            return {
+                failure: {
+                    message: 'evaluate controller returned status ' + evaluateStatus
                 }
             };
         }
-
-        return content;
     }
 
     function createResponseSignature(content) {
@@ -70,6 +63,32 @@ module.exports = (function () {
 
     function createTicketId() {
         return crypto.randomBytes(20).toString('hex');
+    }
+
+    function evaluate(request) {
+        var evaluateRequest = request.evaluateRequest;
+        var evaluateReq = {
+            body: evaluateRequest
+        };
+        var evaluateResponse;
+        var evaluateStatus;
+        var evaluateRes = {
+            json: function (json) {
+                evaluateResponse = json;
+                return this;
+            },
+            status: function (status) {
+                evaluateStatus = status;
+                return this;
+            }
+        };
+        m_evaluateController.evaluate(evaluateReq, evaluateRes);
+
+        return [evaluateStatus, evaluateResponse];
+    }
+
+    function getDefaultEvaluateController() {
+        return require('./evaluate-controller');
     }
 
     return {
@@ -81,6 +100,10 @@ module.exports = (function () {
                 signature: createResponseSignature(responseContent)
             };
             res.status(200).json(response);
+        },
+
+        setEvaluateController: function (evaluateController) {
+            m_evaluateController = evaluateController || getDefaultEvaluateController();
         },
 
         setKeys: function (privateKey, publicKey) {
