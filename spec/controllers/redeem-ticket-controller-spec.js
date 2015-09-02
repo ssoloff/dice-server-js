@@ -67,18 +67,20 @@ describe('redeemTicketController', function () {
                 expect(response.content).toEqual({
                     success: {
                         description: 'description',
-                        expression: {
-                            canonicalText: 'sum(roll(3, d6)) + 4',
-                            text: '3d6+4'
+                        evaluateResponse: {
+                            expression: {
+                                canonicalText: 'sum(roll(3, d6)) + 4',
+                                text: '3d6+4'
+                            },
+                            expressionResult: {
+                                text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
+                                value: 22
+                            },
+                            randomNumberGenerator: {
+                                name: 'constantMax'
+                            }
                         },
-                        expressionResult: {
-                            text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                            value: 22
-                        },
-                        id: '00112233445566778899aabbccddeeff00112233',
-                        randomNumberGenerator: {
-                            name: 'constantMax'
-                        }
+                        id: '00112233445566778899aabbccddeeff00112233'
                     }
                 });
             });

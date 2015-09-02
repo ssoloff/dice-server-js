@@ -36,10 +36,8 @@ module.exports = (function () {
             return {
                 success: {
                     description: request.description,
-                    expression: evaluateResponse.success.expression,
-                    expressionResult: evaluateResponse.success.expressionResult,
-                    id: request.id,
-                    randomNumberGenerator: evaluateResponse.success.randomNumberGenerator
+                    evaluateResponse: evaluateResponse.success,
+                    id: request.id
                 }
             };
         } else if (evaluateResponse.failure) {
