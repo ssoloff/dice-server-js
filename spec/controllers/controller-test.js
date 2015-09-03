@@ -26,6 +26,15 @@ var _ = require('underscore');
 var fs = require('fs');
 var ja = require('json-assert');
 var path = require('path');
+var security = require('../../controllers/security');
+
+function getPrivateKey() {
+    return fs.readFileSync(path.join(__dirname, '../../test/private-key.pem'));
+}
+
+function getPublicKey() {
+    return fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'));
+}
 
 /**
  * Provides useful methods for testing a dice server controller.
@@ -71,6 +80,24 @@ module.exports = {
     },
 
     /**
+     * Creates a detached JSON web signature for the specified request/response
+     * content.
+     *
+     * <p>
+     * The returned JSON web signature uses the flattened JWS JSON
+     * serialization.  It does not include the payload as it is a
+     * detached signature.
+     * </p>
+     *
+     * @param {Object!} content - The request/response content.
+     *
+     * @returns {Object!} The detached JSON web signature.
+     */
+    createSignature: function (content) {
+        return security.createSignature(content, getPrivateKey(), getPublicKey());
+    },
+
+    /**
      * Indicates the actual response content equals the expected response
      * content.
      *
@@ -99,10 +126,7 @@ module.exports = {
      * @param {Object!} controller - The controller.
      */
     setKeys: function (controller) {
-        controller.setKeys(
-            fs.readFileSync(path.join(__dirname, '../../test/private-key.pem')),
-            fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'))
-        );
+        controller.setKeys(getPrivateKey(), getPublicKey());
     }
 };
 

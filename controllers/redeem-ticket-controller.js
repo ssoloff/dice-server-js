@@ -30,14 +30,23 @@ module.exports = (function () {
     var m_publicKey = new Buffer('');
 
     function createResponseContent(request) {
-        var evaluateResult = evaluate(request);
+        if (!verifyRequestSignature(request)) {
+            return {
+                failure: {
+                    message: 'signature is invalid'
+                }
+            };
+        }
+
+        var requestContent = request.content.success;
+        var evaluateResult = evaluate(requestContent.evaluateRequest);
         var evaluateResponse = evaluateResult[1];
         if (evaluateResponse.success) {
             return {
                 success: {
-                    description: request.description,
+                    description: requestContent.description,
                     evaluateResponse: evaluateResponse.success,
-                    id: request.id
+                    id: requestContent.id
                 }
             };
         } else if (evaluateResponse.failure) {
@@ -60,8 +69,7 @@ module.exports = (function () {
         return security.createSignature(content, m_privateKey, m_publicKey);
     }
 
-    function evaluate(request) {
-        var evaluateRequest = request.evaluateRequest;
+    function evaluate(evaluateRequest) {
         var evaluateReq = {
             body: evaluateRequest
         };
@@ -84,6 +92,10 @@ module.exports = (function () {
 
     function getDefaultEvaluateController() {
         return require('./evaluate-controller');
+    }
+
+    function verifyRequestSignature(request) {
+        return security.verifySignature(request.content, request.signature);
     }
 
     return {

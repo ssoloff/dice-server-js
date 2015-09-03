@@ -36,9 +36,16 @@ module.exports = function () {
         this.response = null;
         this.ticket = {
             description: null,
+            forceInvalidSignature: false,
             id: null
         };
         callback();
+    });
+
+    this.Given(/^a ticket with an invalid signature$/, function () {
+        this.issueTicketService.setExpression('42');
+        this.issueTicketService.setDescription('description');
+        this.ticket.forceInvalidSignature = true;
     });
 
     this.Given(/^a ticket with the description "(.*)"$/, function (description) {
@@ -62,6 +69,10 @@ module.exports = function () {
             }
             this.ticket.description = issueTicketResponse.content.success.description;
             this.ticket.id = issueTicketResponse.content.success.id;
+
+            if (this.ticket.forceInvalidSignature) {
+                issueTicketResponse.content.success.description += '...';
+            }
 
             this.redeemTicketService.setRequestFromIssueTicketResponse(issueTicketResponse);
             this.redeemTicketService.call(function (res) {

@@ -43,7 +43,7 @@ RedeemTicketService.prototype.call = function (callback) {
 };
 
 RedeemTicketService.prototype.setRequestFromIssueTicketResponse = function (issueTicketResponse) {
-    this.request = issueTicketResponse.content.success;
+    this.request = issueTicketResponse;
 };
 
 module.exports = RedeemTicketService;

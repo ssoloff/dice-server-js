@@ -20,3 +20,8 @@ Scenario Outline: Successfully redeeming a ticket
         | 3+4        | 3 + 4                                   | 7            | desc 2      |
         | 3d6        | [sum([roll(3, d6) -> [6, 6, 6]]) -> 18] | 18           | desc 3      |
 
+Scenario: Failing to redeem a ticket with an invalid signature
+    Given a ticket with an invalid signature
+    When the redeem ticket service is invoked
+    Then the response should contain a failure
+

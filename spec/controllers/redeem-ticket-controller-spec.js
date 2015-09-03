@@ -36,17 +36,23 @@ describe('redeemTicketController', function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
 
         request = {
-            description: 'description',
-            evaluateRequest: {
-                expression: {
-                    text: '3d6+4'
-                },
-                randomNumberGenerator: {
-                    name: 'constantMax'
+            content: {
+                success: {
+                    description: 'description',
+                    evaluateRequest: {
+                        expression: {
+                            text: '3d6+4'
+                        },
+                        randomNumberGenerator: {
+                            name: 'constantMax'
+                        }
+                    },
+                    id: '00112233445566778899aabbccddeeff00112233'
                 }
             },
-            id: '00112233445566778899aabbccddeeff00112233'
+            signature: null
         };
+        request.signature = controllerTest.createSignature(request.content);
         req = controllerTest.createRequest(request);
 
         response = null;
@@ -55,7 +61,7 @@ describe('redeemTicketController', function () {
         });
 
         controllerTest.setKeys(redeemTicketController);
-        redeemTicketController.setEvaluateController(); // reset default controller
+        redeemTicketController.setEvaluateController(); // reset default evaluate controller
     });
 
     describe('.redeemTicket', function () {
@@ -94,7 +100,8 @@ describe('redeemTicketController', function () {
 
         describe('when evaluate controller responds with failure', function () {
             beforeEach(function () {
-                request.evaluateRequest.expression.text = '<<INVALID>>';
+                request.content.success.evaluateRequest.expression.text = '<<INVALID>>';
+                request.signature = controllerTest.createSignature(request.content);
             });
 
             it('should respond with failure', function () {
@@ -140,6 +147,21 @@ describe('redeemTicketController', function () {
                 redeemTicketController.redeemTicket(req, res);
 
                 expect(response).toBeSigned();
+            });
+        });
+
+        describe('when ticket has an invalid signature', function () {
+            it('should respond with failure', function () {
+                request.content.success.description += '...'; // simulate forged content
+
+                redeemTicketController.redeemTicket(req, res);
+
+                expect(res.status).toHaveBeenCalledWith(200);
+                expect(response.content).toEqual({
+                    failure: {
+                        message: ja.matchType('string')
+                    }
+                });
             });
         });
     });

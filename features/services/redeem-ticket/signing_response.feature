@@ -8,3 +8,7 @@ Scenario: Successfully redeeming a ticket
     When the redeem ticket service is invoked
     Then the response should be signed
 
+Scenario: Failing to redeem a ticket
+    Given a ticket with an invalid signature
+    When the redeem ticket service is invoked
+    Then the response should be signed
