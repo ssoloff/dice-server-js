@@ -30,43 +30,52 @@ module.exports = (function () {
     var m_privateKey = new Buffer('');
     var m_publicKey = new Buffer('');
 
-    function createResponseContent(request) {
-        var evaluateResult = evaluate(request);
-        var evaluateResponse = evaluateResult[1];
-        if (evaluateResponse.success) {
+    function createResponse(request) {
+        try {
             return {
                 success: {
-                    description: request.description,
-                    evaluateRequest: request.evaluateRequest,
-                    id: createTicketId()
+                    ticket: createTicket(request)
                 }
             };
-        } else if (evaluateResponse.failure) {
+        } catch (e) {
             return {
                 failure: {
-                    message: evaluateResponse.failure.message
-                }
-            };
-        } else {
-            var evaluateStatus = evaluateResult[0];
-            return {
-                failure: {
-                    message: 'evaluate controller returned status ' + evaluateStatus
+                    message: e.message
                 }
             };
         }
     }
 
-    function createResponseSignature(content) {
+    function createSignature(content) {
         return security.createSignature(content, m_privateKey, m_publicKey);
     }
 
-    function createTicketId() {
-        return crypto.randomBytes(20).toString('hex');
+    function createTicket(request) {
+        var ticketContent = createTicketContent(request);
+        return {
+            content: ticketContent,
+            signature: createSignature(ticketContent)
+        };
     }
 
-    function evaluate(request) {
-        var evaluateRequest = request.evaluateRequest;
+    function createTicketContent(request) {
+        var evaluateResult = evaluate(request.evaluateRequest);
+        var evaluateResponse = evaluateResult[1];
+        if (evaluateResponse.success) {
+            return {
+                description: request.description,
+                evaluateRequest: request.evaluateRequest,
+                id: generateTicketId()
+            };
+        } else if (evaluateResponse.failure) {
+            throw new Error(evaluateResponse.failure.message);
+        } else {
+            var evaluateStatus = evaluateResult[0];
+            throw new Error('evaluate controller returned status ' + evaluateStatus);
+        }
+    }
+
+    function evaluate(evaluateRequest) {
         var evaluateReq = {
             body: evaluateRequest
         };
@@ -87,6 +96,10 @@ module.exports = (function () {
         return [evaluateStatus, evaluateResponse];
     }
 
+    function generateTicketId() {
+        return crypto.randomBytes(20).toString('hex');
+    }
+
     function getDefaultEvaluateController() {
         return require('./evaluate-controller');
     }
@@ -94,11 +107,7 @@ module.exports = (function () {
     return {
         issueTicket: function (req, res) {
             var request = req.body;
-            var responseContent = createResponseContent(request);
-            var response = {
-                content: responseContent,
-                signature: createResponseSignature(responseContent)
-            };
+            var response = createResponse(request);
             res.status(200).json(response);
         },
 

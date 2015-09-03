@@ -63,83 +63,72 @@ describe('issueTicketController', function () {
                 issueTicketController.issueTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
-                expect(response.content).toEqual({
+                expect(response).toEqual({
                     success: {
-                        description: 'description',
-                        evaluateRequest: {
-                            expression: {
-                                text: '3d6+4'
+                        ticket: {
+                            content: {
+                                description: 'description',
+                                evaluateRequest: {
+                                    expression: {
+                                        text: '3d6+4'
+                                    },
+                                    randomNumberGenerator: {
+                                        name: 'constantMax'
+                                    }
+                                },
+                                id: ja.matchType('string')
                             },
-                            randomNumberGenerator: {
-                                name: 'constantMax'
-                            }
-                        },
-                        id: ja.matchType('string')
+                            signature: ja.matchType('object')
+                        }
                     }
                 });
             });
 
-            it('should respond with a valid ticket identifier', function () {
+            it('should respond with a valid ticket', function () {
                 issueTicketController.issueTicket(req, res);
 
-                expect(response.content.success.id).toMatch(/^[0-9A-Fa-f]{40}$/);
+                expect(response.success.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
             });
 
-            it('should respond with a signature', function () {
+            it('should respond with a signed ticket', function () {
                 issueTicketController.issueTicket(req, res);
 
-                expect(response).toBeSigned();
+                expect(response.success.ticket).toBeSigned();
             });
         });
 
         describe('when evaluate controller responds with failure', function () {
-            beforeEach(function () {
-                request.evaluateRequest.expression.text = '<<INVALID>>';
-            });
-
             it('should respond with failure', function () {
+                request.evaluateRequest.expression.text = '<<INVALID>>';
+
                 issueTicketController.issueTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
-                expect(response.content).toEqual({
+                expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }
                 });
             });
-
-            it('should respond with a signature', function () {
-                issueTicketController.issueTicket(req, res);
-
-                expect(response).toBeSigned();
-            });
         });
 
         describe('when evaluate controller responds with non-OK status', function () {
-            beforeEach(function () {
+            it('should respond with failure', function () {
                 var stubEvaluateController = {
                     evaluate: function (req, res) {
                         res.status(500).json({});
                     }
                 };
                 issueTicketController.setEvaluateController(stubEvaluateController);
-            });
 
-            it('should respond with failure', function () {
                 issueTicketController.issueTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
-                expect(response.content).toEqual({
+                expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }
                 });
-            });
-
-            it('should respond with a signature', function () {
-                issueTicketController.issueTicket(req, res);
-
-                expect(response).toBeSigned();
             });
         });
     });

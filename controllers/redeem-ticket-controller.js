@@ -29,43 +29,51 @@ module.exports = (function () {
     var m_privateKey = new Buffer('');
     var m_publicKey = new Buffer('');
 
-    function createResponseContent(request) {
-        if (!verifyRequestSignature(request)) {
-            return {
-                failure: {
-                    message: 'signature is invalid'
-                }
-            };
-        }
+    function createRedeemedTicket(request) {
+        var redeemedTicketContent = createRedeemedTicketContent(request);
+        return {
+            content: redeemedTicketContent,
+            signature: createSignature(redeemedTicketContent)
+        };
+    }
 
-        var requestContent = request.content.success;
-        var evaluateResult = evaluate(requestContent.evaluateRequest);
+    function createRedeemedTicketContent(request) {
+        var ticketContent = request.ticket.content;
+        var evaluateResult = evaluate(ticketContent.evaluateRequest);
         var evaluateResponse = evaluateResult[1];
         if (evaluateResponse.success) {
             return {
-                success: {
-                    description: requestContent.description,
-                    evaluateResponse: evaluateResponse.success,
-                    id: requestContent.id
-                }
+                description: ticketContent.description,
+                evaluateResponse: evaluateResponse.success,
+                id: ticketContent.id
             };
         } else if (evaluateResponse.failure) {
-            return {
-                failure: {
-                    message: evaluateResponse.failure.message
-                }
-            };
+            throw new Error(evaluateResponse.failure.message);
         } else {
             var evaluateStatus = evaluateResult[0];
+            throw new Error('evaluate controller returned status ' + evaluateStatus);
+        }
+    }
+
+    function createResponse(request) {
+        try {
+            validateRequest(request);
+
+            return {
+                success: {
+                    redeemedTicket: createRedeemedTicket(request)
+                }
+            };
+        } catch (e) {
             return {
                 failure: {
-                    message: 'evaluate controller returned status ' + evaluateStatus
+                    message: e.message
                 }
             };
         }
     }
 
-    function createResponseSignature(content) {
+    function createSignature(content) {
         return security.createSignature(content, m_privateKey, m_publicKey);
     }
 
@@ -94,18 +102,20 @@ module.exports = (function () {
         return require('./evaluate-controller');
     }
 
-    function verifyRequestSignature(request) {
-        return security.verifySignature(request.content, request.signature);
+    function validateRequest(request) {
+        if (!verifySignature(request.ticket.content, request.ticket.signature)) {
+            throw new Error('ticket signature is invalid');
+        }
+    }
+
+    function verifySignature(content, signature) {
+        return security.verifySignature(content, signature);
     }
 
     return {
         redeemTicket: function (req, res) {
             var request = req.body;
-            var responseContent = createResponseContent(request);
-            var response = {
-                content: responseContent,
-                signature: createResponseSignature(responseContent)
-            };
+            var response = createResponse(request);
             res.status(200).json(response);
         },
 

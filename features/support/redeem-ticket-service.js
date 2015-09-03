@@ -25,7 +25,7 @@
 var request = require('request');
 
 function RedeemTicketService() {
-    this.request = undefined;
+    this.request = {};
 }
 
 RedeemTicketService.prototype.call = function (callback) {
@@ -43,7 +43,7 @@ RedeemTicketService.prototype.call = function (callback) {
 };
 
 RedeemTicketService.prototype.setRequestFromIssueTicketResponse = function (issueTicketResponse) {
-    this.request = issueTicketResponse;
+    this.request.ticket = issueTicketResponse.success.ticket;
 };
 
 module.exports = RedeemTicketService;

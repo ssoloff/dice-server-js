@@ -55,30 +55,30 @@ module.exports = function () {
         }.bind(this));
     });
 
-    this.Then(/^the response should be signed$/, function () {
-        // jshint expr: true
-        expect(this.response.signature).to.exist;
-    });
-
     this.Then(/^the response should contain a failure$/, function () {
         // jshint expr: true
-        expect(this.response.content.failure).to.exist;
+        expect(this.response.failure).to.exist;
+    });
+
+    this.Then(/^the response should contain a signed ticket$/, function () {
+        // jshint expr: true
+        expect(this.response.success.ticket.signature).to.exist;
     });
 
     this.Then(/^the response should contain a ticket identifier$/, function () {
-        expect(this.response.content.success.id).to.match(/^[0-9A-Fa-f]{40}$/);
+        expect(this.response.success.ticket.content.id).to.match(/^[0-9A-Fa-f]{40}$/);
     });
 
     this.Then(/^the response should contain the description "(.*)"$/, function (description) {
-        expect(this.response.content.success.description).to.equal(description);
+        expect(this.response.success.ticket.content.description).to.equal(description);
     });
 
     this.Then(/^the response should contain the expression text "(.*)"$/, function (expressionText) {
-        expect(this.response.content.success.evaluateRequest.expression.text).to.equal(expressionText);
+        expect(this.response.success.ticket.content.evaluateRequest.expression.text).to.equal(expressionText);
     });
 
     this.Then(/^the response should contain the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
-        expect(this.response.content.success.evaluateRequest.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
+        expect(this.response.success.ticket.content.evaluateRequest.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
     });
 };
 

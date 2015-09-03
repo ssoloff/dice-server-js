@@ -69,14 +69,14 @@ module.exports = function () {
         var runner = this;
         this.issueTicketService.call(function (res) {
             var issueTicketResponse = res;
-            if (!issueTicketResponse.content.success) {
+            if (!issueTicketResponse.success) {
                 throw new Error('failed to issue ticket');
             }
-            this.ticket.description = issueTicketResponse.content.success.description;
-            this.ticket.id = issueTicketResponse.content.success.id;
+            this.ticket.description = issueTicketResponse.success.ticket.content.description;
+            this.ticket.id = issueTicketResponse.success.ticket.content.id;
 
             if (this.ticket.forceInvalidSignature) {
-                issueTicketResponse.content.success.description += '...';
+                issueTicketResponse.success.ticket.content.description += '...';
             }
 
             this.redeemTicketService.setRequestFromIssueTicketResponse(issueTicketResponse);
@@ -87,30 +87,30 @@ module.exports = function () {
         }.bind(runner));
     });
 
-    this.Then(/^the response should be signed$/, function () {
-        // jshint expr: true
-        expect(this.response.signature).to.exist;
-    });
-
     this.Then(/^the response should contain a failure$/, function () {
         // jshint expr: true
-        expect(this.response.content.failure).to.exist;
+        expect(this.response.failure).to.exist;
+    });
+
+    this.Then(/^the response should contain a signed redeemed ticket$/, function () {
+        // jshint expr: true
+        expect(this.response.success.redeemedTicket.signature).to.exist;
     });
 
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-        expect(this.response.content.success.evaluateResponse.expressionResult.text).to.equal(expressionResultText);
+        expect(this.response.success.redeemedTicket.content.evaluateResponse.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
-        expect(this.response.content.success.evaluateResponse.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+        expect(this.response.success.redeemedTicket.content.evaluateResponse.expressionResult.value).to.equal(parseFloat(expressionResultValue));
     });
 
     this.Then(/^the response should contain the ticket description$/, function () {
-        expect(this.response.content.success.description).to.equal(this.ticket.description);
+        expect(this.response.success.redeemedTicket.content.description).to.equal(this.ticket.description);
     });
 
     this.Then(/^the response should contain the ticket identifier$/, function () {
-        expect(this.response.content.success.id).to.equal(this.ticket.id);
+        expect(this.response.success.redeemedTicket.content.id).to.equal(this.ticket.id);
     });
 };
 

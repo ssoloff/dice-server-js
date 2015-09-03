@@ -72,8 +72,7 @@ module.exports = (function () {
             response = {
                 success: content
             };
-        }
-        catch (e) {
+        } catch (e) {
             response = {
                 failure: {
                     message: e.message
