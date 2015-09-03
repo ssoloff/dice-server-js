@@ -54,7 +54,7 @@ describe('issueTicketController', function () {
         });
 
         controllerTest.setKeys(issueTicketController);
-        issueTicketController.setEvaluateController(); // reset default controller
+        issueTicketController.setEvaluateController(); // reset default evaluate controller
     });
 
     describe('.issueTicket', function () {
