@@ -42,6 +42,11 @@ module.exports = function () {
         callback();
     });
 
+    this.Given(/^a ticket$/, function () {
+        this.issueTicketService.setExpression('42');
+        this.issueTicketService.setDescription('description');
+    });
+
     this.Given(/^a ticket with an invalid signature$/, function () {
         this.issueTicketService.setExpression('42');
         this.issueTicketService.setDescription('description');
