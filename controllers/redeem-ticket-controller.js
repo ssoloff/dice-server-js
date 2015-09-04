@@ -105,6 +105,10 @@ module.exports = (function () {
         return require('./evaluate-controller');
     }
 
+    function isSignatureValid(content, signature) {
+        return security.verifySignature(content, signature, m_publicKey);
+    }
+
     function isTicketRedeemed(ticketId) {
         return m_redeemedTickets[ticketId];
     }
@@ -115,15 +119,11 @@ module.exports = (function () {
 
     function validateRequest(request) {
         var ticket = request.ticket;
-        if (!verifySignature(ticket.content, ticket.signature)) {
+        if (!isSignatureValid(ticket.content, ticket.signature)) {
             throw new Error('ticket signature is invalid');
         } else if (isTicketRedeemed(ticket.content.id)) {
             throw new Error('ticket "' + ticket.content.id + '" has already been redeemed');
         }
-    }
-
-    function verifySignature(content, signature) {
-        return security.verifySignature(content, signature, m_publicKey);
     }
 
     return {
