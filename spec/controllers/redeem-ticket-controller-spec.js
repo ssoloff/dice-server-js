@@ -61,6 +61,7 @@ describe('redeemTicketController', function () {
         });
 
         controllerTest.setKeys(redeemTicketController);
+        redeemTicketController.clearRedeemedTickets();
         redeemTicketController.setEvaluateController(); // reset default evaluate controller
     });
 
@@ -142,6 +143,23 @@ describe('redeemTicketController', function () {
         describe('when ticket has an invalid signature', function () {
             it('should respond with failure', function () {
                 request.ticket.content.description += '...'; // simulate forged content
+
+                redeemTicketController.redeemTicket(req, res);
+
+                expect(res.status).toHaveBeenCalledWith(200);
+                expect(response).toEqual({
+                    failure: {
+                        message: ja.matchType('string')
+                    }
+                });
+            });
+        });
+
+        describe('when ticket has already been redeemed', function () {
+            it('should respond with failure', function () {
+                redeemTicketController.redeemTicket(req, res);
+                expect(response.success).toBeDefined(); // sanity check
+                response = null;
 
                 redeemTicketController.redeemTicket(req, res);
 

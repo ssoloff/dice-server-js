@@ -37,6 +37,7 @@ module.exports = function () {
         this.ticket = {
             description: null,
             forceInvalidSignature: false,
+            forceRedeemed: false,
             id: null
         };
         callback();
@@ -45,6 +46,12 @@ module.exports = function () {
     this.Given(/^a ticket$/, function () {
         this.issueTicketService.setExpression('42');
         this.issueTicketService.setDescription('description');
+    });
+
+    this.Given(/^a ticket that has already been redeemed$/, function () {
+        this.issueTicketService.setExpression('42');
+        this.issueTicketService.setDescription('description');
+        this.ticket.forceRedeemed = true;
     });
 
     this.Given(/^a ticket with an invalid signature$/, function () {
@@ -80,10 +87,19 @@ module.exports = function () {
             }
 
             this.redeemTicketService.setRequestFromIssueTicketResponse(issueTicketResponse);
-            this.redeemTicketService.call(function (res) {
-                this.response = res;
-                callback();
-            }.bind(runner));
+            if (this.ticket.forceRedeemed) {
+                this.redeemTicketService.call(function () {
+                    this.redeemTicketService.call(function (res) {
+                        this.response = res;
+                        callback();
+                    }.bind(runner));
+                }.bind(runner));
+            } else {
+                this.redeemTicketService.call(function (res) {
+                    this.response = res;
+                    callback();
+                }.bind(runner));
+            }
         }.bind(runner));
     });
 

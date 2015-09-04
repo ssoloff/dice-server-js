@@ -28,6 +28,7 @@ module.exports = (function () {
     var m_evaluateController = getDefaultEvaluateController();
     var m_privateKey = new Buffer('');
     var m_publicKey = new Buffer('');
+    var m_redeemedTickets = {};
 
     function createRedeemedTicket(request) {
         var redeemedTicketContent = createRedeemedTicketContent(request);
@@ -59,9 +60,11 @@ module.exports = (function () {
         try {
             validateRequest(request);
 
+            var redeemedTicket = createRedeemedTicket(request);
+            recordRedeemedTicket(redeemedTicket.content.id);
             return {
                 success: {
-                    redeemedTicket: createRedeemedTicket(request)
+                    redeemedTicket: redeemedTicket
                 }
             };
         } catch (e) {
@@ -102,9 +105,20 @@ module.exports = (function () {
         return require('./evaluate-controller');
     }
 
+    function isTicketRedeemed(ticketId) {
+        return m_redeemedTickets[ticketId];
+    }
+
+    function recordRedeemedTicket(ticketId) {
+        m_redeemedTickets[ticketId] = true;
+    }
+
     function validateRequest(request) {
-        if (!verifySignature(request.ticket.content, request.ticket.signature)) {
+        var ticket = request.ticket;
+        if (!verifySignature(ticket.content, ticket.signature)) {
             throw new Error('ticket signature is invalid');
+        } else if (isTicketRedeemed(ticket.content.id)) {
+            throw new Error('ticket "' + ticket.content.id + '" has already been redeemed');
         }
     }
 
@@ -113,6 +127,10 @@ module.exports = (function () {
     }
 
     return {
+        clearRedeemedTickets: function () {
+            m_redeemedTickets = {};
+        },
+
         redeemTicket: function (req, res) {
             var request = req.body;
             var response = createResponse(request);
