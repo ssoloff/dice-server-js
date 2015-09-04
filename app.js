@@ -28,14 +28,20 @@ var fs = require('fs');
 var http = require('http');
 var path = require('path');
 
-var evaluateController = require('./controllers/evaluate-controller.js');
-var issueTicketController = require('./controllers/issue-ticket-controller.js');
-var redeemTicketController = require('./controllers/redeem-ticket-controller.js');
-
 var privateKey = fs.readFileSync(process.argv[2]);
 var publicKey = fs.readFileSync(process.argv[3]);
-issueTicketController.setKeys(privateKey, publicKey);
-redeemTicketController.setKeys(privateKey, publicKey);
+
+var evaluateController = require('./controllers/evaluate-controller.js').create();
+var issueTicketController = require('./controllers/issue-ticket-controller.js').create(
+    privateKey,
+    publicKey,
+    evaluateController
+);
+var redeemTicketController = require('./controllers/redeem-ticket-controller.js').create(
+    privateKey,
+    publicKey,
+    evaluateController
+);
 
 var app = express();
 app.use(express.static(path.join(__dirname, '/public')));

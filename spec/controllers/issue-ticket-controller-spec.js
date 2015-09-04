@@ -23,14 +23,23 @@
 'use strict';
 
 var controllerTest = require('./controller-test');
-var issueTicketController = require('../../controllers/issue-ticket-controller');
 var ja = require('json-assert');
 
 describe('issueTicketController', function () {
+    var controller;
     var req;
     var res;
     var request;
     var response;
+
+    function createIssueTicketController(evaluateController) {
+        evaluateController = evaluateController || require('../../controllers/evaluate-controller').create();
+        return require('../../controllers/issue-ticket-controller').create(
+            controllerTest.getPrivateKey(),
+            controllerTest.getPublicKey(),
+            evaluateController
+        );
+    }
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
@@ -53,14 +62,13 @@ describe('issueTicketController', function () {
             response = json;
         });
 
-        controllerTest.setKeys(issueTicketController);
-        issueTicketController.setEvaluateController(); // reset default evaluate controller
+        controller = createIssueTicketController();
     });
 
     describe('.issueTicket', function () {
         describe('when evaluate controller responds with success', function () {
             it('should respond with success', function () {
-                issueTicketController.issueTicket(req, res);
+                controller.issueTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
@@ -85,13 +93,13 @@ describe('issueTicketController', function () {
             });
 
             it('should respond with a valid ticket', function () {
-                issueTicketController.issueTicket(req, res);
+                controller.issueTicket(req, res);
 
                 expect(response.success.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
             });
 
             it('should respond with a signed ticket', function () {
-                issueTicketController.issueTicket(req, res);
+                controller.issueTicket(req, res);
 
                 expect(response.success.ticket).toBeSigned();
             });
@@ -101,7 +109,7 @@ describe('issueTicketController', function () {
             it('should respond with failure', function () {
                 request.evaluateRequest.expression.text = '<<INVALID>>';
 
-                issueTicketController.issueTicket(req, res);
+                controller.issueTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
@@ -119,9 +127,9 @@ describe('issueTicketController', function () {
                         res.status(500).json({});
                     }
                 };
-                issueTicketController.setEvaluateController(stubEvaluateController);
+                controller = createIssueTicketController(stubEvaluateController);
 
-                issueTicketController.issueTicket(req, res);
+                controller.issueTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({

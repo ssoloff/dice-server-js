@@ -23,14 +23,18 @@
 'use strict';
 
 var controllerTest = require('./controller-test');
-var evaluateController = require('../../controllers/evaluate-controller');
 var ja = require('json-assert');
 
 describe('evaluateController', function () {
+    var controller;
     var req;
     var res;
     var request;
     var response;
+
+    function createEvaluateController() {
+        return require('../../controllers/evaluate-controller').create();
+    }
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
@@ -43,28 +47,20 @@ describe('evaluateController', function () {
                 name: 'constantMax'
             }
         };
-        req = {
-            body: request
-        };
+        req = controllerTest.createRequest(request);
 
         response = null;
-        res = {
-            json: function (json) {
-                response = json;
-                return this;
-            },
-            status: function () {
-                return this;
-            }
-        };
-        spyOn(res, 'json').and.callThrough();
-        spyOn(res, 'status').and.callThrough();
+        res = controllerTest.createResponse(function (json) {
+            response = json;
+        });
+
+        controller = createEvaluateController();
     });
 
     describe('.evaluate', function () {
         describe('when expression is well-formed', function () {
             it('should respond with the expression result', function () {
-                evaluateController.evaluate(req, res);
+                controller.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
@@ -91,7 +87,7 @@ describe('evaluateController', function () {
             });
 
             it('should respond with an error', function () {
-                evaluateController.evaluate(req, res);
+                controller.evaluate(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
@@ -107,7 +103,7 @@ describe('evaluateController', function () {
                 it('should use the default random number generator', function () {
                     delete request.randomNumberGenerator;
 
-                    evaluateController.evaluate(req, res);
+                    controller.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
                     expect(response.success.randomNumberGenerator.name).toBe('uniform');
@@ -118,7 +114,7 @@ describe('evaluateController', function () {
                 it('should use the uniform random number generator', function () {
                     request.randomNumberGenerator.name = 'uniform';
 
-                    evaluateController.evaluate(req, res);
+                    controller.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
                     expect(response.success.randomNumberGenerator.name).toBe('uniform');
@@ -131,7 +127,7 @@ describe('evaluateController', function () {
                 it('should use the constantMax random number generator', function () {
                     request.randomNumberGenerator.name = 'constantMax';
 
-                    evaluateController.evaluate(req, res);
+                    controller.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
                     expect(response.success.randomNumberGenerator.name).toBe('constantMax');
@@ -143,7 +139,7 @@ describe('evaluateController', function () {
                 it('should respond with an error', function () {
                     request.randomNumberGenerator.name = '<<UNKNOWN>>';
 
-                    evaluateController.evaluate(req, res);
+                    controller.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
                     expect(response.failure).toBeDefined();
@@ -156,7 +152,7 @@ describe('evaluateController', function () {
                 it('should respond with an error', function () {
                     request.expression.text = 'd6';
 
-                    evaluateController.evaluate(req, res);
+                    controller.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
                     expect(response.failure).toBeDefined();
@@ -167,7 +163,7 @@ describe('evaluateController', function () {
                 it('should respond with an error', function () {
                     request.expression.text = 'round(d6)';
 
-                    evaluateController.evaluate(req, res);
+                    controller.evaluate(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(200);
                     expect(response.failure).toBeDefined();

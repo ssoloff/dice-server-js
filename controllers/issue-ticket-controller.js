@@ -25,100 +25,86 @@
 var crypto = require('crypto');
 var security = require('./security');
 
-module.exports = (function () {
-    var m_evaluateController = getDefaultEvaluateController();
-    var m_privateKey = new Buffer('');
-    var m_publicKey = new Buffer('');
+module.exports = {
+    create: function (privateKey, publicKey, evaluateController) {
 
-    function createResponse(request) {
-        try {
+        function createResponse(request) {
+            try {
+                return {
+                    success: {
+                        ticket: createTicket(request)
+                    }
+                };
+            } catch (e) {
+                return {
+                    failure: {
+                        message: e.message
+                    }
+                };
+            }
+        }
+
+        function createSignature(content) {
+            return security.createSignature(content, privateKey, publicKey);
+        }
+
+        function createTicket(request) {
+            var ticketContent = createTicketContent(request);
             return {
-                success: {
-                    ticket: createTicket(request)
-                }
-            };
-        } catch (e) {
-            return {
-                failure: {
-                    message: e.message
-                }
+                content: ticketContent,
+                signature: createSignature(ticketContent)
             };
         }
-    }
 
-    function createSignature(content) {
-        return security.createSignature(content, m_privateKey, m_publicKey);
-    }
+        function createTicketContent(request) {
+            var evaluateResult = evaluate(request.evaluateRequest);
+            var evaluateResponse = evaluateResult[1];
+            if (evaluateResponse.success) {
+                return {
+                    description: request.description,
+                    evaluateRequest: request.evaluateRequest,
+                    id: generateTicketId()
+                };
+            } else if (evaluateResponse.failure) {
+                throw new Error(evaluateResponse.failure.message);
+            } else {
+                var evaluateStatus = evaluateResult[0];
+                throw new Error('evaluate controller returned status ' + evaluateStatus);
+            }
+        }
 
-    function createTicket(request) {
-        var ticketContent = createTicketContent(request);
+        function evaluate(evaluateRequest) {
+            var evaluateReq = {
+                body: evaluateRequest
+            };
+            var evaluateResponse;
+            var evaluateStatus;
+            var evaluateRes = {
+                json: function (json) {
+                    evaluateResponse = json;
+                    return this;
+                },
+                status: function (status) {
+                    evaluateStatus = status;
+                    return this;
+                }
+            };
+            evaluateController.evaluate(evaluateReq, evaluateRes);
+
+            return [evaluateStatus, evaluateResponse];
+        }
+
+        function generateTicketId() {
+            return crypto.randomBytes(20).toString('hex');
+        }
+
         return {
-            content: ticketContent,
-            signature: createSignature(ticketContent)
-        };
-    }
-
-    function createTicketContent(request) {
-        var evaluateResult = evaluate(request.evaluateRequest);
-        var evaluateResponse = evaluateResult[1];
-        if (evaluateResponse.success) {
-            return {
-                description: request.description,
-                evaluateRequest: request.evaluateRequest,
-                id: generateTicketId()
-            };
-        } else if (evaluateResponse.failure) {
-            throw new Error(evaluateResponse.failure.message);
-        } else {
-            var evaluateStatus = evaluateResult[0];
-            throw new Error('evaluate controller returned status ' + evaluateStatus);
-        }
-    }
-
-    function evaluate(evaluateRequest) {
-        var evaluateReq = {
-            body: evaluateRequest
-        };
-        var evaluateResponse;
-        var evaluateStatus;
-        var evaluateRes = {
-            json: function (json) {
-                evaluateResponse = json;
-                return this;
-            },
-            status: function (status) {
-                evaluateStatus = status;
-                return this;
+            issueTicket: function (req, res) {
+                var request = req.body;
+                var response = createResponse(request);
+                res.status(200).json(response);
             }
         };
-        m_evaluateController.evaluate(evaluateReq, evaluateRes);
-
-        return [evaluateStatus, evaluateResponse];
     }
-
-    function generateTicketId() {
-        return crypto.randomBytes(20).toString('hex');
-    }
-
-    function getDefaultEvaluateController() {
-        return require('./evaluate-controller');
-    }
-
-    return {
-        issueTicket: function (req, res) {
-            var request = req.body;
-            var response = createResponse(request);
-            res.status(200).json(response);
-        },
-
-        setEvaluateController: function (evaluateController) {
-            m_evaluateController = evaluateController || getDefaultEvaluateController();
-        },
-
-        setKeys: function (privateKey, publicKey) {
-            m_privateKey = privateKey;
-            m_publicKey = publicKey;
-        }
-    };
-})();
+};
 

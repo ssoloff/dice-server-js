@@ -24,13 +24,22 @@
 
 var controllerTest = require('./controller-test');
 var ja = require('json-assert');
-var redeemTicketController = require('../../controllers/redeem-ticket-controller');
 
 describe('redeemTicketController', function () {
+    var controller;
     var req;
     var res;
     var request;
     var response;
+
+    function createRedeemTicketController(evaluateController) {
+        evaluateController = evaluateController || require('../../controllers/evaluate-controller').create();
+        return require('../../controllers/redeem-ticket-controller').create(
+            controllerTest.getPrivateKey(),
+            controllerTest.getPublicKey(),
+            evaluateController
+        );
+    }
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
@@ -60,15 +69,13 @@ describe('redeemTicketController', function () {
             response = json;
         });
 
-        controllerTest.setKeys(redeemTicketController);
-        redeemTicketController.clearRedeemedTickets();
-        redeemTicketController.setEvaluateController(); // reset default evaluate controller
+        controller = createRedeemTicketController();
     });
 
     describe('.redeemTicket', function () {
         describe('when evaluate controller responds with success', function () {
             it('should respond with success', function () {
-                redeemTicketController.redeemTicket(req, res);
+                controller.redeemTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
@@ -98,7 +105,7 @@ describe('redeemTicketController', function () {
             });
 
             it('should respond with a signed redeemed ticket', function () {
-                redeemTicketController.redeemTicket(req, res);
+                controller.redeemTicket(req, res);
 
                 expect(response.success.redeemedTicket).toBeSigned();
             });
@@ -109,7 +116,7 @@ describe('redeemTicketController', function () {
                 request.ticket.content.evaluateRequest.expression.text = '<<INVALID>>';
                 request.ticket.signature = controllerTest.createSignature(request.ticket.content);
 
-                redeemTicketController.redeemTicket(req, res);
+                controller.redeemTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
@@ -127,9 +134,9 @@ describe('redeemTicketController', function () {
                         res.status(500).json({});
                     }
                 };
-                redeemTicketController.setEvaluateController(stubEvaluateController);
+                controller = createRedeemTicketController(stubEvaluateController);
 
-                redeemTicketController.redeemTicket(req, res);
+                controller.redeemTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
@@ -144,7 +151,7 @@ describe('redeemTicketController', function () {
             it('should respond with failure', function () {
                 request.ticket.content.description += '...'; // simulate forged content
 
-                redeemTicketController.redeemTicket(req, res);
+                controller.redeemTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
@@ -157,11 +164,11 @@ describe('redeemTicketController', function () {
 
         describe('when ticket has already been redeemed', function () {
             it('should respond with failure', function () {
-                redeemTicketController.redeemTicket(req, res);
+                controller.redeemTicket(req, res);
                 expect(response.success).toBeDefined(); // sanity check
                 response = null;
 
-                redeemTicketController.redeemTicket(req, res);
+                controller.redeemTicket(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(response).toEqual({
