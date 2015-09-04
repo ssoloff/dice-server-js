@@ -105,6 +105,17 @@ describe('security', function () {
                 expect(isValid).toBe(false);
             });
         });
+
+        describe('when public key is specified', function () {
+            it('should use the specified public key instead of the public key in the signature', function () {
+                var otherPublicKey = fs.readFileSync(path.join(__dirname, '../../test/other-public-key.pem'));
+                var signature = security.createSignature(payload, privateKey, publicKey);
+
+                var isValid = security.verifySignature(payload, signature, otherPublicKey);
+
+                expect(isValid).toBe(false);
+            });
+        });
     });
 });
 

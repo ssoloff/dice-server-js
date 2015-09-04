@@ -109,7 +109,7 @@ module.exports = (function () {
     }
 
     function verifySignature(content, signature) {
-        return security.verifySignature(content, signature);
+        return security.verifySignature(content, signature, m_publicKey);
     }
 
     return {

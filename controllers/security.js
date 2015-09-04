@@ -94,14 +94,24 @@ module.exports = {
      * detached signature.
      * </p>
      *
+     * <p>
+     * The current implementation does not validate the certificate chain.
+     * Therefore, until such certificate chain validation is implemented, you
+     * should explicitly pass the public key used to verify the signature to
+     * ensure you are not receiving a forged payload and/or protected header.
+     * </p>
+     *
      * @param {Object!} payload - The payload.  If not a buffer or a string,
      *      it will be coerced to a string using `JSON.stringify`.
      * @param {Object!} signature - The detached JSON web signature to be
      *      verified for the specified payload.
+     * @param {Object} publicKey - A string or buffer containing the public key
+     *      used to verify the signature.  If not specified, the public key
+     *      embedded in the web signature will be used to verify the signature.
      *
      * @returns {Boolean!} `true` if the signature is valid; otherwise `false`.
      */
-    verifySignature: function (payload, signature) {
+    verifySignature: function (payload, signature, publicKey) {
         var canonicalPayload = this.toCanonicalString(payload);
         var jwsSignature = signature.protected +
             '.' +
@@ -109,7 +119,7 @@ module.exports = {
             '.' +
             signature.signature;
         var decodedProtectedHeader = JSON.parse(base64url.decode(signature.protected));
-        var publicKey = jwkToPem(decodedProtectedHeader.jwk);
+        publicKey = publicKey || jwkToPem(decodedProtectedHeader.jwk);
         return jws.verify(jwsSignature, SIGNATURE_ALGORITHM, publicKey);
     }
 };
