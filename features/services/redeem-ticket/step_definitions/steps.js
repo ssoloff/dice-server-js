@@ -79,26 +79,25 @@ module.exports = function () {
             if (!issueTicketResponse.success) {
                 throw new Error('failed to issue ticket');
             }
+
             this.ticket.description = issueTicketResponse.success.ticket.content.description;
             this.ticket.id = issueTicketResponse.success.ticket.content.id;
 
             if (this.ticket.forceInvalidSignature) {
-                issueTicketResponse.success.ticket.content.description += '...';
+                issueTicketResponse.success.ticket.content.description += '...'; // change content so signature will not match
             }
-
             this.redeemTicketService.setRequestFromIssueTicketResponse(issueTicketResponse);
+
+            var redeemTicketServiceResponseHandler = function (res) {
+                this.response = res;
+                callback();
+            }.bind(runner);
             if (this.ticket.forceRedeemed) {
                 this.redeemTicketService.call(function () {
-                    this.redeemTicketService.call(function (res) {
-                        this.response = res;
-                        callback();
-                    }.bind(runner));
+                    this.redeemTicketService.call(redeemTicketServiceResponseHandler);
                 }.bind(runner));
             } else {
-                this.redeemTicketService.call(function (res) {
-                    this.response = res;
-                    callback();
-                }.bind(runner));
+                this.redeemTicketService.call(redeemTicketServiceResponseHandler);
             }
         }.bind(runner));
     });
