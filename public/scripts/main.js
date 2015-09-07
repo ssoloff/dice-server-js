@@ -41,7 +41,7 @@ function evaluate(expressionText) {
             name: $('#randomNumberGeneratorName').val()
         }
     };
-    $.post('/evaluate', request, processResponse);
+    $.postJSON('/evaluate', request, processResponse);
 }
 
 function getExpressionText() {
@@ -91,6 +91,19 @@ function installJQueryPlugins() {
     jQuery.fn.invisible = function () {
         return this.css('visibility', 'hidden');
     };
+
+    jQuery.extend({
+        postJSON: function (url, data, callback) {
+            return this.ajax({
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: callback,
+                type: 'POST',
+                url: url
+            });
+        }
+    });
 }
 
 function processResponse(response) {

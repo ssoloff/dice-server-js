@@ -48,7 +48,6 @@ var validateRedeemedTicketController = require('./controllers/validate-redeemed-
 
 var app = express();
 app.use(express.static(path.join(__dirname, '/public')));
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 http.createServer(app).listen(3000);
