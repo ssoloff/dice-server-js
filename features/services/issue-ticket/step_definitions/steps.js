@@ -55,11 +55,6 @@ module.exports = function () {
         }.bind(this));
     });
 
-    this.Then(/^the response should contain a failure$/, function () {
-        // jshint expr: true
-        expect(this.response.failure).to.exist;
-    });
-
     this.Then(/^the response should contain a signed ticket$/, function () {
         // jshint expr: true
         expect(this.response.success.ticket.signature).to.exist;
@@ -79,6 +74,11 @@ module.exports = function () {
 
     this.Then(/^the response should contain the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
         expect(this.response.success.ticket.content.evaluateRequest.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
+    });
+
+    this.Then(/^the response should indicate failure$/, function () {
+        // jshint expr: true
+        expect(this.response.failure).to.exist;
     });
 };
 

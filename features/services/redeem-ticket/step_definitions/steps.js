@@ -102,11 +102,6 @@ module.exports = function () {
         }.bind(runner));
     });
 
-    this.Then(/^the response should contain a failure$/, function () {
-        // jshint expr: true
-        expect(this.response.failure).to.exist;
-    });
-
     this.Then(/^the response should contain a signed redeemed ticket$/, function () {
         // jshint expr: true
         expect(this.response.success.redeemedTicket.signature).to.exist;
@@ -126,6 +121,11 @@ module.exports = function () {
 
     this.Then(/^the response should contain the ticket identifier$/, function () {
         expect(this.response.success.redeemedTicket.content.id).to.equal(this.ticket.id);
+    });
+
+    this.Then(/^the response should indicate failure$/, function () {
+        // jshint expr: true
+        expect(this.response.failure).to.exist;
     });
 };
 

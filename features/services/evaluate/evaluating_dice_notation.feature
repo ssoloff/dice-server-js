@@ -175,7 +175,7 @@ Scenario Outline: Evaluating expressions with unary operators
 Scenario Outline: Evaluating expressions that result in non-finite values
     Given a request with the expression "<expression>"
     When the evaluate service is invoked
-    Then the response should contain a failure
+    Then the response should indicate failure
     Examples:
         | expression  |
         | d6          |

@@ -55,17 +55,17 @@ module.exports = function () {
         expect(this.response).to.deep.equal(JSON.parse(jsonResponse));
     });
 
-    this.Then(/^the response should contain a failure$/, function () {
-        // jshint expr: true
-        expect(this.response.failure).to.exist;
-    });
-
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
         expect(this.response.success.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
         expect(this.response.success.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+    });
+
+    this.Then(/^the response should indicate failure$/, function () {
+        // jshint expr: true
+        expect(this.response.failure).to.exist;
     });
 };
 
