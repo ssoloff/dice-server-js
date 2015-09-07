@@ -42,6 +42,7 @@ var redeemTicketController = require('./controllers/redeem-ticket-controller.js'
     publicKey,
     evaluateController
 );
+var validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create();
 
 var app = express();
 app.use(express.static(path.join(__dirname, '/public')));
@@ -52,4 +53,5 @@ http.createServer(app).listen(3000);
 app.post('/evaluate', evaluateController.evaluate);
 app.post('/issue-ticket', issueTicketController.issueTicket);
 app.post('/redeem-ticket', redeemTicketController.redeemTicket);
+app.post('/validate-redeemed-ticket', validateRedeemedTicketController.validateRedeemedTicket);
 
