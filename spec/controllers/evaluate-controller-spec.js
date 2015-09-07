@@ -23,6 +23,7 @@
 'use strict';
 
 var controllerTest = require('./controller-test');
+var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 
 describe('evaluateController', function () {
@@ -62,7 +63,7 @@ describe('evaluateController', function () {
             it('should respond with the expression result', function () {
                 controller.evaluate(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     success: {
                         expression: {
@@ -89,7 +90,7 @@ describe('evaluateController', function () {
             it('should respond with an error', function () {
                 controller.evaluate(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')
@@ -105,7 +106,7 @@ describe('evaluateController', function () {
 
                     controller.evaluate(req, res);
 
-                    expect(res.status).toHaveBeenCalledWith(200);
+                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.success.randomNumberGenerator.name).toBe('uniform');
                 });
             });
@@ -116,7 +117,7 @@ describe('evaluateController', function () {
 
                     controller.evaluate(req, res);
 
-                    expect(res.status).toHaveBeenCalledWith(200);
+                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.success.randomNumberGenerator.name).toBe('uniform');
                     expect(response.success.expressionResult.value).toBeGreaterThan(2 + 4);
                     expect(response.success.expressionResult.value).toBeLessThan(19 + 4);
@@ -129,7 +130,7 @@ describe('evaluateController', function () {
 
                     controller.evaluate(req, res);
 
-                    expect(res.status).toHaveBeenCalledWith(200);
+                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.success.randomNumberGenerator.name).toBe('constantMax');
                     expect(response.success.expressionResult.value).toBe(22);
                 });
@@ -141,7 +142,7 @@ describe('evaluateController', function () {
 
                     controller.evaluate(req, res);
 
-                    expect(res.status).toHaveBeenCalledWith(200);
+                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.failure).toBeDefined();
                 });
             });
@@ -154,7 +155,7 @@ describe('evaluateController', function () {
 
                     controller.evaluate(req, res);
 
-                    expect(res.status).toHaveBeenCalledWith(200);
+                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.failure).toBeDefined();
                 });
             });
@@ -165,7 +166,7 @@ describe('evaluateController', function () {
 
                     controller.evaluate(req, res);
 
-                    expect(res.status).toHaveBeenCalledWith(200);
+                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.failure).toBeDefined();
                 });
             });

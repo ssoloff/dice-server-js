@@ -23,6 +23,7 @@
 'use strict';
 
 var controllerTest = require('./controller-test');
+var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 
 describe('redeemTicketController', function () {
@@ -77,7 +78,7 @@ describe('redeemTicketController', function () {
             it('should respond with success', function () {
                 controller.redeemTicket(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     success: {
                         redeemedTicket: {
@@ -118,7 +119,7 @@ describe('redeemTicketController', function () {
 
                 controller.redeemTicket(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')
@@ -138,7 +139,7 @@ describe('redeemTicketController', function () {
 
                 controller.redeemTicket(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')
@@ -153,7 +154,7 @@ describe('redeemTicketController', function () {
 
                 controller.redeemTicket(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')
@@ -170,7 +171,7 @@ describe('redeemTicketController', function () {
 
                 controller.redeemTicket(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')

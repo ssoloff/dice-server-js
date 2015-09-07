@@ -23,6 +23,7 @@
 'use strict';
 
 var controllerTest = require('./controller-test');
+var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 
 describe('issueTicketController', function () {
@@ -70,7 +71,7 @@ describe('issueTicketController', function () {
             it('should respond with success', function () {
                 controller.issueTicket(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     success: {
                         ticket: {
@@ -111,7 +112,7 @@ describe('issueTicketController', function () {
 
                 controller.issueTicket(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')
@@ -131,7 +132,7 @@ describe('issueTicketController', function () {
 
                 controller.issueTicket(req, res);
 
-                expect(res.status).toHaveBeenCalledWith(200);
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     failure: {
                         message: ja.matchType('string')

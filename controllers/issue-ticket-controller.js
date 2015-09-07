@@ -23,6 +23,7 @@
 'use strict';
 
 var crypto = require('crypto');
+var httpStatus = require('http-status-codes');
 var security = require('./security');
 
 module.exports = {
@@ -102,7 +103,7 @@ module.exports = {
             issueTicket: function (req, res) {
                 var request = req.body;
                 var response = createResponse(request);
-                res.status(200).json(response);
+                res.status(httpStatus.OK).json(response);
             }
         };
     }

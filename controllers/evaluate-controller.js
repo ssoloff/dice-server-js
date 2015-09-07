@@ -26,6 +26,7 @@ require('../lib/number-polyfills');
 
 var _ = require('underscore');
 var dice = require('../lib/dice');
+var httpStatus = require('http-status-codes');
 
 module.exports = {
     create: function () {
@@ -92,7 +93,7 @@ module.exports = {
             evaluate: function (req, res) {
                 var request = req.body;
                 var response = createResponse(request);
-                res.status(200).json(response);
+                res.status(httpStatus.OK).json(response);
             }
         };
     }
