@@ -22,6 +22,7 @@
 
 'use strict';
 
+var httpStatus = require('http-status-codes');
 var request = require('request');
 
 function IssueTicketService() {
@@ -36,7 +37,7 @@ IssueTicketService.prototype.call = function (callback) {
         uri: 'http://localhost:3000/issue-ticket'
     };
     request.post(requestData, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
+        if (!error && response.statusCode === httpStatus.OK) {
             callback(JSON.parse(body));
         } else {
             throw new Error('unexpected response from issue-ticket service');
