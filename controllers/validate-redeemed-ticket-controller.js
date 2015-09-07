@@ -23,11 +23,14 @@
 'use strict';
 
 var httpStatus = require('http-status-codes');
+var security = require('./security');
 
 module.exports = {
-    create: function () {
-        function createResponse() {
+    create: function (publicKey) {
+        function createResponse(request) {
             try {
+                validateRequest(request);
+
                 return {
                     success: {}
                 };
@@ -37,6 +40,17 @@ module.exports = {
                         message: e.message
                     }
                 };
+            }
+        }
+
+        function isSignatureValid(content, signature) {
+            return security.verifySignature(content, signature, publicKey);
+        }
+
+        function validateRequest(request) {
+            var redeemedTicket = request.redeemedTicket;
+            if (!isSignatureValid(redeemedTicket.content, redeemedTicket.signature)) {
+                throw new Error('redeemed ticket signature is invalid');
             }
         }
 

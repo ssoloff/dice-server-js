@@ -35,12 +35,21 @@ module.exports = function () {
         this.redeemTicketService = world.createRedeemTicketService();
         this.validateRedeemedTicketService = world.createValidateRedeemedTicketService();
         this.response = null;
+        this.redeemedTicket = {
+            forceInvalidSignature: false
+        };
         callback();
     });
 
     this.Given(/^a redeemed ticket$/, function () {
         this.issueTicketService.setExpression('42');
         this.issueTicketService.setDescription('description');
+    });
+
+    this.Given(/^a redeemed ticket with an invalid signature$/, function () {
+        this.issueTicketService.setExpression('42');
+        this.issueTicketService.setDescription('description');
+        this.redeemedTicket.forceInvalidSignature = true;
     });
 
     this.When(/^the validate redeemed ticket service is invoked$/, function (callback) {
@@ -58,6 +67,9 @@ module.exports = function () {
                     throw new Error('failed to redeem ticket');
                 }
 
+                if (this.redeemedTicket.forceInvalidSignature) {
+                    redeemTicketResponse.success.redeemedTicket.content.description += '...'; // change content so signature will not match
+                }
                 this.validateRedeemedTicketService.setRequestFromRedeemTicketResponse(redeemTicketResponse);
                 this.validateRedeemedTicketService.call(function (res) {
                     this.response = res;
@@ -65,6 +77,11 @@ module.exports = function () {
                 }.bind(runner));
             }.bind(runner));
         }.bind(runner));
+    });
+
+    this.Then(/^the response should indicate failure$/, function () {
+        // jshint expr: true
+        expect(this.response.failure).to.exist;
     });
 
     this.Then(/^the response should indicate success$/, function () {

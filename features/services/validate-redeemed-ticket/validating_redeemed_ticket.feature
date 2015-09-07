@@ -8,3 +8,8 @@ Scenario: Successfully validating a redeemed ticket
     When the validate redeemed ticket service is invoked
     Then the response should indicate success
 
+Scenario: Failing to validate a redeemed ticket with an invalid signature
+    Given a redeemed ticket with an invalid signature
+    When the validate redeemed ticket service is invoked
+    Then the response should indicate failure
+

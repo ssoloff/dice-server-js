@@ -24,6 +24,7 @@
 
 var controllerTest = require('./controller-test');
 var httpStatus = require('http-status-codes');
+var ja = require('json-assert');
 
 describe('validateRedeemedTicketController', function () {
     var controller;
@@ -33,7 +34,9 @@ describe('validateRedeemedTicketController', function () {
     var response;
 
     function createValidateRedeemedTicketController() {
-        return require('../../controllers/validate-redeemed-ticket-controller').create();
+        return require('../../controllers/validate-redeemed-ticket-controller').create(
+            controllerTest.getPublicKey()
+        );
     }
 
     beforeEach(function () {
@@ -80,6 +83,21 @@ describe('validateRedeemedTicketController', function () {
                 expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
                     success: {}
+                });
+            });
+        });
+
+        describe('when redeemed ticket has an invalid signature', function () {
+            it('should respond with failure', function () {
+                request.redeemedTicket.content.description += '...'; // simulate forged content
+
+                controller.validateRedeemedTicket(req, res);
+
+                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(response).toEqual({
+                    failure: {
+                        message: ja.matchType('string')
+                    }
                 });
             });
         });

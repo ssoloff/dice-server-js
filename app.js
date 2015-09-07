@@ -42,11 +42,14 @@ var redeemTicketController = require('./controllers/redeem-ticket-controller.js'
     publicKey,
     evaluateController
 );
-var validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create();
+var validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create(
+    publicKey
+);
 
 var app = express();
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 http.createServer(app).listen(3000);
 

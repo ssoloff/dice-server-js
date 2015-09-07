@@ -31,12 +31,13 @@ function ValidateRedeemedTicketService() {
 
 ValidateRedeemedTicketService.prototype.call = function (callback) {
     var requestData = {
-        form: this.request,
+        body: this.request,
+        json: true,
         uri: 'http://localhost:3000/validate-redeemed-ticket'
     };
     request.post(requestData, function (error, response, body) {
         if (!error && response.statusCode === httpStatus.OK) {
-            callback(JSON.parse(body));
+            callback(body);
         } else {
             throw new Error('unexpected response from validate-redeemed-ticket service');
         }
