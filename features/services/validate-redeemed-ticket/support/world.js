@@ -22,9 +22,9 @@
 
 'use strict';
 
-var IssueTicketService = require('../../../support/issue-ticket-service');
-var RedeemTicketService = require('../../../support/redeem-ticket-service');
-var ValidateRedeemedTicketService = require('../../../support/validate-redeemed-ticket-service');
+var IssueTicketService = require('../../support/issue-ticket-service');
+var RedeemTicketService = require('../../support/redeem-ticket-service');
+var ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service');
 
 function createIssueTicketService() {
     return new IssueTicketService();
