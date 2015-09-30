@@ -1,6 +1,7 @@
 # dice-server-js
 
 [![Build Status][travis-image]][travis-link] [![Coverage Status][coveralls-image]][coveralls-link] [![Dependency Status][david-image]][david-link]
+[![devDependency Status][david-dev-image]][david-dev-link]
 
 Server for parsing and executing dice notation.
 
@@ -8,6 +9,8 @@ Server for parsing and executing dice notation.
 [coveralls-link]: https://coveralls.io/github/ssoloff/dice-server-js?branch=master
 [david-image]: https://david-dm.org/ssoloff/dice-server-js.svg
 [david-link]: https://david-dm.org/ssoloff/dice-server-js
+[david-dev-image]: https://david-dm.org/ssoloff/dice-server-js/dev-status.svg
+[david-dev-link]: https://david-dm.org/ssoloff/dice-server-js#info=devDependencies
 [travis-image]: https://travis-ci.org/ssoloff/dice-server-js.svg?branch=master
 [travis-link]: https://travis-ci.org/ssoloff/dice-server-js
 
