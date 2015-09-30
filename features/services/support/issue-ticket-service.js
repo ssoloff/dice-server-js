@@ -35,7 +35,7 @@ IssueTicketService.prototype.call = function (callback) {
     var requestData = {
         body: this.request,
         json: true,
-        uri: 'http://localhost:3000/issue-ticket'
+        uri: 'http://localhost:3000/ticket/issue'
     };
     request.post(requestData, function (error, response, body) {
         if (!error && response.statusCode === httpStatus.OK) {

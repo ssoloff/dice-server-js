@@ -41,7 +41,7 @@ function evaluate(expressionText) {
             name: $('#randomNumberGeneratorName').val()
         }
     };
-    $.postJSON('/evaluate', request, processResponse);
+    $.postJSON('/expression/evaluate', request, processResponse);
 }
 
 function getExpressionText() {

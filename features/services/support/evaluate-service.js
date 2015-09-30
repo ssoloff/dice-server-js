@@ -33,7 +33,7 @@ EvaluateService.prototype.call = function (callback) {
     var requestData = {
         body: this.request,
         json: true,
-        uri: 'http://localhost:3000/evaluate'
+        uri: 'http://localhost:3000/expression/evaluate'
     };
     request.post(requestData, function (error, response, body) {
         if (!error && response.statusCode === httpStatus.OK) {

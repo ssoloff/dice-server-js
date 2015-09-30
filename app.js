@@ -52,8 +52,8 @@ app.use(bodyParser.json());
 
 http.createServer(app).listen(3000);
 
-app.post('/evaluate', evaluateController.evaluate);
-app.post('/issue-ticket', issueTicketController.issueTicket);
-app.post('/redeem-ticket', redeemTicketController.redeemTicket);
-app.post('/validate-redeemed-ticket', validateRedeemedTicketController.validateRedeemedTicket);
+app.post('/expression/evaluate', evaluateController.evaluate);
+app.post('/ticket/issue', issueTicketController.issueTicket);
+app.post('/ticket/redeem', redeemTicketController.redeemTicket);
+app.post('/ticket/validate-redeemed', validateRedeemedTicketController.validateRedeemedTicket);
 
