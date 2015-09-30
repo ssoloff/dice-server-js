@@ -5,9 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "base64url": "~1.0.4",
-    "body-parser": "~1.13.1",
+    "body-parser": "~1.14.1",
     "canonical-json": "0.0.4",
-    "express": "~4.13.0",
+    "express": "~4.13.3",
     "http-status-codes": "~1.0.5",
     "jwk-to-pem": "~1.2.0",
     "jws": "~3.1.0",
@@ -15,23 +15,23 @@
     "underscore": "~1.8.3"
   },
   "devDependencies": {
-    "chai": "~3.0.0",
-    "coveralls": "~2.11.2",
+    "chai": "~3.3.0",
+    "coveralls": "~2.11.4",
     "csslint": "~0.10.0",
-    "cucumber": "~0.5.2",
+    "cucumber": "~0.6.0",
     "html-validator": "0.0.8",
-    "istanbul": "~0.3.17",
-    "jasmine": "~2.3.1",
+    "istanbul": "~0.3.21",
+    "jasmine": "~2.3.2",
     "jison": "~0.4.15",
-    "jscs": "~1.13.1",
-    "jsdoc": "~3.3.2",
+    "jscs": "~2.2.1",
+    "jsdoc": "~3.3.3",
     "jshint": "~2.8.0",
     "json-assert": "~1.0.2",
-    "request": "~2.58.0",
+    "request": "~2.64.0",
     "selenium-webdriver": "~2.46.1"
   },
   "scripts": {
-    "test": "make test"
+    "test": "make unit-test"
   },
   "repository": {
     "type": "git",
@@ -52,6 +52,7 @@
       "public/scripts/jquery-*.js"
     ],
     "preset": "crockford",
-    "requireMultipleVarDecl": null
+    "requireMultipleVarDecl": null,
+    "requireVarDeclFirst": null
   }
 }
