@@ -33,12 +33,12 @@ describe('redeemTicketController', function () {
     var request;
     var response;
 
-    function createRedeemTicketController(evaluateController) {
-        evaluateController = evaluateController || require('../../controllers/evaluate-controller').create();
+    function createRedeemTicketController(evaluateExpressionController) {
+        evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create();
         return require('../../controllers/redeem-ticket-controller').create(
             controllerTest.getPrivateKey(),
             controllerTest.getPublicKey(),
-            evaluateController
+            evaluateExpressionController
         );
     }
 
@@ -49,7 +49,7 @@ describe('redeemTicketController', function () {
             ticket: {
                 content: {
                     description: 'description',
-                    evaluateRequest: {
+                    evaluateExpressionRequest: {
                         expression: {
                             text: '3d6+4'
                         },
@@ -74,7 +74,7 @@ describe('redeemTicketController', function () {
     });
 
     describe('.redeemTicket', function () {
-        describe('when evaluate controller responds with success', function () {
+        describe('when evaluate expression controller responds with success', function () {
             it('should respond with success', function () {
                 controller.redeemTicket(req, res);
 
@@ -84,7 +84,7 @@ describe('redeemTicketController', function () {
                         redeemedTicket: {
                             content: {
                                 description: 'description',
-                                evaluateResponse: {
+                                evaluateExpressionResponse: {
                                     expression: {
                                         canonicalText: 'sum(roll(3, d6)) + 4',
                                         text: '3d6+4'
@@ -112,9 +112,9 @@ describe('redeemTicketController', function () {
             });
         });
 
-        describe('when evaluate controller responds with failure', function () {
+        describe('when evaluate expression controller responds with failure', function () {
             it('should respond with failure', function () {
-                request.ticket.content.evaluateRequest.expression.text = '<<INVALID>>';
+                request.ticket.content.evaluateExpressionRequest.expression.text = '<<INVALID>>';
                 request.ticket.signature = controllerTest.createSignature(request.ticket.content);
 
                 controller.redeemTicket(req, res);
@@ -128,14 +128,14 @@ describe('redeemTicketController', function () {
             });
         });
 
-        describe('when evaluate controller responds with non-OK status', function () {
+        describe('when evaluate expression controller responds with non-OK status', function () {
             it('should respond with failure', function () {
-                var stubEvaluateController = {
-                    evaluate: function (req, res) {
+                var stubEvaluateExpressionController = {
+                    evaluateExpression: function (req, res) {
                         res.status(500).json({});
                     }
                 };
-                controller = createRedeemTicketController(stubEvaluateController);
+                controller = createRedeemTicketController(stubEvaluateExpressionController);
 
                 controller.redeemTicket(req, res);
 

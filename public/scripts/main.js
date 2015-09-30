@@ -7,7 +7,7 @@ function addExpressionResult(response) {
     var $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
 
     var $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
-        evaluate($expressionTextCell.text());
+        evaluateExpression($expressionTextCell.text());
     });
     var $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
         $(event.target).closest('tr').remove();
@@ -30,7 +30,7 @@ function clearExpressionText() {
     $('#expressionText').val('');
 }
 
-function evaluate(expressionText) {
+function evaluateExpression(expressionText) {
     'use strict';
 
     var request = {
@@ -74,7 +74,7 @@ function initialize() {
     hideErrorMessage();
 
     $('#expressionForm').submit(function (event) {
-        evaluate(getExpressionText());
+        evaluateExpression(getExpressionText());
         event.preventDefault();
     });
     $('#toggleHelp').click(toggleHelp);

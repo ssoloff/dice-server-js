@@ -33,12 +33,12 @@ describe('issueTicketController', function () {
     var request;
     var response;
 
-    function createIssueTicketController(evaluateController) {
-        evaluateController = evaluateController || require('../../controllers/evaluate-controller').create();
+    function createIssueTicketController(evaluateExpressionController) {
+        evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create();
         return require('../../controllers/issue-ticket-controller').create(
             controllerTest.getPrivateKey(),
             controllerTest.getPublicKey(),
-            evaluateController
+            evaluateExpressionController
         );
     }
 
@@ -47,7 +47,7 @@ describe('issueTicketController', function () {
 
         request = {
             description: 'description',
-            evaluateRequest: {
+            evaluateExpressionRequest: {
                 expression: {
                     text: '3d6+4'
                 },
@@ -67,7 +67,7 @@ describe('issueTicketController', function () {
     });
 
     describe('.issueTicket', function () {
-        describe('when evaluate controller responds with success', function () {
+        describe('when evaluate expression controller responds with success', function () {
             it('should respond with success', function () {
                 controller.issueTicket(req, res);
 
@@ -77,7 +77,7 @@ describe('issueTicketController', function () {
                         ticket: {
                             content: {
                                 description: 'description',
-                                evaluateRequest: {
+                                evaluateExpressionRequest: {
                                     expression: {
                                         text: '3d6+4'
                                     },
@@ -106,9 +106,9 @@ describe('issueTicketController', function () {
             });
         });
 
-        describe('when evaluate controller responds with failure', function () {
+        describe('when evaluate expression controller responds with failure', function () {
             it('should respond with failure', function () {
-                request.evaluateRequest.expression.text = '<<INVALID>>';
+                request.evaluateExpressionRequest.expression.text = '<<INVALID>>';
 
                 controller.issueTicket(req, res);
 
@@ -121,14 +121,14 @@ describe('issueTicketController', function () {
             });
         });
 
-        describe('when evaluate controller responds with non-OK status', function () {
+        describe('when evaluate expression controller responds with non-OK status', function () {
             it('should respond with failure', function () {
-                var stubEvaluateController = {
-                    evaluate: function (req, res) {
+                var stubEvaluateExpressionController = {
+                    evaluateExpression: function (req, res) {
                         res.status(500).json({});
                     }
                 };
-                controller = createIssueTicketController(stubEvaluateController);
+                controller = createIssueTicketController(stubEvaluateExpressionController);
 
                 controller.issueTicket(req, res);
 

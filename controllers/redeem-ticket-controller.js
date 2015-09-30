@@ -26,7 +26,7 @@ var httpStatus = require('http-status-codes');
 var security = require('./security');
 
 module.exports = {
-    create: function (privateKey, publicKey, evaluateController) {
+    create: function (privateKey, publicKey, evaluateExpressionController) {
         var redeemedTickets = {};
 
         function createRedeemedTicket(request) {
@@ -39,19 +39,19 @@ module.exports = {
 
         function createRedeemedTicketContent(request) {
             var ticketContent = request.ticket.content;
-            var evaluateResult = evaluate(ticketContent.evaluateRequest);
-            var evaluateResponse = evaluateResult[1];
-            if (evaluateResponse.success) {
+            var evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequest);
+            var evaluateExpressionResponse = evaluateExpressionResult[1];
+            if (evaluateExpressionResponse.success) {
                 return {
                     description: ticketContent.description,
-                    evaluateResponse: evaluateResponse.success,
+                    evaluateExpressionResponse: evaluateExpressionResponse.success,
                     id: ticketContent.id
                 };
-            } else if (evaluateResponse.failure) {
-                throw new Error(evaluateResponse.failure.message);
+            } else if (evaluateExpressionResponse.failure) {
+                throw new Error(evaluateExpressionResponse.failure.message);
             } else {
-                var evaluateStatus = evaluateResult[0];
-                throw new Error('evaluate controller returned status ' + evaluateStatus);
+                var evaluateExpressionStatus = evaluateExpressionResult[0];
+                throw new Error('evaluate expression controller returned status ' + evaluateExpressionStatus);
             }
         }
 
@@ -79,25 +79,25 @@ module.exports = {
             return security.createSignature(content, privateKey, publicKey);
         }
 
-        function evaluate(evaluateRequest) {
-            var evaluateReq = {
-                body: evaluateRequest
+        function evaluateExpression(evaluateExpressionRequest) {
+            var evaluateExpressionReq = {
+                body: evaluateExpressionRequest
             };
-            var evaluateResponse;
-            var evaluateStatus;
-            var evaluateRes = {
+            var evaluateExpressionResponse;
+            var evaluateExpressionStatus;
+            var evaluateExpressionRes = {
                 json: function (json) {
-                    evaluateResponse = json;
+                    evaluateExpressionResponse = json;
                     return this;
                 },
                 status: function (status) {
-                    evaluateStatus = status;
+                    evaluateExpressionStatus = status;
                     return this;
                 }
             };
-            evaluateController.evaluate(evaluateReq, evaluateRes);
+            evaluateExpressionController.evaluateExpression(evaluateExpressionReq, evaluateExpressionRes);
 
-            return [evaluateStatus, evaluateResponse];
+            return [evaluateExpressionStatus, evaluateExpressionResponse];
         }
 
         function isSignatureValid(content, signature) {

@@ -25,11 +25,11 @@
 var httpStatus = require('http-status-codes');
 var request = require('request');
 
-function EvaluateService() {
+function EvaluateExpressionService() {
     this.request = {};
 }
 
-EvaluateService.prototype.call = function (callback) {
+EvaluateExpressionService.prototype.call = function (callback) {
     var requestData = {
         body: this.request,
         json: true,
@@ -39,22 +39,22 @@ EvaluateService.prototype.call = function (callback) {
         if (!error && response.statusCode === httpStatus.OK) {
             callback(body);
         } else {
-            throw new Error('unexpected response from evaluate service');
+            throw new Error('unexpected response from evaluate expression service');
         }
     });
 };
 
-EvaluateService.prototype.setExpression = function (expressionText) {
+EvaluateExpressionService.prototype.setExpression = function (expressionText) {
     this.request.expression = {
         text: expressionText
     };
 };
 
-EvaluateService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
+EvaluateExpressionService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
     this.request.randomNumberGenerator = {
         name: randomNumberGeneratorName
     };
 };
 
-module.exports = EvaluateService;
+module.exports = EvaluateExpressionService;
 

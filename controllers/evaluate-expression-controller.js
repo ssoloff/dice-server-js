@@ -90,7 +90,7 @@ module.exports = {
         }
 
         return {
-            evaluate: function (req, res) {
+            evaluateExpression: function (req, res) {
                 var request = req.body;
                 var response = createResponse(request);
                 res.status(httpStatus.OK).json(response);

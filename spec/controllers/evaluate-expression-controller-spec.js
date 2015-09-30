@@ -26,15 +26,15 @@ var controllerTest = require('./controller-test');
 var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 
-describe('evaluateController', function () {
+describe('evaluateExpressionController', function () {
     var controller;
     var req;
     var res;
     var request;
     var response;
 
-    function createEvaluateController() {
-        return require('../../controllers/evaluate-controller').create();
+    function createEvaluateExpressionController() {
+        return require('../../controllers/evaluate-expression-controller').create();
     }
 
     beforeEach(function () {
@@ -55,13 +55,13 @@ describe('evaluateController', function () {
             response = json;
         });
 
-        controller = createEvaluateController();
+        controller = createEvaluateExpressionController();
     });
 
-    describe('.evaluate', function () {
+    describe('.evaluateExpression', function () {
         describe('when expression is well-formed', function () {
             it('should respond with the expression result', function () {
-                controller.evaluate(req, res);
+                controller.evaluateExpression(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
@@ -88,7 +88,7 @@ describe('evaluateController', function () {
             });
 
             it('should respond with an error', function () {
-                controller.evaluate(req, res);
+                controller.evaluateExpression(req, res);
 
                 expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(response).toEqual({
@@ -104,7 +104,7 @@ describe('evaluateController', function () {
                 it('should use the default random number generator', function () {
                     delete request.randomNumberGenerator;
 
-                    controller.evaluate(req, res);
+                    controller.evaluateExpression(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.success.randomNumberGenerator.name).toBe('uniform');
@@ -115,7 +115,7 @@ describe('evaluateController', function () {
                 it('should use the uniform random number generator', function () {
                     request.randomNumberGenerator.name = 'uniform';
 
-                    controller.evaluate(req, res);
+                    controller.evaluateExpression(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.success.randomNumberGenerator.name).toBe('uniform');
@@ -128,7 +128,7 @@ describe('evaluateController', function () {
                 it('should use the constantMax random number generator', function () {
                     request.randomNumberGenerator.name = 'constantMax';
 
-                    controller.evaluate(req, res);
+                    controller.evaluateExpression(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.success.randomNumberGenerator.name).toBe('constantMax');
@@ -140,7 +140,7 @@ describe('evaluateController', function () {
                 it('should respond with an error', function () {
                     request.randomNumberGenerator.name = '<<UNKNOWN>>';
 
-                    controller.evaluate(req, res);
+                    controller.evaluateExpression(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.failure).toBeDefined();
@@ -153,7 +153,7 @@ describe('evaluateController', function () {
                 it('should respond with an error', function () {
                     request.expression.text = 'd6';
 
-                    controller.evaluate(req, res);
+                    controller.evaluateExpression(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.failure).toBeDefined();
@@ -164,7 +164,7 @@ describe('evaluateController', function () {
                 it('should respond with an error', function () {
                     request.expression.text = 'round(d6)';
 
-                    controller.evaluate(req, res);
+                    controller.evaluateExpression(req, res);
 
                     expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
                     expect(response.failure).toBeDefined();

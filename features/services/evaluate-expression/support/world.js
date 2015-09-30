@@ -22,10 +22,10 @@
 
 'use strict';
 
-var EvaluateService = require('../../support/evaluate-service');
+var EvaluateExpressionService = require('../../support/evaluate-expression-service');
 
-function createEvaluateService() {
-    return new EvaluateService();
+function createEvaluateExpressionService() {
+    return new EvaluateExpressionService();
 }
 
 function World(callback) {
@@ -33,5 +33,5 @@ function World(callback) {
 }
 
 module.exports.World = World;
-module.exports.createEvaluateService = createEvaluateService;
+module.exports.createEvaluateExpressionService = createEvaluateExpressionService;
 

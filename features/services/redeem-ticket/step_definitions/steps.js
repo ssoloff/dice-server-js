@@ -108,11 +108,11 @@ module.exports = function () {
     });
 
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-        expect(this.response.success.redeemedTicket.content.evaluateResponse.expressionResult.text).to.equal(expressionResultText);
+        expect(this.response.success.redeemedTicket.content.evaluateExpressionResponse.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
-        expect(this.response.success.redeemedTicket.content.evaluateResponse.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+        expect(this.response.success.redeemedTicket.content.evaluateExpressionResponse.expressionResult.value).to.equal(parseFloat(expressionResultValue));
     });
 
     this.Then(/^the response should contain the ticket description$/, function () {

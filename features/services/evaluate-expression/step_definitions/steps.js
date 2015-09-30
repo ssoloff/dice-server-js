@@ -31,21 +31,21 @@ module.exports = function () {
     this.World = world.World;
 
     this.Before(function (callback) {
-        this.evaluateService = world.createEvaluateService();
+        this.evaluateExpressionService = world.createEvaluateExpressionService();
         this.response = null;
         callback();
     });
 
     this.Given(/^a request with the expression "(.*)"$/, function (expression) {
-        this.evaluateService.setExpression(expression);
+        this.evaluateExpressionService.setExpression(expression);
     });
 
     this.Given(/^a request with the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
-        this.evaluateService.setRandomNumberGenerator(randomNumberGeneratorName);
+        this.evaluateExpressionService.setRandomNumberGenerator(randomNumberGeneratorName);
     });
 
-    this.When(/^the evaluate service is invoked$/, function (callback) {
-        this.evaluateService.call(function (res) {
+    this.When(/^the evaluate expression service is invoked$/, function (callback) {
+        this.evaluateExpressionService.call(function (res) {
             this.response = res;
             callback();
         }.bind(this));

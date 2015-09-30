@@ -31,16 +31,16 @@ var path = require('path');
 var privateKey = fs.readFileSync(process.argv[2]);
 var publicKey = fs.readFileSync(process.argv[3]);
 
-var evaluateController = require('./controllers/evaluate-controller.js').create();
+var evaluateExpressionController = require('./controllers/evaluate-expression-controller.js').create();
 var issueTicketController = require('./controllers/issue-ticket-controller.js').create(
     privateKey,
     publicKey,
-    evaluateController
+    evaluateExpressionController
 );
 var redeemTicketController = require('./controllers/redeem-ticket-controller.js').create(
     privateKey,
     publicKey,
-    evaluateController
+    evaluateExpressionController
 );
 var validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create(
     publicKey
@@ -52,7 +52,7 @@ app.use(bodyParser.json());
 
 http.createServer(app).listen(3000);
 
-app.post('/expression/evaluate', evaluateController.evaluate);
+app.post('/expression/evaluate', evaluateExpressionController.evaluateExpression);
 app.post('/ticket/issue', issueTicketController.issueTicket);
 app.post('/ticket/redeem', redeemTicketController.redeemTicket);
 app.post('/ticket/validate-redeemed', validateRedeemedTicketController.validateRedeemedTicket);
