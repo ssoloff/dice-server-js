@@ -22,8 +22,6 @@
 
 'use strict';
 
-require('../lib/number-polyfills');
-
 var _ = require('underscore');
 var dice = require('../lib/dice');
 var httpStatus = require('http-status-codes');

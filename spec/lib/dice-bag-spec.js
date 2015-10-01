@@ -22,8 +22,6 @@
 
 'use strict';
 
-require('../../lib/number-polyfills');
-
 var dice = require('../../lib/dice');
 
 describe('diceBag', function () {

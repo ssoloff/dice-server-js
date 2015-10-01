@@ -22,8 +22,6 @@
 
 'use strict';
 
-require('../../lib/math-polyfills');
-
 var dice = require('../../lib/dice');
 var diceExpressionFunctions = require('../../lib/dice-expression-functions');
 var diceTest = require('./dice-test');
