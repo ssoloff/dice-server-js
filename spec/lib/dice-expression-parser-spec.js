@@ -24,7 +24,7 @@
 
 var dice = require('../../lib/dice');
 var diceExpressionFunctions = require('../../lib/dice-expression-functions');
-var diceTest = require('./dice-test');
+var diceTest = require('./test-support/dice-test');
 
 describe('diceExpressionParser', function () {
     var expressionParser;

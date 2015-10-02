@@ -24,7 +24,7 @@
 
 var _ = require('underscore');
 var dice = require('../../lib/dice');
-var diceTest = require('./dice-test');
+var diceTest = require('./test-support/dice-test');
 
 describe('diceExpression', function () {
     var three;

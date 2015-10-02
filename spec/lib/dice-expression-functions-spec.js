@@ -23,7 +23,7 @@
 'use strict';
 
 var diceExpressionFunctions = require('../../lib/dice-expression-functions');
-var diceTest = require('./dice-test');
+var diceTest = require('./test-support/dice-test');
 
 describe('diceExpressionFunctions', function () {
     describe('.ceil', function () {
