@@ -28,10 +28,10 @@ var ja = require('json-assert');
 
 describe('evaluateExpressionController', function () {
     var controller;
-    var req;
-    var res;
     var request;
     var response;
+    var requestBody;
+    var responseBody;
 
     function createEvaluateExpressionController() {
         return require('../../controllers/evaluate-expression-controller').create();
@@ -40,7 +40,7 @@ describe('evaluateExpressionController', function () {
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
-        request = {
+        requestBody = {
             expression: {
                 text: '3d6+4'
             },
@@ -48,11 +48,11 @@ describe('evaluateExpressionController', function () {
                 name: 'constantMax'
             }
         };
-        req = controllerTest.createRequest(request);
+        request = controllerTest.createRequest(requestBody);
 
-        response = null;
-        res = controllerTest.createResponse(function (json) {
-            response = json;
+        responseBody = null;
+        response = controllerTest.createResponse(function (json) {
+            responseBody = json;
         });
 
         controller = createEvaluateExpressionController();
@@ -61,10 +61,10 @@ describe('evaluateExpressionController', function () {
     describe('.evaluateExpression', function () {
         describe('when expression is well-formed', function () {
             it('should respond with the expression result', function () {
-                controller.evaluateExpression(req, res);
+                controller.evaluateExpression(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     success: {
                         expression: {
                             canonicalText: 'sum(roll(3, d6)) + 4',
@@ -84,14 +84,14 @@ describe('evaluateExpressionController', function () {
 
         describe('when expression is malformed', function () {
             beforeEach(function () {
-                request.expression.text = '<<INVALID>>';
+                requestBody.expression.text = '<<INVALID>>';
             });
 
             it('should respond with an error', function () {
-                controller.evaluateExpression(req, res);
+                controller.evaluateExpression(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }
@@ -102,48 +102,48 @@ describe('evaluateExpressionController', function () {
         describe('specifying a random number generator', function () {
             describe('when the random number generator is not specified', function () {
                 it('should use the default random number generator', function () {
-                    delete request.randomNumberGenerator;
+                    delete requestBody.randomNumberGenerator;
 
-                    controller.evaluateExpression(req, res);
+                    controller.evaluateExpression(request, response);
 
-                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(response.success.randomNumberGenerator.name).toBe('uniform');
+                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                    expect(responseBody.success.randomNumberGenerator.name).toBe('uniform');
                 });
             });
 
             describe('when the uniform random number generator is specified', function () {
                 it('should use the uniform random number generator', function () {
-                    request.randomNumberGenerator.name = 'uniform';
+                    requestBody.randomNumberGenerator.name = 'uniform';
 
-                    controller.evaluateExpression(req, res);
+                    controller.evaluateExpression(request, response);
 
-                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(response.success.randomNumberGenerator.name).toBe('uniform');
-                    expect(response.success.expressionResult.value).toBeGreaterThan(2 + 4);
-                    expect(response.success.expressionResult.value).toBeLessThan(19 + 4);
+                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                    expect(responseBody.success.randomNumberGenerator.name).toBe('uniform');
+                    expect(responseBody.success.expressionResult.value).toBeGreaterThan(2 + 4);
+                    expect(responseBody.success.expressionResult.value).toBeLessThan(19 + 4);
                 });
             });
 
             describe('when the constantMax random number generator is specified', function () {
                 it('should use the constantMax random number generator', function () {
-                    request.randomNumberGenerator.name = 'constantMax';
+                    requestBody.randomNumberGenerator.name = 'constantMax';
 
-                    controller.evaluateExpression(req, res);
+                    controller.evaluateExpression(request, response);
 
-                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(response.success.randomNumberGenerator.name).toBe('constantMax');
-                    expect(response.success.expressionResult.value).toBe(22);
+                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                    expect(responseBody.success.randomNumberGenerator.name).toBe('constantMax');
+                    expect(responseBody.success.expressionResult.value).toBe(22);
                 });
             });
 
             describe('when an unknown random number generator is specified', function () {
                 it('should respond with an error', function () {
-                    request.randomNumberGenerator.name = '<<UNKNOWN>>';
+                    requestBody.randomNumberGenerator.name = '<<UNKNOWN>>';
 
-                    controller.evaluateExpression(req, res);
+                    controller.evaluateExpression(request, response);
 
-                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(response.failure).toBeDefined();
+                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                    expect(responseBody.failure).toBeDefined();
                 });
             });
         });
@@ -151,23 +151,23 @@ describe('evaluateExpressionController', function () {
         describe('evaluating an expression whose result value is not a finite number', function () {
             describe('when result value is not a number', function () {
                 it('should respond with an error', function () {
-                    request.expression.text = 'd6';
+                    requestBody.expression.text = 'd6';
 
-                    controller.evaluateExpression(req, res);
+                    controller.evaluateExpression(request, response);
 
-                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(response.failure).toBeDefined();
+                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                    expect(responseBody.failure).toBeDefined();
                 });
             });
 
             describe('when result value is NaN', function () {
                 it('should respond with an error', function () {
-                    request.expression.text = 'round(d6)';
+                    requestBody.expression.text = 'round(d6)';
 
-                    controller.evaluateExpression(req, res);
+                    controller.evaluateExpression(request, response);
 
-                    expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(response.failure).toBeDefined();
+                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                    expect(responseBody.failure).toBeDefined();
                 });
             });
         });

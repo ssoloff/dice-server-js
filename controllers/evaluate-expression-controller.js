@@ -42,22 +42,23 @@ module.exports = {
             throw new Error('unknown random number generator "' + randomNumberGeneratorSpecification.name + '"');
         }
 
-        function createResponse(request) {
-            var response = {};
+        function createResponseBody(request) {
+            var requestBody = request.body;
+            var responseBody = {};
 
             try {
                 var content = {};
 
-                var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(request);
+                var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(requestBody);
                 content.randomNumberGenerator = randomNumberGeneratorSpecification;
 
                 var expressionParserContext = dice.expressionParser.createDefaultContext();
                 expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
                 var expressionParser = dice.expressionParser.create(expressionParserContext);
-                var expression = expressionParser.parse(request.expression.text);
+                var expression = expressionParser.parse(requestBody.expression.text);
                 content.expression = {
                     canonicalText: dice.expressionFormatter.format(expression),
-                    text: request.expression.text
+                    text: requestBody.expression.text
                 };
 
                 var expressionResult = expression.evaluate();
@@ -69,29 +70,29 @@ module.exports = {
                     value: expressionResult.value
                 };
 
-                response = {
+                responseBody = {
                     success: content
                 };
             } catch (e) {
-                response = {
+                responseBody = {
                     failure: {
                         message: e.message
                     }
                 };
             }
 
-            return response;
+            return responseBody;
         }
 
-        function getRandomNumberGeneratorSpecification(request) {
-            return request.randomNumberGenerator || {name: 'uniform'};
+        function getRandomNumberGeneratorSpecification(requestBody) {
+            return requestBody.randomNumberGenerator || {name: 'uniform'};
         }
 
         return {
-            evaluateExpression: function (req, res) {
-                var request = req.body;
-                var response = createResponse(request);
-                res.status(httpStatus.OK).json(response);
+            evaluateExpression: function (request, response) {
+                response
+                    .status(httpStatus.OK)
+                    .json(createResponseBody(request));
             }
         };
     }

@@ -33,7 +33,7 @@ function clearExpressionText() {
 function evaluateExpression(expressionText) {
     'use strict';
 
-    var request = {
+    var requestBody = {
         expression: {
             text: expressionText
         },
@@ -41,7 +41,7 @@ function evaluateExpression(expressionText) {
             name: $('#randomNumberGeneratorName').val()
         }
     };
-    $.postJSON('/expression/evaluate', request, processResponse);
+    $.postJSON('/expression/evaluate', requestBody, processResponse);
 }
 
 function getExpressionText() {
@@ -106,14 +106,14 @@ function installJQueryPlugins() {
     });
 }
 
-function processResponse(response) {
+function processResponse(responseBody) {
     'use strict';
 
-    if (response.failure) {
-        showErrorMessage(response.failure.message);
+    if (responseBody.failure) {
+        showErrorMessage(responseBody.failure.message);
     } else {
         clearExpressionText();
-        addExpressionResult(response.success);
+        addExpressionResult(responseBody.success);
         hideErrorMessage();
     }
 }

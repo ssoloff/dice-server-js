@@ -32,7 +32,7 @@ module.exports = function () {
 
     this.Before(function (callback) {
         this.evaluateExpressionService = world.createEvaluateExpressionService();
-        this.response = null;
+        this.responseBody = null;
         callback();
     });
 
@@ -45,27 +45,27 @@ module.exports = function () {
     });
 
     this.When(/^the evaluate expression service is invoked$/, function (callback) {
-        this.evaluateExpressionService.call(function (res) {
-            this.response = res;
+        this.evaluateExpressionService.call(function (responseBody) {
+            this.responseBody = responseBody;
             callback();
         }.bind(this));
     });
 
     this.Then(/^the response should be$/, function (jsonResponse) {
-        expect(this.response).to.deep.equal(JSON.parse(jsonResponse));
+        expect(this.responseBody).to.deep.equal(JSON.parse(jsonResponse));
     });
 
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-        expect(this.response.success.expressionResult.text).to.equal(expressionResultText);
+        expect(this.responseBody.success.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
-        expect(this.response.success.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+        expect(this.responseBody.success.expressionResult.value).to.equal(parseFloat(expressionResultValue));
     });
 
     this.Then(/^the response should indicate failure$/, function () {
         // jshint expr: true
-        expect(this.response.failure).to.exist;
+        expect(this.responseBody.failure).to.exist;
     });
 };
 

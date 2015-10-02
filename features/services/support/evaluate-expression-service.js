@@ -23,19 +23,19 @@
 'use strict';
 
 var httpStatus = require('http-status-codes');
-var request = require('request');
+var req = require('request');
 
 function EvaluateExpressionService() {
-    this.request = {};
+    this.requestBody = {};
 }
 
 EvaluateExpressionService.prototype.call = function (callback) {
     var requestData = {
-        body: this.request,
+        body: this.requestBody,
         json: true,
         uri: 'http://localhost:3000/expression/evaluate'
     };
-    request.post(requestData, function (error, response, body) {
+    req.post(requestData, function (error, response, body) {
         if (!error && response.statusCode === httpStatus.OK) {
             callback(body);
         } else {
@@ -45,13 +45,13 @@ EvaluateExpressionService.prototype.call = function (callback) {
 };
 
 EvaluateExpressionService.prototype.setExpression = function (expressionText) {
-    this.request.expression = {
+    this.requestBody.expression = {
         text: expressionText
     };
 };
 
 EvaluateExpressionService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
-    this.request.randomNumberGenerator = {
+    this.requestBody.randomNumberGenerator = {
         name: randomNumberGeneratorName
     };
 };
