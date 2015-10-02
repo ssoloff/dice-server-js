@@ -26,7 +26,7 @@ var _ = require('underscore');
 var fs = require('fs');
 var ja = require('json-assert');
 var path = require('path');
-var security = require('../../controllers/security');
+var security = require('../../controllers/support/security');
 
 /**
  * Provides useful methods for testing a dice server controller.

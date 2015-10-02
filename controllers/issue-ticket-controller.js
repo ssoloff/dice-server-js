@@ -24,7 +24,7 @@
 
 var crypto = require('crypto');
 var httpStatus = require('http-status-codes');
-var security = require('./security');
+var security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {

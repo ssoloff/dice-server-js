@@ -22,7 +22,7 @@
 
 'use strict';
 
-var security = require('../../controllers/security');
+var security = require('../../controllers/support/security');
 
 function hasValidSignature(obj) {
     return security.verifySignature(obj.content, obj.signature);
