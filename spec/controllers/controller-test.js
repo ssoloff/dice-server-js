@@ -45,7 +45,7 @@ module.exports = {
         return {
             body: body,
             get: function () {
-                return 'localhost:1234';
+                return 'host:1234';
             },
             protocol: 'http'
         };

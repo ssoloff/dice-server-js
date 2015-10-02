@@ -58,7 +58,8 @@ describe('redeemTicketController', function () {
                             name: 'constantMax'
                         }
                     },
-                    id: '00112233445566778899aabbccddeeff00112233'
+                    id: '00112233445566778899aabbccddeeff00112233',
+                    redeemUrl: 'http://host:1234/redeemTicketPath'
                 },
                 signature: null
             }
