@@ -40,7 +40,7 @@ describe('validateRedeemedTicketController', function () {
     }
 
     beforeEach(function () {
-        jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
+        jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
         request = {
             redeemedTicket: {

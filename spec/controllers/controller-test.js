@@ -112,22 +112,21 @@ module.exports = {
     },
 
     /**
-     * Indicates the actual response content equals the expected response
-     * content.
+     * Indicates the actual response body equals the expected response body.
      *
      * <p>
      * This method implements the interface for a Jasmine custom equality
      * tester.
      * </p>
      *
-     * @param {Object} actual - The actual response content.
-     * @param {Object} expected - The expected response content.
+     * @param {Object} actual - The actual response body.
+     * @param {Object} expected - The expected response body.
      *
      * @returns {Boolean} `true` if `actual` equals `expected`; `false` if
      *      `actual` does not equal `expected`; or `undefined` if both `actual`
-     *      and `expected` are not response content objects.
+     *      and `expected` are not response body objects.
      */
-    isResponseContentEqual: function (actual, expected) {
+    isResponseBodyEqual: function (actual, expected) {
         if ((_.has(actual, 'success') || _.has(actual, 'failure')) &&
                 (_.has(expected, 'success') || _.has(expected, 'failure'))) {
             return ja.isEqual(expected, actual, true);

@@ -43,7 +43,7 @@ describe('redeemTicketController', function () {
     }
 
     beforeEach(function () {
-        jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
+        jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
         request = {
             ticket: {

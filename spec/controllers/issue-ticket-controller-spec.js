@@ -44,7 +44,7 @@ describe('issueTicketController', function () {
     }
 
     beforeEach(function () {
-        jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
+        jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
         requestBody = {
             description: 'description',
