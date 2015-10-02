@@ -28,24 +28,25 @@ var ja = require('json-assert');
 
 describe('redeemTicketController', function () {
     var controller;
-    var req;
-    var res;
     var request;
     var response;
+    var requestBody;
+    var responseBody;
 
     function createRedeemTicketController(evaluateExpressionController) {
         evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create();
         return require('../../controllers/redeem-ticket-controller').create(
             controllerTest.getPrivateKey(),
             controllerTest.getPublicKey(),
-            evaluateExpressionController
+            evaluateExpressionController,
+            '/validateRedeemedTicketPath'
         );
     }
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
-        request = {
+        requestBody = {
             ticket: {
                 content: {
                     description: 'description',
@@ -62,12 +63,12 @@ describe('redeemTicketController', function () {
                 signature: null
             }
         };
-        request.ticket.signature = controllerTest.createSignature(request.ticket.content);
-        req = controllerTest.createRequest(request);
+        requestBody.ticket.signature = controllerTest.createSignature(requestBody.ticket.content);
+        request = controllerTest.createRequest(requestBody);
 
-        response = null;
-        res = controllerTest.createResponse(function (json) {
-            response = json;
+        responseBody = null;
+        response = controllerTest.createResponse(function (json) {
+            responseBody = json;
         });
 
         controller = createRedeemTicketController();
@@ -76,15 +77,15 @@ describe('redeemTicketController', function () {
     describe('.redeemTicket', function () {
         describe('when evaluate expression controller responds with success', function () {
             it('should respond with success', function () {
-                controller.redeemTicket(req, res);
+                controller.redeemTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     success: {
                         redeemedTicket: {
                             content: {
                                 description: 'description',
-                                evaluateExpressionResponse: {
+                                evaluateExpressionResponseBody: {
                                     expression: {
                                         canonicalText: 'sum(roll(3, d6)) + 4',
                                         text: '3d6+4'
@@ -97,7 +98,8 @@ describe('redeemTicketController', function () {
                                         name: 'constantMax'
                                     }
                                 },
-                                id: '00112233445566778899aabbccddeeff00112233'
+                                id: '00112233445566778899aabbccddeeff00112233',
+                                validateUrl: ja.matchType('string')
                             },
                             signature: ja.matchType('object')
                         }
@@ -106,21 +108,21 @@ describe('redeemTicketController', function () {
             });
 
             it('should respond with a signed redeemed ticket', function () {
-                controller.redeemTicket(req, res);
+                controller.redeemTicket(request, response);
 
-                expect(response.success.redeemedTicket).toBeSigned();
+                expect(responseBody.success.redeemedTicket).toBeSigned();
             });
         });
 
         describe('when evaluate expression controller responds with failure', function () {
             it('should respond with failure', function () {
-                request.ticket.content.evaluateExpressionRequestBody.expression.text = '<<INVALID>>';
-                request.ticket.signature = controllerTest.createSignature(request.ticket.content);
+                requestBody.ticket.content.evaluateExpressionRequestBody.expression.text = '<<INVALID>>';
+                requestBody.ticket.signature = controllerTest.createSignature(requestBody.ticket.content);
 
-                controller.redeemTicket(req, res);
+                controller.redeemTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }
@@ -131,16 +133,16 @@ describe('redeemTicketController', function () {
         describe('when evaluate expression controller responds with non-OK status', function () {
             it('should respond with failure', function () {
                 var stubEvaluateExpressionController = {
-                    evaluateExpression: function (req, res) {
-                        res.status(500).json({});
+                    evaluateExpression: function (request, response) {
+                        response.status(500).json({});
                     }
                 };
                 controller = createRedeemTicketController(stubEvaluateExpressionController);
 
-                controller.redeemTicket(req, res);
+                controller.redeemTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }
@@ -150,12 +152,12 @@ describe('redeemTicketController', function () {
 
         describe('when ticket has an invalid signature', function () {
             it('should respond with failure', function () {
-                request.ticket.content.description += '...'; // simulate forged content
+                requestBody.ticket.content.description += '...'; // simulate forged content
 
-                controller.redeemTicket(req, res);
+                controller.redeemTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }
@@ -165,14 +167,14 @@ describe('redeemTicketController', function () {
 
         describe('when ticket has already been redeemed', function () {
             it('should respond with failure', function () {
-                controller.redeemTicket(req, res);
-                expect(response.success).toBeDefined(); // sanity check
-                response = null;
+                controller.redeemTicket(request, response);
+                expect(responseBody.success).toBeDefined(); // sanity check
+                responseBody = null;
 
-                controller.redeemTicket(req, res);
+                controller.redeemTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }

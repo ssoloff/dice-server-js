@@ -46,7 +46,8 @@ var issueTicketController = require('./controllers/issue-ticket-controller.js').
 var redeemTicketController = require('./controllers/redeem-ticket-controller.js').create(
     privateKey,
     publicKey,
-    evaluateExpressionController
+    evaluateExpressionController,
+    validateRedeemedTicketPath
 );
 var validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create(
     publicKey

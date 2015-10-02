@@ -60,7 +60,7 @@ module.exports = function () {
                 throw new Error('failed to issue ticket');
             }
 
-            this.redeemTicketService.setRequestFromIssueTicketResponse(issueTicketResponse);
+            this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponse);
             this.redeemTicketService.call(function (res) {
                 var redeemTicketResponse = res;
                 if (!redeemTicketResponse.success) {

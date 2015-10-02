@@ -14,6 +14,7 @@ Scenario Outline: Successfully redeeming a ticket
         And the response should contain the expression result value <result value>
         And the response should contain the ticket description
         And the response should contain the ticket identifier
+        And the response should contain a link to the validate redeemed ticket service
     Examples:
         | expression | result text                             | result value | description |
         | 42         | 42                                      | 42           | desc 1      |

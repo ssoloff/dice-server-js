@@ -26,7 +26,7 @@ var httpStatus = require('http-status-codes');
 var security = require('./security');
 
 module.exports = {
-    create: function (privateKey, publicKey, evaluateExpressionController) {
+    create: function (privateKey, publicKey, evaluateExpressionController, validateRedeemedTicketPath) {
         var redeemedTickets = {};
 
         function createRedeemedTicket(request) {
@@ -38,24 +38,26 @@ module.exports = {
         }
 
         function createRedeemedTicketContent(request) {
-            var ticketContent = request.ticket.content;
+            var requestBody = request.body;
+            var ticketContent = requestBody.ticket.content;
             var evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody);
-            var evaluateExpressionResponse = evaluateExpressionResult[1];
-            if (evaluateExpressionResponse.success) {
+            var evaluateExpressionResponseBody = evaluateExpressionResult[1];
+            if (evaluateExpressionResponseBody.success) {
                 return {
                     description: ticketContent.description,
-                    evaluateExpressionResponse: evaluateExpressionResponse.success,
-                    id: ticketContent.id
+                    evaluateExpressionResponseBody: evaluateExpressionResponseBody.success,
+                    id: ticketContent.id,
+                    validateUrl: getValidateRedeemedTicketUrl(request)
                 };
-            } else if (evaluateExpressionResponse.failure) {
-                throw new Error(evaluateExpressionResponse.failure.message);
+            } else if (evaluateExpressionResponseBody.failure) {
+                throw new Error(evaluateExpressionResponseBody.failure.message);
             } else {
-                var evaluateExpressionStatus = evaluateExpressionResult[0];
-                throw new Error('evaluate expression controller returned status ' + evaluateExpressionStatus);
+                var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
+                throw new Error('evaluate expression controller returned status ' + evaluateExpressionResponseStatus);
             }
         }
 
-        function createResponse(request) {
+        function createResponseBody(request) {
             try {
                 validateRequest(request);
 
@@ -79,25 +81,29 @@ module.exports = {
             return security.createSignature(content, privateKey, publicKey);
         }
 
-        function evaluateExpression(evaluateExpressionRequest) {
-            var evaluateExpressionReq = {
-                body: evaluateExpressionRequest
+        function evaluateExpression(requestBody) {
+            var request = {
+                body: requestBody
             };
-            var evaluateExpressionResponse;
-            var evaluateExpressionStatus;
-            var evaluateExpressionRes = {
+            var responseBody;
+            var responseStatus;
+            var response = {
                 json: function (json) {
-                    evaluateExpressionResponse = json;
+                    responseBody = json;
                     return this;
                 },
                 status: function (status) {
-                    evaluateExpressionStatus = status;
+                    responseStatus = status;
                     return this;
                 }
             };
-            evaluateExpressionController.evaluateExpression(evaluateExpressionReq, evaluateExpressionRes);
+            evaluateExpressionController.evaluateExpression(request, response);
 
-            return [evaluateExpressionStatus, evaluateExpressionResponse];
+            return [responseStatus, responseBody];
+        }
+
+        function getValidateRedeemedTicketUrl(request) {
+            return request.protocol + '://' + request.get('host') + validateRedeemedTicketPath;
         }
 
         function isSignatureValid(content, signature) {
@@ -113,7 +119,7 @@ module.exports = {
         }
 
         function validateRequest(request) {
-            var ticket = request.ticket;
+            var ticket = request.body.ticket;
             if (!isSignatureValid(ticket.content, ticket.signature)) {
                 throw new Error('ticket signature is invalid');
             } else if (isTicketRedeemed(ticket.content.id)) {
@@ -122,10 +128,10 @@ module.exports = {
         }
 
         return {
-            redeemTicket: function (req, res) {
-                var request = req.body;
-                var response = createResponse(request);
-                res.status(httpStatus.OK).json(response);
+            redeemTicket: function (request, response) {
+                response
+                    .status(httpStatus.OK)
+                    .json(createResponseBody(request));
             }
         };
     }
