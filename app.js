@@ -37,21 +37,21 @@ var redeemTicketPath = '/ticket/redeem';
 var validateRedeemedTicketPath = '/ticket/validate-redeemed';
 
 var evaluateExpressionController = require('./controllers/evaluate-expression-controller.js').create();
-var issueTicketController = require('./controllers/issue-ticket-controller.js').create(
-    privateKey,
-    publicKey,
-    evaluateExpressionController,
-    redeemTicketPath
-);
-var redeemTicketController = require('./controllers/redeem-ticket-controller.js').create(
-    privateKey,
-    publicKey,
-    evaluateExpressionController,
-    validateRedeemedTicketPath
-);
-var validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create(
-    publicKey
-);
+var issueTicketController = require('./controllers/issue-ticket-controller.js').create({
+    evaluateExpressionController: evaluateExpressionController,
+    privateKey: privateKey,
+    publicKey: publicKey,
+    redeemTicketPath: redeemTicketPath
+});
+var redeemTicketController = require('./controllers/redeem-ticket-controller.js').create({
+    evaluateExpressionController: evaluateExpressionController,
+    privateKey: privateKey,
+    publicKey: publicKey,
+    validateRedeemedTicketPath: validateRedeemedTicketPath
+});
+var validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create({
+    publicKey: publicKey
+});
 
 var app = express();
 app.use(express.static(path.join(__dirname, '/public')));

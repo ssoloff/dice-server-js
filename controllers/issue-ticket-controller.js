@@ -27,8 +27,7 @@ var httpStatus = require('http-status-codes');
 var security = require('./security');
 
 module.exports = {
-    create: function (privateKey, publicKey, evaluateExpressionController, redeemTicketPath) {
-
+    create: function (controllerData) {
         function createResponseBody(request) {
             try {
                 return {
@@ -46,7 +45,7 @@ module.exports = {
         }
 
         function createSignature(content) {
-            return security.createSignature(content, privateKey, publicKey);
+            return security.createSignature(content, controllerData.privateKey, controllerData.publicKey);
         }
 
         function createTicket(request) {
@@ -92,7 +91,7 @@ module.exports = {
                     return this;
                 }
             };
-            evaluateExpressionController.evaluateExpression(request, response);
+            controllerData.evaluateExpressionController.evaluateExpression(request, response);
 
             return [responseStatus, responseBody];
         }
@@ -102,7 +101,7 @@ module.exports = {
         }
 
         function getRedeemTicketUrl(request) {
-            return request.protocol + '://' + request.get('host') + redeemTicketPath;
+            return request.protocol + '://' + request.get('host') + controllerData.redeemTicketPath;
         }
 
         return {

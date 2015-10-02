@@ -34,9 +34,9 @@ describe('validateRedeemedTicketController', function () {
     var responseBody;
 
     function createValidateRedeemedTicketController() {
-        return require('../../controllers/validate-redeemed-ticket-controller').create(
-            controllerTest.getPublicKey()
-        );
+        return require('../../controllers/validate-redeemed-ticket-controller').create({
+            publicKey: controllerTest.getPublicKey()
+        });
     }
 
     beforeEach(function () {

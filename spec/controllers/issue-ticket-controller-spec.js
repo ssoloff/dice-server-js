@@ -35,12 +35,12 @@ describe('issueTicketController', function () {
 
     function createIssueTicketController(evaluateExpressionController) {
         evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create();
-        return require('../../controllers/issue-ticket-controller').create(
-            controllerTest.getPrivateKey(),
-            controllerTest.getPublicKey(),
-            evaluateExpressionController,
-            '/redeemTicketPath'
-        );
+        return require('../../controllers/issue-ticket-controller').create({
+            evaluateExpressionController: evaluateExpressionController,
+            privateKey: controllerTest.getPrivateKey(),
+            publicKey: controllerTest.getPublicKey(),
+            redeemTicketPath: '/redeemTicketPath'
+        });
     }
 
     beforeEach(function () {

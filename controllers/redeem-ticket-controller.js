@@ -26,7 +26,7 @@ var httpStatus = require('http-status-codes');
 var security = require('./security');
 
 module.exports = {
-    create: function (privateKey, publicKey, evaluateExpressionController, validateRedeemedTicketPath) {
+    create: function (controllerData) {
         var redeemedTickets = {};
 
         function createRedeemedTicket(request) {
@@ -78,7 +78,7 @@ module.exports = {
         }
 
         function createSignature(content) {
-            return security.createSignature(content, privateKey, publicKey);
+            return security.createSignature(content, controllerData.privateKey, controllerData.publicKey);
         }
 
         function evaluateExpression(requestBody) {
@@ -97,17 +97,17 @@ module.exports = {
                     return this;
                 }
             };
-            evaluateExpressionController.evaluateExpression(request, response);
+            controllerData.evaluateExpressionController.evaluateExpression(request, response);
 
             return [responseStatus, responseBody];
         }
 
         function getValidateRedeemedTicketUrl(request) {
-            return request.protocol + '://' + request.get('host') + validateRedeemedTicketPath;
+            return request.protocol + '://' + request.get('host') + controllerData.validateRedeemedTicketPath;
         }
 
         function isSignatureValid(content, signature) {
-            return security.verifySignature(content, signature, publicKey);
+            return security.verifySignature(content, signature, controllerData.publicKey);
         }
 
         function isTicketRedeemed(ticketId) {

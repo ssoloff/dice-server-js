@@ -35,12 +35,12 @@ describe('redeemTicketController', function () {
 
     function createRedeemTicketController(evaluateExpressionController) {
         evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create();
-        return require('../../controllers/redeem-ticket-controller').create(
-            controllerTest.getPrivateKey(),
-            controllerTest.getPublicKey(),
-            evaluateExpressionController,
-            '/validateRedeemedTicketPath'
-        );
+        return require('../../controllers/redeem-ticket-controller').create({
+            evaluateExpressionController: evaluateExpressionController,
+            privateKey: controllerTest.getPrivateKey(),
+            publicKey: controllerTest.getPublicKey(),
+            validateRedeemedTicketPath: '/validateRedeemedTicketPath'
+        });
     }
 
     beforeEach(function () {

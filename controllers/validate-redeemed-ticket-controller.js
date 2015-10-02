@@ -26,7 +26,7 @@ var httpStatus = require('http-status-codes');
 var security = require('./security');
 
 module.exports = {
-    create: function (publicKey) {
+    create: function (controllerData) {
         function createResponseBody(request) {
             try {
                 validateRequest(request);
@@ -44,7 +44,7 @@ module.exports = {
         }
 
         function isSignatureValid(content, signature) {
-            return security.verifySignature(content, signature, publicKey);
+            return security.verifySignature(content, signature, controllerData.publicKey);
         }
 
         function validateRequest(request) {
