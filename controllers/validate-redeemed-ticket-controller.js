@@ -27,7 +27,7 @@ var security = require('./security');
 
 module.exports = {
     create: function (publicKey) {
-        function createResponse(request) {
+        function createResponseBody(request) {
             try {
                 validateRequest(request);
 
@@ -48,17 +48,17 @@ module.exports = {
         }
 
         function validateRequest(request) {
-            var redeemedTicket = request.redeemedTicket;
+            var redeemedTicket = request.body.redeemedTicket;
             if (!isSignatureValid(redeemedTicket.content, redeemedTicket.signature)) {
                 throw new Error('redeemed ticket signature is invalid');
             }
         }
 
         return {
-            validateRedeemedTicket: function (req, res) {
-                var request = req.body;
-                var response = createResponse(request);
-                res.status(httpStatus.OK).json(response);
+            validateRedeemedTicket: function (request, response) {
+                response
+                    .status(httpStatus.OK)
+                    .json(createResponseBody(request));
             }
         };
     }

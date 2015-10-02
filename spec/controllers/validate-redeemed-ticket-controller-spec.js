@@ -28,10 +28,10 @@ var ja = require('json-assert');
 
 describe('validateRedeemedTicketController', function () {
     var controller;
-    var req;
-    var res;
     var request;
     var response;
+    var requestBody;
+    var responseBody;
 
     function createValidateRedeemedTicketController() {
         return require('../../controllers/validate-redeemed-ticket-controller').create(
@@ -42,11 +42,11 @@ describe('validateRedeemedTicketController', function () {
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
-        request = {
+        requestBody = {
             redeemedTicket: {
                 content: {
                     description: 'description',
-                    evaluateResponse: {
+                    evaluateExpressionResponseBody: {
                         expression: {
                             canonicalText: 'sum(roll(3, d6)) + 4',
                             text: '3d6+4'
@@ -59,17 +59,18 @@ describe('validateRedeemedTicketController', function () {
                             name: 'constantMax'
                         }
                     },
-                    id: '00112233445566778899aabbccddeeff00112233'
+                    id: '00112233445566778899aabbccddeeff00112233',
+                    validateUrl: 'http://host:1234/validateRedeemedTicketPath'
                 },
                 signature: null
             }
         };
-        request.redeemedTicket.signature = controllerTest.createSignature(request.redeemedTicket.content);
-        req = controllerTest.createRequest(request);
+        requestBody.redeemedTicket.signature = controllerTest.createSignature(requestBody.redeemedTicket.content);
+        request = controllerTest.createRequest(requestBody);
 
-        response = null;
-        res = controllerTest.createResponse(function (json) {
-            response = json;
+        responseBody = null;
+        response = controllerTest.createResponse(function (json) {
+            responseBody = json;
         });
 
         controller = createValidateRedeemedTicketController();
@@ -78,10 +79,10 @@ describe('validateRedeemedTicketController', function () {
     describe('.validateRedeemedTicket', function () {
         describe('when redeemed ticket is valid', function () {
             it('should respond with success', function () {
-                controller.validateRedeemedTicket(req, res);
+                controller.validateRedeemedTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     success: {}
                 });
             });
@@ -89,12 +90,12 @@ describe('validateRedeemedTicketController', function () {
 
         describe('when redeemed ticket has an invalid signature', function () {
             it('should respond with failure', function () {
-                request.redeemedTicket.content.description += '...'; // simulate forged content
+                requestBody.redeemedTicket.content.description += '...'; // simulate forged content
 
-                controller.validateRedeemedTicket(req, res);
+                controller.validateRedeemedTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }

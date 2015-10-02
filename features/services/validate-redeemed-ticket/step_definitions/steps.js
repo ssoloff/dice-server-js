@@ -34,7 +34,7 @@ module.exports = function () {
         this.issueTicketService = world.createIssueTicketService();
         this.redeemTicketService = world.createRedeemTicketService();
         this.validateRedeemedTicketService = world.createValidateRedeemedTicketService();
-        this.response = null;
+        this.responseBody = null;
         this.redeemedTicket = {
             forceInvalidSignature: false
         };
@@ -54,25 +54,25 @@ module.exports = function () {
 
     this.When(/^the validate redeemed ticket service is invoked$/, function (callback) {
         var runner = this;
-        this.issueTicketService.call(function (res) {
-            var issueTicketResponse = res;
-            if (!issueTicketResponse.success) {
+        this.issueTicketService.call(function (responseBody) {
+            var issueTicketResponseBody = responseBody;
+            if (!issueTicketResponseBody.success) {
                 throw new Error('failed to issue ticket');
             }
 
-            this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponse);
-            this.redeemTicketService.call(function (res) {
-                var redeemTicketResponse = res;
-                if (!redeemTicketResponse.success) {
+            this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
+            this.redeemTicketService.call(function (responseBody) {
+                var redeemTicketResponseBody = responseBody;
+                if (!redeemTicketResponseBody.success) {
                     throw new Error('failed to redeem ticket');
                 }
 
                 if (this.redeemedTicket.forceInvalidSignature) {
-                    redeemTicketResponse.success.redeemedTicket.content.description += '...'; // change content so signature will not match
+                    redeemTicketResponseBody.success.redeemedTicket.content.description += '...'; // change content so signature will not match
                 }
-                this.validateRedeemedTicketService.setRequestFromRedeemTicketResponse(redeemTicketResponse);
-                this.validateRedeemedTicketService.call(function (res) {
-                    this.response = res;
+                this.validateRedeemedTicketService.setRequestFromRedeemTicketResponseBody(redeemTicketResponseBody);
+                this.validateRedeemedTicketService.call(function (responseBody) {
+                    this.responseBody = responseBody;
                     callback();
                 }.bind(runner));
             }.bind(runner));
@@ -81,12 +81,12 @@ module.exports = function () {
 
     this.Then(/^the response should indicate failure$/, function () {
         // jshint expr: true
-        expect(this.response.failure).to.exist;
+        expect(this.responseBody.failure).to.exist;
     });
 
     this.Then(/^the response should indicate success$/, function () {
         // jshint expr: true
-        expect(this.response.success).to.exist;
+        expect(this.responseBody.success).to.exist;
     });
 };
 
