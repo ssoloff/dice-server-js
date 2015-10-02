@@ -59,12 +59,12 @@ module.exports = {
 
         function createTicketContent(request) {
             var requestBody = request.body;
-            var evaluateExpressionResult = evaluateExpression(requestBody.evaluateExpressionRequest);
+            var evaluateExpressionResult = evaluateExpression(requestBody.evaluateExpressionRequestBody);
             var evaluateExpressionResponseBody = evaluateExpressionResult[1];
             if (evaluateExpressionResponseBody.success) {
                 return {
                     description: requestBody.description,
-                    evaluateExpressionRequest: requestBody.evaluateExpressionRequest,
+                    evaluateExpressionRequestBody: requestBody.evaluateExpressionRequestBody,
                     id: generateTicketId(),
                     redeemUrl: getRedeemTicketUrl(request)
                 };

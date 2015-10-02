@@ -49,7 +49,7 @@ describe('redeemTicketController', function () {
             ticket: {
                 content: {
                     description: 'description',
-                    evaluateExpressionRequest: {
+                    evaluateExpressionRequestBody: {
                         expression: {
                             text: '3d6+4'
                         },
@@ -114,7 +114,7 @@ describe('redeemTicketController', function () {
 
         describe('when evaluate expression controller responds with failure', function () {
             it('should respond with failure', function () {
-                request.ticket.content.evaluateExpressionRequest.expression.text = '<<INVALID>>';
+                request.ticket.content.evaluateExpressionRequestBody.expression.text = '<<INVALID>>';
                 request.ticket.signature = controllerTest.createSignature(request.ticket.content);
 
                 controller.redeemTicket(req, res);

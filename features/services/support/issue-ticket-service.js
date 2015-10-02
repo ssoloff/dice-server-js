@@ -27,7 +27,7 @@ var req = require('request');
 
 function IssueTicketService() {
     this.requestBody = {
-        evaluateExpressionRequest: {}
+        evaluateExpressionRequestBody: {}
     };
 }
 
@@ -51,13 +51,13 @@ IssueTicketService.prototype.setDescription = function (description) {
 };
 
 IssueTicketService.prototype.setExpression = function (expressionText) {
-    this.requestBody.evaluateExpressionRequest.expression = {
+    this.requestBody.evaluateExpressionRequestBody.expression = {
         text: expressionText
     };
 };
 
 IssueTicketService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
-    this.requestBody.evaluateExpressionRequest.randomNumberGenerator = {
+    this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator = {
         name: randomNumberGeneratorName
     };
 };

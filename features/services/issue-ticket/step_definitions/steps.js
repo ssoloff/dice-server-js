@@ -74,11 +74,11 @@ module.exports = function () {
     });
 
     this.Then(/^the response should contain the expression text "(.*)"$/, function (expressionText) {
-        expect(this.responseBody.success.ticket.content.evaluateExpressionRequest.expression.text).to.equal(expressionText);
+        expect(this.responseBody.success.ticket.content.evaluateExpressionRequestBody.expression.text).to.equal(expressionText);
     });
 
     this.Then(/^the response should contain the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
-        expect(this.responseBody.success.ticket.content.evaluateExpressionRequest.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
+        expect(this.responseBody.success.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
     });
 
     this.Then(/^the response should indicate failure$/, function () {

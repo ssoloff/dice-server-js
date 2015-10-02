@@ -39,7 +39,7 @@ module.exports = {
 
         function createRedeemedTicketContent(request) {
             var ticketContent = request.ticket.content;
-            var evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequest);
+            var evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody);
             var evaluateExpressionResponse = evaluateExpressionResult[1];
             if (evaluateExpressionResponse.success) {
                 return {

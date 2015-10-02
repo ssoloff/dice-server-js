@@ -48,7 +48,7 @@ describe('issueTicketController', function () {
 
         requestBody = {
             description: 'description',
-            evaluateExpressionRequest: {
+            evaluateExpressionRequestBody: {
                 expression: {
                     text: '3d6+4'
                 },
@@ -78,7 +78,7 @@ describe('issueTicketController', function () {
                         ticket: {
                             content: {
                                 description: 'description',
-                                evaluateExpressionRequest: {
+                                evaluateExpressionRequestBody: {
                                     expression: {
                                         text: '3d6+4'
                                     },
@@ -110,7 +110,7 @@ describe('issueTicketController', function () {
 
         describe('when evaluate expression controller responds with failure', function () {
             it('should respond with failure', function () {
-                requestBody.evaluateExpressionRequest.expression.text = '<<INVALID>>';
+                requestBody.evaluateExpressionRequestBody.expression.text = '<<INVALID>>';
 
                 controller.issueTicket(request, response);
 
