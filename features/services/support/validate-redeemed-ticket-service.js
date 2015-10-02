@@ -27,13 +27,14 @@ var req = require('request');
 
 function ValidateRedeemedTicketService() {
     this.requestBody = {};
+    this.requestUrl = null;
 }
 
 ValidateRedeemedTicketService.prototype.call = function (callback) {
     var requestData = {
         body: this.requestBody,
         json: true,
-        uri: 'http://localhost:3000/ticket/validate-redeemed'
+        uri: this.requestUrl
     };
     req.post(requestData, function (error, response, body) {
         if (!error && response.statusCode === httpStatus.OK) {
@@ -46,6 +47,7 @@ ValidateRedeemedTicketService.prototype.call = function (callback) {
 
 ValidateRedeemedTicketService.prototype.setRequestFromRedeemTicketResponseBody = function (redeemTicketResponseBody) {
     this.requestBody.redeemedTicket = redeemTicketResponseBody.success.redeemedTicket;
+    this.requestUrl = redeemTicketResponseBody.success.redeemedTicket.content.validateUrl;
 };
 
 module.exports = ValidateRedeemedTicketService;
