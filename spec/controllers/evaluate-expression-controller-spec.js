@@ -22,7 +22,7 @@
 
 'use strict';
 
-var controllerTest = require('./controller-test');
+var controllerTest = require('./test-support/controller-test');
 var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 
