@@ -32,7 +32,7 @@ module.exports = function () {
 
     this.Before(function (callback) {
         this.issueTicketService = world.createIssueTicketService();
-        this.response = null;
+        this.responseBody = null;
         callback();
     });
 
@@ -49,36 +49,41 @@ module.exports = function () {
     });
 
     this.When(/^the issue ticket service is invoked$/, function (callback) {
-        this.issueTicketService.call(function (res) {
-            this.response = res;
+        this.issueTicketService.call(function (responseBody) {
+            this.responseBody = responseBody;
             callback();
         }.bind(this));
     });
 
+    this.Then(/^the response should contain a link to the redeem ticket service$/, function () {
+        // jshint expr: true
+        expect(this.responseBody.success.ticket.content.redeemUrl).to.exist;
+    });
+
     this.Then(/^the response should contain a signed ticket$/, function () {
         // jshint expr: true
-        expect(this.response.success.ticket.signature).to.exist;
+        expect(this.responseBody.success.ticket.signature).to.exist;
     });
 
     this.Then(/^the response should contain a ticket identifier$/, function () {
-        expect(this.response.success.ticket.content.id).to.match(/^[0-9A-Fa-f]{40}$/);
+        expect(this.responseBody.success.ticket.content.id).to.match(/^[0-9A-Fa-f]{40}$/);
     });
 
     this.Then(/^the response should contain the description "(.*)"$/, function (description) {
-        expect(this.response.success.ticket.content.description).to.equal(description);
+        expect(this.responseBody.success.ticket.content.description).to.equal(description);
     });
 
     this.Then(/^the response should contain the expression text "(.*)"$/, function (expressionText) {
-        expect(this.response.success.ticket.content.evaluateExpressionRequest.expression.text).to.equal(expressionText);
+        expect(this.responseBody.success.ticket.content.evaluateExpressionRequest.expression.text).to.equal(expressionText);
     });
 
     this.Then(/^the response should contain the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
-        expect(this.response.success.ticket.content.evaluateExpressionRequest.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
+        expect(this.responseBody.success.ticket.content.evaluateExpressionRequest.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
     });
 
     this.Then(/^the response should indicate failure$/, function () {
         // jshint expr: true
-        expect(this.response.failure).to.exist;
+        expect(this.responseBody.failure).to.exist;
     });
 };
 

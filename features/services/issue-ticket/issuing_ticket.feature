@@ -12,6 +12,7 @@ Scenario Outline: Successfully issuing a ticket
         And the response should contain the random number generator named "<random number generator>"
         And the response should contain the description "<description>"
         And the response should contain a ticket identifier
+        And the response should contain a link to the redeem ticket service
     Examples:
         | expression | random number generator | description |
         | 42         | uniform                 |             |

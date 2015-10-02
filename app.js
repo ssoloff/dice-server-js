@@ -31,11 +31,17 @@ var path = require('path');
 var privateKey = fs.readFileSync(process.argv[2]);
 var publicKey = fs.readFileSync(process.argv[3]);
 
+var evaluateExpressionPath = '/expression/evaluate';
+var issueTicketPath = '/ticket/issue';
+var redeemTicketPath = '/ticket/redeem';
+var validateRedeemedTicketPath = '/ticket/validate-redeemed';
+
 var evaluateExpressionController = require('./controllers/evaluate-expression-controller.js').create();
 var issueTicketController = require('./controllers/issue-ticket-controller.js').create(
     privateKey,
     publicKey,
-    evaluateExpressionController
+    evaluateExpressionController,
+    redeemTicketPath
 );
 var redeemTicketController = require('./controllers/redeem-ticket-controller.js').create(
     privateKey,
@@ -52,8 +58,8 @@ app.use(bodyParser.json());
 
 http.createServer(app).listen(3000);
 
-app.post('/expression/evaluate', evaluateExpressionController.evaluateExpression);
-app.post('/ticket/issue', issueTicketController.issueTicket);
-app.post('/ticket/redeem', redeemTicketController.redeemTicket);
-app.post('/ticket/validate-redeemed', validateRedeemedTicketController.validateRedeemedTicket);
+app.post(evaluateExpressionPath, evaluateExpressionController.evaluateExpression);
+app.post(issueTicketPath, issueTicketController.issueTicket);
+app.post(redeemTicketPath, redeemTicketController.redeemTicket);
+app.post(validateRedeemedTicketPath, validateRedeemedTicketController.validateRedeemedTicket);
 

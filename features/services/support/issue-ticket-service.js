@@ -23,21 +23,21 @@
 'use strict';
 
 var httpStatus = require('http-status-codes');
-var request = require('request');
+var req = require('request');
 
 function IssueTicketService() {
-    this.request = {
+    this.requestBody = {
         evaluateExpressionRequest: {}
     };
 }
 
 IssueTicketService.prototype.call = function (callback) {
     var requestData = {
-        body: this.request,
+        body: this.requestBody,
         json: true,
         uri: 'http://localhost:3000/ticket/issue'
     };
-    request.post(requestData, function (error, response, body) {
+    req.post(requestData, function (error, response, body) {
         if (!error && response.statusCode === httpStatus.OK) {
             callback(body);
         } else {
@@ -47,17 +47,17 @@ IssueTicketService.prototype.call = function (callback) {
 };
 
 IssueTicketService.prototype.setDescription = function (description) {
-    this.request.description = description;
+    this.requestBody.description = description;
 };
 
 IssueTicketService.prototype.setExpression = function (expressionText) {
-    this.request.evaluateExpressionRequest.expression = {
+    this.requestBody.evaluateExpressionRequest.expression = {
         text: expressionText
     };
 };
 
 IssueTicketService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
-    this.request.evaluateExpressionRequest.randomNumberGenerator = {
+    this.requestBody.evaluateExpressionRequest.randomNumberGenerator = {
         name: randomNumberGeneratorName
     };
 };

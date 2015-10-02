@@ -37,13 +37,17 @@ module.exports = {
     /**
      * Creates a new request for a controller.
      *
-     * @param {Object!} request - The request body.
+     * @param {Object!} body - The request body.
      *
      * @returns {Object!} A new request.
      */
-    createRequest: function (request) {
+    createRequest: function (body) {
         return {
-            body: request
+            body: body,
+            get: function () {
+                return 'localhost:1234';
+            },
+            protocol: 'http'
         };
     },
 
@@ -57,7 +61,7 @@ module.exports = {
      * @returns {Object!} A new response.
      */
     createResponse: function (jsonCallback) {
-        var res = {
+        var response = {
             json: function (json) {
                 jsonCallback(json);
                 return this;
@@ -66,9 +70,9 @@ module.exports = {
                 return this;
             }
         };
-        spyOn(res, 'json').and.callThrough();
-        spyOn(res, 'status').and.callThrough();
-        return res;
+        spyOn(response, 'json').and.callThrough();
+        spyOn(response, 'status').and.callThrough();
+        return response;
     },
 
     /**

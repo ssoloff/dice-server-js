@@ -28,24 +28,25 @@ var ja = require('json-assert');
 
 describe('issueTicketController', function () {
     var controller;
-    var req;
-    var res;
     var request;
     var response;
+    var requestBody;
+    var responseBody;
 
     function createIssueTicketController(evaluateExpressionController) {
         evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create();
         return require('../../controllers/issue-ticket-controller').create(
             controllerTest.getPrivateKey(),
             controllerTest.getPublicKey(),
-            evaluateExpressionController
+            evaluateExpressionController,
+            '/redeemTicketPath'
         );
     }
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseContentEqual);
 
-        request = {
+        requestBody = {
             description: 'description',
             evaluateExpressionRequest: {
                 expression: {
@@ -56,11 +57,11 @@ describe('issueTicketController', function () {
                 }
             }
         };
-        req = controllerTest.createRequest(request);
+        request = controllerTest.createRequest(requestBody);
 
-        response = null;
-        res = controllerTest.createResponse(function (json) {
-            response = json;
+        responseBody = null;
+        response = controllerTest.createResponse(function (json) {
+            responseBody = json;
         });
 
         controller = createIssueTicketController();
@@ -69,10 +70,10 @@ describe('issueTicketController', function () {
     describe('.issueTicket', function () {
         describe('when evaluate expression controller responds with success', function () {
             it('should respond with success', function () {
-                controller.issueTicket(req, res);
+                controller.issueTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     success: {
                         ticket: {
                             content: {
@@ -85,7 +86,8 @@ describe('issueTicketController', function () {
                                         name: 'constantMax'
                                     }
                                 },
-                                id: ja.matchType('string')
+                                id: ja.matchType('string'),
+                                redeemUrl: ja.matchType('string')
                             },
                             signature: ja.matchType('object')
                         }
@@ -94,26 +96,26 @@ describe('issueTicketController', function () {
             });
 
             it('should respond with a valid ticket', function () {
-                controller.issueTicket(req, res);
+                controller.issueTicket(request, response);
 
-                expect(response.success.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
+                expect(responseBody.success.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
             });
 
             it('should respond with a signed ticket', function () {
-                controller.issueTicket(req, res);
+                controller.issueTicket(request, response);
 
-                expect(response.success.ticket).toBeSigned();
+                expect(responseBody.success.ticket).toBeSigned();
             });
         });
 
         describe('when evaluate expression controller responds with failure', function () {
             it('should respond with failure', function () {
-                request.evaluateExpressionRequest.expression.text = '<<INVALID>>';
+                requestBody.evaluateExpressionRequest.expression.text = '<<INVALID>>';
 
-                controller.issueTicket(req, res);
+                controller.issueTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }
@@ -124,16 +126,16 @@ describe('issueTicketController', function () {
         describe('when evaluate expression controller responds with non-OK status', function () {
             it('should respond with failure', function () {
                 var stubEvaluateExpressionController = {
-                    evaluateExpression: function (req, res) {
-                        res.status(500).json({});
+                    evaluateExpression: function (request, response) {
+                        response.status(500).json({});
                     }
                 };
                 controller = createIssueTicketController(stubEvaluateExpressionController);
 
-                controller.issueTicket(req, res);
+                controller.issueTicket(request, response);
 
-                expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(response).toEqual({
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
                     failure: {
                         message: ja.matchType('string')
                     }

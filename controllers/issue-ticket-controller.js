@@ -27,9 +27,9 @@ var httpStatus = require('http-status-codes');
 var security = require('./security');
 
 module.exports = {
-    create: function (privateKey, publicKey, evaluateExpressionController) {
+    create: function (privateKey, publicKey, evaluateExpressionController, redeemTicketPath) {
 
-        function createResponse(request) {
+        function createResponseBody(request) {
             try {
                 return {
                     success: {
@@ -58,52 +58,58 @@ module.exports = {
         }
 
         function createTicketContent(request) {
-            var evaluateExpressionResult = evaluateExpression(request.evaluateExpressionRequest);
-            var evaluateExpressionResponse = evaluateExpressionResult[1];
-            if (evaluateExpressionResponse.success) {
+            var requestBody = request.body;
+            var evaluateExpressionResult = evaluateExpression(requestBody.evaluateExpressionRequest);
+            var evaluateExpressionResponseBody = evaluateExpressionResult[1];
+            if (evaluateExpressionResponseBody.success) {
                 return {
-                    description: request.description,
-                    evaluateExpressionRequest: request.evaluateExpressionRequest,
-                    id: generateTicketId()
+                    description: requestBody.description,
+                    evaluateExpressionRequest: requestBody.evaluateExpressionRequest,
+                    id: generateTicketId(),
+                    redeemUrl: getRedeemTicketUrl(request)
                 };
-            } else if (evaluateExpressionResponse.failure) {
-                throw new Error(evaluateExpressionResponse.failure.message);
+            } else if (evaluateExpressionResponseBody.failure) {
+                throw new Error(evaluateExpressionResponseBody.failure.message);
             } else {
-                var evaluateExpressionStatus = evaluateExpressionResult[0];
-                throw new Error('evaluate expression controller returned status ' + evaluateExpressionStatus);
+                var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
+                throw new Error('evaluate expression controller returned status ' + evaluateExpressionResponseStatus);
             }
         }
 
-        function evaluateExpression(evaluateExpressionRequest) {
-            var evaluateExpressionReq = {
-                body: evaluateExpressionRequest
+        function evaluateExpression(requestBody) {
+            var request = {
+                body: requestBody
             };
-            var evaluateExpressionResponse;
-            var evaluateExpressionStatus;
-            var evaluateExpressionRes = {
+            var responseBody;
+            var responseStatus;
+            var response = {
                 json: function (json) {
-                    evaluateExpressionResponse = json;
+                    responseBody = json;
                     return this;
                 },
                 status: function (status) {
-                    evaluateExpressionStatus = status;
+                    responseStatus = status;
                     return this;
                 }
             };
-            evaluateExpressionController.evaluateExpression(evaluateExpressionReq, evaluateExpressionRes);
+            evaluateExpressionController.evaluateExpression(request, response);
 
-            return [evaluateExpressionStatus, evaluateExpressionResponse];
+            return [responseStatus, responseBody];
         }
 
         function generateTicketId() {
             return crypto.randomBytes(20).toString('hex');
         }
 
+        function getRedeemTicketUrl(request) {
+            return request.protocol + '://' + request.get('host') + redeemTicketPath;
+        }
+
         return {
-            issueTicket: function (req, res) {
-                var request = req.body;
-                var response = createResponse(request);
-                res.status(httpStatus.OK).json(response);
+            issueTicket: function (request, response) {
+                response
+                    .status(httpStatus.OK)
+                    .json(createResponseBody(request));
             }
         };
     }
