@@ -22,6 +22,7 @@
 
 'use strict';
 
+var controllerUtils = require('./support/controller-utils');
 var httpStatus = require('http-status-codes');
 var security = require('./support/security');
 
@@ -82,28 +83,11 @@ module.exports = {
         }
 
         function evaluateExpression(requestBody) {
-            var request = {
-                body: requestBody
-            };
-            var responseBody;
-            var responseStatus;
-            var response = {
-                json: function (json) {
-                    responseBody = json;
-                    return this;
-                },
-                status: function (status) {
-                    responseStatus = status;
-                    return this;
-                }
-            };
-            controllerData.evaluateExpressionController.evaluateExpression(request, response);
-
-            return [responseStatus, responseBody];
+            return controllerUtils.postJson(controllerData.evaluateExpressionController.evaluateExpression, requestBody);
         }
 
         function getValidateRedeemedTicketUrl(request) {
-            return request.protocol + '://' + request.get('host') + controllerData.validateRedeemedTicketPath;
+            return controllerUtils.getRequestRootUrl(request) + controllerData.validateRedeemedTicketPath;
         }
 
         function isSignatureValid(content, signature) {
