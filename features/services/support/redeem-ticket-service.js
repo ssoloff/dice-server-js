@@ -22,7 +22,6 @@
 
 'use strict';
 
-var httpStatus = require('http-status-codes');
 var req = require('request');
 
 function RedeemTicketService() {
@@ -37,17 +36,17 @@ RedeemTicketService.prototype.call = function (callback) {
         uri: this.requestUrl
     };
     req.post(requestData, function (error, response, body) {
-        if (!error && response.statusCode === httpStatus.OK) {
-            callback(body);
+        if (!error) {
+            callback(response.statusCode, body);
         } else {
-            throw new Error('unexpected response from redeem-ticket service');
+            throw new Error(error);
         }
     });
 };
 
 RedeemTicketService.prototype.setRequestFromIssueTicketResponseBody = function (issueTicketResponseBody) {
-    this.requestBody.ticket = issueTicketResponseBody.success.ticket;
-    this.requestUrl = issueTicketResponseBody.success.ticket.content.redeemUrl;
+    this.requestBody.ticket = issueTicketResponseBody.ticket;
+    this.requestUrl = issueTicketResponseBody.ticket.content.redeemUrl;
 };
 
 module.exports = RedeemTicketService;

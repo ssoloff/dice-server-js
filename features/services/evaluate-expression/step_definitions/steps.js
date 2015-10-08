@@ -23,6 +23,7 @@
 'use strict';
 
 var chai = require('chai');
+var httpStatus = require('http-status-codes');
 var world = require('../support/world');
 
 var expect = chai.expect;
@@ -32,7 +33,10 @@ module.exports = function () {
 
     this.Before(function (callback) {
         this.evaluateExpressionService = world.createEvaluateExpressionService();
-        this.responseBody = null;
+        this.response = {
+            body: null,
+            status: null
+        };
         callback();
     });
 
@@ -45,27 +49,33 @@ module.exports = function () {
     });
 
     this.When(/^the evaluate expression service is invoked$/, function (callback) {
-        this.evaluateExpressionService.call(function (responseBody) {
-            this.responseBody = responseBody;
+        this.evaluateExpressionService.call(function (responseStatus, responseBody) {
+            this.response.status = responseStatus;
+            this.response.body = responseBody;
             callback();
         }.bind(this));
     });
 
     this.Then(/^the response should be$/, function (jsonResponse) {
-        expect(this.responseBody).to.deep.equal(JSON.parse(jsonResponse));
+        expect(this.response.body).to.deep.equal(JSON.parse(jsonResponse));
     });
 
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-        expect(this.responseBody.success.expressionResult.text).to.equal(expressionResultText);
+        expect(this.response.body.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
-        expect(this.responseBody.success.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+        expect(this.response.body.expressionResult.value).to.equal(parseFloat(expressionResultValue));
     });
 
     this.Then(/^the response should indicate failure$/, function () {
+        expect(this.response.status).to.not.equal(httpStatus.OK);
         // jshint expr: true
-        expect(this.responseBody.failure).to.exist;
+        expect(this.response.body.error).to.exist;
+    });
+
+    this.Then(/^the response should indicate success$/, function () {
+        expect(this.response.status).to.equal(httpStatus.OK);
     });
 };
 

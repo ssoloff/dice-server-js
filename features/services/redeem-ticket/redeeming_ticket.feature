@@ -10,7 +10,8 @@ Scenario Outline: Successfully redeeming a ticket
     Given a ticket with the expression "<expression>"
         And a ticket with the description "<description>"
     When the redeem ticket service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
         And the response should contain the ticket description
         And the response should contain the ticket identifier

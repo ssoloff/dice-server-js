@@ -8,7 +8,8 @@ Scenario Outline: Successfully issuing a ticket
         And a request with the random number generator named "<random number generator>"
         And a request with the description "<description>"
     When the issue ticket service is invoked
-    Then the response should contain the expression text "<expression>"
+    Then the response should indicate success
+        And the response should contain the expression text "<expression>"
         And the response should contain the random number generator named "<random number generator>"
         And the response should contain the description "<description>"
         And the response should contain a ticket identifier

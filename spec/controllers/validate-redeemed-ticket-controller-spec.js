@@ -78,25 +78,23 @@ describe('validateRedeemedTicketController', function () {
 
     describe('.validateRedeemedTicket', function () {
         describe('when redeemed ticket is valid', function () {
-            it('should respond with success', function () {
+            it('should respond with OK', function () {
                 controller.validateRedeemedTicket(request, response);
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(responseBody).toEqual({
-                    success: {}
-                });
+                expect(responseBody).toEqual({});
             });
         });
 
         describe('when redeemed ticket has an invalid signature', function () {
-            it('should respond with failure', function () {
+            it('should respond with bad request error', function () {
                 requestBody.redeemedTicket.content.description += '...'; // simulate forged content
 
                 controller.validateRedeemedTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
-                    failure: {
+                    error: {
                         message: ja.matchType('string')
                     }
                 });

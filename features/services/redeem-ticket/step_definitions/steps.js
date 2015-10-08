@@ -23,6 +23,7 @@
 'use strict';
 
 var chai = require('chai');
+var httpStatus = require('http-status-codes');
 var world = require('../support/world');
 
 var expect = chai.expect;
@@ -33,7 +34,10 @@ module.exports = function () {
     this.Before(function (callback) {
         this.issueTicketService = world.createIssueTicketService();
         this.redeemTicketService = world.createRedeemTicketService();
-        this.responseBody = null;
+        this.response = {
+            body: null,
+            status: null
+        };
         this.ticket = {
             description: null,
             forceInvalidSignature: false,
@@ -74,22 +78,23 @@ module.exports = function () {
 
     this.When(/^the redeem ticket service is invoked$/, function (callback) {
         var runner = this;
-        this.issueTicketService.call(function (responseBody) {
-            var issueTicketResponseBody = responseBody;
-            if (!issueTicketResponseBody.success) {
+        this.issueTicketService.call(function (responseStatus, responseBody) {
+            if (responseStatus !== httpStatus.OK) {
                 throw new Error('failed to issue ticket');
             }
+            var issueTicketResponseBody = responseBody;
 
-            this.ticket.description = issueTicketResponseBody.success.ticket.content.description;
-            this.ticket.id = issueTicketResponseBody.success.ticket.content.id;
+            this.ticket.description = issueTicketResponseBody.ticket.content.description;
+            this.ticket.id = issueTicketResponseBody.ticket.content.id;
 
             if (this.ticket.forceInvalidSignature) {
-                issueTicketResponseBody.success.ticket.content.description += '...'; // change content so signature will not match
+                issueTicketResponseBody.ticket.content.description += '...'; // change content so signature will not match
             }
             this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
 
-            var redeemTicketServiceResponseHandler = function (responseBody) {
-                this.responseBody = responseBody;
+            var redeemTicketServiceResponseHandler = function (responseStatus, responseBody) {
+                this.response.status = responseStatus;
+                this.response.body = responseBody;
                 callback();
             }.bind(runner);
             if (this.ticket.forceRedeemed) {
@@ -104,33 +109,38 @@ module.exports = function () {
 
     this.Then(/^the response should contain a link to the validate redeemed ticket service$/, function () {
         // jshint expr: true
-        expect(this.responseBody.success.redeemedTicket.content.validateUrl).to.exist;
+        expect(this.response.body.redeemedTicket.content.validateUrl).to.exist;
     });
 
     this.Then(/^the response should contain a signed redeemed ticket$/, function () {
         // jshint expr: true
-        expect(this.responseBody.success.redeemedTicket.signature).to.exist;
+        expect(this.response.body.redeemedTicket.signature).to.exist;
     });
 
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-        expect(this.responseBody.success.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.text).to.equal(expressionResultText);
+        expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.text).to.equal(expressionResultText);
     });
 
     this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
-        expect(this.responseBody.success.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+        expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.value).to.equal(parseFloat(expressionResultValue));
     });
 
     this.Then(/^the response should contain the ticket description$/, function () {
-        expect(this.responseBody.success.redeemedTicket.content.description).to.equal(this.ticket.description);
+        expect(this.response.body.redeemedTicket.content.description).to.equal(this.ticket.description);
     });
 
     this.Then(/^the response should contain the ticket identifier$/, function () {
-        expect(this.responseBody.success.redeemedTicket.content.id).to.equal(this.ticket.id);
+        expect(this.response.body.redeemedTicket.content.id).to.equal(this.ticket.id);
     });
 
     this.Then(/^the response should indicate failure$/, function () {
+        expect(this.response.status).to.not.equal(httpStatus.OK);
         // jshint expr: true
-        expect(this.responseBody.failure).to.exist;
+        expect(this.response.body.error).to.exist;
+    });
+
+    this.Then(/^the response should indicate success$/, function () {
+        expect(this.response.status).to.equal(httpStatus.OK);
     });
 };
 

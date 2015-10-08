@@ -22,7 +22,6 @@
 
 'use strict';
 
-var _ = require('underscore');
 var fs = require('fs');
 var ja = require('json-assert');
 var path = require('path');
@@ -127,9 +126,8 @@ module.exports = {
      *      and `expected` are not response body objects.
      */
     isResponseBodyEqual: function (actual, expected) {
-        if ((_.has(actual, 'success') || _.has(actual, 'failure')) &&
-                (_.has(expected, 'success') || _.has(expected, 'failure'))) {
-            return ja.isEqual(expected, actual, true);
+        if (ja.isEqual(expected, actual, true)) {
+            return true;
         }
     }
 };

@@ -29,20 +29,18 @@ var security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {
+        function createErrorResponseBody(e) {
+            return {
+                error: {
+                    message: e.message
+                }
+            };
+        }
+
         function createResponseBody(request) {
-            try {
-                return {
-                    success: {
-                        ticket: createTicket(request)
-                    }
-                };
-            } catch (e) {
-                return {
-                    failure: {
-                        message: e.message
-                    }
-                };
-            }
+            return {
+                ticket: createTicket(request)
+            };
         }
 
         function createSignature(content) {
@@ -60,18 +58,18 @@ module.exports = {
         function createTicketContent(request) {
             var requestBody = request.body;
             var evaluateExpressionResult = evaluateExpression(requestBody.evaluateExpressionRequestBody);
+            var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
             var evaluateExpressionResponseBody = evaluateExpressionResult[1];
-            if (evaluateExpressionResponseBody.success) {
+            if (evaluateExpressionResponseStatus === httpStatus.OK) {
                 return {
                     description: requestBody.description,
                     evaluateExpressionRequestBody: requestBody.evaluateExpressionRequestBody,
                     id: generateTicketId(),
                     redeemUrl: getRedeemTicketUrl(request)
                 };
-            } else if (evaluateExpressionResponseBody.failure) {
-                throw new Error(evaluateExpressionResponseBody.failure.message);
+            } else if (evaluateExpressionResponseBody.error) {
+                throw new Error(evaluateExpressionResponseBody.error.message);
             } else {
-                var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
                 throw new Error('evaluate expression controller returned status ' + evaluateExpressionResponseStatus);
             }
         }
@@ -90,9 +88,15 @@ module.exports = {
 
         return {
             issueTicket: function (request, response) {
-                response
-                    .status(httpStatus.OK)
-                    .json(createResponseBody(request));
+                try {
+                    response
+                        .status(httpStatus.OK)
+                        .json(createResponseBody(request));
+                } catch (e) {
+                    response
+                        .status(httpStatus.BAD_REQUEST)
+                        .json(createErrorResponseBody(e));
+                }
             }
         };
     }

@@ -41,7 +41,7 @@ function evaluateExpression(expressionText) {
             name: $('#randomNumberGeneratorName').val()
         }
     };
-    $.postJSON('/expression/evaluate', requestBody, processResponse);
+    $.postJSON('/expression/evaluate', requestBody, processResponse, processErrorResponse);
 }
 
 function getExpressionText() {
@@ -93,12 +93,13 @@ function installJQueryPlugins() {
     };
 
     jQuery.extend({
-        postJSON: function (url, data, callback) {
+        postJSON: function (url, data, successCallback, errorCallback) {
             return this.ajax({
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data),
                 dataType: 'json',
-                success: callback,
+                error: errorCallback,
+                success: successCallback,
                 type: 'POST',
                 url: url
             });
@@ -106,16 +107,21 @@ function installJQueryPlugins() {
     });
 }
 
+function processErrorResponse(jqxhr) {
+    'use strict';
+
+    var responseBody = jqxhr.responseJSON;
+    if (responseBody && responseBody.error) {
+        showErrorMessage(responseBody.error.message);
+    }
+}
+
 function processResponse(responseBody) {
     'use strict';
 
-    if (responseBody.failure) {
-        showErrorMessage(responseBody.failure.message);
-    } else {
-        clearExpressionText();
-        addExpressionResult(responseBody.success);
-        hideErrorMessage();
-    }
+    clearExpressionText();
+    addExpressionResult(responseBody);
+    hideErrorMessage();
 }
 
 function removeAllResults() {

@@ -27,20 +27,18 @@ var security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {
-        function createResponseBody(request) {
-            try {
-                validateRequest(request);
+        function createErrorResponseBody(e) {
+            return {
+                error: {
+                    message: e.message
+                }
+            };
+        }
 
-                return {
-                    success: {}
-                };
-            } catch (e) {
-                return {
-                    failure: {
-                        message: e.message
-                    }
-                };
-            }
+        function createResponseBody(request) {
+            validateRequest(request);
+
+            return {};
         }
 
         function isSignatureValid(content, signature) {
@@ -56,9 +54,15 @@ module.exports = {
 
         return {
             validateRedeemedTicket: function (request, response) {
-                response
-                    .status(httpStatus.OK)
-                    .json(createResponseBody(request));
+                try {
+                    response
+                        .status(httpStatus.OK)
+                        .json(createResponseBody(request));
+                } catch (e) {
+                    response
+                        .status(httpStatus.BAD_REQUEST)
+                        .json(createErrorResponseBody(e));
+                }
             }
         };
     }

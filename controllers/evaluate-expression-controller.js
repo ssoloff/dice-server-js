@@ -28,6 +28,14 @@ var httpStatus = require('http-status-codes');
 
 module.exports = {
     create: function () {
+        function createErrorResponseBody(e) {
+            return {
+                error: {
+                    message: e.message
+                }
+            };
+        }
+
         function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
             switch (randomNumberGeneratorSpecification.name) {
                 case 'constantMax':
@@ -46,40 +54,26 @@ module.exports = {
             var requestBody = request.body;
             var responseBody = {};
 
-            try {
-                var content = {};
+            var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(requestBody);
+            responseBody.randomNumberGenerator = randomNumberGeneratorSpecification;
 
-                var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(requestBody);
-                content.randomNumberGenerator = randomNumberGeneratorSpecification;
+            var expressionParserContext = dice.expressionParser.createDefaultContext();
+            expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
+            var expressionParser = dice.expressionParser.create(expressionParserContext);
+            var expression = expressionParser.parse(requestBody.expression.text);
+            responseBody.expression = {
+                canonicalText: dice.expressionFormatter.format(expression),
+                text: requestBody.expression.text
+            };
 
-                var expressionParserContext = dice.expressionParser.createDefaultContext();
-                expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
-                var expressionParser = dice.expressionParser.create(expressionParserContext);
-                var expression = expressionParser.parse(requestBody.expression.text);
-                content.expression = {
-                    canonicalText: dice.expressionFormatter.format(expression),
-                    text: requestBody.expression.text
-                };
-
-                var expressionResult = expression.evaluate();
-                if (!_.isFinite(expressionResult.value)) {
-                    throw new Error('expression does not evaluate to a finite number');
-                }
-                content.expressionResult = {
-                    text: dice.expressionResultFormatter.format(expressionResult),
-                    value: expressionResult.value
-                };
-
-                responseBody = {
-                    success: content
-                };
-            } catch (e) {
-                responseBody = {
-                    failure: {
-                        message: e.message
-                    }
-                };
+            var expressionResult = expression.evaluate();
+            if (!_.isFinite(expressionResult.value)) {
+                throw new Error('expression does not evaluate to a finite number');
             }
+            responseBody.expressionResult = {
+                text: dice.expressionResultFormatter.format(expressionResult),
+                value: expressionResult.value
+            };
 
             return responseBody;
         }
@@ -90,9 +84,15 @@ module.exports = {
 
         return {
             evaluateExpression: function (request, response) {
-                response
-                    .status(httpStatus.OK)
-                    .json(createResponseBody(request));
+                try {
+                    response
+                        .status(httpStatus.OK)
+                        .json(createResponseBody(request));
+                } catch (e) {
+                    response
+                        .status(httpStatus.BAD_REQUEST)
+                        .json(createErrorResponseBody(e));
+                }
             }
         };
     }

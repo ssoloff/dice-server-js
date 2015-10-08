@@ -77,33 +77,31 @@ describe('redeemTicketController', function () {
 
     describe('.redeemTicket', function () {
         describe('when evaluate expression controller responds with success', function () {
-            it('should respond with success', function () {
+            it('should respond with OK', function () {
                 controller.redeemTicket(request, response);
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(responseBody).toEqual({
-                    success: {
-                        redeemedTicket: {
-                            content: {
-                                description: 'description',
-                                evaluateExpressionResponseBody: {
-                                    expression: {
-                                        canonicalText: 'sum(roll(3, d6)) + 4',
-                                        text: '3d6+4'
-                                    },
-                                    expressionResult: {
-                                        text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                                        value: 22
-                                    },
-                                    randomNumberGenerator: {
-                                        name: 'constantMax'
-                                    }
+                    redeemedTicket: {
+                        content: {
+                            description: 'description',
+                            evaluateExpressionResponseBody: {
+                                expression: {
+                                    canonicalText: 'sum(roll(3, d6)) + 4',
+                                    text: '3d6+4'
                                 },
-                                id: '00112233445566778899aabbccddeeff00112233',
-                                validateUrl: ja.matchType('string')
+                                expressionResult: {
+                                    text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
+                                    value: 22
+                                },
+                                randomNumberGenerator: {
+                                    name: 'constantMax'
+                                }
                             },
-                            signature: ja.matchType('object')
-                        }
+                            id: '00112233445566778899aabbccddeeff00112233',
+                            validateUrl: ja.matchType('string')
+                        },
+                        signature: ja.matchType('object')
                     }
                 });
             });
@@ -111,40 +109,40 @@ describe('redeemTicketController', function () {
             it('should respond with a signed redeemed ticket', function () {
                 controller.redeemTicket(request, response);
 
-                expect(responseBody.success.redeemedTicket).toBeSigned();
+                expect(responseBody.redeemedTicket).toBeSigned();
             });
         });
 
-        describe('when evaluate expression controller responds with failure', function () {
-            it('should respond with failure', function () {
+        describe('when evaluate expression controller responds with bad request error', function () {
+            it('should respond with bad request error', function () {
                 requestBody.ticket.content.evaluateExpressionRequestBody.expression.text = '<<INVALID>>';
                 requestBody.ticket.signature = controllerTest.createSignature(requestBody.ticket.content);
 
                 controller.redeemTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
-                    failure: {
+                    error: {
                         message: ja.matchType('string')
                     }
                 });
             });
         });
 
-        describe('when evaluate expression controller responds with non-OK status', function () {
-            it('should respond with failure', function () {
+        describe('when evaluate expression controller responds with internal server error', function () {
+            it('should respond with bad request error', function () {
                 var stubEvaluateExpressionController = {
                     evaluateExpression: function (request, response) {
-                        response.status(500).json({});
+                        response.status(httpStatus.INTERNAL_SERVER_ERROR).json({});
                     }
                 };
                 controller = createRedeemTicketController(stubEvaluateExpressionController);
 
                 controller.redeemTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
-                    failure: {
+                    error: {
                         message: ja.matchType('string')
                     }
                 });
@@ -152,14 +150,14 @@ describe('redeemTicketController', function () {
         });
 
         describe('when ticket has an invalid signature', function () {
-            it('should respond with failure', function () {
+            it('should respond with bad request error', function () {
                 requestBody.ticket.content.description += '...'; // simulate forged content
 
                 controller.redeemTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
-                    failure: {
+                    error: {
                         message: ja.matchType('string')
                     }
                 });
@@ -167,16 +165,16 @@ describe('redeemTicketController', function () {
         });
 
         describe('when ticket has already been redeemed', function () {
-            it('should respond with failure', function () {
+            it('should respond with bad request error', function () {
                 controller.redeemTicket(request, response);
-                expect(responseBody.success).toBeDefined(); // sanity check
+                expect(responseBody.redeemedTicket).toBeDefined(); // sanity check
                 responseBody = null;
 
                 controller.redeemTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
-                    failure: {
+                    error: {
                         message: ja.matchType('string')
                     }
                 });

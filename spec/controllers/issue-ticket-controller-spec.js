@@ -69,28 +69,26 @@ describe('issueTicketController', function () {
 
     describe('.issueTicket', function () {
         describe('when evaluate expression controller responds with success', function () {
-            it('should respond with success', function () {
+            it('should respond with OK', function () {
                 controller.issueTicket(request, response);
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(responseBody).toEqual({
-                    success: {
-                        ticket: {
-                            content: {
-                                description: 'description',
-                                evaluateExpressionRequestBody: {
-                                    expression: {
-                                        text: '3d6+4'
-                                    },
-                                    randomNumberGenerator: {
-                                        name: 'constantMax'
-                                    }
+                    ticket: {
+                        content: {
+                            description: 'description',
+                            evaluateExpressionRequestBody: {
+                                expression: {
+                                    text: '3d6+4'
                                 },
-                                id: ja.matchType('string'),
-                                redeemUrl: ja.matchType('string')
+                                randomNumberGenerator: {
+                                    name: 'constantMax'
+                                }
                             },
-                            signature: ja.matchType('object')
-                        }
+                            id: ja.matchType('string'),
+                            redeemUrl: ja.matchType('string')
+                        },
+                        signature: ja.matchType('object')
                     }
                 });
             });
@@ -98,45 +96,45 @@ describe('issueTicketController', function () {
             it('should respond with a valid ticket', function () {
                 controller.issueTicket(request, response);
 
-                expect(responseBody.success.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
+                expect(responseBody.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
             });
 
             it('should respond with a signed ticket', function () {
                 controller.issueTicket(request, response);
 
-                expect(responseBody.success.ticket).toBeSigned();
+                expect(responseBody.ticket).toBeSigned();
             });
         });
 
-        describe('when evaluate expression controller responds with failure', function () {
-            it('should respond with failure', function () {
+        describe('when evaluate expression controller responds with bad request error', function () {
+            it('should respond with bad request error', function () {
                 requestBody.evaluateExpressionRequestBody.expression.text = '<<INVALID>>';
 
                 controller.issueTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
-                    failure: {
+                    error: {
                         message: ja.matchType('string')
                     }
                 });
             });
         });
 
-        describe('when evaluate expression controller responds with non-OK status', function () {
-            it('should respond with failure', function () {
+        describe('when evaluate expression controller responds with internal server error', function () {
+            it('should respond with bad request error', function () {
                 var stubEvaluateExpressionController = {
                     evaluateExpression: function (request, response) {
-                        response.status(500).json({});
+                        response.status(httpStatus.INTERNAL_SERVER_ERROR).json({});
                     }
                 };
                 controller = createIssueTicketController(stubEvaluateExpressionController);
 
                 controller.issueTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
-                    failure: {
+                    error: {
                         message: ja.matchType('string')
                     }
                 });

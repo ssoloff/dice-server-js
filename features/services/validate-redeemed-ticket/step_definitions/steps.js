@@ -23,6 +23,7 @@
 'use strict';
 
 var chai = require('chai');
+var httpStatus = require('http-status-codes');
 var world = require('../support/world');
 
 var expect = chai.expect;
@@ -34,7 +35,10 @@ module.exports = function () {
         this.issueTicketService = world.createIssueTicketService();
         this.redeemTicketService = world.createRedeemTicketService();
         this.validateRedeemedTicketService = world.createValidateRedeemedTicketService();
-        this.responseBody = null;
+        this.response = {
+            body: null,
+            status: null
+        };
         this.redeemedTicket = {
             forceInvalidSignature: false
         };
@@ -54,25 +58,26 @@ module.exports = function () {
 
     this.When(/^the validate redeemed ticket service is invoked$/, function (callback) {
         var runner = this;
-        this.issueTicketService.call(function (responseBody) {
-            var issueTicketResponseBody = responseBody;
-            if (!issueTicketResponseBody.success) {
+        this.issueTicketService.call(function (responseStatus, responseBody) {
+            if (responseStatus !== httpStatus.OK) {
                 throw new Error('failed to issue ticket');
             }
+            var issueTicketResponseBody = responseBody;
 
             this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
-            this.redeemTicketService.call(function (responseBody) {
-                var redeemTicketResponseBody = responseBody;
-                if (!redeemTicketResponseBody.success) {
+            this.redeemTicketService.call(function (responseStatus, responseBody) {
+                if (responseStatus !== httpStatus.OK) {
                     throw new Error('failed to redeem ticket');
                 }
+                var redeemTicketResponseBody = responseBody;
 
                 if (this.redeemedTicket.forceInvalidSignature) {
-                    redeemTicketResponseBody.success.redeemedTicket.content.description += '...'; // change content so signature will not match
+                    redeemTicketResponseBody.redeemedTicket.content.description += '...'; // change content so signature will not match
                 }
                 this.validateRedeemedTicketService.setRequestFromRedeemTicketResponseBody(redeemTicketResponseBody);
-                this.validateRedeemedTicketService.call(function (responseBody) {
-                    this.responseBody = responseBody;
+                this.validateRedeemedTicketService.call(function (responseStatus, responseBody) {
+                    this.response.status = responseStatus;
+                    this.response.body = responseBody;
                     callback();
                 }.bind(runner));
             }.bind(runner));
@@ -80,13 +85,13 @@ module.exports = function () {
     });
 
     this.Then(/^the response should indicate failure$/, function () {
+        expect(this.response.status).to.not.equal(httpStatus.OK);
         // jshint expr: true
-        expect(this.responseBody.failure).to.exist;
+        expect(this.response.body.error).to.exist;
     });
 
     this.Then(/^the response should indicate success$/, function () {
-        // jshint expr: true
-        expect(this.responseBody.success).to.exist;
+        expect(this.response.status).to.equal(httpStatus.OK);
     });
 };
 

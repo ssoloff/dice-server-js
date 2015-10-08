@@ -23,6 +23,7 @@
 'use strict';
 
 var chai = require('chai');
+var httpStatus = require('http-status-codes');
 var world = require('../support/world');
 
 var expect = chai.expect;
@@ -32,7 +33,10 @@ module.exports = function () {
 
     this.Before(function (callback) {
         this.issueTicketService = world.createIssueTicketService();
-        this.responseBody = null;
+        this.response = {
+            body: null,
+            status: null
+        };
         callback();
     });
 
@@ -49,41 +53,47 @@ module.exports = function () {
     });
 
     this.When(/^the issue ticket service is invoked$/, function (callback) {
-        this.issueTicketService.call(function (responseBody) {
-            this.responseBody = responseBody;
+        this.issueTicketService.call(function (responseStatus, responseBody) {
+            this.response.status = responseStatus;
+            this.response.body = responseBody;
             callback();
         }.bind(this));
     });
 
     this.Then(/^the response should contain a link to the redeem ticket service$/, function () {
         // jshint expr: true
-        expect(this.responseBody.success.ticket.content.redeemUrl).to.exist;
+        expect(this.response.body.ticket.content.redeemUrl).to.exist;
     });
 
     this.Then(/^the response should contain a signed ticket$/, function () {
         // jshint expr: true
-        expect(this.responseBody.success.ticket.signature).to.exist;
+        expect(this.response.body.ticket.signature).to.exist;
     });
 
     this.Then(/^the response should contain a ticket identifier$/, function () {
-        expect(this.responseBody.success.ticket.content.id).to.match(/^[0-9A-Fa-f]{40}$/);
+        expect(this.response.body.ticket.content.id).to.match(/^[0-9A-Fa-f]{40}$/);
     });
 
     this.Then(/^the response should contain the description "(.*)"$/, function (description) {
-        expect(this.responseBody.success.ticket.content.description).to.equal(description);
+        expect(this.response.body.ticket.content.description).to.equal(description);
     });
 
     this.Then(/^the response should contain the expression text "(.*)"$/, function (expressionText) {
-        expect(this.responseBody.success.ticket.content.evaluateExpressionRequestBody.expression.text).to.equal(expressionText);
+        expect(this.response.body.ticket.content.evaluateExpressionRequestBody.expression.text).to.equal(expressionText);
     });
 
     this.Then(/^the response should contain the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
-        expect(this.responseBody.success.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
+        expect(this.response.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
     });
 
     this.Then(/^the response should indicate failure$/, function () {
+        expect(this.response.status).to.not.equal(httpStatus.OK);
         // jshint expr: true
-        expect(this.responseBody.failure).to.exist;
+        expect(this.response.body.error).to.exist;
+    });
+
+    this.Then(/^the response should indicate success$/, function () {
+        expect(this.response.status).to.equal(httpStatus.OK);
     });
 };
 

@@ -9,21 +9,20 @@ Background: The service produces deterministic results
 Scenario: Evaluating well-formed expressions
     Given a request with the expression "5"
     When the evaluate expression service is invoked
-    Then the response should be
+    Then the response should indicate success
+        And the response should be
         """
         {
-            "success": {
-                "expression": {
-                    "canonicalText": "5",
-                    "text": "5"
-                },
-                "expressionResult": {
-                    "text": "5",
-                    "value": 5
-                },
-                "randomNumberGenerator": {
-                    "name": "constantMax"
-                }
+            "expression": {
+                "canonicalText": "5",
+                "text": "5"
+            },
+            "expressionResult": {
+                "text": "5",
+                "value": 5
+            },
+            "randomNumberGenerator": {
+                "name": "constantMax"
             }
         }
         """
@@ -31,10 +30,11 @@ Scenario: Evaluating well-formed expressions
 Scenario: Evaluating malformed expressions
     Given a request with the expression "<<INVALID>>"
     When the evaluate expression service is invoked
-    Then the response should be
+    Then the response should indicate failure
+        And the response should be
         """
         {
-            "failure": {
+            "error": {
                 "message": "illegal character"
             }
         }
@@ -43,13 +43,15 @@ Scenario: Evaluating malformed expressions
 Scenario: Evaluating constants
     Given a request with the expression "5"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "5"
+    Then the response should indicate success
+        And the response should contain the expression result text "5"
         And the response should contain the expression result value 5
 
 Scenario Outline: Evaluating expressions containing array literals
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression      | result text                | result value |
@@ -60,7 +62,8 @@ Scenario Outline: Evaluating expressions containing array literals
 Scenario Outline: Evaluating arithmetic expressions with constants
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression | result text | result value       |
@@ -78,7 +81,8 @@ Scenario Outline: Evaluating arithmetic expressions with constants
 Scenario Outline: Evaluating dice rolls
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression       | result text                             | result value |
@@ -90,7 +94,8 @@ Scenario Outline: Evaluating dice rolls
 Scenario Outline: Evaluating modified dice rolls
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression                          | result text                                                                  | result value |
@@ -110,7 +115,8 @@ Scenario Outline: Evaluating modified dice rolls
 Scenario Outline: Evaluating arithmetic expressions with dice rolls and constants
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression | result text                                                            | result value |
@@ -126,7 +132,8 @@ Scenario Outline: Evaluating arithmetic expressions with dice rolls and constant
 Scenario Outline: Rounding fractional values
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression   | result text                                               | result value |
@@ -140,7 +147,8 @@ Scenario Outline: Rounding fractional values
 Scenario Outline: Evaluating grouped expressions
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression | result text                                       | result value |
@@ -150,7 +158,8 @@ Scenario Outline: Evaluating grouped expressions
 Scenario Outline: Evaluating division expressions with extended divide and round operators
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression | result text                                               | result value |
@@ -164,7 +173,8 @@ Scenario Outline: Evaluating division expressions with extended divide and round
 Scenario Outline: Evaluating expressions with unary operators
     Given a request with the expression "<expression>"
     When the evaluate expression service is invoked
-    Then the response should contain the expression result text "<result text>"
+    Then the response should indicate success
+        And the response should contain the expression result text "<result text>"
         And the response should contain the expression result value <result value>
     Examples:
         | expression | result text                              | result value |

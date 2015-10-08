@@ -30,6 +30,14 @@ module.exports = {
     create: function (controllerData) {
         var redeemedTickets = {};
 
+        function createErrorResponseBody(e) {
+            return {
+                error: {
+                    message: e.message
+                }
+            };
+        }
+
         function createRedeemedTicket(request) {
             var redeemedTicketContent = createRedeemedTicketContent(request);
             return {
@@ -42,40 +50,30 @@ module.exports = {
             var requestBody = request.body;
             var ticketContent = requestBody.ticket.content;
             var evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody);
+            var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
             var evaluateExpressionResponseBody = evaluateExpressionResult[1];
-            if (evaluateExpressionResponseBody.success) {
+            if (evaluateExpressionResponseStatus === httpStatus.OK) {
                 return {
                     description: ticketContent.description,
-                    evaluateExpressionResponseBody: evaluateExpressionResponseBody.success,
+                    evaluateExpressionResponseBody: evaluateExpressionResponseBody,
                     id: ticketContent.id,
                     validateUrl: getValidateRedeemedTicketUrl(request)
                 };
-            } else if (evaluateExpressionResponseBody.failure) {
-                throw new Error(evaluateExpressionResponseBody.failure.message);
+            } else if (evaluateExpressionResponseBody.error) {
+                throw new Error(evaluateExpressionResponseBody.error.message);
             } else {
-                var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
                 throw new Error('evaluate expression controller returned status ' + evaluateExpressionResponseStatus);
             }
         }
 
         function createResponseBody(request) {
-            try {
-                validateRequest(request);
+            validateRequest(request);
 
-                var redeemedTicket = createRedeemedTicket(request);
-                recordRedeemedTicket(redeemedTicket.content.id);
-                return {
-                    success: {
-                        redeemedTicket: redeemedTicket
-                    }
-                };
-            } catch (e) {
-                return {
-                    failure: {
-                        message: e.message
-                    }
-                };
-            }
+            var redeemedTicket = createRedeemedTicket(request);
+            recordRedeemedTicket(redeemedTicket.content.id);
+            return {
+                redeemedTicket: redeemedTicket
+            };
         }
 
         function createSignature(content) {
@@ -113,9 +111,15 @@ module.exports = {
 
         return {
             redeemTicket: function (request, response) {
-                response
-                    .status(httpStatus.OK)
-                    .json(createResponseBody(request));
+                try {
+                    response
+                        .status(httpStatus.OK)
+                        .json(createResponseBody(request));
+                } catch (e) {
+                    response
+                        .status(httpStatus.BAD_REQUEST)
+                        .json(createErrorResponseBody(e));
+                }
             }
         };
     }

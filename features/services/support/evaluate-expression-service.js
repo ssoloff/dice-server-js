@@ -22,7 +22,6 @@
 
 'use strict';
 
-var httpStatus = require('http-status-codes');
 var req = require('request');
 
 function EvaluateExpressionService() {
@@ -36,10 +35,10 @@ EvaluateExpressionService.prototype.call = function (callback) {
         uri: 'http://localhost:3000/expression/evaluate'
     };
     req.post(requestData, function (error, response, body) {
-        if (!error && response.statusCode === httpStatus.OK) {
-            callback(body);
+        if (!error) {
+            callback(response.statusCode, body);
         } else {
-            throw new Error('unexpected response from evaluate expression service');
+            throw new Error(error);
         }
     });
 };
