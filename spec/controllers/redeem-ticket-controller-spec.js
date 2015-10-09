@@ -113,37 +113,27 @@ describe('redeemTicketController', function () {
             });
         });
 
-        describe('when evaluate expression controller responds with bad request error', function () {
-            it('should respond with bad request error', function () {
-                requestBody.ticket.content.evaluateExpressionRequestBody.expression.text = '<<INVALID>>';
-                requestBody.ticket.signature = controllerTest.createSignature(requestBody.ticket.content);
-
-                controller.redeemTicket(request, response);
-
-                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
-                expect(responseBody).toEqual({
-                    error: {
-                        message: ja.matchType('string')
-                    }
-                });
-            });
-        });
-
-        describe('when evaluate expression controller responds with internal server error', function () {
-            it('should respond with bad request error', function () {
+        describe('when evaluate expression controller responds with error', function () {
+            it('should respond with same error', function () {
+                var expectedStatus = httpStatus.BAD_GATEWAY;
+                var expectedErrorMessage = 'message';
                 var stubEvaluateExpressionController = {
                     evaluateExpression: function (request, response) {
-                        response.status(httpStatus.INTERNAL_SERVER_ERROR).json({});
+                        response.status(expectedStatus).json({
+                            error: {
+                                message: expectedErrorMessage
+                            }
+                        });
                     }
                 };
                 controller = createRedeemTicketController(stubEvaluateExpressionController);
 
                 controller.redeemTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+                expect(response.status).toHaveBeenCalledWith(expectedStatus);
                 expect(responseBody).toEqual({
                     error: {
-                        message: ja.matchType('string')
+                        message: expectedErrorMessage
                     }
                 });
             });

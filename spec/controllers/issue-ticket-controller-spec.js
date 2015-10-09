@@ -106,36 +106,27 @@ describe('issueTicketController', function () {
             });
         });
 
-        describe('when evaluate expression controller responds with bad request error', function () {
-            it('should respond with bad request error', function () {
-                requestBody.evaluateExpressionRequestBody.expression.text = '<<INVALID>>';
-
-                controller.issueTicket(request, response);
-
-                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
-                expect(responseBody).toEqual({
-                    error: {
-                        message: ja.matchType('string')
-                    }
-                });
-            });
-        });
-
-        describe('when evaluate expression controller responds with internal server error', function () {
-            it('should respond with bad request error', function () {
+        describe('when evaluate expression controller responds with error', function () {
+            it('should respond with same error', function () {
+                var expectedStatus = httpStatus.BAD_GATEWAY;
+                var expectedErrorMessage = 'message';
                 var stubEvaluateExpressionController = {
                     evaluateExpression: function (request, response) {
-                        response.status(httpStatus.INTERNAL_SERVER_ERROR).json({});
+                        response.status(expectedStatus).json({
+                            error: {
+                                message: expectedErrorMessage
+                            }
+                        });
                     }
                 };
                 controller = createIssueTicketController(stubEvaluateExpressionController);
 
                 controller.issueTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+                expect(response.status).toHaveBeenCalledWith(expectedStatus);
                 expect(responseBody).toEqual({
                     error: {
-                        message: ja.matchType('string')
+                        message: expectedErrorMessage
                     }
                 });
             });

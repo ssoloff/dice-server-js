@@ -23,19 +23,12 @@
 'use strict';
 
 var _ = require('underscore');
+var controllerUtils = require('./support/controller-utils');
 var dice = require('../lib/dice');
 var httpStatus = require('http-status-codes');
 
 module.exports = {
     create: function () {
-        function createErrorResponseBody(e) {
-            return {
-                error: {
-                    message: e.message
-                }
-            };
-        }
-
         function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
             switch (randomNumberGeneratorSpecification.name) {
                 case 'constantMax':
@@ -47,7 +40,10 @@ module.exports = {
                     return Math.random;
             }
 
-            throw new Error('unknown random number generator "' + randomNumberGeneratorSpecification.name + '"');
+            throw controllerUtils.createControllerError(
+                httpStatus.BAD_REQUEST,
+                'unknown random number generator "' + randomNumberGeneratorSpecification.name + '"'
+            );
         }
 
         function createResponseBody(request) {
@@ -57,18 +53,18 @@ module.exports = {
             var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(requestBody);
             responseBody.randomNumberGenerator = randomNumberGeneratorSpecification;
 
-            var expressionParserContext = dice.expressionParser.createDefaultContext();
-            expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
-            var expressionParser = dice.expressionParser.create(expressionParserContext);
-            var expression = expressionParser.parse(requestBody.expression.text);
+            var expression = parseExpressionText(requestBody.expression.text, randomNumberGeneratorSpecification);
             responseBody.expression = {
-                canonicalText: dice.expressionFormatter.format(expression),
+                canonicalText: formatExpression(expression),
                 text: requestBody.expression.text
             };
 
             var expressionResult = expression.evaluate();
             if (!_.isFinite(expressionResult.value)) {
-                throw new Error('expression does not evaluate to a finite number');
+                throw controllerUtils.createControllerError(
+                    httpStatus.BAD_REQUEST,
+                    'expression does not evaluate to a finite number'
+                );
             }
             responseBody.expressionResult = {
                 text: dice.expressionResultFormatter.format(expressionResult),
@@ -78,20 +74,31 @@ module.exports = {
             return responseBody;
         }
 
+        function formatExpression(expression) {
+            return dice.expressionFormatter.format(expression);
+        }
+
         function getRandomNumberGeneratorSpecification(requestBody) {
             return requestBody.randomNumberGenerator || {name: 'uniform'};
+        }
+
+        function parseExpressionText(expressionText, randomNumberGeneratorSpecification) {
+            var expressionParserContext = dice.expressionParser.createDefaultContext();
+            expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
+            var expressionParser = dice.expressionParser.create(expressionParserContext);
+            try {
+                return expressionParser.parse(expressionText);
+            } catch (e) {
+                throw controllerUtils.createControllerError(httpStatus.BAD_REQUEST, e.message);
+            }
         }
 
         return {
             evaluateExpression: function (request, response) {
                 try {
-                    response
-                        .status(httpStatus.OK)
-                        .json(createResponseBody(request));
+                    controllerUtils.setSuccessResponse(response, createResponseBody(request));
                 } catch (e) {
-                    response
-                        .status(httpStatus.BAD_REQUEST)
-                        .json(createErrorResponseBody(e));
+                    controllerUtils.setFailureResponse(response, e);
                 }
             }
         };

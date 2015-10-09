@@ -30,14 +30,6 @@ module.exports = {
     create: function (controllerData) {
         var redeemedTickets = {};
 
-        function createErrorResponseBody(e) {
-            return {
-                error: {
-                    message: e.message
-                }
-            };
-        }
-
         function createRedeemedTicket(request) {
             var redeemedTicketContent = createRedeemedTicketContent(request);
             return {
@@ -52,17 +44,18 @@ module.exports = {
             var evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody);
             var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
             var evaluateExpressionResponseBody = evaluateExpressionResult[1];
-            if (evaluateExpressionResponseStatus === httpStatus.OK) {
+            if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
                 return {
                     description: ticketContent.description,
                     evaluateExpressionResponseBody: evaluateExpressionResponseBody,
                     id: ticketContent.id,
                     validateUrl: getValidateRedeemedTicketUrl(request)
                 };
-            } else if (evaluateExpressionResponseBody.error) {
-                throw new Error(evaluateExpressionResponseBody.error.message);
             } else {
-                throw new Error('evaluate expression controller returned status ' + evaluateExpressionResponseStatus);
+                throw controllerUtils.createControllerErrorFromResponse(
+                    evaluateExpressionResponseStatus,
+                    evaluateExpressionResponseBody
+                );
             }
         }
 
@@ -103,22 +96,24 @@ module.exports = {
         function validateRequest(request) {
             var ticket = request.body.ticket;
             if (!isSignatureValid(ticket.content, ticket.signature)) {
-                throw new Error('ticket signature is invalid');
+                throw controllerUtils.createControllerError(
+                    httpStatus.BAD_REQUEST,
+                    'ticket signature is invalid'
+                );
             } else if (isTicketRedeemed(ticket.content.id)) {
-                throw new Error('ticket "' + ticket.content.id + '" has already been redeemed');
+                throw controllerUtils.createControllerError(
+                    httpStatus.BAD_REQUEST,
+                    'ticket "' + ticket.content.id + '" has already been redeemed'
+                );
             }
         }
 
         return {
             redeemTicket: function (request, response) {
                 try {
-                    response
-                        .status(httpStatus.OK)
-                        .json(createResponseBody(request));
+                    controllerUtils.setSuccessResponse(response, createResponseBody(request));
                 } catch (e) {
-                    response
-                        .status(httpStatus.BAD_REQUEST)
-                        .json(createErrorResponseBody(e));
+                    controllerUtils.setFailureResponse(response, e);
                 }
             }
         };

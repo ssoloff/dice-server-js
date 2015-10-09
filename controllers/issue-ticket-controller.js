@@ -24,19 +24,10 @@
 
 var controllerUtils = require('./support/controller-utils');
 var crypto = require('crypto');
-var httpStatus = require('http-status-codes');
 var security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {
-        function createErrorResponseBody(e) {
-            return {
-                error: {
-                    message: e.message
-                }
-            };
-        }
-
         function createResponseBody(request) {
             return {
                 ticket: createTicket(request)
@@ -59,18 +50,19 @@ module.exports = {
             var requestBody = request.body;
             var evaluateExpressionResult = evaluateExpression(requestBody.evaluateExpressionRequestBody);
             var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
-            var evaluateExpressionResponseBody = evaluateExpressionResult[1];
-            if (evaluateExpressionResponseStatus === httpStatus.OK) {
+            if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
                 return {
                     description: requestBody.description,
                     evaluateExpressionRequestBody: requestBody.evaluateExpressionRequestBody,
                     id: generateTicketId(),
                     redeemUrl: getRedeemTicketUrl(request)
                 };
-            } else if (evaluateExpressionResponseBody.error) {
-                throw new Error(evaluateExpressionResponseBody.error.message);
             } else {
-                throw new Error('evaluate expression controller returned status ' + evaluateExpressionResponseStatus);
+                var evaluateExpressionResponseBody = evaluateExpressionResult[1];
+                throw controllerUtils.createControllerErrorFromResponse(
+                    evaluateExpressionResponseStatus,
+                    evaluateExpressionResponseBody
+                );
             }
         }
 
@@ -89,13 +81,9 @@ module.exports = {
         return {
             issueTicket: function (request, response) {
                 try {
-                    response
-                        .status(httpStatus.OK)
-                        .json(createResponseBody(request));
+                    controllerUtils.setSuccessResponse(response, createResponseBody(request));
                 } catch (e) {
-                    response
-                        .status(httpStatus.BAD_REQUEST)
-                        .json(createErrorResponseBody(e));
+                    controllerUtils.setFailureResponse(response, e);
                 }
             }
         };

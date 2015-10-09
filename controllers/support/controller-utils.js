@@ -22,9 +22,25 @@
 
 'use strict';
 
+var ControllerError = require('./controller-error');
+var httpStatus = require('http-status-codes');
+
 module.exports = {
+    createControllerError: function (status, message) {
+        return new ControllerError(status, message);
+    },
+
+    createControllerErrorFromResponse: function (responseStatus, responseBody) {
+        var message = responseBody.error ? responseBody.error.message : null;
+        return new ControllerError(responseStatus, message);
+    },
+
     getRequestRootUrl: function (request) {
         return request.protocol + '://' + request.get('host');
+    },
+
+    isSuccessResponse: function (responseStatus) {
+        return responseStatus === httpStatus.OK;
     },
 
     postJson: function (callback, requestBody) {
@@ -45,6 +61,25 @@ module.exports = {
         };
         callback(request, response);
         return [responseStatus, responseBody];
+    },
+
+    setFailureResponse: function (response, e) {
+        if (e instanceof ControllerError) {
+            response.status(e.status);
+        } else {
+            response.status(httpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        var responseBody = {
+            error: {
+                message: e.message
+            }
+        };
+        response.json(responseBody);
+    },
+
+    setSuccessResponse: function (response, responseBody) {
+        response.status(httpStatus.OK).json(responseBody);
     }
 };
 

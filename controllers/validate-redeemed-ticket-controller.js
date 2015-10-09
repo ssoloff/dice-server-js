@@ -22,19 +22,12 @@
 
 'use strict';
 
+var controllerUtils = require('./support/controller-utils');
 var httpStatus = require('http-status-codes');
 var security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {
-        function createErrorResponseBody(e) {
-            return {
-                error: {
-                    message: e.message
-                }
-            };
-        }
-
         function createResponseBody(request) {
             validateRequest(request);
 
@@ -48,20 +41,19 @@ module.exports = {
         function validateRequest(request) {
             var redeemedTicket = request.body.redeemedTicket;
             if (!isSignatureValid(redeemedTicket.content, redeemedTicket.signature)) {
-                throw new Error('redeemed ticket signature is invalid');
+                throw controllerUtils.createControllerError(
+                    httpStatus.BAD_REQUEST,
+                    'redeemed ticket signature is invalid'
+                );
             }
         }
 
         return {
             validateRedeemedTicket: function (request, response) {
                 try {
-                    response
-                        .status(httpStatus.OK)
-                        .json(createResponseBody(request));
+                    controllerUtils.setSuccessResponse(response, createResponseBody(request));
                 } catch (e) {
-                    response
-                        .status(httpStatus.BAD_REQUEST)
-                        .json(createErrorResponseBody(e));
+                    controllerUtils.setFailureResponse(response, e);
                 }
             }
         };
