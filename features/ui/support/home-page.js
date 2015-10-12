@@ -22,18 +22,14 @@
 
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
 var webdriver = require('selenium-webdriver');
-var security = require('../../../controllers/support/security');
+var security = require('../../support/security');
 
 var By = webdriver.By;
 var until = webdriver.until;
 
 function HomePage(driver) {
     this.driver = driver;
-    this.privateKey = fs.readFileSync(path.join(__dirname, '../../../test/private-key.pem'));
-    this.publicKey = fs.readFileSync(path.join(__dirname, '../../../test/public-key.pem'));
 }
 
 HomePage.prototype.clearExpressionText = function () {
@@ -124,11 +120,7 @@ HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorNam
         },
         signature: null
     };
-    randomNumberGenerator.signature = security.createSignature(
-        randomNumberGenerator.content,
-        this.privateKey,
-        this.publicKey
-    );
+    randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
     return this.driver.executeScript(
         "$('#randomNumberGeneratorJson').val('" +
         JSON.stringify(randomNumberGenerator) +

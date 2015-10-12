@@ -22,14 +22,10 @@
 
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
 var req = require('request');
-var security = require('../../../controllers/support/security');
+var security = require('../../support/security');
 
 function IssueTicketService() {
-    this.privateKey = fs.readFileSync(path.join(__dirname, '../../../test/private-key.pem'));
-    this.publicKey = fs.readFileSync(path.join(__dirname, '../../../test/public-key.pem'));
     this.requestBody = {
         evaluateExpressionRequestBody: {}
     };
@@ -61,17 +57,14 @@ IssueTicketService.prototype.setExpression = function (expressionText) {
 };
 
 IssueTicketService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
-    this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator = {
+    var randomNumberGenerator = {
         content: {
             name: randomNumberGeneratorName
         },
         signature: null
     };
-    this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator.signature = security.createSignature(
-        this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator.content,
-        this.privateKey,
-        this.publicKey
-    );
+    randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
+    this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator = randomNumberGenerator;
 };
 
 module.exports = IssueTicketService;
