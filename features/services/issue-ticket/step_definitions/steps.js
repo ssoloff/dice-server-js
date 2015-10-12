@@ -83,7 +83,7 @@ module.exports = function () {
     });
 
     this.Then(/^the response should contain the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
-        expect(this.response.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.name).to.equal(randomNumberGeneratorName);
+        expect(this.response.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content.name).to.equal(randomNumberGeneratorName);
     });
 
     this.Then(/^the response should indicate failure$/, function () {

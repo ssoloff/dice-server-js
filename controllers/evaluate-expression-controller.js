@@ -26,9 +26,10 @@ var _ = require('underscore');
 var controllerUtils = require('./support/controller-utils');
 var dice = require('../lib/dice');
 var httpStatus = require('http-status-codes');
+var security = require('./support/security');
 
 module.exports = {
-    create: function () {
+    create: function (controllerData) {
         function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
             switch (randomNumberGeneratorSpecification.name) {
                 case 'constantMax':
@@ -78,8 +79,29 @@ module.exports = {
             return dice.expressionFormatter.format(expression);
         }
 
+        function getDefaultRandomNumberGeneratorSpecification() {
+            return {
+                name: 'uniform'
+            };
+        }
+
         function getRandomNumberGeneratorSpecification(requestBody) {
-            return requestBody.randomNumberGenerator || {name: 'uniform'};
+            var randomNumberGenerator = requestBody.randomNumberGenerator;
+            if (!randomNumberGenerator) {
+                return getDefaultRandomNumberGeneratorSpecification();
+            }
+
+            if (!isSignatureValid(randomNumberGenerator.content, randomNumberGenerator.signature)) {
+                throw controllerUtils.createControllerError(
+                    httpStatus.BAD_REQUEST,
+                    'random number generator specification signature is invalid'
+                );
+            }
+            return randomNumberGenerator.content;
+        }
+
+        function isSignatureValid(content, signature) {
+            return security.verifySignature(content, signature, controllerData.publicKey);
         }
 
         function parseExpressionText(expressionText, randomNumberGeneratorSpecification) {

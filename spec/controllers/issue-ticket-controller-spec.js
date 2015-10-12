@@ -34,7 +34,9 @@ describe('issueTicketController', function () {
     var responseBody;
 
     function createIssueTicketController(evaluateExpressionController) {
-        evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create();
+        evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create({
+            publicKey: controllerTest.getPublicKey()
+        });
         return require('../../controllers/issue-ticket-controller').create({
             evaluateExpressionController: evaluateExpressionController,
             privateKey: controllerTest.getPrivateKey(),
@@ -53,10 +55,14 @@ describe('issueTicketController', function () {
                     text: '3d6+4'
                 },
                 randomNumberGenerator: {
-                    name: 'constantMax'
+                    content: {
+                        name: 'constantMax'
+                    },
+                    signature: null
                 }
             }
         };
+        requestBody.evaluateExpressionRequestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.evaluateExpressionRequestBody.randomNumberGenerator.content);
         request = controllerTest.createRequest(requestBody);
 
         responseBody = null;
@@ -82,7 +88,10 @@ describe('issueTicketController', function () {
                                     text: '3d6+4'
                                 },
                                 randomNumberGenerator: {
-                                    name: 'constantMax'
+                                    content: {
+                                        name: 'constantMax'
+                                    },
+                                    signature: ja.matchType('object')
                                 }
                             },
                             id: ja.matchType('string'),

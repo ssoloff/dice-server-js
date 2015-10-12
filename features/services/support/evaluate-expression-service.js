@@ -22,9 +22,14 @@
 
 'use strict';
 
+var fs = require('fs');
+var path = require('path');
 var req = require('request');
+var security = require('../../../controllers/support/security');
 
 function EvaluateExpressionService() {
+    this.privateKey = fs.readFileSync(path.join(__dirname, '../../../test/private-key.pem'));
+    this.publicKey = fs.readFileSync(path.join(__dirname, '../../../test/public-key.pem'));
     this.requestBody = {};
 }
 
@@ -51,8 +56,16 @@ EvaluateExpressionService.prototype.setExpression = function (expressionText) {
 
 EvaluateExpressionService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
     this.requestBody.randomNumberGenerator = {
-        name: randomNumberGeneratorName
+        content: {
+            name: randomNumberGeneratorName
+        },
+        signature: null
     };
+    this.requestBody.randomNumberGenerator.signature = security.createSignature(
+        this.requestBody.randomNumberGenerator.content,
+        this.privateKey,
+        this.publicKey
+    );
 };
 
 module.exports = EvaluateExpressionService;

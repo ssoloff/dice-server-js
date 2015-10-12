@@ -36,11 +36,14 @@ function evaluateExpression(expressionText) {
     var requestBody = {
         expression: {
             text: expressionText
-        },
-        randomNumberGenerator: {
-            name: $('#randomNumberGeneratorName').val()
         }
     };
+
+    var randomNumberGeneratorJson = $('#randomNumberGeneratorJson').val();
+    if (randomNumberGeneratorJson) {
+        requestBody.randomNumberGenerator = JSON.parse(randomNumberGeneratorJson);
+    }
+
     $.postJSON('/expression/evaluate', requestBody, processResponse, processErrorResponse);
 }
 

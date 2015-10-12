@@ -23,8 +23,11 @@
 'use strict';
 
 var controllerTest = require('./test-support/controller-test');
+var fs = require('fs');
 var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
+var path = require('path');
+var security = require('../../controllers/support/security');
 
 describe('evaluateExpressionController', function () {
     var controller;
@@ -34,7 +37,9 @@ describe('evaluateExpressionController', function () {
     var responseBody;
 
     function createEvaluateExpressionController() {
-        return require('../../controllers/evaluate-expression-controller').create();
+        return require('../../controllers/evaluate-expression-controller').create({
+            publicKey: controllerTest.getPublicKey()
+        });
     }
 
     beforeEach(function () {
@@ -45,9 +50,13 @@ describe('evaluateExpressionController', function () {
                 text: '3d6+4'
             },
             randomNumberGenerator: {
-                name: 'constantMax'
+                content: {
+                    name: 'constantMax'
+                },
+                signature: null
             }
         };
+        requestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.randomNumberGenerator.content);
         request = controllerTest.createRequest(requestBody);
 
         responseBody = null;
@@ -111,7 +120,8 @@ describe('evaluateExpressionController', function () {
 
             describe('when the uniform random number generator is specified', function () {
                 it('should use the uniform random number generator', function () {
-                    requestBody.randomNumberGenerator.name = 'uniform';
+                    requestBody.randomNumberGenerator.content.name = 'uniform';
+                    requestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.randomNumberGenerator.content);
 
                     controller.evaluateExpression(request, response);
 
@@ -124,7 +134,8 @@ describe('evaluateExpressionController', function () {
 
             describe('when the constantMax random number generator is specified', function () {
                 it('should use the constantMax random number generator', function () {
-                    requestBody.randomNumberGenerator.name = 'constantMax';
+                    requestBody.randomNumberGenerator.content.name = 'constantMax';
+                    requestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.randomNumberGenerator.content);
 
                     controller.evaluateExpression(request, response);
 
@@ -136,7 +147,25 @@ describe('evaluateExpressionController', function () {
 
             describe('when an unknown random number generator is specified', function () {
                 it('should respond with bad request error', function () {
-                    requestBody.randomNumberGenerator.name = '<<UNKNOWN>>';
+                    requestBody.randomNumberGenerator.content.name = '<<UNKNOWN>>';
+                    requestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.randomNumberGenerator.content);
+
+                    controller.evaluateExpression(request, response);
+
+                    expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+                    expect(responseBody.error).toBeDefined();
+                });
+            });
+
+            describe('when random number generator specification has an invalid signature', function () {
+                it('should respond with bad request error', function () {
+                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../test/other-private-key.pem'));
+                    var otherPublicKey = fs.readFileSync(path.join(__dirname, '../../test/other-public-key.pem'));
+                    requestBody.randomNumberGenerator.signature = security.createSignature(
+                        requestBody.randomNumberGenerator.content,
+                        otherPrivateKey, // sign using unauthorized key
+                        otherPublicKey
+                    );
 
                     controller.evaluateExpression(request, response);
 

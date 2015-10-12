@@ -34,7 +34,9 @@ describe('redeemTicketController', function () {
     var responseBody;
 
     function createRedeemTicketController(evaluateExpressionController) {
-        evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create();
+        evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create({
+            publicKey: controllerTest.getPublicKey()
+        });
         return require('../../controllers/redeem-ticket-controller').create({
             evaluateExpressionController: evaluateExpressionController,
             privateKey: controllerTest.getPrivateKey(),
@@ -55,7 +57,10 @@ describe('redeemTicketController', function () {
                             text: '3d6+4'
                         },
                         randomNumberGenerator: {
-                            name: 'constantMax'
+                            content: {
+                                name: 'constantMax'
+                            },
+                            signature: null
                         }
                     },
                     id: '00112233445566778899aabbccddeeff00112233',
@@ -64,6 +69,7 @@ describe('redeemTicketController', function () {
                 signature: null
             }
         };
+        requestBody.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content);
         requestBody.ticket.signature = controllerTest.createSignature(requestBody.ticket.content);
         request = controllerTest.createRequest(requestBody);
 

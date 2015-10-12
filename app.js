@@ -36,7 +36,9 @@ var issueTicketPath = '/ticket/issue';
 var redeemTicketPath = '/ticket/redeem';
 var validateRedeemedTicketPath = '/ticket/validate-redeemed';
 
-var evaluateExpressionController = require('./controllers/evaluate-expression-controller.js').create();
+var evaluateExpressionController = require('./controllers/evaluate-expression-controller.js').create({
+    publicKey: publicKey
+});
 var issueTicketController = require('./controllers/issue-ticket-controller.js').create({
     evaluateExpressionController: evaluateExpressionController,
     privateKey: privateKey,
