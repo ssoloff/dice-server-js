@@ -140,6 +140,48 @@ describe('issueTicketController', function () {
                 });
             });
         });
+
+        describe('when random number generator specification is not provided', function () {
+            it('should use uniform random number generator with seed', function () {
+                requestBody = {
+                    description: 'description',
+                    evaluateExpressionRequestBody: {
+                        expression: {
+                            text: '3d6+4'
+                        }
+                    }
+                };
+                request = controllerTest.createRequest(requestBody);
+
+                controller.issueTicket(request, response);
+
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual({
+                    ticket: {
+                        content: {
+                            description: 'description',
+                            evaluateExpressionRequestBody: {
+                                expression: {
+                                    text: '3d6+4'
+                                },
+                                randomNumberGenerator: {
+                                    content: {
+                                        name: 'uniform',
+                                        options: {
+                                            seed: ja.matchType('number')
+                                        }
+                                    },
+                                    signature: ja.matchType('object')
+                                }
+                            },
+                            id: ja.matchType('string'),
+                            redeemUrl: ja.matchType('string')
+                        },
+                        signature: ja.matchType('object')
+                    }
+                });
+            });
+        });
     });
 });
 

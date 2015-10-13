@@ -48,12 +48,13 @@ module.exports = {
 
         function createTicketContent(request) {
             var requestBody = request.body;
-            var evaluateExpressionResult = evaluateExpression(requestBody.evaluateExpressionRequestBody);
+            var evaluateExpressionRequestBody = getEvaluateExpressionRequestBody(requestBody);
+            var evaluateExpressionResult = evaluateExpression(evaluateExpressionRequestBody);
             var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
             if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
                 return {
                     description: requestBody.description,
-                    evaluateExpressionRequestBody: requestBody.evaluateExpressionRequestBody,
+                    evaluateExpressionRequestBody: evaluateExpressionRequestBody,
                     id: generateTicketId(),
                     redeemUrl: getRedeemTicketUrl(request)
                 };
@@ -70,8 +71,36 @@ module.exports = {
             return controllerUtils.postJson(controllerData.evaluateExpressionController.evaluateExpression, requestBody);
         }
 
+        function generateRandomNumberGeneratorSeed() {
+            var SEED_LENGTH_IN_BYTES = 4;
+            var data = crypto.randomBytes(SEED_LENGTH_IN_BYTES);
+            return data.readUIntBE(0, data.length);
+        }
+
         function generateTicketId() {
             return crypto.randomBytes(20).toString('hex');
+        }
+
+        function getEvaluateExpressionRequestBody(requestBody) {
+            var evaluateExpressionRequestBody = requestBody.evaluateExpressionRequestBody;
+            if (!evaluateExpressionRequestBody.randomNumberGenerator) {
+                var randomNumberGenerator = {
+                    content: {
+                        name: 'uniform',
+                        options: {
+                            seed: generateRandomNumberGeneratorSeed()
+                        }
+                    },
+                    signature: null
+                };
+                randomNumberGenerator.signature = security.createSignature(
+                    randomNumberGenerator.content,
+                    controllerData.privateKey,
+                    controllerData.publicKey
+                );
+                evaluateExpressionRequestBody.randomNumberGenerator = randomNumberGenerator;
+            }
+            return evaluateExpressionRequestBody;
         }
 
         function getRedeemTicketUrl(request) {
