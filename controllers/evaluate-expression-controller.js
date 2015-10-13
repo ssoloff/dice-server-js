@@ -26,7 +26,7 @@ var _ = require('underscore');
 var controllerUtils = require('./support/controller-utils');
 var dice = require('../lib/dice');
 var httpStatus = require('http-status-codes');
-var Random = require('random-js');
+var random = require('./support/random');
 var security = require('./support/security');
 
 module.exports = {
@@ -34,14 +34,10 @@ module.exports = {
         function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
             switch (randomNumberGeneratorSpecification.name) {
                 case 'constantMax':
-                    return function (sides) {
-                        return sides;
-                    };
+                    return random.constantMax();
 
                 case 'uniform':
-                    return function (sides) {
-                        return Random.die(sides)(Random.engines.nativeMath);
-                    };
+                    return random.uniform(randomNumberGeneratorSpecification.options);
             }
 
             throw controllerUtils.createControllerError(
