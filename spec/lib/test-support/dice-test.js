@@ -39,7 +39,7 @@ module.exports = {
      */
     createBagThatProvidesDiceThatAlwaysRollOne: function () {
         function randomNumberGenerator() {
-            return 0.0;
+            return 1;
         }
         return dice.bag.create(randomNumberGenerator);
     },
@@ -58,12 +58,8 @@ module.exports = {
     createDieThatRollsEachSideSuccessively: function (sides) {
         var rollCount = 0;
         function randomNumberGenerator() {
-            function getRandomNumberForIndex(index) {
-                return index / sides;
-            }
-            var randomNumbers = _(sides).times(getRandomNumberForIndex);
-            var roll = randomNumbers[rollCount];
-            rollCount = (rollCount + 1) % randomNumbers.length;
+            var roll = rollCount % sides + 1;
+            rollCount += 1;
             return roll;
         }
         var bag = dice.bag.create(randomNumberGenerator);

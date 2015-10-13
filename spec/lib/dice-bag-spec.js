@@ -69,14 +69,14 @@ describe('diceBag', function () {
         });
 
         describe('.roll', function () {
-            it('should return 1 when random number is minimum value', function () {
-                bag.randomNumberGenerator.and.returnValue(0.0);
+            it('should return 1 when random number is 1', function () {
+                bag.randomNumberGenerator.and.returnValue(1);
                 expect(d6.roll()).toBe(1);
             });
 
-            it('should return <sides> when random number is maximum value', function () {
-                bag.randomNumberGenerator.and.returnValue(1.0 - Number.EPSILON);
-                expect(d6.roll()).toBe(6);
+            it('should return <sides> when random number is <sides>', function () {
+                bag.randomNumberGenerator.and.returnValue(d6.sides);
+                expect(d6.roll()).toBe(d6.sides);
             });
         });
 
