@@ -161,19 +161,42 @@ describe('redeemTicketController', function () {
         });
 
         describe('when ticket has already been redeemed', function () {
-            it('should respond with bad request error', function () {
+            it('should respond with same result as previous redemption', function () {
+                requestBody = {
+                    ticket: {
+                        content: {
+                            description: 'description',
+                            evaluateExpressionRequestBody: {
+                                expression: {
+                                    text: '3d6+4'
+                                },
+                                randomNumberGenerator: {
+                                    content: {
+                                        name: 'uniform',
+                                        options: {
+                                            seed: [1, 2, 3]
+                                        }
+                                    },
+                                    signature: null
+                                }
+                            },
+                            id: '00112233445566778899aabbccddeeff00112233',
+                            redeemUrl: 'http://host:1234/redeemTicketPath'
+                        },
+                        signature: null
+                    }
+                };
+                requestBody.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content);
+                requestBody.ticket.signature = controllerTest.createSignature(requestBody.ticket.content);
+                request = controllerTest.createRequest(requestBody);
                 controller.redeemTicket(request, response);
-                expect(responseBody.redeemedTicket).toBeDefined(); // sanity check
+                var firstResponseBody = responseBody;
                 responseBody = null;
 
                 controller.redeemTicket(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
-                expect(responseBody).toEqual({
-                    error: {
-                        message: ja.matchType('string')
-                    }
-                });
+                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+                expect(responseBody).toEqual(firstResponseBody);
             });
         });
     });

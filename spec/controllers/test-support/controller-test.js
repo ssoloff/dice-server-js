@@ -126,6 +126,7 @@ module.exports = {
      *      and `expected` are not response body objects.
      */
     isResponseBodyEqual: function (actual, expected) {
+        // istanbul ignore else
         if (ja.isEqual(expected, actual, true)) {
             return true;
         }

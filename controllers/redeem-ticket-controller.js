@@ -28,8 +28,6 @@ var security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {
-        var redeemedTickets = {};
-
         function createRedeemedTicket(request) {
             var redeemedTicketContent = createRedeemedTicketContent(request);
             return {
@@ -62,10 +60,8 @@ module.exports = {
         function createResponseBody(request) {
             validateRequest(request);
 
-            var redeemedTicket = createRedeemedTicket(request);
-            recordRedeemedTicket(redeemedTicket.content.id);
             return {
-                redeemedTicket: redeemedTicket
+                redeemedTicket: createRedeemedTicket(request)
             };
         }
 
@@ -85,25 +81,12 @@ module.exports = {
             return security.verifySignature(content, signature, controllerData.publicKey);
         }
 
-        function isTicketRedeemed(ticketId) {
-            return redeemedTickets[ticketId];
-        }
-
-        function recordRedeemedTicket(ticketId) {
-            redeemedTickets[ticketId] = true;
-        }
-
         function validateRequest(request) {
             var ticket = request.body.ticket;
             if (!isSignatureValid(ticket.content, ticket.signature)) {
                 throw controllerUtils.createControllerError(
                     httpStatus.BAD_REQUEST,
                     'ticket signature is invalid'
-                );
-            } else if (isTicketRedeemed(ticket.content.id)) {
-                throw controllerUtils.createControllerError(
-                    httpStatus.BAD_REQUEST,
-                    'ticket "' + ticket.content.id + '" has already been redeemed'
                 );
             }
         }

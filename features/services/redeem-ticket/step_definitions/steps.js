@@ -38,6 +38,7 @@ module.exports = function () {
             body: null,
             status: null
         };
+        this.previousResponse = null;
         this.ticket = {
             description: null,
             forceInvalidSignature: false,
@@ -48,18 +49,18 @@ module.exports = function () {
     });
 
     this.Given(/^a ticket$/, function () {
-        this.issueTicketService.setExpression('42');
+        this.issueTicketService.setExpression('3d6');
         this.issueTicketService.setDescription('description');
     });
 
     this.Given(/^a ticket that has already been redeemed$/, function () {
-        this.issueTicketService.setExpression('42');
+        this.issueTicketService.setExpression('3d6');
         this.issueTicketService.setDescription('description');
         this.ticket.forceRedeemed = true;
     });
 
     this.Given(/^a ticket with an invalid signature$/, function () {
-        this.issueTicketService.setExpression('42');
+        this.issueTicketService.setExpression('3d6');
         this.issueTicketService.setDescription('description');
         this.ticket.forceInvalidSignature = true;
     });
@@ -99,6 +100,7 @@ module.exports = function () {
             }.bind(runner);
             if (this.ticket.forceRedeemed) {
                 this.redeemTicketService.call(function () {
+                    this.previousResponse = this.response;
                     this.redeemTicketService.call(redeemTicketServiceResponseHandler);
                 }.bind(runner));
             } else {
@@ -131,6 +133,10 @@ module.exports = function () {
 
     this.Then(/^the response should contain the ticket identifier$/, function () {
         expect(this.response.body.redeemedTicket.content.id).to.equal(this.ticket.id);
+    });
+
+    this.Then(/^the response should equal the previous response$/, function () {
+        expect(this.response).to.equal(this.previousResponse);
     });
 
     this.Then(/^the response should indicate failure$/, function () {

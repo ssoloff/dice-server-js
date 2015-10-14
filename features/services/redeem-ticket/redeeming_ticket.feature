@@ -27,8 +27,3 @@ Scenario: Failing to redeem a ticket with an invalid signature
     When the redeem ticket service is invoked
     Then the response should indicate failure
 
-Scenario: Failing to redeem a ticket that has already been redeemed
-    Given a ticket that has already been redeemed
-    When the redeem ticket service is invoked
-    Then the response should indicate failure
-
