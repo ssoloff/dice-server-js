@@ -50,10 +50,22 @@ describe('random', function () {
             });
         });
 
-        describe('when seed provided', function () {
+        describe('when number seed provided', function () {
             it('should use provided seed', function () {
                 var randomNumberGenerator1 = random.uniform({seed: 42});
                 var randomNumberGenerator2 = random.uniform({seed: 42});
+
+                var randomValue1 = randomNumberGenerator1(SIDES);
+                var randomValue2 = randomNumberGenerator2(SIDES);
+
+                expect(randomValue1).toBe(randomValue2);
+            });
+        });
+
+        describe('when array seed provided', function () {
+            it('should use provided seed', function () {
+                var randomNumberGenerator1 = random.uniform({seed: [42, 2112]});
+                var randomNumberGenerator2 = random.uniform({seed: [42, 2112]});
 
                 var randomValue1 = randomNumberGenerator1(SIDES);
                 var randomValue2 = randomNumberGenerator2(SIDES);

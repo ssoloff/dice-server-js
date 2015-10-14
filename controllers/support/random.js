@@ -22,6 +22,7 @@
 
 'use strict';
 
+var _ = require('underscore');
 var Random = require('random-js');
 
 module.exports = {
@@ -34,7 +35,11 @@ module.exports = {
     uniform: function (options) {
         var engine = Random.engines.mt19937();
         if (options && options.seed) {
-            engine = engine.seed(options.seed);
+            if (_.isArray(options.seed)) {
+                engine = engine.seedWithArray(options.seed);
+            } else {
+                engine = engine.seed(options.seed);
+            }
         } else {
             engine = engine.autoSeed();
         }

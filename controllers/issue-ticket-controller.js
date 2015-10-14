@@ -72,9 +72,14 @@ module.exports = {
         }
 
         function generateRandomNumberGeneratorSeed() {
-            var SEED_LENGTH_IN_BYTES = 4;
-            var data = crypto.randomBytes(SEED_LENGTH_IN_BYTES);
-            return data.readUIntBE(0, data.length);
+            var SEED_ELEMENT_LENGTH_IN_BYTES = 4;
+            var SEED_ARRAY_LENGTH = 16;
+            var data = crypto.randomBytes(SEED_ARRAY_LENGTH * SEED_ELEMENT_LENGTH_IN_BYTES);
+            var seed = [];
+            for (var i = 0; i < SEED_ARRAY_LENGTH; i += 1) {
+                seed[i] = data.readUIntBE(i * SEED_ELEMENT_LENGTH_IN_BYTES, SEED_ELEMENT_LENGTH_IN_BYTES);
+            }
+            return seed;
         }
 
         function generateTicketId() {

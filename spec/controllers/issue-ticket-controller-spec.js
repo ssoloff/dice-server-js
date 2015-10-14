@@ -168,7 +168,7 @@ describe('issueTicketController', function () {
                                     content: {
                                         name: 'uniform',
                                         options: {
-                                            seed: ja.matchType('number')
+                                            seed: ja.matchType('object')
                                         }
                                     },
                                     signature: ja.matchType('object')
