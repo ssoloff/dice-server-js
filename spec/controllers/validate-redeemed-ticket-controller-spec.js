@@ -30,7 +30,6 @@ describe('validateRedeemedTicketController', function () {
     var controller;
     var request;
     var response;
-    var requestBody;
     var responseBody;
 
     function createValidateRedeemedTicketController() {
@@ -39,39 +38,51 @@ describe('validateRedeemedTicketController', function () {
         });
     }
 
+    function modifyRequestBody(callback) {
+        modifyRequestBodyWithoutSignatureUpdate(callback);
+
+        var redeemedTicket = request.body.redeemedTicket;
+        redeemedTicket.signature = controllerTest.createSignature(redeemedTicket.content);
+    }
+
+    function modifyRequestBodyWithoutSignatureUpdate(callback) {
+        callback();
+    }
+
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
-        requestBody = {
-            redeemedTicket: {
-                content: {
-                    description: 'description',
-                    evaluateExpressionResponseBody: {
-                        expression: {
-                            canonicalText: 'sum(roll(3, d6)) + 4',
-                            text: '3d6+4'
+        request = controllerTest.createRequest();
+        modifyRequestBody(function () {
+            request.body = {
+                redeemedTicket: {
+                    content: {
+                        description: 'description',
+                        evaluateExpressionResponseBody: {
+                            expression: {
+                                canonicalText: 'sum(roll(3, d6)) + 4',
+                                text: '3d6+4'
+                            },
+                            expressionResult: {
+                                text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
+                                value: 22
+                            },
+                            randomNumberGenerator: {
+                                name: 'constantMax'
+                            }
                         },
-                        expressionResult: {
-                            text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                            value: 22
-                        },
-                        randomNumberGenerator: {
-                            name: 'constantMax'
-                        }
+                        id: '00112233445566778899aabbccddeeff00112233',
+                        validateUrl: 'http://host:1234/validateRedeemedTicketPath'
                     },
-                    id: '00112233445566778899aabbccddeeff00112233',
-                    validateUrl: 'http://host:1234/validateRedeemedTicketPath'
-                },
-                signature: null
-            }
-        };
-        requestBody.redeemedTicket.signature = controllerTest.createSignature(requestBody.redeemedTicket.content);
-        request = controllerTest.createRequest(requestBody);
+                    signature: null
+                }
+            };
+        });
 
-        responseBody = null;
         response = controllerTest.createResponse(function (json) {
             responseBody = json;
         });
+        responseBody = null;
 
         controller = createValidateRedeemedTicketController();
     });
@@ -88,7 +99,9 @@ describe('validateRedeemedTicketController', function () {
 
         describe('when redeemed ticket has an invalid signature', function () {
             it('should respond with bad request error', function () {
-                requestBody.redeemedTicket.content.description += '...'; // simulate forged content
+                modifyRequestBodyWithoutSignatureUpdate(function () {
+                    request.body.redeemedTicket.content.description += '...'; // simulate forged content
+                });
 
                 controller.validateRedeemedTicket(request, response);
 

@@ -33,7 +33,6 @@ describe('evaluateExpressionController', function () {
     var controller;
     var request;
     var response;
-    var requestBody;
     var responseBody;
 
     function createEvaluateExpressionController() {
@@ -42,27 +41,37 @@ describe('evaluateExpressionController', function () {
         });
     }
 
+    function modifyRequestBody(callback) {
+        callback();
+
+        var randomNumberGenerator = request.body.randomNumberGenerator;
+        if (randomNumberGenerator) {
+            randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
+        }
+    }
+
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
-        requestBody = {
-            expression: {
-                text: '3d6+4'
-            },
-            randomNumberGenerator: {
-                content: {
-                    name: 'constantMax'
+        request = controllerTest.createRequest();
+        modifyRequestBody(function () {
+            request.body = {
+                expression: {
+                    text: '3d6+4'
                 },
-                signature: null
-            }
-        };
-        requestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.randomNumberGenerator.content);
-        request = controllerTest.createRequest(requestBody);
+                randomNumberGenerator: {
+                    content: {
+                        name: 'constantMax'
+                    },
+                    signature: null
+                }
+            };
+        });
 
-        responseBody = null;
         response = controllerTest.createResponse(function (json) {
             responseBody = json;
         });
+        responseBody = null;
 
         controller = createEvaluateExpressionController();
     });
@@ -91,7 +100,9 @@ describe('evaluateExpressionController', function () {
 
         describe('when expression is malformed', function () {
             beforeEach(function () {
-                requestBody.expression.text = '<<INVALID>>';
+                modifyRequestBody(function () {
+                    request.body.expression.text = '<<INVALID>>';
+                });
             });
 
             it('should respond with bad request error', function () {
@@ -109,7 +120,9 @@ describe('evaluateExpressionController', function () {
         describe('specifying a random number generator', function () {
             describe('when the random number generator is not specified', function () {
                 it('should use the default random number generator', function () {
-                    delete requestBody.randomNumberGenerator;
+                    modifyRequestBody(function () {
+                        delete request.body.randomNumberGenerator;
+                    });
 
                     controller.evaluateExpression(request, response);
 
@@ -120,8 +133,9 @@ describe('evaluateExpressionController', function () {
 
             describe('when the uniform random number generator is specified', function () {
                 it('should use the uniform random number generator', function () {
-                    requestBody.randomNumberGenerator.content.name = 'uniform';
-                    requestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.randomNumberGenerator.content);
+                    modifyRequestBody(function () {
+                        request.body.randomNumberGenerator.content.name = 'uniform';
+                    });
 
                     controller.evaluateExpression(request, response);
 
@@ -134,8 +148,9 @@ describe('evaluateExpressionController', function () {
 
             describe('when the constantMax random number generator is specified', function () {
                 it('should use the constantMax random number generator', function () {
-                    requestBody.randomNumberGenerator.content.name = 'constantMax';
-                    requestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.randomNumberGenerator.content);
+                    modifyRequestBody(function () {
+                        request.body.randomNumberGenerator.content.name = 'constantMax';
+                    });
 
                     controller.evaluateExpression(request, response);
 
@@ -147,8 +162,9 @@ describe('evaluateExpressionController', function () {
 
             describe('when an unknown random number generator is specified', function () {
                 it('should respond with bad request error', function () {
-                    requestBody.randomNumberGenerator.content.name = '<<UNKNOWN>>';
-                    requestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.randomNumberGenerator.content);
+                    modifyRequestBody(function () {
+                        request.body.randomNumberGenerator.content.name = '<<UNKNOWN>>';
+                    });
 
                     controller.evaluateExpression(request, response);
 
@@ -161,8 +177,8 @@ describe('evaluateExpressionController', function () {
                 it('should respond with bad request error', function () {
                     var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../test/other-private-key.pem'));
                     var otherPublicKey = fs.readFileSync(path.join(__dirname, '../../test/other-public-key.pem'));
-                    requestBody.randomNumberGenerator.signature = security.createSignature(
-                        requestBody.randomNumberGenerator.content,
+                    request.body.randomNumberGenerator.signature = security.createSignature(
+                        request.body.randomNumberGenerator.content,
                         otherPrivateKey, // sign using unauthorized key
                         otherPublicKey
                     );
@@ -178,7 +194,9 @@ describe('evaluateExpressionController', function () {
         describe('evaluating an expression whose result value is not a finite number', function () {
             describe('when result value is not a number', function () {
                 it('should respond with bad request error', function () {
-                    requestBody.expression.text = 'd6';
+                    modifyRequestBody(function () {
+                        request.body.expression.text = 'd6';
+                    });
 
                     controller.evaluateExpression(request, response);
 
@@ -189,7 +207,9 @@ describe('evaluateExpressionController', function () {
 
             describe('when result value is NaN', function () {
                 it('should respond with bad request error', function () {
-                    requestBody.expression.text = 'round(d6)';
+                    modifyRequestBody(function () {
+                        request.body.expression.text = 'round(d6)';
+                    });
 
                     controller.evaluateExpression(request, response);
 

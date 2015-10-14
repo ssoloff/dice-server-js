@@ -30,7 +30,6 @@ describe('issueTicketController', function () {
     var controller;
     var request;
     var response;
-    var requestBody;
     var responseBody;
 
     function createIssueTicketController(evaluateExpressionController) {
@@ -45,30 +44,40 @@ describe('issueTicketController', function () {
         });
     }
 
+    function modifyRequestBody(callback) {
+        callback();
+
+        var randomNumberGenerator = request.body.evaluateExpressionRequestBody.randomNumberGenerator;
+        if (randomNumberGenerator) {
+            randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
+        }
+    }
+
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
-        requestBody = {
-            description: 'description',
-            evaluateExpressionRequestBody: {
-                expression: {
-                    text: '3d6+4'
-                },
-                randomNumberGenerator: {
-                    content: {
-                        name: 'constantMax'
+        request = controllerTest.createRequest();
+        modifyRequestBody(function () {
+            request.body = {
+                description: 'description',
+                evaluateExpressionRequestBody: {
+                    expression: {
+                        text: '3d6+4'
                     },
-                    signature: null
+                    randomNumberGenerator: {
+                        content: {
+                            name: 'constantMax'
+                        },
+                        signature: null
+                    }
                 }
-            }
-        };
-        requestBody.evaluateExpressionRequestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.evaluateExpressionRequestBody.randomNumberGenerator.content);
-        request = controllerTest.createRequest(requestBody);
+            };
+        });
 
-        responseBody = null;
         response = controllerTest.createResponse(function (json) {
             responseBody = json;
         });
+        responseBody = null;
 
         controller = createIssueTicketController();
     });
@@ -143,15 +152,16 @@ describe('issueTicketController', function () {
 
         describe('when random number generator specification is not provided', function () {
             it('should use uniform random number generator with seed', function () {
-                requestBody = {
-                    description: 'description',
-                    evaluateExpressionRequestBody: {
-                        expression: {
-                            text: '3d6+4'
+                modifyRequestBody(function () {
+                    request.body = {
+                        description: 'description',
+                        evaluateExpressionRequestBody: {
+                            expression: {
+                                text: '3d6+4'
+                            }
                         }
-                    }
-                };
-                request = controllerTest.createRequest(requestBody);
+                    };
+                });
 
                 controller.issueTicket(request, response);
 

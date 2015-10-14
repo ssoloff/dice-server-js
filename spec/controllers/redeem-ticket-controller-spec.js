@@ -30,7 +30,6 @@ describe('redeemTicketController', function () {
     var controller;
     var request;
     var response;
-    var requestBody;
     var responseBody;
 
     function createRedeemTicketController(evaluateExpressionController) {
@@ -45,38 +44,52 @@ describe('redeemTicketController', function () {
         });
     }
 
+    function modifyRequestBody(callback) {
+        modifyRequestBodyWithoutSignatureUpdate(callback);
+
+        var randomNumberGenerator = request.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator;
+        randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
+
+        var ticket = request.body.ticket;
+        ticket.signature = controllerTest.createSignature(ticket.content);
+    }
+
+    function modifyRequestBodyWithoutSignatureUpdate(callback) {
+        callback();
+    }
+
     beforeEach(function () {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
-        requestBody = {
-            ticket: {
-                content: {
-                    description: 'description',
-                    evaluateExpressionRequestBody: {
-                        expression: {
-                            text: '3d6+4'
-                        },
-                        randomNumberGenerator: {
-                            content: {
-                                name: 'constantMax'
+        request = controllerTest.createRequest();
+        modifyRequestBody(function () {
+            request.body = {
+                ticket: {
+                    content: {
+                        description: 'description',
+                        evaluateExpressionRequestBody: {
+                            expression: {
+                                text: '3d6+4'
                             },
-                            signature: null
-                        }
+                            randomNumberGenerator: {
+                                content: {
+                                    name: 'constantMax'
+                                },
+                                signature: null
+                            }
+                        },
+                        id: '00112233445566778899aabbccddeeff00112233',
+                        redeemUrl: 'http://host:1234/redeemTicketPath'
                     },
-                    id: '00112233445566778899aabbccddeeff00112233',
-                    redeemUrl: 'http://host:1234/redeemTicketPath'
-                },
-                signature: null
-            }
-        };
-        requestBody.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content);
-        requestBody.ticket.signature = controllerTest.createSignature(requestBody.ticket.content);
-        request = controllerTest.createRequest(requestBody);
+                    signature: null
+                }
+            };
+        });
 
-        responseBody = null;
         response = controllerTest.createResponse(function (json) {
             responseBody = json;
         });
+        responseBody = null;
 
         controller = createRedeemTicketController();
     });
@@ -147,7 +160,9 @@ describe('redeemTicketController', function () {
 
         describe('when ticket has an invalid signature', function () {
             it('should respond with bad request error', function () {
-                requestBody.ticket.content.description += '...'; // simulate forged content
+                modifyRequestBodyWithoutSignatureUpdate(function () {
+                    request.body.ticket.content.description += '...'; // simulate forged content
+                });
 
                 controller.redeemTicket(request, response);
 
@@ -162,33 +177,32 @@ describe('redeemTicketController', function () {
 
         describe('when ticket has already been redeemed', function () {
             it('should respond with same result as previous redemption', function () {
-                requestBody = {
-                    ticket: {
-                        content: {
-                            description: 'description',
-                            evaluateExpressionRequestBody: {
-                                expression: {
-                                    text: '3d6+4'
-                                },
-                                randomNumberGenerator: {
-                                    content: {
-                                        name: 'uniform',
-                                        options: {
-                                            seed: [1, 2, 3]
-                                        }
+                modifyRequestBody(function () {
+                    request.body = {
+                        ticket: {
+                            content: {
+                                description: 'description',
+                                evaluateExpressionRequestBody: {
+                                    expression: {
+                                        text: '3d6+4'
                                     },
-                                    signature: null
-                                }
+                                    randomNumberGenerator: {
+                                        content: {
+                                            name: 'uniform',
+                                            options: {
+                                                seed: [1, 2, 3]
+                                            }
+                                        },
+                                        signature: null
+                                    }
+                                },
+                                id: '00112233445566778899aabbccddeeff00112233',
+                                redeemUrl: 'http://host:1234/redeemTicketPath'
                             },
-                            id: '00112233445566778899aabbccddeeff00112233',
-                            redeemUrl: 'http://host:1234/redeemTicketPath'
-                        },
-                        signature: null
-                    }
-                };
-                requestBody.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.signature = controllerTest.createSignature(requestBody.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content);
-                requestBody.ticket.signature = controllerTest.createSignature(requestBody.ticket.content);
-                request = controllerTest.createRequest(requestBody);
+                            signature: null
+                        }
+                    };
+                });
                 controller.redeemTicket(request, response);
                 var firstResponseBody = responseBody;
                 responseBody = null;

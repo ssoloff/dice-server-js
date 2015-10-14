@@ -36,13 +36,11 @@ module.exports = {
     /**
      * Creates a new request for a controller.
      *
-     * @param {Object!} body - The request body.
-     *
      * @returns {Object!} A new request.
      */
-    createRequest: function (body) {
+    createRequest: function () {
         return {
-            body: body,
+            body: null,
             get: function () {
                 return 'host:1234';
             },
