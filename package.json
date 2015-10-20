@@ -31,6 +31,9 @@
     "request": "~2.65.0",
     "selenium-webdriver": "~2.47.0"
   },
+  "engines": {
+    "node": ">= 4.2.1"
+  },
   "scripts": {
     "test": "make unit-test"
   },
