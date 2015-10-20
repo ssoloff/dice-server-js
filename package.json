@@ -21,14 +21,14 @@
     "csslint": "~0.10.0",
     "cucumber": "~0.6.0",
     "html-validator-cli": "~1.1.0",
-    "istanbul": "~0.3.21",
+    "istanbul": "~0.4.0",
     "jasmine": "~2.3.2",
     "jison": "~0.4.15",
-    "jscs": "~2.2.1",
+    "jscs": "~2.3.5",
     "jsdoc": "~3.3.3",
     "jshint": "~2.8.0",
     "json-assert": "~1.0.2",
-    "request": "~2.64.0",
+    "request": "~2.65.0",
     "selenium-webdriver": "~2.47.0"
   },
   "scripts": {
