@@ -30,7 +30,7 @@ var expect = chai.expect;
 module.exports = function () {
     this.World = world.World;
 
-    this.Before(function (callback) {
+    this.Before(function (scenario, callback) {
         this.homePage = world.createHomePage();
         callback();
     });

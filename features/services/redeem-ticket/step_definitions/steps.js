@@ -31,7 +31,7 @@ var expect = chai.expect;
 module.exports = function () {
     this.World = world.World;
 
-    this.Before(function (callback) {
+    this.Before(function (scenario, callback) {
         this.issueTicketService = world.createIssueTicketService();
         this.redeemTicketService = world.createRedeemTicketService();
         this.response = {
