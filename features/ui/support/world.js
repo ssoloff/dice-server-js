@@ -22,30 +22,21 @@
 
 'use strict';
 
+var driver = require('../support/driver');
 var HomePage = require('../support/home-page');
-var webdriver = require('selenium-webdriver');
-
-var driver = new webdriver.Builder()
-    .withCapabilities(webdriver.Capabilities.firefox())
-    .build();
-
-function createHomePage() {
-    return new HomePage(driver);
-}
-
-function getDriver() {
-    return driver;
-}
 
 function World(callback) {
-    this.driver = driver;
+    this.createHomePage = function () {
+        return new HomePage(driver);
+    };
+
     // NB: wait until browser is open before proceeding
-    this.driver.getTitle().then(function () {
+    driver.getTitle().then(function () {
         callback();
     });
 }
 
-module.exports.World = World;
-module.exports.createHomePage = createHomePage;
-module.exports.getDriver = getDriver;
+module.exports = function () {
+    this.World = World;
+};
 

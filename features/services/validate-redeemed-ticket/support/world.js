@@ -26,24 +26,21 @@ var IssueTicketService = require('../../support/issue-ticket-service');
 var RedeemTicketService = require('../../support/redeem-ticket-service');
 var ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service');
 
-function createIssueTicketService() {
-    return new IssueTicketService();
-}
-
-function createRedeemTicketService() {
-    return new RedeemTicketService();
-}
-
-function createValidateRedeemedTicketService() {
-    return new ValidateRedeemedTicketService();
-}
-
 function World(callback) {
+    this.createIssueTicketService = function () {
+        return new IssueTicketService();
+    };
+    this.createRedeemTicketService = function () {
+        return new RedeemTicketService();
+    };
+    this.createValidateRedeemedTicketService = function () {
+        return new ValidateRedeemedTicketService();
+    };
+
     callback();
 }
 
-module.exports.World = World;
-module.exports.createIssueTicketService = createIssueTicketService;
-module.exports.createRedeemTicketService = createRedeemTicketService;
-module.exports.createValidateRedeemedTicketService = createValidateRedeemedTicketService;
+module.exports = function () {
+    this.World = World;
+};
 

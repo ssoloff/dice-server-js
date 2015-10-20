@@ -22,13 +22,11 @@
 
 'use strict';
 
-var driver = require('../support/driver');
+var webdriver = require('selenium-webdriver');
 
-module.exports = function () {
-    this.registerHandler('AfterFeatures', function (event, callback) {
-        driver.quit().then(function () {
-            callback();
-        });
-    });
-};
+var driver = new webdriver.Builder()
+    .withCapabilities(webdriver.Capabilities.firefox())
+    .build();
+
+module.exports = driver;
 

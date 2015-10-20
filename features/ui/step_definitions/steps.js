@@ -23,15 +23,12 @@
 'use strict';
 
 var chai = require('chai');
-var world = require('../support/world');
 
 var expect = chai.expect;
 
 module.exports = function () {
-    this.World = world.World;
-
     this.Before(function (scenario, callback) {
-        this.homePage = world.createHomePage();
+        this.homePage = this.createHomePage();
         callback();
     });
 

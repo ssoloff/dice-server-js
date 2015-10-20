@@ -24,16 +24,13 @@
 
 var chai = require('chai');
 var httpStatus = require('http-status-codes');
-var world = require('../support/world');
 
 var expect = chai.expect;
 
 module.exports = function () {
-    this.World = world.World;
-
     this.Before(function (scenario, callback) {
-        this.issueTicketService = world.createIssueTicketService();
-        this.redeemTicketService = world.createRedeemTicketService();
+        this.issueTicketService = this.createIssueTicketService();
+        this.redeemTicketService = this.createRedeemTicketService();
         this.response = {
             body: null,
             status: null
