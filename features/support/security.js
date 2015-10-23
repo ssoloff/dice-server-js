@@ -24,7 +24,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var security = require('../../controllers/support/security');
+var security = require('../../app/controllers/support/security');
 
 module.exports = {
     createSignature: function (payload) {

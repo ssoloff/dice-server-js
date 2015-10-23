@@ -24,7 +24,7 @@
 
 var _ = require('underscore');
 var controllerUtils = require('./support/controller-utils');
-var dice = require('../lib/dice');
+var dice = require('../../lib/dice');
 var httpStatus = require('http-status-codes');
 var random = require('./support/random');
 var security = require('./support/security');

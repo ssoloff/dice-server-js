@@ -33,10 +33,10 @@ describe('issueTicketController', function () {
     var responseBody;
 
     function createIssueTicketController(evaluateExpressionController) {
-        evaluateExpressionController = evaluateExpressionController || require('../../controllers/evaluate-expression-controller').create({
+        evaluateExpressionController = evaluateExpressionController || require('../../../app/controllers/evaluate-expression-controller').create({
             publicKey: controllerTest.getPublicKey()
         });
-        return require('../../controllers/issue-ticket-controller').create({
+        return require('../../../app/controllers/issue-ticket-controller').create({
             evaluateExpressionController: evaluateExpressionController,
             privateKey: controllerTest.getPrivateKey(),
             publicKey: controllerTest.getPublicKey(),

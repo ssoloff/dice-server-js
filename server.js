@@ -22,24 +22,16 @@
 
 'use strict';
 
-var security = require('../../app/controllers/support/security');
+var express = require('express');
+var fs = require('fs');
+var path = require('path');
 
-function hasValidSignature(obj) {
-    return security.verifySignature(obj.content, obj.signature);
-}
+var privateKey = fs.readFileSync(process.argv[2]);
+var publicKey = fs.readFileSync(process.argv[3]);
 
-beforeEach(function () {
-    jasmine.addMatchers({
-        toBeSigned: function () {
-            return {
-                compare: function (obj) {
-                    return {
-                        message: 'Expected object to have a valid signature.',
-                        pass: hasValidSignature(obj)
-                    };
-                }
-            };
-        }
-    });
-});
+var app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+require('./app/routes')(app, privateKey, publicKey);
+
+app.listen(3000);
 

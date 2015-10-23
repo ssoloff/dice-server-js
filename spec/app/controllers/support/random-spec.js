@@ -22,7 +22,7 @@
 
 'use strict';
 
-var random = require('../../../controllers/support/random');
+var random = require('../../../../app/controllers/support/random');
 
 describe('random', function () {
     var SIDES = 0xFFFFFFFF;

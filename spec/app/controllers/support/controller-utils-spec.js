@@ -22,20 +22,31 @@
 
 'use strict';
 
-var ControllerError = require('../../../controllers/support/controller-error');
+var controllerTest = require('../test-support/controller-test');
+var controllerUtils = require('../../../../app/controllers/support/controller-utils');
+var httpStatus = require('http-status-codes');
 
-describe('ControllerError', function () {
-    describe('.constructor', function () {
-        it('should use a default message if one is not provided', function () {
-            var error = new ControllerError(200, null);
+describe('controllerUtils', function () {
+    describe('.createControllerErrorFromResponse', function () {
+        describe('when response body does not contain an error', function () {
+            it('should create error with empty message', function () {
+                var e = controllerUtils.createControllerErrorFromResponse(httpStatus.INTERNAL_SERVER_ERROR, {});
 
-            expect(error.message).not.toBeNull();
+                expect(e.message).toBe('');
+            });
         });
+    });
 
-        it('should use a default status if one is not provided', function () {
-            var error = new ControllerError(null, 'message');
+    describe('.setFailureResponse', function () {
+        describe('when error is not an instance of ControllerError', function () {
+            it('should set response status to internal server error', function () {
+                var response = controllerTest.createResponse(function () {
+                });
 
-            expect(error.status).not.toBeNull();
+                controllerUtils.setFailureResponse(response, new Error('message'));
+
+                expect(response.status).toHaveBeenCalledWith(httpStatus.INTERNAL_SERVER_ERROR);
+            });
         });
     });
 });

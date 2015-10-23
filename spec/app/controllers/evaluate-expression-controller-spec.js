@@ -27,7 +27,7 @@ var fs = require('fs');
 var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 var path = require('path');
-var security = require('../../controllers/support/security');
+var security = require('../../../app/controllers/support/security');
 
 describe('evaluateExpressionController', function () {
     var controller;
@@ -36,7 +36,7 @@ describe('evaluateExpressionController', function () {
     var responseBody;
 
     function createEvaluateExpressionController() {
-        return require('../../controllers/evaluate-expression-controller').create({
+        return require('../../../app/controllers/evaluate-expression-controller').create({
             publicKey: controllerTest.getPublicKey()
         });
     }
@@ -175,8 +175,8 @@ describe('evaluateExpressionController', function () {
 
             describe('when random number generator specification has an invalid signature', function () {
                 it('should respond with bad request error', function () {
-                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../test/other-private-key.pem'));
-                    var otherPublicKey = fs.readFileSync(path.join(__dirname, '../../test/other-public-key.pem'));
+                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../../test/other-private-key.pem'));
+                    var otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../test/other-public-key.pem'));
                     request.body.randomNumberGenerator.signature = security.createSignature(
                         request.body.randomNumberGenerator.content,
                         otherPrivateKey, // sign using unauthorized key

@@ -8,9 +8,9 @@ install:
     - npm install
 script:
     - make all
-    - make start-app
+    - make start-server
     - make acceptance-test
-    - make stop-app
+    - make stop-server
     - make docs
     - make coverage
 after_script:
