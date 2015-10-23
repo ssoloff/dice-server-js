@@ -25,15 +25,10 @@
 var driver = require('../support/driver');
 var HomePage = require('../support/home-page');
 
-function World(callback) {
+function World() {
     this.createHomePage = function () {
         return new HomePage(driver);
     };
-
-    // NB: wait until browser is open before proceeding
-    driver.getTitle().then(function () {
-        callback();
-    });
 }
 
 module.exports = function () {

@@ -24,12 +24,10 @@
 
 var IssueTicketService = require('../../support/issue-ticket-service');
 
-function World(callback) {
+function World() {
     this.createIssueTicketService = function () {
         return new IssueTicketService();
     };
-
-    callback();
 }
 
 module.exports = function () {

@@ -25,15 +25,13 @@
 var IssueTicketService = require('../../support/issue-ticket-service');
 var RedeemTicketService = require('../../support/redeem-ticket-service');
 
-function World(callback) {
+function World() {
     this.createIssueTicketService = function () {
         return new IssueTicketService();
     };
     this.createRedeemTicketService = function () {
         return new RedeemTicketService();
     };
-
-    callback();
 }
 
 module.exports = function () {

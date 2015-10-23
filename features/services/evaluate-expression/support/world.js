@@ -24,12 +24,10 @@
 
 var EvaluateExpressionService = require('../../support/evaluate-expression-service');
 
-function World(callback) {
+function World() {
     this.createEvaluateExpressionService = function () {
         return new EvaluateExpressionService();
     };
-
-    callback();
 }
 
 module.exports = function () {

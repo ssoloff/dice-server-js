@@ -26,7 +26,7 @@ var IssueTicketService = require('../../support/issue-ticket-service');
 var RedeemTicketService = require('../../support/redeem-ticket-service');
 var ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service');
 
-function World(callback) {
+function World() {
     this.createIssueTicketService = function () {
         return new IssueTicketService();
     };
@@ -36,8 +36,6 @@ function World(callback) {
     this.createValidateRedeemedTicketService = function () {
         return new ValidateRedeemedTicketService();
     };
-
-    callback();
 }
 
 module.exports = function () {
