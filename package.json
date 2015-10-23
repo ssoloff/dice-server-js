@@ -16,7 +16,7 @@
     "underscore": "~1.8.3"
   },
   "devDependencies": {
-    "chai": "~3.3.0",
+    "chai": "~3.4.0",
     "coveralls": "~2.11.4",
     "csslint": "~0.10.0",
     "cucumber": "~0.7.0",
