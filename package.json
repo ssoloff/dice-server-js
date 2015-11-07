@@ -20,16 +20,16 @@
     "coveralls": "~2.11.4",
     "csslint": "~0.10.0",
     "cucumber": "~0.8.1",
-    "html-validator-cli": "~1.1.0",
+    "html-validator-cli": "~2.0.0",
     "istanbul": "~0.4.0",
     "jasmine": "~2.3.2",
     "jison": "~0.4.15",
-    "jscs": "~2.4.0",
+    "jscs": "~2.5.1",
     "jsdoc": "~3.3.3",
     "jshint": "~2.8.0",
     "json-assert": "~1.0.2",
     "request": "~2.65.0",
-    "selenium-webdriver": "~2.48.0"
+    "selenium-webdriver": "~2.48.2"
   },
   "engines": {
     "node": ">= 4.2.1"
@@ -62,3 +62,4 @@
     "requireVarDeclFirst": null
   }
 }
+
