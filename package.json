@@ -53,9 +53,7 @@
       "lib/dice-expression-parser.js",
       "node_modules/**",
       "out/**",
-      "public/scripts/jquery-*.js",
-      "public-test/**",
-      "ui/**"
+      "public/scripts/jquery-*.js"
     ],
     "preset": "crockford",
     "requireMultipleVarDecl": null,
