@@ -1,5 +1,6 @@
 .PHONY: acceptance-test all build check clean coverage dist docs init publish-coverage start-app stop-app unit-test
 
+BOWER = $(NODE_MODULES_BIN_DIR)/bower
 CAT = cat
 COVERALLS = $(NODE_MODULES_BIN_DIR)/coveralls
 CP = cp -r
@@ -26,12 +27,14 @@ TEST = test
 XARGS = xargs
 
 APP_DIR = app
+BOWER_COMPONENTS_DIR = bower_components
 DIST_DIR = dist
 FEATURES_DIR = features
 ISTANBUL_OUTPUT_DIR = coverage
 JSDOC_OUTPUT_DIR = out
 NODE_MODULES_BIN_DIR = node_modules/.bin
 PUBLIC_DIR = public
+SCRIPTS_DIR = $(PUBLIC_DIR)/scripts
 SRC_DIR = lib
 STYLES_DIR = $(PUBLIC_DIR)/styles
 TEST_DIR = test
@@ -72,14 +75,18 @@ coverage:
 	$(ISTANBUL) cover $(JASMINE) --captureExceptions
 
 dist:
+	$(RMDIR) $(DIST_DIR)
 	$(MKDIR) $(DIST_DIR)
 	$(CP) $(SERVER_JS) $(SRC_DIR) $(APP_DIR) $(PUBLIC_DIR) $(DIST_DIR)
+	$(CP) $(BOWER_COMPONENTS_DIR)/jquery/dist/jquery.min.js $(DIST_DIR)/$(SCRIPTS_DIR)/jquery.js
+	$(CP) $(BOWER_COMPONENTS_DIR)/reset-css/reset.css $(DIST_DIR)/$(STYLES_DIR)
 
 docs:
 	$(JSDOC) -c $(JSDOC_CONFIG)
 
 init:
 	$(NPM) install
+	$(BOWER) install
 
 publish-coverage:
 	$(CAT) $(ISTANBUL_OUTPUT_DIR)/lcov.info | $(COVERALLS)

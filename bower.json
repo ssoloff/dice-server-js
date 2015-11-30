@@ -1,0 +1,25 @@
+{
+  "name": "dice-server-js",
+  "description": "Server for parsing and executing dice notation.",
+  "main": "server.js",
+  "authors": [
+    "Steven Soloff"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ssoloff/dice-server-js",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "reset-css": "~2.0.2011012602"
+  }
+}
+

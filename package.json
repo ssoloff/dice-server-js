@@ -16,6 +16,7 @@
     "underscore": "~1.8.3"
   },
   "devDependencies": {
+    "bower": "~1.6.8",
     "chai": "~3.4.1",
     "coveralls": "~2.11.4",
     "csslint": "~0.10.0",
@@ -49,11 +50,12 @@
   "homepage": "https://github.com/ssoloff/dice-server-js",
   "jscsConfig": {
     "excludeFiles": [
+      "bower_components/**",
       "coverage/**",
+      "dist/**",
       "lib/dice-expression-parser.js",
       "node_modules/**",
-      "out/**",
-      "public/scripts/jquery-*.js"
+      "out/**"
     ],
     "preset": "crockford",
     "requireMultipleVarDecl": null,
