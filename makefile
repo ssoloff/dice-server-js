@@ -1,7 +1,8 @@
-.PHONY: acceptance-test all build check clean coverage docs init publish-coverage start-app stop-app unit-test
+.PHONY: acceptance-test all build check clean coverage dist docs init publish-coverage start-app stop-app unit-test
 
 CAT = cat
 COVERALLS = $(NODE_MODULES_BIN_DIR)/coveralls
+CP = cp -r
 CSSLINT = $(NODE_MODULES_BIN_DIR)/csslint
 CUCUMBER = $(NODE_MODULES_BIN_DIR)/cucumber-js
 ECHO = echo
@@ -15,6 +16,7 @@ JSCS = $(NODE_MODULES_BIN_DIR)/jscs
 JSDOC = $(NODE_MODULES_BIN_DIR)/jsdoc
 JSHINT = $(NODE_MODULES_BIN_DIR)/jshint
 KILL = kill
+MKDIR = mkdir -p
 NODE = node
 NPM = npm
 RM = rm -f
@@ -23,6 +25,8 @@ TEE = tee
 TEST = test
 XARGS = xargs
 
+APP_DIR = app
+DIST_DIR = dist
 FEATURES_DIR = features
 ISTANBUL_OUTPUT_DIR = coverage
 JSDOC_OUTPUT_DIR = out
@@ -62,9 +66,14 @@ clean:
 	$(RM) $(DICE_EXPRESSION_PARSER_JS)
 	$(RMDIR) $(ISTANBUL_OUTPUT_DIR)
 	$(RMDIR) $(JSDOC_OUTPUT_DIR)
+	$(RMDIR) $(DIST_DIR)
 
 coverage:
 	$(ISTANBUL) cover $(JASMINE) --captureExceptions
+
+dist:
+	$(MKDIR) $(DIST_DIR)
+	$(CP) $(SERVER_JS) $(SRC_DIR) $(APP_DIR) $(PUBLIC_DIR) $(DIST_DIR)
 
 docs:
 	$(JSDOC) -c $(JSDOC_CONFIG)
@@ -76,7 +85,7 @@ publish-coverage:
 	$(CAT) $(ISTANBUL_OUTPUT_DIR)/lcov.info | $(COVERALLS)
 
 start-server:
-	$(NODE) $(SERVER_JS) $(TEST_PRIVATE_KEY) $(TEST_PUBLIC_KEY) & $(ECHO) $$! > $(SERVER_PID)
+	$(NODE) $(DIST_DIR)/$(SERVER_JS) $(TEST_PRIVATE_KEY) $(TEST_PUBLIC_KEY) & $(ECHO) $$! > $(SERVER_PID)
 
 stop-server:
 	$(eval PID := $(shell $(CAT) $(SERVER_PID)))
