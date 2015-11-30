@@ -52,7 +52,7 @@ all: build check unit-test
 acceptance-test:
 	for dir in $(FEATURES_DIR)/services/*/; \
 	do \
-		[[ $$dir == $(FEATURES_DIR)/services/support/ ]] && continue; \
+		[ "$$dir" = $(FEATURES_DIR)/services/support/ ] && continue; \
 		$(CUCUMBER) $$dir || exit $$?; \
 	done
 	$(CUCUMBER) $(FEATURES_DIR)/ui
