@@ -44,9 +44,9 @@ APP_DIR = app
 BOWER_COMPONENTS_DIR = bower_components
 BUILD_OUTPUT_DIR = build
 COMPILE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/compile
+COVERAGE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/coverage
 DIST_OUTPUT_DIR = dist
 FEATURES_DIR = features
-ISTANBUL_OUTPUT_DIR = coverage
 NODE_MODULES_BIN_DIR = node_modules/.bin
 PUBLIC_DIR = public
 SCRIPTS_DIR = $(PUBLIC_DIR)/scripts
@@ -82,7 +82,6 @@ check:
 clean:
 	$(RMDIR) $(BUILD_OUTPUT_DIR)
 	$(RMDIR) $(DIST_OUTPUT_DIR)
-	$(RMDIR) $(ISTANBUL_OUTPUT_DIR)
 
 compile: compile-jison compile-js
 
@@ -108,7 +107,7 @@ init:
 	$(BOWER) install
 
 publish-coverage:
-	$(CAT) $(ISTANBUL_OUTPUT_DIR)/lcov.info | $(COVERALLS)
+	$(CAT) $(COVERAGE_OUTPUT_DIR)/lcov.info | $(COVERALLS)
 
 start-server:
 	$(NODE) $(DIST_OUTPUT_DIR)/$(SERVER_JS) $(TEST_PRIVATE_KEY) $(TEST_PUBLIC_KEY) & $(ECHO) $$! > $(SERVER_PID)
