@@ -51,9 +51,9 @@
   "jscsConfig": {
     "excludeFiles": [
       "bower_components/**",
+      "build/**",
       "coverage/**",
       "dist/**",
-      "lib/dice-expression-parser.js",
       "node_modules/**",
       "out/**"
     ],

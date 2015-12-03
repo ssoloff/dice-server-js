@@ -7,13 +7,13 @@ before_install:
 install:
     - make init
 script:
-    - make all
+    - make unit-test-with-coverage
     - make dist
     - make start-server
     - make acceptance-test
     - make stop-server
+    - make check
     - make docs
-    - make coverage
 after_script:
     - make publish-coverage
 
