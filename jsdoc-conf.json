@@ -1,5 +1,6 @@
 {
   "opts": {
+    "destination": "build/docs",
     "readme": "README.md",
     "recurse": true
   },

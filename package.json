@@ -54,8 +54,7 @@
       "build/**",
       "coverage/**",
       "dist/**",
-      "node_modules/**",
-      "out/**"
+      "node_modules/**"
     ],
     "preset": "crockford",
     "requireMultipleVarDecl": null,

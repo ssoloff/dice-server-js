@@ -47,7 +47,6 @@ COMPILE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/compile
 DIST_OUTPUT_DIR = dist
 FEATURES_DIR = features
 ISTANBUL_OUTPUT_DIR = coverage
-JSDOC_OUTPUT_DIR = out
 NODE_MODULES_BIN_DIR = node_modules/.bin
 PUBLIC_DIR = public
 SCRIPTS_DIR = $(PUBLIC_DIR)/scripts
@@ -84,7 +83,6 @@ clean:
 	$(RMDIR) $(BUILD_OUTPUT_DIR)
 	$(RMDIR) $(DIST_OUTPUT_DIR)
 	$(RMDIR) $(ISTANBUL_OUTPUT_DIR)
-	$(RMDIR) $(JSDOC_OUTPUT_DIR)
 
 compile: compile-jison compile-js
 
