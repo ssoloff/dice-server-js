@@ -45,7 +45,7 @@ BOWER_COMPONENTS_DIR = bower_components
 BUILD_OUTPUT_DIR = build
 COMPILE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/compile
 COVERAGE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/coverage
-DIST_OUTPUT_DIR = dist
+DIST_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/dist
 FEATURES_DIR = features
 NODE_MODULES_BIN_DIR = node_modules/.bin
 PUBLIC_DIR = public
@@ -81,7 +81,6 @@ check:
 
 clean:
 	$(RMDIR) $(BUILD_OUTPUT_DIR)
-	$(RMDIR) $(DIST_OUTPUT_DIR)
 
 compile: compile-jison compile-js
 
