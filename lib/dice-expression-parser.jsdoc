@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2015 Steven Soloff
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * Provides methods for parsing dice expressions.
+ *
+ * @module dice-expression-parser
+ */
+
+/**
+ * A dice expression parser context.
+ * @typedef {Object} Context
+ *
+ * @property {module:dice-bag~Bag} bag - The dice bag used by the parser
+ *      whenever a die literal is encountered.
+ * @property {Object.<String, Function>} functions - An object used by the
+ *      parser to lookup function implementations when a function call is
+ *      encountered.  The functions in this object override any function with
+ *      the same name in the parser's default function list.
+ */
+
+/**
+ * Creates a new dice expression parser.
+ * @function module:dice-expression-parser.create
+ *
+ * @param {module:dice-expression-parser~Context=} context - The dice
+ *      expression parser context.
+ *
+ * @returns {module:dice-expression-parser~Parser!} A new dice expression
+ *      parser.
+ */
+
+/**
+ * @function module:dice-expression-parser.createDefaultContext
+ * @summary Creates a new default dice expression parser context.
+ * @description The default context uses a default dice bag and includes no
+ *      additional function implementations.
+ *
+ * @returns {module:dice-expression-parser~Context!} A new dice expression
+ *      parser context.
+ */
+
