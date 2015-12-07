@@ -16,14 +16,14 @@
     "underscore": "~1.8.3"
   },
   "devDependencies": {
-    "bower": "~1.6.8",
+    "bower": "~1.7.0",
     "chai": "~3.4.1",
     "coveralls": "~2.11.4",
     "csslint": "~0.10.0",
     "cucumber": "~0.9.2",
     "html-validator-cli": "~2.0.0",
     "istanbul": "~0.4.1",
-    "jasmine": "~2.3.2",
+    "jasmine": "~2.4.1",
     "jison": "~0.4.15",
     "jscs": "~2.6.0",
     "jsdoc": "~3.4.0",
