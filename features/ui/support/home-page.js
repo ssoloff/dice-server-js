@@ -141,12 +141,15 @@ HomePage.prototype.typeExpressionText = function (expressionText) {
 };
 
 HomePage.prototype.waitUntilHelpIsDisplayed = function () {
-    return this.driver.wait(until.elementIsVisible(this.driver.findElement(By.id('help'))), 5000);
+    return this.driver.wait(until.elementIsVisible(this.driver.findElement(By.id('help'))), 5000).then(function (element) {
+        return element.isDisplayed();
+    });
 };
 
 HomePage.prototype.waitUntilHelpIsNotDisplayed = function () {
-    return this.driver.wait(until.elementIsNotVisible(this.driver.findElement(By.id('help'))), 5000);
+    return this.driver.wait(until.elementIsNotVisible(this.driver.findElement(By.id('help'))), 5000).then(function (element) {
+        return element.isDisplayed();
+    });
 };
 
 module.exports = HomePage;
-

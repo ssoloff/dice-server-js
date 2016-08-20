@@ -93,12 +93,12 @@ module.exports = function () {
 
     this.Then(/^help should( not)? be displayed$/, function (negate) {
         if (negate) {
-            this.homePage.waitUntilHelpIsNotDisplayed().then(function (isNotDisplayed) {
+            return this.homePage.waitUntilHelpIsNotDisplayed().then(function (isDisplayed) {
                 // jshint expr: true
-                expect(isNotDisplayed).to.be.true;
+                expect(isDisplayed).to.be.false;
             });
         } else {
-            this.homePage.waitUntilHelpIsDisplayed().then(function (isDisplayed) {
+            return this.homePage.waitUntilHelpIsDisplayed().then(function (isDisplayed) {
                 // jshint expr: true
                 expect(isDisplayed).to.be.true;
             });
@@ -141,4 +141,3 @@ module.exports = function () {
         });
     });
 };
-
