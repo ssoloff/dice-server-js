@@ -33,7 +33,7 @@
     "selenium-webdriver": "~2.53.3"
   },
   "engines": {
-    "node": ">= 4.2.1"
+    "node": ">= 6.4.0"
   },
   "scripts": {
     "test": "make unit-test"
