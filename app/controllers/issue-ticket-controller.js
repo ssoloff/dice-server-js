@@ -22,6 +22,7 @@
 
 'use strict';
 
+var _ = require('underscore');
 var controllerUtils = require('./support/controller-utils');
 var crypto = require('crypto');
 var security = require('./support/security');
@@ -82,12 +83,11 @@ module.exports = {
             var SEED_ELEMENT_LENGTH_IN_BYTES = 4,
                 SEED_ARRAY_LENGTH = 16,
                 data = crypto.randomBytes(SEED_ARRAY_LENGTH * SEED_ELEMENT_LENGTH_IN_BYTES),
-                i,
                 seed = [];
 
-            for (i = 0; i < SEED_ARRAY_LENGTH; i += 1) {
+            _.times(SEED_ARRAY_LENGTH, function (i) {
                 seed[i] = data.readUIntBE(i * SEED_ELEMENT_LENGTH_IN_BYTES, SEED_ELEMENT_LENGTH_IN_BYTES);
-            }
+            });
             return seed;
         }
 
