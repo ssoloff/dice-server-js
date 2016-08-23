@@ -25,8 +25,8 @@
 var webdriver = require('selenium-webdriver');
 var security = require('../../support/security');
 
-var By = webdriver.By;
-var until = webdriver.until;
+var By = webdriver.By,
+    until = webdriver.until;
 
 function HomePage(driver) {
     this.driver = driver;

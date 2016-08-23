@@ -56,13 +56,15 @@ module.exports = {
      * @throws {RangeError} If `sides` is not positive.
      */
     createDieThatRollsEachSideSuccessively: function (sides) {
-        var rollCount = 0;
+        var bag,
+            rollCount = 0;
+
         function randomNumberGenerator() {
             var roll = rollCount % sides + 1;
             rollCount += 1;
             return roll;
         }
-        var bag = dice.bag.create(randomNumberGenerator);
+        bag = dice.bag.create(randomNumberGenerator);
         return bag.d(sides);
     },
 

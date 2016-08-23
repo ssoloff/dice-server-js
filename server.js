@@ -26,12 +26,11 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 
-var privateKey = fs.readFileSync(process.argv[2]);
-var publicKey = fs.readFileSync(process.argv[3]);
+var privateKey = fs.readFileSync(process.argv[2]),
+    publicKey = fs.readFileSync(process.argv[3]),
+    app = express();
 
-var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 require('./app/routes')(app, privateKey, publicKey);
 
 app.listen(3000);
-

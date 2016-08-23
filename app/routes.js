@@ -25,27 +25,31 @@
 var bodyParser = require('body-parser');
 
 module.exports = function (app, privateKey, publicKey) {
-    var evaluateExpressionPath = '/expression/evaluate';
-    var issueTicketPath = '/ticket/issue';
-    var redeemTicketPath = '/ticket/redeem';
-    var validateRedeemedTicketPath = '/ticket/validate-redeemed';
+    var evaluateExpressionController,
+        evaluateExpressionPath = '/expression/evaluate',
+        issueTicketController,
+        issueTicketPath = '/ticket/issue',
+        redeemTicketController,
+        redeemTicketPath = '/ticket/redeem',
+        validateRedeemedTicketController,
+        validateRedeemedTicketPath = '/ticket/validate-redeemed';
 
-    var evaluateExpressionController = require('./controllers/evaluate-expression-controller.js').create({
+    evaluateExpressionController = require('./controllers/evaluate-expression-controller.js').create({
         publicKey: publicKey
     });
-    var issueTicketController = require('./controllers/issue-ticket-controller.js').create({
+    issueTicketController = require('./controllers/issue-ticket-controller.js').create({
         evaluateExpressionController: evaluateExpressionController,
         privateKey: privateKey,
         publicKey: publicKey,
         redeemTicketPath: redeemTicketPath
     });
-    var redeemTicketController = require('./controllers/redeem-ticket-controller.js').create({
+    redeemTicketController = require('./controllers/redeem-ticket-controller.js').create({
         evaluateExpressionController: evaluateExpressionController,
         privateKey: privateKey,
         publicKey: publicKey,
         validateRedeemedTicketPath: validateRedeemedTicketPath
     });
-    var validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create({
+    validateRedeemedTicketController = require('./controllers/validate-redeemed-ticket-controller.js').create({
         publicKey: publicKey
     });
 

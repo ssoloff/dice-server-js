@@ -32,6 +32,7 @@ module.exports = {
 
     createControllerErrorFromResponse: function (responseStatus, responseBody) {
         var message = responseBody.error ? responseBody.error.message : null;
+
         return new ControllerError(responseStatus, message);
     },
 
@@ -44,12 +45,15 @@ module.exports = {
     },
 
     postJson: function (callback, requestBody) {
-        var request = {
+        var request,
+            response,
+            responseBody,
+            responseStatus;
+
+        request = {
             body: requestBody
         };
-        var responseBody;
-        var responseStatus;
-        var response = {
+        response = {
             json: function (json) {
                 responseBody = json;
                 return this;
@@ -64,13 +68,15 @@ module.exports = {
     },
 
     setFailureResponse: function (response, e) {
+        var responseBody;
+
         if (e instanceof ControllerError) {
             response.status(e.status);
         } else {
             response.status(httpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        var responseBody = {
+        responseBody = {
             error: {
                 message: e.message
             }

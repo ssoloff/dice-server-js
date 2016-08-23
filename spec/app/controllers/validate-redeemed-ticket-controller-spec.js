@@ -27,10 +27,10 @@ var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 
 describe('validateRedeemedTicketController', function () {
-    var controller;
-    var request;
-    var response;
-    var responseBody;
+    var controller,
+        request,
+        response,
+        responseBody;
 
     function createValidateRedeemedTicketController() {
         return require('../../../app/controllers/validate-redeemed-ticket-controller').create({
@@ -39,9 +39,11 @@ describe('validateRedeemedTicketController', function () {
     }
 
     function modifyRequestBody(callback) {
+        var redeemedTicket;
+
         modifyRequestBodyWithoutSignatureUpdate(callback);
 
-        var redeemedTicket = request.body.redeemedTicket;
+        redeemedTicket = request.body.redeemedTicket;
         redeemedTicket.signature = controllerTest.createSignature(redeemedTicket.content);
     }
 

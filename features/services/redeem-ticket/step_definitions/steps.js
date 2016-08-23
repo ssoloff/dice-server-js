@@ -77,10 +77,12 @@ module.exports = function () {
     this.When(/^the redeem ticket service is invoked$/, function (callback) {
         var runner = this;
         this.issueTicketService.call(function (responseStatus, responseBody) {
+            var issueTicketResponseBody = responseBody,
+                redeemTicketServiceResponseHandler;
+
             if (responseStatus !== httpStatus.OK) {
                 throw new Error('failed to issue ticket');
             }
-            var issueTicketResponseBody = responseBody;
 
             this.ticket.description = issueTicketResponseBody.ticket.content.description;
             this.ticket.id = issueTicketResponseBody.ticket.content.id;
@@ -90,7 +92,7 @@ module.exports = function () {
             }
             this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
 
-            var redeemTicketServiceResponseHandler = function (responseStatus, responseBody) {
+            redeemTicketServiceResponseHandler = function (responseStatus, responseBody) {
                 this.response.status = responseStatus;
                 this.response.body = responseBody;
                 callback();

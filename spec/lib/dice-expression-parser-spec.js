@@ -27,12 +27,12 @@ var diceExpressionFunctions = require('../../lib/dice-expression-functions');
 var diceTest = require('./test-support/dice-test');
 
 describe('diceExpressionParser', function () {
-    var expressionParser;
-    var expressionParserContext;
-    var f = Math.max;
-    var one;
-    var two;
-    var three;
+    var expressionParser,
+        expressionParserContext,
+        f = Math.max,
+        one,
+        two,
+        three;
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(diceTest.isDiceExpressionEqual);
@@ -47,8 +47,7 @@ describe('diceExpressionParser', function () {
     describe('.create', function () {
         it('should use the dice bag in the context', function () {
             expressionParserContext.bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
-            var expression = expressionParser.parse('3d6');
-            expect(expression.evaluate().value).toBe(3);
+            expect(expressionParser.parse('3d6').evaluate().value).toBe(3);
         });
     });
 

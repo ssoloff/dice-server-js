@@ -55,7 +55,10 @@
       "node_modules/**"
     ],
     "preset": "crockford",
-    "requireMultipleVarDecl": null,
-    "requireVarDeclFirst": null
+    "requireMultipleVarDecl": {
+      "allExcept": [
+        "require"
+      ]
+    }
   }
 }

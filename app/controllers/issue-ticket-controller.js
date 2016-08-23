@@ -39,7 +39,9 @@ module.exports = {
         }
 
         function createTicket(request) {
-            var ticketContent = createTicketContent(request);
+            var ticketContent;
+
+            ticketContent = createTicketContent(request);
             return {
                 content: ticketContent,
                 signature: createSignature(ticketContent)
@@ -47,10 +49,15 @@ module.exports = {
         }
 
         function createTicketContent(request) {
-            var requestBody = request.body;
-            var evaluateExpressionRequestBody = getEvaluateExpressionRequestBody(requestBody);
-            var evaluateExpressionResult = evaluateExpression(evaluateExpressionRequestBody);
-            var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
+            var evaluateExpressionRequestBody,
+                evaluateExpressionResponseBody,
+                evaluateExpressionResponseStatus,
+                evaluateExpressionResult,
+                requestBody = request.body;
+
+            evaluateExpressionRequestBody = getEvaluateExpressionRequestBody(requestBody);
+            evaluateExpressionResult = evaluateExpression(evaluateExpressionRequestBody);
+            evaluateExpressionResponseStatus = evaluateExpressionResult[0];
             if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
                 return {
                     description: requestBody.description,
@@ -59,7 +66,7 @@ module.exports = {
                     redeemUrl: getRedeemTicketUrl(request)
                 };
             } else {
-                var evaluateExpressionResponseBody = evaluateExpressionResult[1];
+                evaluateExpressionResponseBody = evaluateExpressionResult[1];
                 throw controllerUtils.createControllerErrorFromResponse(
                     evaluateExpressionResponseStatus,
                     evaluateExpressionResponseBody
@@ -72,11 +79,13 @@ module.exports = {
         }
 
         function generateRandomNumberGeneratorSeed() {
-            var SEED_ELEMENT_LENGTH_IN_BYTES = 4;
-            var SEED_ARRAY_LENGTH = 16;
-            var data = crypto.randomBytes(SEED_ARRAY_LENGTH * SEED_ELEMENT_LENGTH_IN_BYTES);
-            var seed = [];
-            for (var i = 0; i < SEED_ARRAY_LENGTH; i += 1) {
+            var SEED_ELEMENT_LENGTH_IN_BYTES = 4,
+                SEED_ARRAY_LENGTH = 16,
+                data = crypto.randomBytes(SEED_ARRAY_LENGTH * SEED_ELEMENT_LENGTH_IN_BYTES),
+                i,
+                seed = [];
+
+            for (i = 0; i < SEED_ARRAY_LENGTH; i += 1) {
                 seed[i] = data.readUIntBE(i * SEED_ELEMENT_LENGTH_IN_BYTES, SEED_ELEMENT_LENGTH_IN_BYTES);
             }
             return seed;
@@ -87,9 +96,11 @@ module.exports = {
         }
 
         function getEvaluateExpressionRequestBody(requestBody) {
-            var evaluateExpressionRequestBody = requestBody.evaluateExpressionRequestBody;
+            var evaluateExpressionRequestBody = requestBody.evaluateExpressionRequestBody,
+                randomNumberGenerator;
+
             if (!evaluateExpressionRequestBody.randomNumberGenerator) {
-                var randomNumberGenerator = {
+                randomNumberGenerator = {
                     content: {
                         name: 'uniform',
                         options: {

@@ -27,10 +27,10 @@ var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 
 describe('issueTicketController', function () {
-    var controller;
-    var request;
-    var response;
-    var responseBody;
+    var controller,
+        request,
+        response,
+        responseBody;
 
     function createIssueTicketController(evaluateExpressionController) {
         evaluateExpressionController = evaluateExpressionController || require('../../../app/controllers/evaluate-expression-controller').create({
@@ -45,9 +45,11 @@ describe('issueTicketController', function () {
     }
 
     function modifyRequestBody(callback) {
+        var randomNumberGenerator;
+
         callback();
 
-        var randomNumberGenerator = request.body.evaluateExpressionRequestBody.randomNumberGenerator;
+        randomNumberGenerator = request.body.evaluateExpressionRequestBody.randomNumberGenerator;
         if (randomNumberGenerator) {
             randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
         }
@@ -126,17 +128,18 @@ describe('issueTicketController', function () {
 
         describe('when evaluate expression controller responds with error', function () {
             it('should respond with same error', function () {
-                var expectedStatus = httpStatus.BAD_GATEWAY;
-                var expectedErrorMessage = 'message';
-                var stubEvaluateExpressionController = {
-                    evaluateExpression: function (request, response) {
-                        response.status(expectedStatus).json({
-                            error: {
-                                message: expectedErrorMessage
-                            }
-                        });
-                    }
-                };
+                var expectedStatus = httpStatus.BAD_GATEWAY,
+                    expectedErrorMessage = 'message',
+                    stubEvaluateExpressionController = {
+                        evaluateExpression: function (request, response) {
+                            response.status(expectedStatus).json({
+                                error: {
+                                    message: expectedErrorMessage
+                                }
+                            });
+                        }
+                    };
+
                 controller = createIssueTicketController(stubEvaluateExpressionController);
 
                 controller.issueTicket(request, response);

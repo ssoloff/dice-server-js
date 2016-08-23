@@ -30,10 +30,10 @@ var path = require('path');
 var security = require('../../../app/controllers/support/security');
 
 describe('evaluateExpressionController', function () {
-    var controller;
-    var request;
-    var response;
-    var responseBody;
+    var controller,
+        request,
+        response,
+        responseBody;
 
     function createEvaluateExpressionController() {
         return require('../../../app/controllers/evaluate-expression-controller').create({
@@ -42,9 +42,11 @@ describe('evaluateExpressionController', function () {
     }
 
     function modifyRequestBody(callback) {
+        var randomNumberGenerator;
+
         callback();
 
-        var randomNumberGenerator = request.body.randomNumberGenerator;
+        randomNumberGenerator = request.body.randomNumberGenerator;
         if (randomNumberGenerator) {
             randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
         }
@@ -175,8 +177,9 @@ describe('evaluateExpressionController', function () {
 
             describe('when random number generator specification has an invalid signature', function () {
                 it('should respond with bad request error', function () {
-                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../../test/other-private-key.pem'));
-                    var otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../test/other-public-key.pem'));
+                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../../test/other-private-key.pem')),
+                        otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../test/other-public-key.pem'));
+
                     request.body.randomNumberGenerator.signature = security.createSignature(
                         request.body.randomNumberGenerator.content,
                         otherPrivateKey, // sign using unauthorized key

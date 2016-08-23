@@ -56,17 +56,19 @@ module.exports = function () {
     this.When(/^the validate redeemed ticket service is invoked$/, function (callback) {
         var runner = this;
         this.issueTicketService.call(function (responseStatus, responseBody) {
+            var issueTicketResponseBody = responseBody;
+
             if (responseStatus !== httpStatus.OK) {
                 throw new Error('failed to issue ticket');
             }
-            var issueTicketResponseBody = responseBody;
 
             this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
             this.redeemTicketService.call(function (responseStatus, responseBody) {
+                var redeemTicketResponseBody = responseBody;
+
                 if (responseStatus !== httpStatus.OK) {
                     throw new Error('failed to redeem ticket');
                 }
-                var redeemTicketResponseBody = responseBody;
 
                 if (this.redeemedTicket.forceInvalidSignature) {
                     redeemTicketResponseBody.redeemedTicket.content.description += '...'; // change content so signature will not match

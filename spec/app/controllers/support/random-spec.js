@@ -30,9 +30,12 @@ describe('random', function () {
     describe('.uniform', function () {
         describe('when options not provided', function () {
             it('should use auto seed', function () {
-                var randomNumberGenerator = random.uniform();
+                var randomNumberGenerator,
+                    randomValue;
 
-                var randomValue = randomNumberGenerator(SIDES);
+                randomNumberGenerator = random.uniform();
+
+                randomValue = randomNumberGenerator(SIDES);
 
                 expect(randomValue).toBeGreaterThan(0);
                 expect(randomValue).toBeLessThan(SIDES + 1);
@@ -41,9 +44,12 @@ describe('random', function () {
 
         describe('when seed not provided', function () {
             it('should use auto seed', function () {
-                var randomNumberGenerator = random.uniform({});
+                var randomNumberGenerator,
+                    randomValue;
 
-                var randomValue = randomNumberGenerator(SIDES);
+                randomNumberGenerator = random.uniform({});
+
+                randomValue = randomNumberGenerator(SIDES);
 
                 expect(randomValue).toBeGreaterThan(0);
                 expect(randomValue).toBeLessThan(SIDES + 1);
@@ -52,11 +58,16 @@ describe('random', function () {
 
         describe('when number seed provided', function () {
             it('should use provided seed', function () {
-                var randomNumberGenerator1 = random.uniform({seed: 42});
-                var randomNumberGenerator2 = random.uniform({seed: 42});
+                var randomNumberGenerator1,
+                    randomNumberGenerator2,
+                    randomValue1,
+                    randomValue2;
 
-                var randomValue1 = randomNumberGenerator1(SIDES);
-                var randomValue2 = randomNumberGenerator2(SIDES);
+                randomNumberGenerator1 = random.uniform({seed: 42});
+                randomNumberGenerator2 = random.uniform({seed: 42});
+
+                randomValue1 = randomNumberGenerator1(SIDES);
+                randomValue2 = randomNumberGenerator2(SIDES);
 
                 expect(randomValue1).toBe(randomValue2);
             });
@@ -64,11 +75,16 @@ describe('random', function () {
 
         describe('when array seed provided', function () {
             it('should use provided seed', function () {
-                var randomNumberGenerator1 = random.uniform({seed: [42, 2112]});
-                var randomNumberGenerator2 = random.uniform({seed: [42, 2112]});
+                var randomNumberGenerator1,
+                    randomNumberGenerator2,
+                    randomValue1,
+                    randomValue2;
 
-                var randomValue1 = randomNumberGenerator1(SIDES);
-                var randomValue2 = randomNumberGenerator2(SIDES);
+                randomNumberGenerator1 = random.uniform({seed: [42, 2112]});
+                randomNumberGenerator2 = random.uniform({seed: [42, 2112]});
+
+                randomValue1 = randomNumberGenerator1(SIDES);
+                randomValue2 = randomNumberGenerator2(SIDES);
 
                 expect(randomValue1).toBe(randomValue2);
             });

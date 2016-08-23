@@ -47,19 +47,22 @@ module.exports = {
         }
 
         function createResponseBody(request) {
-            var requestBody = request.body;
-            var responseBody = {};
+            var expression,
+                expressionResult,
+                randomNumberGeneratorSpecification,
+                requestBody = request.body,
+                responseBody = {};
 
-            var randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(requestBody);
+            randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(requestBody);
             responseBody.randomNumberGenerator = randomNumberGeneratorSpecification;
 
-            var expression = parseExpressionText(requestBody.expression.text, randomNumberGeneratorSpecification);
+            expression = parseExpressionText(requestBody.expression.text, randomNumberGeneratorSpecification);
             responseBody.expression = {
                 canonicalText: formatExpression(expression),
                 text: requestBody.expression.text
             };
 
-            var expressionResult = expression.evaluate();
+            expressionResult = expression.evaluate();
             if (!_.isFinite(expressionResult.value)) {
                 throw controllerUtils.createControllerError(
                     httpStatus.BAD_REQUEST,
@@ -86,6 +89,7 @@ module.exports = {
 
         function getRandomNumberGeneratorSpecification(requestBody) {
             var randomNumberGenerator = requestBody.randomNumberGenerator;
+
             if (!randomNumberGenerator) {
                 return getDefaultRandomNumberGeneratorSpecification();
             }
@@ -104,9 +108,12 @@ module.exports = {
         }
 
         function parseExpressionText(expressionText, randomNumberGeneratorSpecification) {
-            var expressionParserContext = dice.expressionParser.createDefaultContext();
+            var expressionParser,
+                expressionParserContext;
+
+            expressionParserContext = dice.expressionParser.createDefaultContext();
             expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
-            var expressionParser = dice.expressionParser.create(expressionParserContext);
+            expressionParser = dice.expressionParser.create(expressionParserContext);
             try {
                 return expressionParser.parse(expressionText);
             } catch (e) {

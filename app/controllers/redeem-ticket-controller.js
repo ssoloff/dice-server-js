@@ -29,7 +29,9 @@ var security = require('./support/security');
 module.exports = {
     create: function (controllerData) {
         function createRedeemedTicket(request) {
-            var redeemedTicketContent = createRedeemedTicketContent(request);
+            var redeemedTicketContent;
+
+            redeemedTicketContent = createRedeemedTicketContent(request);
             return {
                 content: redeemedTicketContent,
                 signature: createSignature(redeemedTicketContent)
@@ -37,11 +39,14 @@ module.exports = {
         }
 
         function createRedeemedTicketContent(request) {
-            var requestBody = request.body;
-            var ticketContent = requestBody.ticket.content;
-            var evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody);
-            var evaluateExpressionResponseStatus = evaluateExpressionResult[0];
-            var evaluateExpressionResponseBody = evaluateExpressionResult[1];
+            var evaluateExpressionResponseBody,
+                evaluateExpressionResponseStatus,
+                evaluateExpressionResult,
+                ticketContent = request.body.ticket.content;
+
+            evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody);
+            evaluateExpressionResponseStatus = evaluateExpressionResult[0];
+            evaluateExpressionResponseBody = evaluateExpressionResult[1];
             if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
                 return {
                     description: ticketContent.description,
@@ -83,6 +88,7 @@ module.exports = {
 
         function validateRequest(request) {
             var ticket = request.body.ticket;
+
             if (!isSignatureValid(ticket.content, ticket.signature)) {
                 throw controllerUtils.createControllerError(
                     httpStatus.BAD_REQUEST,

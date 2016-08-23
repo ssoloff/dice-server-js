@@ -25,9 +25,9 @@
 var dice = require('../../lib/dice');
 
 describe('diceExpressionResult', function () {
-    var three;
-    var four;
-    var d3;
+    var three,
+        four,
+        d3;
 
     beforeEach(function () {
         three = dice.expressionResult.forConstant(3);
@@ -121,7 +121,9 @@ describe('diceExpressionResult', function () {
 
         describe('.value', function () {
             it('should return die', function () {
-                var die = dice.bag.create().d(3);
+                var die;
+
+                die = dice.bag.create().d(3);
                 expect(dice.expressionResult.forDie(die).value).toBe(die);
             });
         });

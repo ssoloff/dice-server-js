@@ -1,20 +1,29 @@
 function addExpressionResult(response) {
     'use strict';
 
-    var $expressionTextCell = $('<td>').text(response.expression.text);
-    var $expressionCanonicalTextCell = $('<td>').text(response.expression.canonicalText);
-    var $expressionResultTextCell = $('<td>').text(response.expressionResult.text);
-    var $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
+    var $actionsCell,
+        $expressionCanonicalTextCell,
+        $expressionResultRow,
+        $expressionResultTextCell,
+        $expressionResultValueCell,
+        $expressionTextCell,
+        $reevaluateButton,
+        $removeButton;
 
-    var $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
+    $expressionTextCell = $('<td>').text(response.expression.text);
+    $expressionCanonicalTextCell = $('<td>').text(response.expression.canonicalText);
+    $expressionResultTextCell = $('<td>').text(response.expressionResult.text);
+    $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
+
+    $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
         evaluateExpression($expressionTextCell.text());
     });
-    var $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
+    $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
         $(event.target).closest('tr').remove();
     });
-    var $actionsCell = $('<td>').append($reevaluateButton, $removeButton);
+    $actionsCell = $('<td>').append($reevaluateButton, $removeButton);
 
-    var $expressionResultRow = $('<tr>').append(
+    $expressionResultRow = $('<tr>').append(
         $expressionTextCell,
         $expressionCanonicalTextCell,
         $expressionResultTextCell,
@@ -33,13 +42,16 @@ function clearExpressionText() {
 function evaluateExpression(expressionText) {
     'use strict';
 
-    var requestBody = {
+    var randomNumberGeneratorJson,
+        requestBody;
+
+    requestBody = {
         expression: {
             text: expressionText
         }
     };
 
-    var randomNumberGeneratorJson = $('#randomNumberGeneratorJson').val();
+    randomNumberGeneratorJson = $('#randomNumberGeneratorJson').val();
     if (randomNumberGeneratorJson) {
         requestBody.randomNumberGenerator = JSON.parse(randomNumberGeneratorJson);
     }
@@ -50,8 +62,11 @@ function evaluateExpression(expressionText) {
 function getExpressionText() {
     'use strict';
 
-    var expressionText = $('#expressionText').val();
-    var roundingFunction = $('input[name="roundingMode"]:checked').val();
+    var expressionText,
+        roundingFunction;
+
+    expressionText = $('#expressionText').val();
+    roundingFunction = $('input[name="roundingMode"]:checked').val();
     if (roundingFunction) {
         expressionText = roundingFunction + '(' + expressionText + ')';
     }
@@ -114,6 +129,7 @@ function processErrorResponse(jqxhr) {
     'use strict';
 
     var responseBody = jqxhr.responseJSON;
+
     if (responseBody && responseBody.error) {
         showErrorMessage(responseBody.error.message);
     }
@@ -142,11 +158,15 @@ function showErrorMessage(message) {
 function toggleHelp() {
     'use strict';
 
-    var $help = $('#help');
-    var wasHelpVisible = $help.is(':visible');
+    var $help,
+        isHelpVisible,
+        wasHelpVisible;
+
+    $help = $('#help');
+    wasHelpVisible = $help.is(':visible');
     $help.toggle(400);
 
-    var isHelpVisible = !wasHelpVisible;
+    isHelpVisible = !wasHelpVisible;
     $('#toggleHelp').text(isHelpVisible ? 'hide help' : 'help');
 }
 
@@ -158,4 +178,3 @@ function main() {
 }
 
 $(document).ready(main);
-

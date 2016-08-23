@@ -27,8 +27,9 @@ var dice = require('../../lib/dice');
 var diceTest = require('./test-support/dice-test');
 
 describe('diceExpression', function () {
-    var three;
-    var four;
+    var three,
+        four,
+        expression;
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(diceTest.isDiceExpressionResultEqual);
@@ -55,7 +56,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to sum of augend and addend', function () {
-                var expression = dice.expression.forAddition(four, three);
+                expression = dice.expression.forAddition(four, three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forAddition(
                         dice.expressionResult.forConstant(four.constant),
@@ -65,7 +66,7 @@ describe('diceExpression', function () {
             });
 
             it('should evaluate subexpressions', function () {
-                var expression = dice.expression.forAddition(dice.expression.forAddition(four, three), three);
+                expression = dice.expression.forAddition(dice.expression.forAddition(four, three), three);
                 expect(expression.evaluate().value).toBe(10);
             });
         });
@@ -85,7 +86,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to array of expression result values', function () {
-                var expression = dice.expression.forArray([three, four]);
+                expression = dice.expression.forArray([three, four]);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forArray([
                         dice.expressionResult.forConstant(three.constant),
@@ -111,7 +112,8 @@ describe('diceExpression', function () {
         describe('.evaluate', function () {
             it('should return result with value equal to constant', function () {
                 var constant = 5;
-                var expression = dice.expression.forConstant(constant);
+
+                expression = dice.expression.forConstant(constant);
                 expect(expression.evaluate()).toEqual(dice.expressionResult.forConstant(constant));
             });
         });
@@ -129,7 +131,8 @@ describe('diceExpression', function () {
         describe('.evaluate', function () {
             it('should return result with value equal to die', function () {
                 var d3 = dice.bag.create().d(3);
-                var expression = dice.expression.forDie(d3);
+
+                expression = dice.expression.forDie(d3);
                 expect(expression.evaluate()).toEqual(dice.expressionResult.forDie(d3));
             });
         });
@@ -154,7 +157,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to quotient of dividend and divisor', function () {
-                var expression = dice.expression.forDivision(three, four);
+                expression = dice.expression.forDivision(three, four);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forDivision(
                         dice.expressionResult.forConstant(three.constant),
@@ -164,7 +167,7 @@ describe('diceExpression', function () {
             });
 
             it('should evaluate subexpressions', function () {
-                var expression = dice.expression.forDivision(dice.expression.forDivision(three, four), four);
+                expression = dice.expression.forDivision(dice.expression.forDivision(three, four), four);
                 expect(expression.evaluate().value).toBe(0.1875);
             });
         });
@@ -211,7 +214,7 @@ describe('diceExpression', function () {
         describe('.evaluate', function () {
             describe('when zero arguments specified', function () {
                 it('should return result with value equal to function return value', function () {
-                    var expression = dice.expression.forFunctionCall('f', f, []);
+                    expression = dice.expression.forFunctionCall('f', f, []);
                     expect(expression.evaluate()).toEqual(
                         dice.expressionResult.forFunctionCall(
                             42,
@@ -224,7 +227,7 @@ describe('diceExpression', function () {
 
             describe('when one argument specified', function () {
                 it('should return result with value equal to function return value', function () {
-                    var expression = dice.expression.forFunctionCall('f', f, [three]);
+                    expression = dice.expression.forFunctionCall('f', f, [three]);
                     expect(expression.evaluate()).toEqual(
                         dice.expressionResult.forFunctionCall(
                             45,
@@ -239,7 +242,7 @@ describe('diceExpression', function () {
 
             describe('when two arguments specified', function () {
                 it('should return result with value equal to function return value', function () {
-                    var expression = dice.expression.forFunctionCall('f', f, [three, four]);
+                    expression = dice.expression.forFunctionCall('f', f, [three, four]);
                     expect(expression.evaluate()).toEqual(
                         dice.expressionResult.forFunctionCall(
                             49,
@@ -266,7 +269,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to child expression result value', function () {
-                var expression = dice.expression.forGroup(three);
+                expression = dice.expression.forGroup(three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forGroup(
                         dice.expressionResult.forConstant(three.constant)
@@ -295,7 +298,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to remainder of division of dividend and divisor', function () {
-                var expression = dice.expression.forModulo(four, three);
+                expression = dice.expression.forModulo(four, three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forModulo(
                         dice.expressionResult.forConstant(four.constant),
@@ -305,7 +308,7 @@ describe('diceExpression', function () {
             });
 
             it('should evaluate subexpressions', function () {
-                var expression = dice.expression.forModulo(dice.expression.forModulo(three, four), three);
+                expression = dice.expression.forModulo(dice.expression.forModulo(three, four), three);
                 expect(expression.evaluate().value).toBe(0);
             });
         });
@@ -330,7 +333,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to product of multiplicand and multiplier', function () {
-                var expression = dice.expression.forMultiplication(four, three);
+                expression = dice.expression.forMultiplication(four, three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forMultiplication(
                         dice.expressionResult.forConstant(four.constant),
@@ -340,7 +343,7 @@ describe('diceExpression', function () {
             });
 
             it('should evaluate subexpressions', function () {
-                var expression = dice.expression.forMultiplication(dice.expression.forMultiplication(four, three), three);
+                expression = dice.expression.forMultiplication(dice.expression.forMultiplication(four, three), three);
                 expect(expression.evaluate().value).toBe(36);
             });
         });
@@ -357,7 +360,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to negative of child expression result value', function () {
-                var expression = dice.expression.forNegative(three);
+                expression = dice.expression.forNegative(three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forNegative(
                         dice.expressionResult.forConstant(three.constant)
@@ -378,7 +381,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to child expression result value', function () {
-                var expression = dice.expression.forPositive(three);
+                expression = dice.expression.forPositive(three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forPositive(
                         dice.expressionResult.forConstant(three.constant)
@@ -407,7 +410,7 @@ describe('diceExpression', function () {
 
         describe('.evaluate', function () {
             it('should return result with value equal to difference between minuend and subtrahend', function () {
-                var expression = dice.expression.forSubtraction(four, three);
+                expression = dice.expression.forSubtraction(four, three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forSubtraction(
                         dice.expressionResult.forConstant(four.constant),
@@ -417,7 +420,7 @@ describe('diceExpression', function () {
             });
 
             it('should evaluate subexpressions', function () {
-                var expression = dice.expression.forSubtraction(dice.expression.forSubtraction(four, three), three);
+                expression = dice.expression.forSubtraction(dice.expression.forSubtraction(four, three), three);
                 expect(expression.evaluate().value).toBe(-2);
             });
         });
