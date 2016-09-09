@@ -25,7 +25,9 @@
 var bodyParser = require('body-parser');
 
 module.exports = function (app, privateKey, publicKey) {
-    var evaluateExpressionController,
+    var enumerateDiceController,
+        enumerateDicePath = '/expression/enumerate-dice',
+        evaluateExpressionController,
         evaluateExpressionPath = '/expression/evaluate',
         issueTicketController,
         issueTicketPath = '/ticket/issue',
@@ -34,6 +36,7 @@ module.exports = function (app, privateKey, publicKey) {
         validateRedeemedTicketController,
         validateRedeemedTicketPath = '/ticket/validate-redeemed';
 
+    enumerateDiceController = require('./controllers/enumerate-dice-controller.js').create();
     evaluateExpressionController = require('./controllers/evaluate-expression-controller.js').create({
         publicKey: publicKey
     });
@@ -55,6 +58,7 @@ module.exports = function (app, privateKey, publicKey) {
 
     app.use(bodyParser.json());
 
+    app.post(enumerateDicePath, enumerateDiceController.enumerateDice);
     app.post(evaluateExpressionPath, evaluateExpressionController.evaluateExpression);
     app.post(issueTicketPath, issueTicketController.issueTicket);
     app.post(redeemTicketPath, redeemTicketController.redeemTicket);
