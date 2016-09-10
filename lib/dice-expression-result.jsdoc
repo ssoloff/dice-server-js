@@ -26,6 +26,13 @@
  */
 
 /**
+ * Visits the expression result.
+ * @function module:dice-expression-result~ExpressionResult.accept
+ *
+ * @param {Function!} visit - The visitor callback.
+ */
+
+/**
  * The expression result type identifier.
  * @member module:dice-expression-result~ExpressionResult.typeId
  *
