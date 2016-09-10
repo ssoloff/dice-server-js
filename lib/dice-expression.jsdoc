@@ -26,10 +26,10 @@
  */
 
 /**
- * The expression type identifier.
- * @member module:dice-expression~Expression.typeId
+ * Visits the expression.
+ * @function module:dice-expression~Expression.accept
  *
- * @type {String!}
+ * @param {Function!} visit - The visitor callback.
  */
 
 /**
@@ -38,4 +38,11 @@
  *
  * @returns {module:dice-expression-result~ExpressionResult!}
  *      The result of evaluating the expression.
+ */
+
+/**
+ * The expression type identifier.
+ * @member module:dice-expression~Expression.typeId
+ *
+ * @type {String!}
  */
