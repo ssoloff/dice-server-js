@@ -25,6 +25,7 @@
 var _ = require('underscore');
 var controllerUtils = require('./support/controller-utils');
 var dice = require('../../lib/dice');
+var diceExpressionResultUtils = require('../../lib/dice-expression-result-utils');
 var httpStatus = require('http-status-codes');
 var random = require('./support/random');
 var security = require('./support/security');
@@ -70,15 +71,25 @@ module.exports = {
                 );
             }
             responseBody.expressionResult = {
-                text: dice.expressionResultFormatter.format(expressionResult),
+                text: formatExpressionResult(expressionResult),
                 value: expressionResult.value
             };
+
+            responseBody.dieRollResults = enumerateDieRollResults(expressionResult);
 
             return responseBody;
         }
 
+        function enumerateDieRollResults(expressionResult) {
+            return diceExpressionResultUtils.enumerateDieRollResults(expressionResult);
+        }
+
         function formatExpression(expression) {
             return dice.expressionFormatter.format(expression);
+        }
+
+        function formatExpressionResult(expressionResult) {
+            return dice.expressionResultFormatter.format(expressionResult);
         }
 
         function getDefaultRandomNumberGeneratorSpecification() {

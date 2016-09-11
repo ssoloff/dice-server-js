@@ -85,6 +85,20 @@ describe('evaluateExpressionController', function () {
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
                 expect(responseBody).toEqual({
+                    dieRollResults: [
+                        {
+                            sides: 6,
+                            value: 6
+                        },
+                        {
+                            sides: 6,
+                            value: 6
+                        },
+                        {
+                            sides: 6,
+                            value: 6
+                        }
+                    ],
                     expression: {
                         canonicalText: 'sum(roll(3, d6)) + 4',
                         text: '3d6+4'

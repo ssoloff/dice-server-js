@@ -57,6 +57,10 @@ module.exports = function () {
         expect(this.response.body).to.deep.equal(JSON.parse(jsonResponse));
     });
 
+    this.Then(/^the response should contain the die roll results "(.*)"$/, function (jsonDieRollResults) {
+        expect(this.response.body.dieRollResults).to.deep.equal(JSON.parse(jsonDieRollResults));
+    });
+
     this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
         expect(this.response.body.expressionResult.text).to.equal(expressionResultText);
     });

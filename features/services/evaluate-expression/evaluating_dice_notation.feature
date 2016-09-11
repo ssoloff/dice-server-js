@@ -13,6 +13,7 @@ Scenario: Evaluating well-formed expressions
         And the response should be
         """
         {
+            "dieRollResults": [],
             "expression": {
                 "canonicalText": "5",
                 "text": "5"
@@ -192,4 +193,3 @@ Scenario Outline: Evaluating expressions that result in non-finite values
         | [1, 2, 3]   |
         | round(d6)   |
         | roll(3, d6) |
-
