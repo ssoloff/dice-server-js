@@ -29,18 +29,12 @@ var diceTest = require('./test-support/dice-test');
 describe('diceExpression', function () {
     var three,
         four,
-        expression,
-        visitor;
+        expression;
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(diceTest.isDiceExpressionResultEqual);
         three = dice.expression.forConstant(3);
         four = dice.expression.forConstant(4);
-
-        visitor = {
-            visit: null
-        };
-        spyOn(visitor, 'visit');
     });
 
     describe('.forAddition', function () {
@@ -57,18 +51,6 @@ describe('diceExpression', function () {
                 expect(function () {
                     dice.expression.forAddition(four, undefined);
                 }).toThrow();
-            });
-        });
-
-        describe('.accept', function () {
-            it('should visit the expression, the augend expression, and the addend expression', function () {
-                expression = dice.expression.forAddition(four, three);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.augendExpression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.addendExpression);
             });
         });
 
@@ -102,18 +84,6 @@ describe('diceExpression', function () {
             });
         });
 
-        describe('.accept', function () {
-            it('should visit the expression and the array element expressions', function () {
-                expression = dice.expression.forArray([three, four]);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.expressions[0]);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.expressions[1]);
-            });
-        });
-
         describe('.evaluate', function () {
             it('should return result with value equal to array of expression result values', function () {
                 expression = dice.expression.forArray([three, four]);
@@ -139,16 +109,6 @@ describe('diceExpression', function () {
             });
         });
 
-        describe('.accept', function () {
-            it('should visit the expression', function () {
-                expression = dice.expression.forConstant(5);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-            });
-        });
-
         describe('.evaluate', function () {
             it('should return result with value equal to constant', function () {
                 var constant = 5;
@@ -160,8 +120,6 @@ describe('diceExpression', function () {
     });
 
     describe('.forDie', function () {
-        var d3 = dice.bag.create().d(3);
-
         describe('when die is falsy', function () {
             it('should throw exception', function () {
                 expect(function () {
@@ -170,18 +128,10 @@ describe('diceExpression', function () {
             });
         });
 
-        describe('.accept', function () {
-            it('should visit the expression', function () {
-                expression = dice.expression.forDie(d3);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-            });
-        });
-
         describe('.evaluate', function () {
             it('should return result with value equal to die', function () {
+                var d3 = dice.bag.create().d(3);
+
                 expression = dice.expression.forDie(d3);
                 expect(expression.evaluate()).toEqual(dice.expressionResult.forDie(d3));
             });
@@ -202,18 +152,6 @@ describe('diceExpression', function () {
                 expect(function () {
                     dice.expression.forDivision(four, undefined);
                 }).toThrow();
-            });
-        });
-
-        describe('.accept', function () {
-            it('should visit the expression, the dividend expression, and the divisor expression', function () {
-                expression = dice.expression.forDivision(three, four);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.dividendExpression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.divisorExpression);
             });
         });
 
@@ -273,18 +211,6 @@ describe('diceExpression', function () {
             });
         });
 
-        describe('.accept', function () {
-            it('should visit the expression and the argument list expressions', function () {
-                expression = dice.expression.forFunctionCall('f', f, [three, four]);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.argumentListExpressions[0]);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.argumentListExpressions[1]);
-            });
-        });
-
         describe('.evaluate', function () {
             describe('when zero arguments specified', function () {
                 it('should return result with value equal to function return value', function () {
@@ -341,17 +267,6 @@ describe('diceExpression', function () {
             });
         });
 
-        describe('.accept', function () {
-            it('should visit the expression and the child expression', function () {
-                expression = dice.expression.forGroup(three);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.childExpression);
-            });
-        });
-
         describe('.evaluate', function () {
             it('should return result with value equal to child expression result value', function () {
                 expression = dice.expression.forGroup(three);
@@ -378,18 +293,6 @@ describe('diceExpression', function () {
                 expect(function () {
                     dice.expression.forModulo(four, undefined);
                 }).toThrow();
-            });
-        });
-
-        describe('.accept', function () {
-            it('should visit the expression, the dividend expression, and the divisor expression', function () {
-                expression = dice.expression.forModulo(four, three);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.dividendExpression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.divisorExpression);
             });
         });
 
@@ -428,18 +331,6 @@ describe('diceExpression', function () {
             });
         });
 
-        describe('.accept', function () {
-            it('should visit the expression, the multiplicand expression, and the multiplier expression', function () {
-                expression = dice.expression.forMultiplication(four, three);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.multiplicandExpression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.multiplierExpression);
-            });
-        });
-
         describe('.evaluate', function () {
             it('should return result with value equal to product of multiplicand and multiplier', function () {
                 expression = dice.expression.forMultiplication(four, three);
@@ -467,17 +358,6 @@ describe('diceExpression', function () {
             });
         });
 
-        describe('.accept', function () {
-            it('should visit the expression and the child expression', function () {
-                expression = dice.expression.forNegative(three);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.childExpression);
-            });
-        });
-
         describe('.evaluate', function () {
             it('should return result with value equal to negative of child expression result value', function () {
                 expression = dice.expression.forNegative(three);
@@ -496,17 +376,6 @@ describe('diceExpression', function () {
                 expect(function () {
                     dice.expression.forPositive(undefined);
                 }).toThrow();
-            });
-        });
-
-        describe('.accept', function () {
-            it('should visit the expression and the child expression', function () {
-                expression = dice.expression.forPositive(three);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.childExpression);
             });
         });
 
@@ -536,18 +405,6 @@ describe('diceExpression', function () {
                 expect(function () {
                     dice.expression.forSubtraction(four, undefined);
                 }).toThrow();
-            });
-        });
-
-        describe('.accept', function () {
-            it('should visit the expression, the minuend expression, and the subtrahend expression', function () {
-                expression = dice.expression.forSubtraction(four, three);
-
-                expression.accept(visitor.visit);
-
-                expect(visitor.visit).toHaveBeenCalledWith(expression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.minuendExpression);
-                expect(visitor.visit).toHaveBeenCalledWith(expression.subtrahendExpression);
             });
         });
 
