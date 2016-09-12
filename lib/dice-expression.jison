@@ -100,18 +100,18 @@ ExpressionList
 FunctionCall
     : IDENTIFIER LPAREN ExpressionList RPAREN
         {
-            $$ = createFunctionCallExpression(yy.__context, $1, $3);
+            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, $1, $3);
         }
     ;
 
 Literal
     : DIE_LITERAL
         {
-            $$ = createDieExpression(yy.__context, $1);
+            $$ = diceExpressionParserUtils.createDieExpression(yy.__context, $1);
         }
     | DICE_ROLL_LITERAL
         {
-            $$ = createDiceRollExpression(yy.__context, $1);
+            $$ = diceExpressionParserUtils.createDiceRollExpression(yy.__context, $1);
         }
     | INTEGER_LITERAL
         {
@@ -131,19 +131,19 @@ MultiplicativeExpression
         }
     | MultiplicativeExpression SLASH_SLASH UnaryExpression
         {
-            $$ = createFunctionCallExpression(yy.__context, 'trunc', [diceExpression.forDivision($1, $3)]);
+            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'trunc', [diceExpression.forDivision($1, $3)]);
         }
     | MultiplicativeExpression SLASH_TILDE UnaryExpression
         {
-            $$ = createFunctionCallExpression(yy.__context, 'round', [diceExpression.forDivision($1, $3)]);
+            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'round', [diceExpression.forDivision($1, $3)]);
         }
     | MultiplicativeExpression SLASH_MINUS UnaryExpression
         {
-            $$ = createFunctionCallExpression(yy.__context, 'floor', [diceExpression.forDivision($1, $3)]);
+            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'floor', [diceExpression.forDivision($1, $3)]);
         }
     | MultiplicativeExpression SLASH_PLUS UnaryExpression
         {
-            $$ = createFunctionCallExpression(yy.__context, 'ceil', [diceExpression.forDivision($1, $3)]);
+            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'ceil', [diceExpression.forDivision($1, $3)]);
         }
     | MultiplicativeExpression PERCENT UnaryExpression
         {
@@ -183,73 +183,17 @@ UnaryExpression
 
 %%
 
-var diceBag = require('./dice-bag');
 var diceExpression = require('./dice-expression');
-var diceExpressionFunctions = require('./dice-expression-functions');
-
-function createDefaultContext() {
-    return {
-        bag: diceBag.create(),
-        functions: {}
-    };
-}
-
-function createDiceRollExpression(context, literal) {
-    var components = literal.match(/^(\d+)(d[\d%]+)(([-+])(\d*)([HL]))?$/);
-    var rollCount = Number(components[1]);
-    var dieLiteral = components[2];
-    var isRollModifierPresent = (components[3] !== undefined);
-
-    var rollExpression = createFunctionCallExpression(context, 'roll', [
-        diceExpression.forConstant(rollCount),
-        createDieExpression(context, dieLiteral)
-    ]);
-    if (isRollModifierPresent) {
-        var rollModifierOperation = components[4];
-        var rollModifierCount = components[5] ? Number(components[5]) : 1;
-        var rollModifierDieType = components[6];
-        var rollModifierFunctionName = getRollModifierFunctionName(rollModifierOperation, rollModifierDieType);
-        rollExpression = createFunctionCallExpression(context, rollModifierFunctionName, [
-            rollExpression,
-            diceExpression.forConstant(rollModifierCount)
-        ]);
-    }
-
-    return createFunctionCallExpression(context, 'sum', [rollExpression]);
-}
-
-function createDieExpression(context, literal) {
-    var formattedSides = literal.slice(1);
-    var sides = (formattedSides === '%') ? 100 : Number(formattedSides);
-    return diceExpression.forDie(context.bag.d(sides));
-}
-
-function createFunctionCallExpression(context, name, argumentListExpressions) {
-    var func = context.functions[name] || diceExpressionFunctions[name];
-    return diceExpression.forFunctionCall(name, func, argumentListExpressions);
-}
+var diceExpressionParserUtils = require('./dice-expression-parser-utils');
 
 function createParser(context) {
     var parser = new Parser();
-    parser.yy.__context = context || createDefaultContext();
-    return parser;
-}
 
-function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType) {
-    var rollModifierFunctionNames = {
-        '+': {
-            H: 'cloneHighestRolls',
-            L: 'cloneLowestRolls'
-        },
-        '-': {
-            H: 'dropHighestRolls',
-            L: 'dropLowestRolls'
-        }
-    };
-    return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType];
+    parser.yy.__context = context || diceExpressionParserUtils.createDefaultContext();
+    return parser;
 }
 
 module.exports = {
     create: createParser,
-    createDefaultContext: createDefaultContext
+    createDefaultContext: diceExpressionParserUtils.createDefaultContext
 };

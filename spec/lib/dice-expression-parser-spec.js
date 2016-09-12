@@ -45,6 +45,11 @@ describe('diceExpressionParser', function () {
     });
 
     describe('.create', function () {
+        it('should use a default context if one is not provided', function () {
+            expressionParser = dice.expressionParser.create();
+            expect(expressionParser.parse('trunc(3/2)').evaluate().value).toBe(1);
+        });
+
         it('should use the dice bag in the context', function () {
             expressionParserContext.bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
             expect(expressionParser.parse('3d6').evaluate().value).toBe(3);
