@@ -1,180 +1,156 @@
-function addExpressionResult(response) {
+(function () {
     'use strict';
 
-    var $actionsCell,
-        $expressionCanonicalTextCell,
-        $expressionResultRow,
-        $expressionResultTextCell,
-        $expressionResultValueCell,
-        $expressionTextCell,
-        $reevaluateButton,
-        $removeButton;
+    function addExpressionResult(response) {
+        var $actionsCell,
+            $expressionCanonicalTextCell,
+            $expressionResultRow,
+            $expressionResultTextCell,
+            $expressionResultValueCell,
+            $expressionTextCell,
+            $reevaluateButton,
+            $removeButton;
 
-    $expressionTextCell = $('<td>').text(response.expression.text);
-    $expressionCanonicalTextCell = $('<td>').text(response.expression.canonicalText);
-    $expressionResultTextCell = $('<td>').text(response.expressionResult.text);
-    $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
+        $expressionTextCell = $('<td>').text(response.expression.text);
+        $expressionCanonicalTextCell = $('<td>').text(response.expression.canonicalText);
+        $expressionResultTextCell = $('<td>').text(response.expressionResult.text);
+        $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
 
-    $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
-        evaluateExpression($expressionTextCell.text());
-    });
-    $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
-        $(event.target).closest('tr').remove();
-    });
-    $actionsCell = $('<td>').append($reevaluateButton, $removeButton);
+        $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
+            evaluateExpression($expressionTextCell.text());
+        });
+        $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
+            $(event.target).closest('tr').remove();
+        });
+        $actionsCell = $('<td>').append($reevaluateButton, $removeButton);
 
-    $expressionResultRow = $('<tr>').append(
-        $expressionTextCell,
-        $expressionCanonicalTextCell,
-        $expressionResultTextCell,
-        $expressionResultValueCell,
-        $actionsCell
-    );
-    $('#expressionResults').prepend($expressionResultRow);
-}
+        $expressionResultRow = $('<tr>').append(
+            $expressionTextCell,
+            $expressionCanonicalTextCell,
+            $expressionResultTextCell,
+            $expressionResultValueCell,
+            $actionsCell
+        );
+        $('#expressionResults').prepend($expressionResultRow);
+    }
 
-function clearExpressionText() {
-    'use strict';
+    function clearExpressionText() {
+        $('#expressionText').val('');
+    }
 
-    $('#expressionText').val('');
-}
+    function evaluateExpression(expressionText) {
+        var randomNumberGeneratorJson,
+            requestBody;
 
-function evaluateExpression(expressionText) {
-    'use strict';
+        requestBody = {
+            expression: {
+                text: expressionText
+            }
+        };
 
-    var randomNumberGeneratorJson,
-        requestBody;
-
-    requestBody = {
-        expression: {
-            text: expressionText
+        randomNumberGeneratorJson = $('#randomNumberGeneratorJson').val();
+        if (randomNumberGeneratorJson) {
+            requestBody.randomNumberGenerator = JSON.parse(randomNumberGeneratorJson);
         }
-    };
 
-    randomNumberGeneratorJson = $('#randomNumberGeneratorJson').val();
-    if (randomNumberGeneratorJson) {
-        requestBody.randomNumberGenerator = JSON.parse(randomNumberGeneratorJson);
+        $.postJSON('/expression/evaluate', requestBody, processResponse, processErrorResponse);
     }
 
-    $.postJSON('/expression/evaluate', requestBody, processResponse, processErrorResponse);
-}
+    function getExpressionText() {
+        var expressionText,
+            roundingFunction;
 
-function getExpressionText() {
-    'use strict';
-
-    var expressionText,
-        roundingFunction;
-
-    expressionText = $('#expressionText').val();
-    roundingFunction = $('input[name="roundingMode"]:checked').val();
-    if (roundingFunction) {
-        expressionText = roundingFunction + '(' + expressionText + ')';
-    }
-    return expressionText;
-}
-
-function hideErrorMessage() {
-    'use strict';
-
-    $('#errorMessage').invisible();
-}
-
-function hideHelp() {
-    'use strict';
-
-    $('#help').hide();
-}
-
-function initialize() {
-    'use strict';
-
-    hideHelp();
-    hideErrorMessage();
-
-    $('#expressionForm').submit(function (event) {
-        evaluateExpression(getExpressionText());
-        event.preventDefault();
-    });
-    $('#toggleHelp').click(toggleHelp);
-    $('#removeAllResults').click(removeAllResults);
-}
-
-function installJQueryPlugins() {
-    'use strict';
-
-    jQuery.fn.visible = function () {
-        return this.css('visibility', 'visible');
-    };
-
-    jQuery.fn.invisible = function () {
-        return this.css('visibility', 'hidden');
-    };
-
-    jQuery.extend({
-        postJSON: function (url, data, successCallback, errorCallback) {
-            return this.ajax({
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data),
-                dataType: 'json',
-                error: errorCallback,
-                success: successCallback,
-                type: 'POST',
-                url: url
-            });
+        expressionText = $('#expressionText').val();
+        roundingFunction = $('input[name="roundingMode"]:checked').val();
+        if (roundingFunction) {
+            expressionText = roundingFunction + '(' + expressionText + ')';
         }
-    });
-}
-
-function processErrorResponse(jqxhr) {
-    'use strict';
-
-    var responseBody = jqxhr.responseJSON;
-
-    if (responseBody && responseBody.error) {
-        showErrorMessage(responseBody.error.message);
+        return expressionText;
     }
-}
 
-function processResponse(responseBody) {
-    'use strict';
+    function hideErrorMessage() {
+        $('#errorMessage').invisible();
+    }
 
-    clearExpressionText();
-    addExpressionResult(responseBody);
-    hideErrorMessage();
-}
+    function hideHelp() {
+        $('#help').hide();
+    }
 
-function removeAllResults() {
-    'use strict';
+    function initialize() {
+        hideHelp();
+        hideErrorMessage();
 
-    $('#expressionResults').empty();
-}
+        $('#expressionForm').submit(function (event) {
+            evaluateExpression(getExpressionText());
+            event.preventDefault();
+        });
+        $('#toggleHelp').click(toggleHelp);
+        $('#removeAllResults').click(removeAllResults);
+    }
 
-function showErrorMessage(message) {
-    'use strict';
+    function installJQueryPlugins() {
+        jQuery.fn.visible = function () {
+            return this.css('visibility', 'visible');
+        };
 
-    $('#errorMessage').text(message).visible();
-}
+        jQuery.fn.invisible = function () {
+            return this.css('visibility', 'hidden');
+        };
 
-function toggleHelp() {
-    'use strict';
+        jQuery.extend({
+            postJSON: function (url, data, successCallback, errorCallback) {
+                return this.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    error: errorCallback,
+                    success: successCallback,
+                    type: 'POST',
+                    url: url
+                });
+            }
+        });
+    }
 
-    var $help,
-        isHelpVisible,
-        wasHelpVisible;
+    function processErrorResponse(jqxhr) {
+        var responseBody = jqxhr.responseJSON;
 
-    $help = $('#help');
-    wasHelpVisible = $help.is(':visible');
-    $help.toggle(400);
+        if (responseBody && responseBody.error) {
+            showErrorMessage(responseBody.error.message);
+        }
+    }
 
-    isHelpVisible = !wasHelpVisible;
-    $('#toggleHelp').text(isHelpVisible ? 'hide help' : 'help');
-}
+    function processResponse(responseBody) {
+        clearExpressionText();
+        addExpressionResult(responseBody);
+        hideErrorMessage();
+    }
 
-function main() {
-    'use strict';
+    function removeAllResults() {
+        $('#expressionResults').empty();
+    }
 
-    installJQueryPlugins();
-    initialize();
-}
+    function showErrorMessage(message) {
+        $('#errorMessage').text(message).visible();
+    }
 
-$(document).ready(main);
+    function toggleHelp() {
+        var $help,
+            isHelpVisible,
+            wasHelpVisible;
+
+        $help = $('#help');
+        wasHelpVisible = $help.is(':visible');
+        $help.toggle(400);
+
+        isHelpVisible = !wasHelpVisible;
+        $('#toggleHelp').text(isHelpVisible ? 'hide help' : 'help');
+    }
+
+    function main() {
+        installJQueryPlugins();
+        initialize();
+    }
+
+    $(document).ready(main);
+})();
