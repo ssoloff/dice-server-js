@@ -18,8 +18,8 @@
     "tests"
   ],
   "dependencies": {
+    "jcanvas": "16.07.03",
     "jquery": "~2.1.4",
     "reset-css": "~2.0.2011012602"
   }
 }
-

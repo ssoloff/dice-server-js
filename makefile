@@ -95,6 +95,7 @@ dist:
 	$(RMDIR) $(DIST_OUTPUT_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)
 	$(CP) $(COMPILE_OUTPUT_DIR)/$(SERVER_JS) $(COMPILE_OUTPUT_DIR)/$(APP_DIR) $(COMPILE_OUTPUT_DIR)/$(PUBLIC_DIR) $(COMPILE_OUTPUT_DIR)/$(SRC_DIR) $(DIST_OUTPUT_DIR)
+	$(CP) $(BOWER_COMPONENTS_DIR)/jcanvas/jcanvas.min.js $(DIST_OUTPUT_DIR)/$(SCRIPTS_DIR)/jcanvas.js
 	$(CP) $(BOWER_COMPONENTS_DIR)/jquery/dist/jquery.min.js $(DIST_OUTPUT_DIR)/$(SCRIPTS_DIR)/jquery.js
 	$(CP) $(BOWER_COMPONENTS_DIR)/reset-css/reset.css $(DIST_OUTPUT_DIR)/$(STYLES_DIR)
 
@@ -125,4 +126,3 @@ unit-test-with-coverage: compile
 $(DICE_EXPRESSION_PARSER_JS): $(DICE_EXPRESSION_JISON)
 	$(MKDIR) $(@D)
 	$(JISON) $< -o $@
-

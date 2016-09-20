@@ -18,6 +18,10 @@ th {
     font-weight: bold;
 }
 
+.dieRollResults {
+    border: black 1px solid;
+}
+
 .error {
     color: red;
 }
@@ -41,4 +45,3 @@ th {
 .expressionResultsActions {
     width: 5%;
 }
-

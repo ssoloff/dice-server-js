@@ -1,6 +1,45 @@
 (function () {
     'use strict';
 
+    function addDieRollResults(response) {
+        var DIE_HEIGHT = 40,
+            DIE_WIDTH = 40,
+            MARGIN = 20,
+            $canvas,
+            dicePerRow;
+
+        $canvas = $('#dieRollResults');
+
+        $canvas.clearCanvas();
+
+        dicePerRow = Math.floor(($canvas.width() - 2 * MARGIN) / (DIE_WIDTH + MARGIN));
+        response.dieRollResults.forEach(function (dieRollResult, index) {
+            var column,
+                row,
+                x,
+                y;
+
+            column = index % dicePerRow;
+            x = MARGIN + column * (DIE_WIDTH + MARGIN) + DIE_WIDTH / 2;
+            row = Math.floor(index / dicePerRow);
+            y = MARGIN + row * (DIE_HEIGHT + MARGIN) + DIE_HEIGHT / 2;
+            $canvas.drawRect({
+                height: DIE_HEIGHT,
+                strokeStyle: 'black',
+                width: DIE_WIDTH,
+                x: x,
+                y: y
+            });
+            $canvas.drawText({
+                fillStyle: 'black',
+                fontSize: '1em',
+                text: dieRollResult.value.toString(),
+                x: x,
+                y: y
+            });
+        });
+    }
+
     function addExpressionResult(response) {
         var $actionsCell,
             $expressionCanonicalTextCell,
@@ -122,6 +161,7 @@
 
     function processResponse(responseBody) {
         clearExpressionText();
+        addDieRollResults(responseBody);
         addExpressionResult(responseBody);
         hideErrorMessage();
     }
