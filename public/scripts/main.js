@@ -60,30 +60,59 @@
                     y: y
                 });
             } else if (dieRollResult.sides === 8) {
-                $canvas.drawPolygon({
-                    radius: DIE_SIZE / 2,
-                    rotate: 0,
-                    rounded: true,
-                    sides: 3,
-                    strokeStyle: 'black',
-                    x: x,
-                    y: y - Math.sin(Math.PI / 6) * DIE_SIZE / 2
+                vertices = [
+                    { x:  0.0000000, y: -0.8164966 },
+                    { x:  0.7071068, y: -0.4082483 },
+                    { x:  0.7071068, y:  0.4082483 },
+                    { x:  0.0000000, y:  0.8164966 },
+                    { x: -0.7071068, y:  0.4082483 },
+                    { x: -0.7071068, y: -0.4082483 }
+                ];
+                vertices.forEach(function (vertex) {
+                    vertex.x *= DIE_SIZE / 1.5;
+                    vertex.y *= DIE_SIZE / 1.5;
                 });
-                $canvas.drawPolygon({
-                    radius: DIE_SIZE / 2,
-                    rotate: 180,
+
+                // draw line through vertices 1-5 (outer edge)
+                props = {
+                    closed: true,
                     rounded: true,
-                    sides: 3,
-                    strokeStyle: 'black',
-                    x: x,
-                    y: y + Math.sin(Math.PI / 6) * DIE_SIZE / 2
-                });
+                    strokeStyle: 'black'
+                };
+                j = 1;
+                for (i = 0; i < 6; i += 1) {
+                    props['x' + j] = x + vertices[i].x;
+                    props['y' + j] = y + vertices[i].y;
+                    j += 1;
+                }
+                $canvas.drawLine(props);
+
+                // draw lines between the following vertices (to complete
+                // rendering the edges of the other 3 facets):
+                //
+                //    1 -> 3; 1 -> 5; 3 -> 5
+                props = {
+                    strokeStyle: 'black'
+                };
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[0].x, y1: y + vertices[0].y,
+                    x2: x + vertices[2].x, y2: y + vertices[2].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[0].x, y1: y + vertices[0].y,
+                    x2: x + vertices[4].x, y2: y + vertices[4].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[2].x, y1: y + vertices[2].y,
+                    x2: x + vertices[4].x, y2: y + vertices[4].y
+                }));
+
                 $canvas.drawText({
                     fillStyle: 'black',
                     fontSize: '1em',
                     text: dieRollResult.value.toString(),
                     x: x,
-                    y: y - Math.sin(Math.PI / 6) * DIE_SIZE / 2
+                    y: y
                 });
             } else if (dieRollResult.sides === 12) {
                 vertices = [
