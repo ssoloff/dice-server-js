@@ -29,9 +29,9 @@ vertices_3d = matrix(
   ncol=20
 )
 
-# Rotation matrix of +60 degrees about the x-axis to bring a facet normal to the
-# z-axis.
-rotate_x_pos60 = matrix(
+# Rotate die to generate 2D view from above while it is at rest on a surface
+# (i.e. with top facet parallel to x-y plane).
+rotate_x_pos_60 = matrix(
   c(
     1, 0,            0,
     0, cos(pi / 3), -sin(pi / 3),
@@ -41,17 +41,15 @@ rotate_x_pos60 = matrix(
   ncol=3,
   byrow=TRUE
 )
-
-# Rotate die to generate 2D view from above while it is at rest on a surface.
-vertices_3d_rot = rotate_x_pos60 %*% vertices_3d
+vertices_3d_rot = rotate_x_pos_60 %*% vertices_3d
 
 # Extract 2D vertex coordinates and order them in such a way to optimize
 # drawing.  The 2D vertices are as labeled below.  (**) represents the origin.
 #
-#                 ( 6)
-#       (15)                ( 7)
-#                 ( 1)
-#  (14)                          ( 8)
+#                 ( 6)                          +--> x
+#       (15)                ( 7)                |
+#                 ( 1)                          V
+#  (14)                          ( 8)           y
 #       ( 5)                ( 2)
 #                 (**)
 #  (13)                          ( 9)
