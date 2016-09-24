@@ -205,6 +205,13 @@
                 });
                 $canvas.drawText({
                     fillStyle: 'black',
+                    fontSize: '0.5em',
+                    text: dieRollResult.sides.toString(),
+                    x: x + DIE_SIZE / 2,
+                    y: y + DIE_SIZE / 2
+                });
+                $canvas.drawText({
+                    fillStyle: 'black',
                     fontSize: '1em',
                     text: dieRollResult.value.toString(),
                     x: x,
