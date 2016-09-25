@@ -195,6 +195,99 @@
                     x: x,
                     y: y
                 });
+            } else if (dieRollResult.sides === 20) {
+                vertices = [
+                    { x:  0.000000, y: -1.1547005 },
+                    { x:  1.000000, y:  0.5773503 },
+                    { x: -1.000000, y:  0.5773503 },
+                    { x:  0.000000, y: -1.8683447 },
+                    { x:  1.618034, y: -0.9341724 },
+                    { x:  1.618034, y:  0.9341724 },
+                    { x:  0.000000, y:  1.8683447 },
+                    { x: -1.618034, y:  0.9341724 },
+                    { x: -1.618034, y: -0.9341724 }
+                ];
+                vertices.forEach(function (vertex) {
+                    vertex.x *= DIE_SIZE / 3;
+                    vertex.y *= DIE_SIZE / 3;
+                });
+
+                // draw line through vertices 1-3 (edges of top facet)
+                props = {
+                    closed: true,
+                    rounded: true,
+                    strokeStyle: 'black'
+                };
+                j = 1;
+                for (i = 0; i < 3; i += 1) {
+                    props['x' + j] = x + vertices[i].x;
+                    props['y' + j] = y + vertices[i].y;
+                    j += 1;
+                }
+                $canvas.drawLine(props);
+
+                // draw line through vertices 4-9 (outer edge)
+                j = 1;
+                for (i = 3; i < 9; i += 1) {
+                    props['x' + j] = x + vertices[i].x;
+                    props['y' + j] = y + vertices[i].y;
+                    j += 1;
+                }
+                $canvas.drawLine(props);
+
+                // draw lines between the following vertices (to complete
+                // rendering the edges of the other 5 facets):
+                //
+                //    1 -> 4; 1 -> 5; 1 -> 9;
+                //    2 -> 5; 2 -> 6; 2 -> 7;
+                //    3 -> 7; 3 -> 8; 3 -> 9
+                props = {
+                    strokeStyle: 'black'
+                };
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[0].x, y1: y + vertices[0].y,
+                    x2: x + vertices[3].x, y2: y + vertices[3].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[0].x, y1: y + vertices[0].y,
+                    x2: x + vertices[4].x, y2: y + vertices[4].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[0].x, y1: y + vertices[0].y,
+                    x2: x + vertices[8].x, y2: y + vertices[8].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[1].x, y1: y + vertices[1].y,
+                    x2: x + vertices[4].x, y2: y + vertices[4].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[1].x, y1: y + vertices[1].y,
+                    x2: x + vertices[5].x, y2: y + vertices[5].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[1].x, y1: y + vertices[1].y,
+                    x2: x + vertices[6].x, y2: y + vertices[6].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[2].x, y1: y + vertices[2].y,
+                    x2: x + vertices[6].x, y2: y + vertices[6].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[2].x, y1: y + vertices[2].y,
+                    x2: x + vertices[7].x, y2: y + vertices[7].y
+                }));
+                $canvas.drawLine($.extend(props, {
+                    x1: x + vertices[2].x, y1: y + vertices[2].y,
+                    x2: x + vertices[8].x, y2: y + vertices[8].y
+                }));
+
+                $canvas.drawText({
+                    fillStyle: 'black',
+                    fontSize: '1em',
+                    text: dieRollResult.value.toString(),
+                    x: x,
+                    y: y
+                });
             } else {
                 $canvas.drawEllipse({
                     height: DIE_SIZE,
