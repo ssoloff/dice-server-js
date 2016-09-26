@@ -64,13 +64,14 @@
                 });
                 drawDieRollResultValue(x, y, dieRollResult);
             } else if (dieRollResult.sides === 6) {
-                $canvas.drawRect({
-                    height: DIE_SIZE,
-                    strokeStyle: 'black',
-                    width: DIE_SIZE,
-                    x: x,
-                    y: y
-                });
+                drawDie(x, y, DIE_SIZE / 2, [
+                    { x: -1.0000000, y: -1.0000000 },
+                    { x:  1.0000000, y: -1.0000000 },
+                    { x:  1.0000000, y:  1.0000000 },
+                    { x: -1.0000000, y:  1.0000000 }
+                ], [
+                    [0, 1, 2, 3, 0]
+                ]);
                 drawDieRollResultValue(x, y, dieRollResult);
             } else if (dieRollResult.sides === 8) {
                 drawDie(x, y, DIE_SIZE / 1.5, [
