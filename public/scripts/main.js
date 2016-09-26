@@ -7,6 +7,37 @@
             $canvas,
             dicePerRow;
 
+        function drawDie(x, y, scale, vertices, vertex_indexes_list) {
+            vertices.forEach(function (vertex) {
+                vertex.x = x + scale * vertex.x;
+                vertex.y = y + scale * vertex.y;
+            });
+
+            vertex_indexes_list.forEach(function (vertex_indexes) {
+                var i = 1,
+                    props = {
+                        strokeStyle: 'black'
+                    };
+
+                vertex_indexes.forEach(function (vertex_index) {
+                    props['x' + i] = vertices[vertex_index].x;
+                    props['y' + i] = vertices[vertex_index].y;
+                    i += 1;
+                });
+                $canvas.drawLine(props);
+            });
+        }
+
+        function drawDieRollResultValue(x, y, dieRollResult) {
+            $canvas.drawText({
+                fillStyle: 'black',
+                fontSize: '1em',
+                text: dieRollResult.value.toString(),
+                x: x,
+                y: y
+            });
+        }
+
         $canvas = $('#dieRollResults');
 
         $canvas.clearCanvas();
@@ -14,11 +45,7 @@
         dicePerRow = Math.floor(($canvas.width() - 2 * MARGIN) / (DIE_SIZE + MARGIN));
         response.dieRollResults.forEach(function (dieRollResult, index) {
             var column,
-                i,
-                j,
-                props,
                 row,
-                vertices,
                 x,
                 y;
 
@@ -30,92 +57,38 @@
             if (dieRollResult.sides === 4) {
                 $canvas.drawPolygon({
                     radius: DIE_SIZE / 2,
-                    rounded: true,
                     sides: 3,
                     strokeStyle: 'black',
                     x: x,
                     y: y
                 });
-                $canvas.drawText({
-                    fillStyle: 'black',
-                    fontSize: '1em',
-                    text: dieRollResult.value.toString(),
-                    x: x,
-                    y: y
-                });
+                drawDieRollResultValue(x, y, dieRollResult);
             } else if (dieRollResult.sides === 6) {
                 $canvas.drawRect({
                     height: DIE_SIZE,
-                    rounded: true,
                     strokeStyle: 'black',
                     width: DIE_SIZE,
                     x: x,
                     y: y
                 });
-                $canvas.drawText({
-                    fillStyle: 'black',
-                    fontSize: '1em',
-                    text: dieRollResult.value.toString(),
-                    x: x,
-                    y: y
-                });
+                drawDieRollResultValue(x, y, dieRollResult);
             } else if (dieRollResult.sides === 8) {
-                vertices = [
+                drawDie(x, y, DIE_SIZE / 1.5, [
                     { x:  0.0000000, y: -0.8164966 },
                     { x:  0.7071068, y: -0.4082483 },
                     { x:  0.7071068, y:  0.4082483 },
                     { x:  0.0000000, y:  0.8164966 },
                     { x: -0.7071068, y:  0.4082483 },
                     { x: -0.7071068, y: -0.4082483 }
-                ];
-                vertices.forEach(function (vertex) {
-                    vertex.x *= DIE_SIZE / 1.5;
-                    vertex.y *= DIE_SIZE / 1.5;
-                });
-
-                // draw line through vertices 1-5 (outer edge)
-                props = {
-                    closed: true,
-                    rounded: true,
-                    strokeStyle: 'black'
-                };
-                j = 1;
-                for (i = 0; i < 6; i += 1) {
-                    props['x' + j] = x + vertices[i].x;
-                    props['y' + j] = y + vertices[i].y;
-                    j += 1;
-                }
-                $canvas.drawLine(props);
-
-                // draw lines between the following vertices (to complete
-                // rendering the edges of the other 3 facets):
-                //
-                //    1 -> 3; 1 -> 5; 3 -> 5
-                props = {
-                    strokeStyle: 'black'
-                };
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[0].x, y1: y + vertices[0].y,
-                    x2: x + vertices[2].x, y2: y + vertices[2].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[0].x, y1: y + vertices[0].y,
-                    x2: x + vertices[4].x, y2: y + vertices[4].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[2].x, y1: y + vertices[2].y,
-                    x2: x + vertices[4].x, y2: y + vertices[4].y
-                }));
-
-                $canvas.drawText({
-                    fillStyle: 'black',
-                    fontSize: '1em',
-                    text: dieRollResult.value.toString(),
-                    x: x,
-                    y: y
-                });
+                ], [
+                    [0, 1, 2, 3, 4, 5, 0],
+                    [0, 2],
+                    [0, 4],
+                    [2, 4]
+                ]);
+                drawDieRollResultValue(x, y, dieRollResult);
             } else if (dieRollResult.sides === 12) {
-                vertices = [
+                drawDie(x, y, DIE_SIZE / 3, [
                     { x:  0.000000, y: -1.0922415 },
                     { x:  1.000000, y: -0.3660254 },
                     { x:  0.618034, y:  0.8090170 },
@@ -131,72 +104,18 @@
                     { x: -1.618034, y:  0.5352331 },
                     { x: -1.618034, y: -0.5352331 },
                     { x: -1.000000, y: -1.3660254 }
-                ];
-                vertices.forEach(function (vertex) {
-                    vertex.x *= DIE_SIZE / 3;
-                    vertex.y *= DIE_SIZE / 3;
-                });
-
-                // draw line through vertices 1-5 (edges of top facet)
-                props = {
-                    closed: true,
-                    rounded: true,
-                    strokeStyle: 'black'
-                };
-                j = 1;
-                for (i = 0; i < 5; i += 1) {
-                    props['x' + j] = x + vertices[i].x;
-                    props['y' + j] = y + vertices[i].y;
-                    j += 1;
-                }
-                $canvas.drawLine(props);
-
-                // draw line through vertices 6-15 (outer edge)
-                j = 1;
-                for (i = 5; i < 15; i += 1) {
-                    props['x' + j] = x + vertices[i].x;
-                    props['y' + j] = y + vertices[i].y;
-                    j += 1;
-                }
-                $canvas.drawLine(props);
-
-                // draw lines between the following vertices (to complete
-                // rendering the edges of the other 5 facets):
-                //
-                //    1 -> 6; 2 -> 8; 3 -> 10; 4 -> 12; 5 -> 14
-                props = {
-                    strokeStyle: 'black'
-                };
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[0].x, y1: y + vertices[0].y,
-                    x2: x + vertices[5].x, y2: y + vertices[5].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[1].x, y1: y + vertices[1].y,
-                    x2: x + vertices[7].x, y2: y + vertices[7].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[2].x, y1: y + vertices[2].y,
-                    x2: x + vertices[9].x, y2: y + vertices[9].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[3].x, y1: y + vertices[3].y,
-                    x2: x + vertices[11].x, y2: y + vertices[11].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[4].x, y1: y + vertices[4].y,
-                    x2: x + vertices[13].x, y2: y + vertices[13].y
-                }));
-
-                $canvas.drawText({
-                    fillStyle: 'black',
-                    fontSize: '1em',
-                    text: dieRollResult.value.toString(),
-                    x: x,
-                    y: y
-                });
+                ], [
+                    [0, 1, 2, 3, 4, 0],
+                    [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 5],
+                    [0, 5],
+                    [1, 7],
+                    [2, 9],
+                    [3, 11],
+                    [4, 13]
+                ]);
+                drawDieRollResultValue(x, y, dieRollResult);
             } else if (dieRollResult.sides === 20) {
-                vertices = [
+                drawDie(x, y, DIE_SIZE / 3, [
                     { x:  0.000000, y: -1.1547005 },
                     { x:  1.000000, y:  0.5773503 },
                     { x: -1.000000, y:  0.5773503 },
@@ -206,88 +125,20 @@
                     { x:  0.000000, y:  1.8683447 },
                     { x: -1.618034, y:  0.9341724 },
                     { x: -1.618034, y: -0.9341724 }
-                ];
-                vertices.forEach(function (vertex) {
-                    vertex.x *= DIE_SIZE / 3;
-                    vertex.y *= DIE_SIZE / 3;
-                });
-
-                // draw line through vertices 1-3 (edges of top facet)
-                props = {
-                    closed: true,
-                    rounded: true,
-                    strokeStyle: 'black'
-                };
-                j = 1;
-                for (i = 0; i < 3; i += 1) {
-                    props['x' + j] = x + vertices[i].x;
-                    props['y' + j] = y + vertices[i].y;
-                    j += 1;
-                }
-                $canvas.drawLine(props);
-
-                // draw line through vertices 4-9 (outer edge)
-                j = 1;
-                for (i = 3; i < 9; i += 1) {
-                    props['x' + j] = x + vertices[i].x;
-                    props['y' + j] = y + vertices[i].y;
-                    j += 1;
-                }
-                $canvas.drawLine(props);
-
-                // draw lines between the following vertices (to complete
-                // rendering the edges of the other 5 facets):
-                //
-                //    1 -> 4; 1 -> 5; 1 -> 9;
-                //    2 -> 5; 2 -> 6; 2 -> 7;
-                //    3 -> 7; 3 -> 8; 3 -> 9
-                props = {
-                    strokeStyle: 'black'
-                };
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[0].x, y1: y + vertices[0].y,
-                    x2: x + vertices[3].x, y2: y + vertices[3].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[0].x, y1: y + vertices[0].y,
-                    x2: x + vertices[4].x, y2: y + vertices[4].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[0].x, y1: y + vertices[0].y,
-                    x2: x + vertices[8].x, y2: y + vertices[8].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[1].x, y1: y + vertices[1].y,
-                    x2: x + vertices[4].x, y2: y + vertices[4].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[1].x, y1: y + vertices[1].y,
-                    x2: x + vertices[5].x, y2: y + vertices[5].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[1].x, y1: y + vertices[1].y,
-                    x2: x + vertices[6].x, y2: y + vertices[6].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[2].x, y1: y + vertices[2].y,
-                    x2: x + vertices[6].x, y2: y + vertices[6].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[2].x, y1: y + vertices[2].y,
-                    x2: x + vertices[7].x, y2: y + vertices[7].y
-                }));
-                $canvas.drawLine($.extend(props, {
-                    x1: x + vertices[2].x, y1: y + vertices[2].y,
-                    x2: x + vertices[8].x, y2: y + vertices[8].y
-                }));
-
-                $canvas.drawText({
-                    fillStyle: 'black',
-                    fontSize: '1em',
-                    text: dieRollResult.value.toString(),
-                    x: x,
-                    y: y
-                });
+                ], [
+                    [0, 1, 2, 0],
+                    [3, 4, 5, 6, 7, 8, 3],
+                    [0, 3],
+                    [0, 4],
+                    [0, 8],
+                    [1, 4],
+                    [1, 5],
+                    [1, 6],
+                    [2, 6],
+                    [2, 7],
+                    [2, 8]
+                ]);
+                drawDieRollResultValue(x, y, dieRollResult);
             } else {
                 $canvas.drawEllipse({
                     height: DIE_SIZE,
@@ -303,13 +154,7 @@
                     x: x + DIE_SIZE / 2,
                     y: y + DIE_SIZE / 2
                 });
-                $canvas.drawText({
-                    fillStyle: 'black',
-                    fontSize: '1em',
-                    text: dieRollResult.value.toString(),
-                    x: x,
-                    y: y
-                });
+                drawDieRollResultValue(x, y, dieRollResult);
             }
         });
     }
