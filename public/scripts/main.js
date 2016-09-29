@@ -22,13 +22,13 @@
             return centroid;
         }
 
-        function calculateVertices(x, y, scale, baseVertices) {
+        function calculateVertices(center, scale, baseVertices) {
             var vertices = [];
 
             baseVertices.forEach(function (baseVertex) {
                 vertices.push({
-                    x: x + scale * baseVertex.x,
-                    y: y + scale * baseVertex.y
+                    x: center.x + scale * baseVertex.x,
+                    y: center.y + scale * baseVertex.y
                 });
             });
             return vertices;
@@ -50,13 +50,11 @@
             });
         }
 
-        function drawDieRollResultValue(x, y, dieRollResult, customProps) {
+        function drawDieRollResultValue(dieRollResult, customProps) {
             var props = {
                 fillStyle: 'black',
                 fontSize: '1em',
-                text: dieRollResult.value.toString(),
-                x: x,
-                y: y
+                text: dieRollResult.value.toString()
             };
 
             $canvas.drawText($.extend(props, customProps));
@@ -68,20 +66,20 @@
 
         dicePerRow = Math.floor(($canvas.width() - 2 * MARGIN) / (DIE_SIZE + MARGIN));
         response.dieRollResults.forEach(function (dieRollResult, index) {
-            var centroid,
+            var center,
                 column,
                 row,
-                vertices,
-                x,
-                y;
+                vertices;
 
             column = index % dicePerRow;
-            x = MARGIN + column * (DIE_SIZE + MARGIN) + DIE_SIZE / 2;
             row = Math.floor(index / dicePerRow);
-            y = MARGIN + row * (DIE_SIZE + MARGIN) + DIE_SIZE / 2;
+            center = {
+                x: MARGIN + column * (DIE_SIZE + MARGIN) + DIE_SIZE / 2,
+                y: MARGIN + row * (DIE_SIZE + MARGIN) + DIE_SIZE / 2
+            };
 
             if (dieRollResult.sides === 4) {
-                vertices = calculateVertices(x, y, DIE_SIZE / 2, [
+                vertices = calculateVertices(center, DIE_SIZE / 2, [
                     { x:  0.0000000, y:  0.0000000 },
                     { x:  0.0000000, y: -1.1547005 },
                     { x:  1.0000000, y:  0.5773503 },
@@ -93,37 +91,28 @@
                     [0, 2],
                     [0, 3]
                 ]);
-                centroid = calculateCentroid(vertices, [0, 2, 3]);
                 drawDieRollResultValue(
-                    centroid.x,
-                    centroid.y,
                     dieRollResult,
-                    {
+                    $.extend(calculateCentroid(vertices, [0, 2, 3]), {
                         fontSize: DIE_SIZE / 4
-                    }
+                    })
                 );
-                centroid = calculateCentroid(vertices, [0, 3, 1]);
                 drawDieRollResultValue(
-                    centroid.x,
-                    centroid.y,
                     dieRollResult,
-                    {
+                    $.extend(calculateCentroid(vertices, [0, 3, 1]), {
                         fontSize: DIE_SIZE / 4,
                         rotate: 135
-                    }
+                    })
                 );
-                centroid = calculateCentroid(vertices, [0, 1, 2]);
                 drawDieRollResultValue(
-                    centroid.x,
-                    centroid.y,
                     dieRollResult,
-                    {
+                    $.extend(calculateCentroid(vertices, [0, 1, 2]), {
                         fontSize: DIE_SIZE / 4,
                         rotate: -135
-                    }
+                    })
                 );
             } else if (dieRollResult.sides === 6) {
-                vertices = calculateVertices(x, y, DIE_SIZE / 2, [
+                vertices = calculateVertices(center, DIE_SIZE / 2, [
                     { x: -1.0000000, y: -1.0000000 },
                     { x:  1.0000000, y: -1.0000000 },
                     { x:  1.0000000, y:  1.0000000 },
@@ -132,9 +121,9 @@
                 drawDie(vertices, [
                     [0, 1, 2, 3, 0]
                 ]);
-                drawDieRollResultValue(x, y, dieRollResult);
+                drawDieRollResultValue(dieRollResult, center);
             } else if (dieRollResult.sides === 8) {
-                vertices = calculateVertices(x, y, DIE_SIZE / 1.5, [
+                vertices = calculateVertices(center, DIE_SIZE / 1.5, [
                     { x:  0.0000000, y: -0.8164966 },
                     { x:  0.7071068, y: -0.4082483 },
                     { x:  0.7071068, y:  0.4082483 },
@@ -148,9 +137,9 @@
                     [0, 4],
                     [2, 4]
                 ]);
-                drawDieRollResultValue(x, y, dieRollResult);
+                drawDieRollResultValue(dieRollResult, center);
             } else if (dieRollResult.sides === 12) {
-                vertices = calculateVertices(x, y, DIE_SIZE / 3, [
+                vertices = calculateVertices(center, DIE_SIZE / 3, [
                     { x:  0.000000, y: -1.0922415 },
                     { x:  1.000000, y: -0.3660254 },
                     { x:  0.618034, y:  0.8090170 },
@@ -176,9 +165,9 @@
                     [3, 11],
                     [4, 13]
                 ]);
-                drawDieRollResultValue(x, y, dieRollResult);
+                drawDieRollResultValue(dieRollResult, center);
             } else if (dieRollResult.sides === 20) {
-                vertices = calculateVertices(x, y, DIE_SIZE / 3, [
+                vertices = calculateVertices(center, DIE_SIZE / 3, [
                     { x:  0.000000, y: -1.1547005 },
                     { x:  1.000000, y:  0.5773503 },
                     { x: -1.000000, y:  0.5773503 },
@@ -202,23 +191,23 @@
                     [2, 7],
                     [2, 8]
                 ]);
-                drawDieRollResultValue(x, y, dieRollResult);
+                drawDieRollResultValue(dieRollResult, center);
             } else {
                 $canvas.drawEllipse({
                     height: DIE_SIZE,
                     strokeStyle: 'black',
                     width: DIE_SIZE,
-                    x: x,
-                    y: y
+                    x: center.x,
+                    y: center.y
                 });
                 $canvas.drawText({
                     fillStyle: 'black',
                     fontSize: '0.5em',
                     text: dieRollResult.sides.toString(),
-                    x: x + DIE_SIZE / 2,
-                    y: y + DIE_SIZE / 2
+                    x: center.x + DIE_SIZE / 2,
+                    y: center.y + DIE_SIZE / 2
                 });
-                drawDieRollResultValue(x, y, dieRollResult);
+                drawDieRollResultValue(dieRollResult, center);
             }
         });
     }
