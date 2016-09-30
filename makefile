@@ -45,14 +45,15 @@ BOWER_COMPONENTS_DIR = bower_components
 BUILD_OUTPUT_DIR = build
 COMPILE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/compile
 COVERAGE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/coverage
+CSS_DIR = $(PUBLIC_DIR)/css
 DIST_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/dist
 FEATURES_DIR = features
+JS_DIR = $(PUBLIC_DIR)/js
+JS_VENDOR_DIR = $(JS_DIR)/vendor
 NODE_MODULES_BIN_DIR = node_modules/.bin
 PUBLIC_DIR = public
-SCRIPTS_DIR = $(PUBLIC_DIR)/scripts
 SPEC_DIR = spec
 SRC_DIR = lib
-STYLES_DIR = $(PUBLIC_DIR)/styles
 TEST_DIR = test
 
 DICE_EXPRESSION_JISON = $(SRC_DIR)/dice-expression.jison
@@ -77,7 +78,7 @@ check:
 	$(JSHINT) .
 	$(JSCS) .
 	$(FIND) $(PUBLIC_DIR) -name "*.html" | $(XARGS) -I {} $(HTML_VALIDATOR) --file={} | $(TEE) /dev/tty | { $(GREP) -q -E "^(Error|Warning):"; $(TEST) $$? -eq 1; }
-	$(CSSLINT) $(STYLES_DIR)
+	$(CSSLINT) $(CSS_DIR)
 
 clean:
 	$(RMDIR) $(BUILD_OUTPUT_DIR)
@@ -95,9 +96,10 @@ dist:
 	$(RMDIR) $(DIST_OUTPUT_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)
 	$(CP) $(COMPILE_OUTPUT_DIR)/$(SERVER_JS) $(COMPILE_OUTPUT_DIR)/$(APP_DIR) $(COMPILE_OUTPUT_DIR)/$(PUBLIC_DIR) $(COMPILE_OUTPUT_DIR)/$(SRC_DIR) $(DIST_OUTPUT_DIR)
-	$(CP) $(BOWER_COMPONENTS_DIR)/jcanvas/jcanvas.min.js $(DIST_OUTPUT_DIR)/$(SCRIPTS_DIR)/jcanvas.js
-	$(CP) $(BOWER_COMPONENTS_DIR)/jquery/dist/jquery.min.js $(DIST_OUTPUT_DIR)/$(SCRIPTS_DIR)/jquery.js
-	$(CP) $(BOWER_COMPONENTS_DIR)/reset-css/reset.css $(DIST_OUTPUT_DIR)/$(STYLES_DIR)
+	$(MKDIR) $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)
+	$(CP) $(BOWER_COMPONENTS_DIR)/jcanvas/jcanvas.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jcanvas.js
+	$(CP) $(BOWER_COMPONENTS_DIR)/jquery/dist/jquery.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jquery.js
+	$(CP) $(BOWER_COMPONENTS_DIR)/reset-css/reset.css $(DIST_OUTPUT_DIR)/$(CSS_DIR)
 
 docs:
 	$(JSDOC) -c $(JSDOC_CONFIG)
