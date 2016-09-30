@@ -99,7 +99,7 @@ dist:
 	$(MKDIR) $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)
 	$(CP) $(BOWER_COMPONENTS_DIR)/jcanvas/jcanvas.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jcanvas.js
 	$(CP) $(BOWER_COMPONENTS_DIR)/jquery/dist/jquery.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jquery.js
-	$(CP) $(BOWER_COMPONENTS_DIR)/reset-css/reset.css $(DIST_OUTPUT_DIR)/$(CSS_DIR)
+	$(CP) $(BOWER_COMPONENTS_DIR)/normalize-css/normalize.css $(DIST_OUTPUT_DIR)/$(CSS_DIR)
 
 docs:
 	$(JSDOC) -c $(JSDOC_CONFIG)
