@@ -33,27 +33,27 @@ function HomePage(driver) {
 }
 
 HomePage.prototype.clearExpressionText = function () {
-    return this.driver.findElement(By.id('expressionText')).clear();
+    return this.driver.findElement(By.id('main-expressionText')).clear();
 };
 
 HomePage.prototype.evaluate = function () {
-    return this.driver.findElement(By.id('evaluate')).click();
+    return this.driver.findElement(By.id('main-evaluate')).click();
 };
 
 HomePage.prototype.getErrorMessage = function () {
-    return this.driver.findElement(By.id('errorMessage')).getText();
+    return this.driver.findElement(By.id('main-errorMessage')).getText();
 };
 
 HomePage.prototype.getExpressionCanonicalTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('expressionResults'))
+        .findElement(By.id('main-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(2)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionResultCount = function () {
     return this.driver
-        .findElement(By.id('expressionResults'))
+        .findElement(By.id('main-expressionResults'))
         .findElements(By.css('tr'))
         .then(function (elements) {
             return elements.length;
@@ -62,31 +62,31 @@ HomePage.prototype.getExpressionResultCount = function () {
 
 HomePage.prototype.getExpressionResultTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('expressionResults'))
+        .findElement(By.id('main-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(3)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionResultValueAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('expressionResults'))
+        .findElement(By.id('main-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(4)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('expressionResults'))
+        .findElement(By.id('main-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(1)'))
         .getText();
 };
 
 HomePage.prototype.getHelpLinkText = function () {
-    return this.driver.findElement(By.id('toggleHelp')).getText();
+    return this.driver.findElement(By.id('main-toggleHelp')).getText();
 };
 
 HomePage.prototype.isErrorMessageDisplayed = function () {
-    return this.driver.findElement(By.id('errorMessage')).isDisplayed();
+    return this.driver.findElement(By.id('main-errorMessage')).isDisplayed();
 };
 
 HomePage.prototype.open = function () {
@@ -95,19 +95,19 @@ HomePage.prototype.open = function () {
 
 HomePage.prototype.reevaluateResultAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('expressionResults'))
+        .findElement(By.id('main-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(5)'))
         .findElement(By.name('reevaluate'))
         .click();
 };
 
 HomePage.prototype.removeAllResults = function () {
-    return this.driver.findElement(By.id('removeAllResults')).click();
+    return this.driver.findElement(By.id('main-removeAllResults')).click();
 };
 
 HomePage.prototype.removeResultAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('expressionResults'))
+        .findElement(By.id('main-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(5)'))
         .findElement(By.name('remove'))
         .click();
@@ -122,32 +122,32 @@ HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorNam
     };
     randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
     return this.driver.executeScript(
-        "$('#randomNumberGeneratorJson').val('" +
+        "$('#main-randomNumberGeneratorJson').val('" +
         JSON.stringify(randomNumberGenerator) +
         "');"
     );
 };
 
 HomePage.prototype.setRoundingMode = function (roundingMode) {
-    return this.driver.findElement(By.id('roundingMode' + roundingMode)).click();
+    return this.driver.findElement(By.id('main-roundingMode' + roundingMode)).click();
 };
 
 HomePage.prototype.toggleHelp = function () {
-    return this.driver.findElement(By.id('toggleHelp')).click();
+    return this.driver.findElement(By.id('main-toggleHelp')).click();
 };
 
 HomePage.prototype.typeExpressionText = function (expressionText) {
-    return this.driver.findElement(By.id('expressionText')).sendKeys(expressionText);
+    return this.driver.findElement(By.id('main-expressionText')).sendKeys(expressionText);
 };
 
 HomePage.prototype.waitUntilHelpIsDisplayed = function () {
-    return this.driver.wait(until.elementIsVisible(this.driver.findElement(By.id('help'))), 5000).then(function (element) {
+    return this.driver.wait(until.elementIsVisible(this.driver.findElement(By.id('main-help'))), 5000).then(function (element) {
         return element.isDisplayed();
     });
 };
 
 HomePage.prototype.waitUntilHelpIsNotDisplayed = function () {
-    return this.driver.wait(until.elementIsNotVisible(this.driver.findElement(By.id('help'))), 5000).then(function (element) {
+    return this.driver.wait(until.elementIsNotVisible(this.driver.findElement(By.id('main-help'))), 5000).then(function (element) {
         return element.isDisplayed();
     });
 };

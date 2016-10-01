@@ -5,30 +5,31 @@
         <title>Dice Server</title>
         <link href="/css/normalize.css" rel="stylesheet" />
         <link href="/css/main.css" rel="stylesheet" />
+        <link href="/css/main.sim.css" rel="stylesheet" />
     </head>
     <body>
         <header>
             <h1>Dice Server</h1>
         </header>
         <main>
-            <form id="expressionForm">
+            <form id="main-expressionForm">
                 <div>
-                    <label for="expressionText">Expression:</label>
-                    <input id="expressionText" required="required" type="text" />
-                    <button id="evaluate" type="submit">Evaluate</button>
-                    <a href="#" id="toggleHelp">help</a>
+                    <label for="main-expressionText">Expression:</label>
+                    <input id="main-expressionText" required="required" type="text" />
+                    <button id="main-evaluate" type="submit">Evaluate</button>
+                    <a href="#" id="main-toggleHelp">help</a>
                 </div>
                 <div>
                     <label>Rounding mode:</label>
-                    <input checked="checked" id="roundingModeNone" name="roundingMode" type="radio" value="" />No rounding
-                    <input id="roundingModeTruncate" name="roundingMode" type="radio" value="trunc" />Round towards zero
-                    <input id="roundingModeFloor" name="roundingMode" type="radio" value="floor" />Round down
-                    <input id="roundingModeCeiling" name="roundingMode" type="radio" value="ceil" />Round up
-                    <input id="roundingModeNearest" name="roundingMode" type="radio" value="round" />Round to nearest
+                    <input checked="checked" id="main-roundingModeNone" name="roundingMode" type="radio" value="" />No rounding
+                    <input id="main-roundingModeTruncate" name="roundingMode" type="radio" value="trunc" />Round towards zero
+                    <input id="main-roundingModeFloor" name="roundingMode" type="radio" value="floor" />Round down
+                    <input id="main-roundingModeCeiling" name="roundingMode" type="radio" value="ceil" />Round up
+                    <input id="main-roundingModeNearest" name="roundingMode" type="radio" value="round" />Round to nearest
                 </div>
-                <input id="randomNumberGeneratorJson" type="hidden" value="" />
+                <input id="main-randomNumberGeneratorJson" type="hidden" value="" />
             </form>
-            <div id="help">
+            <div id="main-help">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula maximus
                 purus. Suspendisse sollicitudin quam a auctor viverra. Nullam enim nunc,
                 scelerisque in metus eu, elementum interdum ligula. Sed sit amet dui sed nisi
@@ -40,20 +41,20 @@
                 netus et malesuada fames ac turpis egestas. Vestibulum ullamcorper ultrices rutrum.
                 Aliquam sit amet bibendum elit, eu pellentesque quam.
             </div>
-            <div class="error" id="errorMessage">
+            <div class="main-error" id="main-errorMessage">
                 &nbsp;
             </div>
-            <canvas class="dieRollResults" height="200" id="dieRollResults" width="300"></canvas>
+            <canvas class="main-sim-dieRollResults" height="200" id="main-sim-dieRollResults" width="300"></canvas>
             <div>
-                <button id="removeAllResults">Remove All</button>
+                <button id="main-removeAllResults">Remove All</button>
             </div>
             <table>
                 <colgroup>
-                    <col class="expressionText" />
-                    <col class="expressionCanonicalText" />
-                    <col class="expressionResultText" />
-                    <col class="expressionResultValue" />
-                    <col class="expressionResultsActions" />
+                    <col class="main-expressionText" />
+                    <col class="main-expressionCanonicalText" />
+                    <col class="main-expressionResultText" />
+                    <col class="main-expressionResultValue" />
+                    <col class="main-expressionResultsActions" />
                 </colgroup>
                 <thead>
                     <tr>
@@ -68,12 +69,18 @@
                         <th>Value</th>
                     </tr>
                 </thead>
-                <tbody id="expressionResults">
+                <tbody id="main-expressionResults">
                 </tbody>
             </table>
         </main>
         <script src="/js/vendor/jquery.js"></script>
         <script src="/js/vendor/jcanvas.js"></script>
         <script src="/js/main.js"></script>
+        <script src="/js/main.sim.js"></script>
+        <script>
+            $(document).ready(function () {
+                main.initModule();
+            });
+        </script>
     </body>
 </html>

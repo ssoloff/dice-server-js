@@ -18,30 +18,26 @@ th {
     font-weight: bold;
 }
 
-.dieRollResults {
-    border: black 1px solid;
-}
-
-.error {
+.main-error {
     color: red;
 }
 
-.expressionCanonicalText {
+.main-expressionCanonicalText {
     width: 35%;
 }
 
-.expressionText {
+.main-expressionText {
     width: 15%;
 }
 
-.expressionResultText {
+.main-expressionResultText {
     width: 35%;
 }
 
-.expressionResultValue {
+.main-expressionResultValue {
     width: 10%;
 }
 
-.expressionResultsActions {
+.main-expressionResultsActions {
     width: 5%;
 }
