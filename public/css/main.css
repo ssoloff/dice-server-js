@@ -3,41 +3,6 @@ body {
     font-family: sans-serif;
 }
 
-table {
-    width: 100%;
-}
-
-td, th {
-    border: black 1px solid;
-    padding: 5px;
-}
-
-th {
-    background: brown;
-    color: white;
-    font-weight: bold;
-}
-
 .main-error {
     color: red;
-}
-
-.main-expressionCanonicalText {
-    width: 35%;
-}
-
-.main-expressionText {
-    width: 15%;
-}
-
-.main-expressionResultText {
-    width: 35%;
-}
-
-.main-expressionResultValue {
-    width: 10%;
-}
-
-.main-expressionResultsActions {
-    width: 5%;
 }

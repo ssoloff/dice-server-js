@@ -1,0 +1,34 @@
+.main-history-expressionCanonicalText {
+    width: 35%;
+}
+
+.main-history-expressionResultText {
+    width: 35%;
+}
+
+.main-history-expressionResultValue {
+    width: 10%;
+}
+
+.main-history-expressionResults {
+    width: 100%;
+}
+
+.main-history-expressionResults td, .main-history-expressionResults th {
+    border: black 1px solid;
+    padding: 5px;
+}
+
+.main-history-expressionResults th {
+    background: brown;
+    color: white;
+    font-weight: bold;
+}
+
+.main-history-expressionResultsActions {
+    width: 5%;
+}
+
+.main-history-expressionText {
+    width: 15%;
+}

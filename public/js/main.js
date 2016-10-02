@@ -3,39 +3,6 @@ var main = (function () {
 
     var jQueryMap = {};
 
-    function addExpressionResult(response) {
-        var $actionsCell,
-            $expressionCanonicalTextCell,
-            $expressionResultRow,
-            $expressionResultTextCell,
-            $expressionResultValueCell,
-            $expressionTextCell,
-            $reevaluateButton,
-            $removeButton;
-
-        $expressionTextCell = $('<td>').text(response.expression.text);
-        $expressionCanonicalTextCell = $('<td>').text(response.expression.canonicalText);
-        $expressionResultTextCell = $('<td>').text(response.expressionResult.text);
-        $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
-
-        $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
-            evaluateExpression($expressionTextCell.text());
-        });
-        $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
-            $(event.target).closest('tr').remove();
-        });
-        $actionsCell = $('<td>').append($reevaluateButton, $removeButton);
-
-        $expressionResultRow = $('<tr>').append(
-            $expressionTextCell,
-            $expressionCanonicalTextCell,
-            $expressionResultTextCell,
-            $expressionResultValueCell,
-            $actionsCell
-        );
-        jQueryMap.$expressionResults.prepend($expressionResultRow);
-    }
-
     function clearExpressionText() {
         jQueryMap.$expressionText.val('');
     }
@@ -84,18 +51,15 @@ var main = (function () {
             event.preventDefault();
         });
         jQueryMap.$toggleHelp.click(toggleHelp);
-        jQueryMap.$removeAllResults.click(removeAllResults);
     }
 
     function initJQueryMap() {
         jQueryMap = {
             $errorMessage: $('#main-errorMessage'),
             $expressionForm: $('#main-expressionForm'),
-            $expressionResults: $('#main-expressionResults'),
             $expressionText: $('#main-expressionText'),
             $help: $('#main-help'),
             $randomNumberGeneratorJson: $('#main-randomNumberGeneratorJson'),
-            $removeAllResults: $('#main-removeAllResults'),
             $toggleHelp: $('#main-toggleHelp')
         };
     }
@@ -106,6 +70,7 @@ var main = (function () {
         initView();
         initController();
 
+        main.history.initModule(evaluateExpression);
         main.sim.initModule();
     }
 
@@ -148,14 +113,10 @@ var main = (function () {
 
     function processResponse(responseBody) {
         clearExpressionText();
-        addExpressionResult(responseBody);
         hideErrorMessage();
 
+        main.history.processResponse(responseBody);
         main.sim.processResponse(responseBody);
-    }
-
-    function removeAllResults() {
-        jQueryMap.$expressionResults.empty();
     }
 
     function showErrorMessage(message) {

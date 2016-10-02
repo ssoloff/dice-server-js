@@ -46,14 +46,14 @@ HomePage.prototype.getErrorMessage = function () {
 
 HomePage.prototype.getExpressionCanonicalTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('main-expressionResults'))
+        .findElement(By.id('main-history-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(2)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionResultCount = function () {
     return this.driver
-        .findElement(By.id('main-expressionResults'))
+        .findElement(By.id('main-history-expressionResults'))
         .findElements(By.css('tr'))
         .then(function (elements) {
             return elements.length;
@@ -62,21 +62,21 @@ HomePage.prototype.getExpressionResultCount = function () {
 
 HomePage.prototype.getExpressionResultTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('main-expressionResults'))
+        .findElement(By.id('main-history-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(3)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionResultValueAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('main-expressionResults'))
+        .findElement(By.id('main-history-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(4)'))
         .getText();
 };
 
 HomePage.prototype.getExpressionTextAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('main-expressionResults'))
+        .findElement(By.id('main-history-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(1)'))
         .getText();
 };
@@ -95,19 +95,19 @@ HomePage.prototype.open = function () {
 
 HomePage.prototype.reevaluateResultAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('main-expressionResults'))
+        .findElement(By.id('main-history-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(5)'))
         .findElement(By.name('reevaluate'))
         .click();
 };
 
 HomePage.prototype.removeAllResults = function () {
-    return this.driver.findElement(By.id('main-removeAllResults')).click();
+    return this.driver.findElement(By.id('main-history-removeAllResults')).click();
 };
 
 HomePage.prototype.removeResultAtIndex = function (index) {
     return this.driver
-        .findElement(By.id('main-expressionResults'))
+        .findElement(By.id('main-history-expressionResults'))
         .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(5)'))
         .findElement(By.name('remove'))
         .click();

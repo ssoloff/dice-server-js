@@ -5,6 +5,7 @@
         <title>Dice Server</title>
         <link href="/css/normalize.css" rel="stylesheet" />
         <link href="/css/main.css" rel="stylesheet" />
+        <link href="/css/main.history.css" rel="stylesheet" />
         <link href="/css/main.sim.css" rel="stylesheet" />
     </head>
     <body>
@@ -46,15 +47,15 @@
             </div>
             <canvas class="main-sim-dieRollResults" height="200" id="main-sim-dieRollResults" width="300"></canvas>
             <div>
-                <button id="main-removeAllResults">Remove All</button>
+                <button id="main-history-removeAllResults">Remove All</button>
             </div>
-            <table>
+            <table class="main-history-expressionResults">
                 <colgroup>
-                    <col class="main-expressionText" />
-                    <col class="main-expressionCanonicalText" />
-                    <col class="main-expressionResultText" />
-                    <col class="main-expressionResultValue" />
-                    <col class="main-expressionResultsActions" />
+                    <col class="main-history-expressionText" />
+                    <col class="main-history-expressionCanonicalText" />
+                    <col class="main-history-expressionResultText" />
+                    <col class="main-history-expressionResultValue" />
+                    <col class="main-history-expressionResultsActions" />
                 </colgroup>
                 <thead>
                     <tr>
@@ -69,13 +70,14 @@
                         <th>Value</th>
                     </tr>
                 </thead>
-                <tbody id="main-expressionResults">
+                <tbody id="main-history-expressionResults">
                 </tbody>
             </table>
         </main>
         <script src="/js/vendor/jquery.js"></script>
         <script src="/js/vendor/jcanvas.js"></script>
         <script src="/js/main.js"></script>
+        <script src="/js/main.history.js"></script>
         <script src="/js/main.sim.js"></script>
         <script>
             $(document).ready(function () {
