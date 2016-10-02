@@ -1,162 +1,12 @@
 main.sim = (function () {
     'use strict';
 
-    var jQueryMap = {};
-
-    function addDieRollResults(dieRollResults) {
-        var DIE_SIZE = 40,
-            MARGIN = 20,
-            dicePerRow;
-
-        jQueryMap.$canvas.clearCanvas();
-
-        dicePerRow = Math.floor((jQueryMap.$canvas.width() - 2 * MARGIN) / (DIE_SIZE + MARGIN));
-        dieRollResults.forEach(function (dieRollResult, index) {
-            var center,
-                column,
-                row,
-                vertices;
-
-            column = index % dicePerRow;
-            row = Math.floor(index / dicePerRow);
-            center = {
-                x: MARGIN + column * (DIE_SIZE + MARGIN) + DIE_SIZE / 2,
-                y: MARGIN + row * (DIE_SIZE + MARGIN) + DIE_SIZE / 2
-            };
-
-            if (dieRollResult.sides === 4) {
-                vertices = calculateVertices(center, DIE_SIZE / 2, [
-                    { x:  0.0000000, y:  0.0000000 },
-                    { x:  0.0000000, y: -1.1547005 },
-                    { x:  1.0000000, y:  0.5773503 },
-                    { x: -1.0000000, y:  0.5773503 }
-                ]);
-                drawDie(vertices, [
-                    [1, 2, 3, 1],
-                    [0, 1],
-                    [0, 2],
-                    [0, 3]
-                ]);
-                drawDieRollResultValue(
-                    dieRollResult,
-                    $.extend(calculateCentroid(vertices, [0, 2, 3]), {
-                        fontSize: DIE_SIZE / 4
-                    })
-                );
-                drawDieRollResultValue(
-                    dieRollResult,
-                    $.extend(calculateCentroid(vertices, [0, 3, 1]), {
-                        fontSize: DIE_SIZE / 4,
-                        rotate: 135
-                    })
-                );
-                drawDieRollResultValue(
-                    dieRollResult,
-                    $.extend(calculateCentroid(vertices, [0, 1, 2]), {
-                        fontSize: DIE_SIZE / 4,
-                        rotate: -135
-                    })
-                );
-            } else if (dieRollResult.sides === 6) {
-                vertices = calculateVertices(center, DIE_SIZE / 2, [
-                    { x: -1.0000000, y: -1.0000000 },
-                    { x:  1.0000000, y: -1.0000000 },
-                    { x:  1.0000000, y:  1.0000000 },
-                    { x: -1.0000000, y:  1.0000000 }
-                ]);
-                drawDie(vertices, [
-                    [0, 1, 2, 3, 0]
-                ]);
-                drawDieRollResultValue(dieRollResult, center);
-            } else if (dieRollResult.sides === 8) {
-                vertices = calculateVertices(center, DIE_SIZE / 1.5, [
-                    { x:  0.0000000, y: -0.8164966 },
-                    { x:  0.7071068, y: -0.4082483 },
-                    { x:  0.7071068, y:  0.4082483 },
-                    { x:  0.0000000, y:  0.8164966 },
-                    { x: -0.7071068, y:  0.4082483 },
-                    { x: -0.7071068, y: -0.4082483 }
-                ]);
-                drawDie(vertices, [
-                    [0, 1, 2, 3, 4, 5, 0],
-                    [0, 2],
-                    [0, 4],
-                    [2, 4]
-                ]);
-                drawDieRollResultValue(dieRollResult, center);
-            } else if (dieRollResult.sides === 12) {
-                vertices = calculateVertices(center, DIE_SIZE / 3, [
-                    { x:  0.000000, y: -1.0922415 },
-                    { x:  1.000000, y: -0.3660254 },
-                    { x:  0.618034, y:  0.8090170 },
-                    { x: -0.618034, y:  0.8090170 },
-                    { x: -1.000000, y: -0.3660254 },
-                    { x:  0.000000, y: -1.7102755 },
-                    { x:  1.000000, y: -1.3660254 },
-                    { x:  1.618034, y: -0.5352331 },
-                    { x:  1.618034, y:  0.5352331 },
-                    { x:  1.000000, y:  1.3660254 },
-                    { x:  0.000000, y:  1.7102755 },
-                    { x: -1.000000, y:  1.3660254 },
-                    { x: -1.618034, y:  0.5352331 },
-                    { x: -1.618034, y: -0.5352331 },
-                    { x: -1.000000, y: -1.3660254 }
-                ]);
-                drawDie(vertices, [
-                    [0, 1, 2, 3, 4, 0],
-                    [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 5],
-                    [0, 5],
-                    [1, 7],
-                    [2, 9],
-                    [3, 11],
-                    [4, 13]
-                ]);
-                drawDieRollResultValue(dieRollResult, center);
-            } else if (dieRollResult.sides === 20) {
-                vertices = calculateVertices(center, DIE_SIZE / 3, [
-                    { x:  0.000000, y: -1.1547005 },
-                    { x:  1.000000, y:  0.5773503 },
-                    { x: -1.000000, y:  0.5773503 },
-                    { x:  0.000000, y: -1.8683447 },
-                    { x:  1.618034, y: -0.9341724 },
-                    { x:  1.618034, y:  0.9341724 },
-                    { x:  0.000000, y:  1.8683447 },
-                    { x: -1.618034, y:  0.9341724 },
-                    { x: -1.618034, y: -0.9341724 }
-                ]);
-                drawDie(vertices, [
-                    [0, 1, 2, 0],
-                    [3, 4, 5, 6, 7, 8, 3],
-                    [0, 3],
-                    [0, 4],
-                    [0, 8],
-                    [1, 4],
-                    [1, 5],
-                    [1, 6],
-                    [2, 6],
-                    [2, 7],
-                    [2, 8]
-                ]);
-                drawDieRollResultValue(dieRollResult, center);
-            } else {
-                jQueryMap.$canvas.drawEllipse({
-                    height: DIE_SIZE,
-                    strokeStyle: 'black',
-                    width: DIE_SIZE,
-                    x: center.x,
-                    y: center.y
-                });
-                jQueryMap.$canvas.drawText({
-                    fillStyle: 'black',
-                    fontSize: '0.5em',
-                    text: dieRollResult.sides.toString(),
-                    x: center.x + DIE_SIZE / 2,
-                    y: center.y + DIE_SIZE / 2
-                });
-                drawDieRollResultValue(dieRollResult, center);
-            }
-        });
-    }
+    var configMap = {
+            dicePerRow: null,
+            dieSize: 40,
+            margin: 20
+        },
+        jQueryMap = {};
 
     function calculateCentroid(vertices, vertexIndexes) {
         var centroid = {
@@ -185,7 +35,157 @@ main.sim = (function () {
         return vertices;
     }
 
-    function drawDie(vertices, vertexIndexesList) {
+    function drawDice(dieRollResults) {
+        var drawDieMapBySides = {
+            '4': drawDie4,
+            '6': drawDie6,
+            '8': drawDie8,
+            '12': drawDie12,
+            '20': drawDie20
+        };
+
+        jQueryMap.$canvas.clearCanvas();
+
+        dieRollResults.forEach(function (dieRollResult, index) {
+            var center,
+                column,
+                drawDie,
+                row;
+
+            column = index % configMap.dicePerRow;
+            row = Math.floor(index / configMap.dicePerRow);
+            center = {
+                x: configMap.margin + column * (configMap.dieSize + configMap.margin) + configMap.dieSize / 2,
+                y: configMap.margin + row * (configMap.dieSize + configMap.margin) + configMap.dieSize / 2
+            };
+            drawDie = drawDieMapBySides[dieRollResult.sides.toString()] || drawGenericDie;
+            drawDie(dieRollResult, center);
+        });
+    }
+
+    function drawDie4(dieRollResult, center) {
+        var vertices;
+
+        vertices = calculateVertices(center, configMap.dieSize / 2, [
+            { x:  0.0000000, y:  0.0000000 },
+            { x:  0.0000000, y: -1.1547005 },
+            { x:  1.0000000, y:  0.5773503 },
+            { x: -1.0000000, y:  0.5773503 }
+        ]);
+        drawDieEdges(vertices, [
+            [1, 2, 3, 1],
+            [0, 1],
+            [0, 2],
+            [0, 3]
+        ]);
+        drawDieValue(
+            dieRollResult,
+            $.extend(calculateCentroid(vertices, [0, 2, 3]), {
+                fontSize: configMap.dieSize / 4
+            })
+        );
+        drawDieValue(
+            dieRollResult,
+            $.extend(calculateCentroid(vertices, [0, 3, 1]), {
+                fontSize: configMap.dieSize / 4,
+                rotate: 135
+            })
+        );
+        drawDieValue(
+            dieRollResult,
+            $.extend(calculateCentroid(vertices, [0, 1, 2]), {
+                fontSize: configMap.dieSize / 4,
+                rotate: -135
+            })
+        );
+    }
+
+    function drawDie6(dieRollResult, center) {
+        drawDieEdges(calculateVertices(center, configMap.dieSize / 2, [
+            { x: -1.0000000, y: -1.0000000 },
+            { x:  1.0000000, y: -1.0000000 },
+            { x:  1.0000000, y:  1.0000000 },
+            { x: -1.0000000, y:  1.0000000 }
+        ]), [
+            [0, 1, 2, 3, 0]
+        ]);
+        drawDieValue(dieRollResult, center);
+    }
+
+    function drawDie8(dieRollResult, center) {
+        drawDieEdges(calculateVertices(center, configMap.dieSize / 1.5, [
+            { x:  0.0000000, y: -0.8164966 },
+            { x:  0.7071068, y: -0.4082483 },
+            { x:  0.7071068, y:  0.4082483 },
+            { x:  0.0000000, y:  0.8164966 },
+            { x: -0.7071068, y:  0.4082483 },
+            { x: -0.7071068, y: -0.4082483 }
+        ]), [
+            [0, 1, 2, 3, 4, 5, 0],
+            [0, 2],
+            [0, 4],
+            [2, 4]
+        ]);
+        drawDieValue(dieRollResult, center);
+    }
+
+    function drawDie12(dieRollResult, center) {
+        drawDieEdges(calculateVertices(center, configMap.dieSize / 3, [
+            { x:  0.000000, y: -1.0922415 },
+            { x:  1.000000, y: -0.3660254 },
+            { x:  0.618034, y:  0.8090170 },
+            { x: -0.618034, y:  0.8090170 },
+            { x: -1.000000, y: -0.3660254 },
+            { x:  0.000000, y: -1.7102755 },
+            { x:  1.000000, y: -1.3660254 },
+            { x:  1.618034, y: -0.5352331 },
+            { x:  1.618034, y:  0.5352331 },
+            { x:  1.000000, y:  1.3660254 },
+            { x:  0.000000, y:  1.7102755 },
+            { x: -1.000000, y:  1.3660254 },
+            { x: -1.618034, y:  0.5352331 },
+            { x: -1.618034, y: -0.5352331 },
+            { x: -1.000000, y: -1.3660254 }
+        ]), [
+            [0, 1, 2, 3, 4, 0],
+            [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 5],
+            [0, 5],
+            [1, 7],
+            [2, 9],
+            [3, 11],
+            [4, 13]
+        ]);
+        drawDieValue(dieRollResult, center);
+    }
+
+    function drawDie20(dieRollResult, center) {
+        drawDieEdges(calculateVertices(center, configMap.dieSize / 3, [
+            { x:  0.000000, y: -1.1547005 },
+            { x:  1.000000, y:  0.5773503 },
+            { x: -1.000000, y:  0.5773503 },
+            { x:  0.000000, y: -1.8683447 },
+            { x:  1.618034, y: -0.9341724 },
+            { x:  1.618034, y:  0.9341724 },
+            { x:  0.000000, y:  1.8683447 },
+            { x: -1.618034, y:  0.9341724 },
+            { x: -1.618034, y: -0.9341724 }
+        ]), [
+            [0, 1, 2, 0],
+            [3, 4, 5, 6, 7, 8, 3],
+            [0, 3],
+            [0, 4],
+            [0, 8],
+            [1, 4],
+            [1, 5],
+            [1, 6],
+            [2, 6],
+            [2, 7],
+            [2, 8]
+        ]);
+        drawDieValue(dieRollResult, center);
+    }
+
+    function drawDieEdges(vertices, vertexIndexesList) {
         vertexIndexesList.forEach(function (vertexIndexes) {
             var i = 1,
                 props = {
@@ -201,7 +201,7 @@ main.sim = (function () {
         });
     }
 
-    function drawDieRollResultValue(dieRollResult, customProps) {
+    function drawDieValue(dieRollResult, customProps) {
         var props = {
             fillStyle: 'black',
             fontSize: '1em',
@@ -209,6 +209,24 @@ main.sim = (function () {
         };
 
         jQueryMap.$canvas.drawText($.extend(props, customProps));
+    }
+
+    function drawGenericDie(dieRollResult, center) {
+        jQueryMap.$canvas.drawEllipse({
+            height: configMap.dieSize,
+            strokeStyle: 'black',
+            width: configMap.dieSize,
+            x: center.x,
+            y: center.y
+        });
+        jQueryMap.$canvas.drawText({
+            fillStyle: 'black',
+            fontSize: '0.5em',
+            text: dieRollResult.sides.toString(),
+            x: center.x + configMap.dieSize / 2,
+            y: center.y + configMap.dieSize / 2
+        });
+        drawDieValue(dieRollResult, center);
     }
 
     function initJQueryMap() {
@@ -219,10 +237,15 @@ main.sim = (function () {
 
     function initModule() {
         initJQueryMap();
+
+        configMap.dicePerRow = Math.floor(
+            (jQueryMap.$canvas.width() - 2 * configMap.margin) /
+            (configMap.dieSize + configMap.margin)
+        );
     }
 
     function processResponse(response) {
-        addDieRollResults(response.dieRollResults);
+        drawDice(response.dieRollResults);
     }
 
     return {
