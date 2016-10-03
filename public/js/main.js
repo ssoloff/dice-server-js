@@ -1,82 +1,12 @@
 var main = (function () {
     'use strict';
 
-    var jQueryMap = {};
-
-    function clearExpressionText() {
-        jQueryMap.$expressionText.val('');
-    }
-
-    function evaluateExpression(expressionText) {
-        var randomNumberGeneratorJson,
-            requestBody;
-
-        requestBody = {
-            expression: {
-                text: expressionText
-            }
-        };
-
-        randomNumberGeneratorJson = jQueryMap.$randomNumberGeneratorJson.val();
-        if (randomNumberGeneratorJson) {
-            requestBody.randomNumberGenerator = JSON.parse(randomNumberGeneratorJson);
-        }
-
-        $.postJSON('/expression/evaluate', requestBody, processResponse, processErrorResponse);
-    }
-
-    function getExpressionText() {
-        var expressionText,
-            roundingFunction;
-
-        expressionText = jQueryMap.$expressionText.val();
-        roundingFunction = $('input[name="roundingMode"]:checked').val();
-        if (roundingFunction) {
-            expressionText = roundingFunction + '(' + expressionText + ')';
-        }
-        return expressionText;
-    }
-
-    function hideErrorMessage() {
-        jQueryMap.$errorMessage.invisible();
-    }
-
-    function hideHelp() {
-        jQueryMap.$help.hide();
-    }
-
-    function initController() {
-        jQueryMap.$expressionForm.submit(function (event) {
-            evaluateExpression(getExpressionText());
-            event.preventDefault();
-        });
-        jQueryMap.$toggleHelp.click(toggleHelp);
-    }
-
-    function initJQueryMap() {
-        jQueryMap = {
-            $errorMessage: $('#main-errorMessage'),
-            $expressionForm: $('#main-expressionForm'),
-            $expressionText: $('#main-expressionText'),
-            $help: $('#main-help'),
-            $randomNumberGeneratorJson: $('#main-randomNumberGeneratorJson'),
-            $toggleHelp: $('#main-toggleHelp')
-        };
-    }
-
     function initModule() {
         installJQueryPlugins();
-        initJQueryMap();
-        initView();
-        initController();
 
-        main.history.initModule(evaluateExpression);
+        main.eval.initModule(onResponseReceived);
+        main.history.initModule(main.eval.evaluateExpression);
         main.sim.initModule();
-    }
-
-    function initView() {
-        hideHelp();
-        hideErrorMessage();
     }
 
     function installJQueryPlugins() {
@@ -103,35 +33,9 @@ var main = (function () {
         });
     }
 
-    function processErrorResponse(jqxhr) {
-        var responseBody = jqxhr.responseJSON;
-
-        if (responseBody && responseBody.error) {
-            showErrorMessage(responseBody.error.message);
-        }
-    }
-
-    function processResponse(responseBody) {
-        clearExpressionText();
-        hideErrorMessage();
-
+    function onResponseReceived(responseBody) {
         main.history.processResponse(responseBody);
         main.sim.processResponse(responseBody);
-    }
-
-    function showErrorMessage(message) {
-        jQueryMap.$errorMessage.text(message).visible();
-    }
-
-    function toggleHelp() {
-        var isHelpVisible,
-            wasHelpVisible;
-
-        wasHelpVisible = jQueryMap.$help.is(':visible');
-        jQueryMap.$help.toggle(400);
-
-        isHelpVisible = !wasHelpVisible;
-        jQueryMap.$toggleHelp.text(isHelpVisible ? 'hide help' : 'help');
     }
 
     return {

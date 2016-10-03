@@ -5,6 +5,7 @@
         <title>Dice Server</title>
         <link href="/css/normalize.css" rel="stylesheet" />
         <link href="/css/main.css" rel="stylesheet" />
+        <link href="/css/main.eval.css" rel="stylesheet" />
         <link href="/css/main.history.css" rel="stylesheet" />
         <link href="/css/main.sim.css" rel="stylesheet" />
     </head>
@@ -13,24 +14,24 @@
             <h1>Dice Server</h1>
         </header>
         <main>
-            <form id="main-expressionForm">
+            <form id="main-eval-expressionForm">
                 <div>
-                    <label for="main-expressionText">Expression:</label>
-                    <input id="main-expressionText" required="required" type="text" />
-                    <button id="main-evaluate" type="submit">Evaluate</button>
-                    <a href="#" id="main-toggleHelp">help</a>
+                    <label for="main-eval-expressionText">Expression:</label>
+                    <input id="main-eval-expressionText" required="required" type="text" />
+                    <button id="main-eval-evaluate" type="submit">Evaluate</button>
+                    <a href="#" id="main-eval-toggleHelp">help</a>
                 </div>
                 <div>
                     <label>Rounding mode:</label>
-                    <input checked="checked" id="main-roundingModeNone" name="roundingMode" type="radio" value="" />No rounding
-                    <input id="main-roundingModeTruncate" name="roundingMode" type="radio" value="trunc" />Round towards zero
-                    <input id="main-roundingModeFloor" name="roundingMode" type="radio" value="floor" />Round down
-                    <input id="main-roundingModeCeiling" name="roundingMode" type="radio" value="ceil" />Round up
-                    <input id="main-roundingModeNearest" name="roundingMode" type="radio" value="round" />Round to nearest
+                    <input checked="checked" id="main-eval-roundingModeNone" name="roundingMode" type="radio" value="" />No rounding
+                    <input id="main-eval-roundingModeTruncate" name="roundingMode" type="radio" value="trunc" />Round towards zero
+                    <input id="main-eval-roundingModeFloor" name="roundingMode" type="radio" value="floor" />Round down
+                    <input id="main-eval-roundingModeCeiling" name="roundingMode" type="radio" value="ceil" />Round up
+                    <input id="main-eval-roundingModeNearest" name="roundingMode" type="radio" value="round" />Round to nearest
                 </div>
-                <input id="main-randomNumberGeneratorJson" type="hidden" value="" />
+                <input id="main-eval-randomNumberGeneratorJson" type="hidden" value="" />
             </form>
-            <div id="main-help">
+            <div id="main-eval-help">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula maximus
                 purus. Suspendisse sollicitudin quam a auctor viverra. Nullam enim nunc,
                 scelerisque in metus eu, elementum interdum ligula. Sed sit amet dui sed nisi
@@ -42,7 +43,7 @@
                 netus et malesuada fames ac turpis egestas. Vestibulum ullamcorper ultrices rutrum.
                 Aliquam sit amet bibendum elit, eu pellentesque quam.
             </div>
-            <div class="main-error" id="main-errorMessage">
+            <div class="main-eval-error" id="main-eval-errorMessage">
                 &nbsp;
             </div>
             <canvas class="main-sim-dieRollResults" height="200" id="main-sim-dieRollResults" width="300"></canvas>
@@ -77,6 +78,7 @@
         <script src="/js/vendor/jquery.js"></script>
         <script src="/js/vendor/jcanvas.js"></script>
         <script src="/js/main.js"></script>
+        <script src="/js/main.eval.js"></script>
         <script src="/js/main.history.js"></script>
         <script src="/js/main.sim.js"></script>
         <script>

@@ -33,15 +33,15 @@ function HomePage(driver) {
 }
 
 HomePage.prototype.clearExpressionText = function () {
-    return this.driver.findElement(By.id('main-expressionText')).clear();
+    return this.driver.findElement(By.id('main-eval-expressionText')).clear();
 };
 
 HomePage.prototype.evaluate = function () {
-    return this.driver.findElement(By.id('main-evaluate')).click();
+    return this.driver.findElement(By.id('main-eval-evaluate')).click();
 };
 
 HomePage.prototype.getErrorMessage = function () {
-    return this.driver.findElement(By.id('main-errorMessage')).getText();
+    return this.driver.findElement(By.id('main-eval-errorMessage')).getText();
 };
 
 HomePage.prototype.getExpressionCanonicalTextAtIndex = function (index) {
@@ -82,11 +82,11 @@ HomePage.prototype.getExpressionTextAtIndex = function (index) {
 };
 
 HomePage.prototype.getHelpLinkText = function () {
-    return this.driver.findElement(By.id('main-toggleHelp')).getText();
+    return this.driver.findElement(By.id('main-eval-toggleHelp')).getText();
 };
 
 HomePage.prototype.isErrorMessageDisplayed = function () {
-    return this.driver.findElement(By.id('main-errorMessage')).isDisplayed();
+    return this.driver.findElement(By.id('main-eval-errorMessage')).isDisplayed();
 };
 
 HomePage.prototype.open = function () {
@@ -122,32 +122,32 @@ HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorNam
     };
     randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
     return this.driver.executeScript(
-        "$('#main-randomNumberGeneratorJson').val('" +
+        "$('#main-eval-randomNumberGeneratorJson').val('" +
         JSON.stringify(randomNumberGenerator) +
         "');"
     );
 };
 
 HomePage.prototype.setRoundingMode = function (roundingMode) {
-    return this.driver.findElement(By.id('main-roundingMode' + roundingMode)).click();
+    return this.driver.findElement(By.id('main-eval-roundingMode' + roundingMode)).click();
 };
 
 HomePage.prototype.toggleHelp = function () {
-    return this.driver.findElement(By.id('main-toggleHelp')).click();
+    return this.driver.findElement(By.id('main-eval-toggleHelp')).click();
 };
 
 HomePage.prototype.typeExpressionText = function (expressionText) {
-    return this.driver.findElement(By.id('main-expressionText')).sendKeys(expressionText);
+    return this.driver.findElement(By.id('main-eval-expressionText')).sendKeys(expressionText);
 };
 
 HomePage.prototype.waitUntilHelpIsDisplayed = function () {
-    return this.driver.wait(until.elementIsVisible(this.driver.findElement(By.id('main-help'))), 5000).then(function (element) {
+    return this.driver.wait(until.elementIsVisible(this.driver.findElement(By.id('main-eval-help'))), 5000).then(function (element) {
         return element.isDisplayed();
     });
 };
 
 HomePage.prototype.waitUntilHelpIsNotDisplayed = function () {
-    return this.driver.wait(until.elementIsNotVisible(this.driver.findElement(By.id('main-help'))), 5000).then(function (element) {
+    return this.driver.wait(until.elementIsNotVisible(this.driver.findElement(By.id('main-eval-help'))), 5000).then(function (element) {
         return element.isDisplayed();
     });
 };
