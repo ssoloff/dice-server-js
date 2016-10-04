@@ -4,9 +4,7 @@ var main = (function () {
     function initModule() {
         installJQueryPlugins();
 
-        main.eval.initModule(onResponseReceived);
-        main.history.initModule(main.eval.evaluateExpression);
-        main.sim.initModule();
+        main.shell.initModule();
     }
 
     function installJQueryPlugins() {
@@ -31,11 +29,6 @@ var main = (function () {
                 });
             }
         });
-    }
-
-    function onResponseReceived(responseBody) {
-        main.history.processResponse(responseBody);
-        main.sim.processResponse(responseBody);
     }
 
     return {
