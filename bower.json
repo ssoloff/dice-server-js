@@ -20,6 +20,6 @@
   "dependencies": {
     "jcanvas": "16.07.03",
     "jquery": "~2.2.4",
-    "normalize-css": "~4.2.0"
+    "normalize-css": "~5.0.0"
   }
 }
