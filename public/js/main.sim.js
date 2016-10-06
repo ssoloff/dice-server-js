@@ -231,7 +231,8 @@ main.sim = (function () {
 
     function initJQueryMap() {
         jQueryMap = {
-            $canvas: $('#main-sim-dieRollResults')
+            $canvas: $('#main-sim-dieRollResults'),
+            $container: $('#main-sim-container')
         };
     }
 
@@ -242,14 +243,15 @@ main.sim = (function () {
             (jQueryMap.$canvas.width() - 2 * configMap.margin) /
             (configMap.dieSize + configMap.margin)
         );
+
+        $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
     }
 
-    function processResponse(response) {
+    function onExpressionEvaluated(event, response) {
         drawDice(response.dieRollResults);
     }
 
     return {
-        initModule: initModule,
-        processResponse: processResponse
+        initModule: initModule
     };
 })();

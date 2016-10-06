@@ -1,10 +1,7 @@
 main.history = (function () {
     'use strict';
 
-    var jQueryMap = {},
-        stateMap = {
-            evaluateExpression: null
-        };
+    var jQueryMap = {};
 
     function addExpressionResult(response) {
         var $actionsCell,
@@ -22,7 +19,7 @@ main.history = (function () {
         $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
 
         $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
-            stateMap.evaluateExpression($expressionTextCell.text());
+            $.gevent.publish('main-evaluateexpression', [$expressionTextCell.text()]);
         });
         $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
             $(event.target).closest('tr').remove();
@@ -45,19 +42,20 @@ main.history = (function () {
 
     function initJQueryMap() {
         jQueryMap = {
+            $container: $('#main-history-container'),
             $expressionResults: $('#main-history-expressionResults'),
             $removeAllResults: $('#main-history-removeAllResults')
         };
     }
 
-    function initModule(evaluateExpression) {
-        stateMap.evaluateExpression = evaluateExpression;
-
+    function initModule() {
         initJQueryMap();
         initController();
+
+        $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
     }
 
-    function processResponse(response) {
+    function onExpressionEvaluated(event, response) {
         addExpressionResult(response);
     }
 
@@ -66,7 +64,6 @@ main.history = (function () {
     }
 
     return {
-        initModule: initModule,
-        processResponse: processResponse
+        initModule: initModule
     };
 })();

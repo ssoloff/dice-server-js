@@ -1,10 +1,7 @@
 main.eval = (function () {
     'use strict';
 
-    var jQueryMap = {},
-        stateMap = {
-            onResponseReceived: null
-        };
+    var jQueryMap = {};
 
     function clearExpressionText() {
         jQueryMap.$expressionText.val('');
@@ -58,6 +55,7 @@ main.eval = (function () {
 
     function initJQueryMap() {
         jQueryMap = {
+            $container: $('#main-eval-container'),
             $errorMessage: $('#main-eval-errorMessage'),
             $expressionForm: $('#main-eval-expressionForm'),
             $expressionText: $('#main-eval-expressionText'),
@@ -67,17 +65,21 @@ main.eval = (function () {
         };
     }
 
-    function initModule(onResponseReceived) {
-        stateMap.onResponseReceived = onResponseReceived;
-
+    function initModule() {
         initJQueryMap();
         initView();
         initController();
+
+        $.gevent.subscribe(jQueryMap.$container, 'main-evaluateexpression', onEvaluateExpression);
     }
 
     function initView() {
         hideHelp();
         hideErrorMessage();
+    }
+
+    function onEvaluateExpression(event, expressionText) {
+        evaluateExpression(expressionText);
     }
 
     function processErrorResponse(jqxhr) {
@@ -92,7 +94,7 @@ main.eval = (function () {
         clearExpressionText();
         hideErrorMessage();
 
-        stateMap.onResponseReceived(responseBody);
+        $.gevent.publish('main-expressionevaluated', [responseBody]);
     }
 
     function showErrorMessage(message) {
@@ -111,7 +113,6 @@ main.eval = (function () {
     }
 
     return {
-        evaluateExpression: evaluateExpression,
         initModule: initModule
     };
 })();
