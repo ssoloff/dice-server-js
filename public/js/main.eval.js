@@ -102,14 +102,14 @@ main.eval = (function () {
     }
 
     function toggleHelp() {
-        var isHelpVisible,
-            wasHelpVisible;
+        var newHelpVisible,
+            oldHelpVisible;
 
-        wasHelpVisible = jQueryMap.$help.is(':visible');
+        oldHelpVisible = jQueryMap.$help.is(':visible');
         jQueryMap.$help.toggle(400);
 
-        isHelpVisible = !wasHelpVisible;
-        jQueryMap.$toggleHelp.text(isHelpVisible ? 'hide help' : 'help');
+        newHelpVisible = !oldHelpVisible;
+        jQueryMap.$toggleHelp.text(newHelpVisible ? 'hide help' : 'help');
     }
 
     return {
