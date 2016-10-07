@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8">
         <title>Dice Server</title>
-        <link href="/css/normalize.css" rel="stylesheet" />
-        <link href="/css/main.css" rel="stylesheet" />
-        <link href="/css/main.shell.css" rel="stylesheet" />
-        <link href="/css/main.eval.css" rel="stylesheet" />
-        <link href="/css/main.history.css" rel="stylesheet" />
-        <link href="/css/main.sim.css" rel="stylesheet" />
+        <link href="/css/normalize.css" rel="stylesheet">
+        <link href="/css/main.css" rel="stylesheet">
+        <link href="/css/main.shell.css" rel="stylesheet">
+        <link href="/css/main.eval.css" rel="stylesheet">
+        <link href="/css/main.history.css" rel="stylesheet">
+        <link href="/css/main.sim.css" rel="stylesheet">
     </head>
     <body>
         <header>
@@ -19,19 +19,19 @@
                 <form id="main-eval-expressionForm">
                     <div>
                         <label for="main-eval-expressionText">Expression:</label>
-                        <input id="main-eval-expressionText" required="required" type="text" />
+                        <input id="main-eval-expressionText" required type="text">
                         <button id="main-eval-evaluate" type="submit">Evaluate</button>
                         <a href="#" id="main-eval-toggleHelp">help</a>
                     </div>
                     <div>
                         <label>Rounding mode:</label>
-                        <input checked="checked" id="main-eval-roundingModeNone" name="roundingMode" type="radio" value="" />No rounding
-                        <input id="main-eval-roundingModeTruncate" name="roundingMode" type="radio" value="trunc" />Round towards zero
-                        <input id="main-eval-roundingModeFloor" name="roundingMode" type="radio" value="floor" />Round down
-                        <input id="main-eval-roundingModeCeiling" name="roundingMode" type="radio" value="ceil" />Round up
-                        <input id="main-eval-roundingModeNearest" name="roundingMode" type="radio" value="round" />Round to nearest
+                        <input checked id="main-eval-roundingModeNone" name="roundingMode" type="radio" value="">No rounding
+                        <input id="main-eval-roundingModeTruncate" name="roundingMode" type="radio" value="trunc">Round towards zero
+                        <input id="main-eval-roundingModeFloor" name="roundingMode" type="radio" value="floor">Round down
+                        <input id="main-eval-roundingModeCeiling" name="roundingMode" type="radio" value="ceil">Round up
+                        <input id="main-eval-roundingModeNearest" name="roundingMode" type="radio" value="round">Round to nearest
                     </div>
-                    <input id="main-eval-randomNumberGeneratorJson" type="hidden" value="" />
+                    <input id="main-eval-randomNumberGeneratorJson" type="hidden" value="">
                 </form>
                 <div id="main-eval-help">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula maximus
@@ -58,11 +58,11 @@
                 </div>
                 <table class="main-history-expressionResults">
                     <colgroup>
-                        <col class="main-history-expressionText" />
-                        <col class="main-history-expressionCanonicalText" />
-                        <col class="main-history-expressionResultText" />
-                        <col class="main-history-expressionResultValue" />
-                        <col class="main-history-expressionResultsActions" />
+                        <col class="main-history-expressionText">
+                        <col class="main-history-expressionCanonicalText">
+                        <col class="main-history-expressionResultText">
+                        <col class="main-history-expressionResultValue">
+                        <col class="main-history-expressionResultsActions">
                     </colgroup>
                     <thead>
                         <tr>
