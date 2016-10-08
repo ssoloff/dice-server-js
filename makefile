@@ -77,7 +77,7 @@ acceptance-test:
 check:
 	$(JSHINT) .
 	$(JSCS) .
-	$(FIND) $(PUBLIC_DIR) -name "*.html" | $(XARGS) -I {} $(HTML_VALIDATOR) --file={} | $(TEE) /dev/tty | { $(GREP) -q -E "^(Error|Warning):"; $(TEST) $$? -eq 1; }
+	$(HTML_VALIDATOR) --file=$(PUBLIC_DIR)/index.html | $(TEE) /dev/tty | { $(GREP) -q -E "^(Error|Warning):"; $(TEST) $$? -eq 1; }
 	$(CSSLINT) $(CSS_DIR)
 
 clean:

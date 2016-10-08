@@ -4,8 +4,6 @@ main.sim = (function () {
     var configMap = {
             dicePerRow: null,
             dieSize: 40,
-            mainHtml: '' +
-                '<canvas class="main-sim-dieRollResults" height="200" id="main-sim-dieRollResults" width="300"></canvas>',
             margin: 20
         },
         jQueryMap = {};
@@ -239,15 +237,17 @@ main.sim = (function () {
     }
 
     function initModule($container) {
-        $container.html(configMap.mainHtml);
-        initJQueryMap($container);
+        $.get('/html/main.sim.html', function (data) {
+            $container.html(data);
+            initJQueryMap($container);
 
-        configMap.dicePerRow = Math.floor(
-            (jQueryMap.$canvas.width() - 2 * configMap.margin) /
-            (configMap.dieSize + configMap.margin)
-        );
+            configMap.dicePerRow = Math.floor(
+                (jQueryMap.$canvas.width() - 2 * configMap.margin) /
+                (configMap.dieSize + configMap.margin)
+            );
 
-        $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
+            $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
+        });
     }
 
     function onExpressionEvaluated(event, response) {

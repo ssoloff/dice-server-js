@@ -1,42 +1,7 @@
 main.eval = (function () {
     'use strict';
 
-    var configMap = {
-            mainHtml: '' +
-                '<form id="main-eval-expressionForm">' +
-                '    <div>' +
-                '        <label for="main-eval-expressionText">Expression:</label>' +
-                '        <input id="main-eval-expressionText" required type="text">' +
-                '        <button id="main-eval-evaluate" type="submit">Evaluate</button>' +
-                '        <a href="#" id="main-eval-toggleHelp">help</a>' +
-                '    </div>' +
-                '    <div>' +
-                '        <label>Rounding mode:</label>' +
-                '        <input checked id="main-eval-roundingModeNone" name="roundingMode" type="radio" value="">No rounding' +
-                '        <input id="main-eval-roundingModeTruncate" name="roundingMode" type="radio" value="trunc">Round towards zero' +
-                '        <input id="main-eval-roundingModeFloor" name="roundingMode" type="radio" value="floor">Round down' +
-                '        <input id="main-eval-roundingModeCeiling" name="roundingMode" type="radio" value="ceil">Round up' +
-                '        <input id="main-eval-roundingModeNearest" name="roundingMode" type="radio" value="round">Round to nearest' +
-                '    </div>' +
-                '    <input id="main-eval-randomNumberGeneratorJson" type="hidden" value="">' +
-                '</form>' +
-                '<div id="main-eval-help">' +
-                '    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula maximus' +
-                '    purus. Suspendisse sollicitudin quam a auctor viverra. Nullam enim nunc,' +
-                '    scelerisque in metus eu, elementum interdum ligula. Sed sit amet dui sed nisi' +
-                '    consectetur pharetra eu vel ligula. Aliquam bibendum, massa at maximus tristique,' +
-                '    urna massa posuere nisi, vel aliquet magna eros nec urna. Nunc et lacinia purus.' +
-                '    Fusce non venenatis nisl, pharetra tristique metus. Pellentesque mollis facilisis' +
-                '    est et pulvinar. In facilisis consequat sollicitudin. Vestibulum leo nisl, iaculis' +
-                '    et porta id, semper sed ipsum. Pellentesque habitant morbi tristique senectus et' +
-                '    netus et malesuada fames ac turpis egestas. Vestibulum ullamcorper ultrices rutrum.' +
-                '    Aliquam sit amet bibendum elit, eu pellentesque quam.' +
-                '</div>' +
-                '<div class="main-eval-error" id="main-eval-errorMessage">' +
-                '    &nbsp;' +
-                '</div>'
-        },
-        jQueryMap = {};
+    var jQueryMap = {};
 
     function clearExpressionText() {
         jQueryMap.$expressionText.val('');
@@ -101,12 +66,14 @@ main.eval = (function () {
     }
 
     function initModule($container) {
-        $container.html(configMap.mainHtml);
-        initJQueryMap($container);
-        initView();
-        initController();
+        $.get('/html/main.eval.html', function (data) {
+            $container.html(data);
+            initJQueryMap($container);
+            initView();
+            initController();
 
-        $.gevent.subscribe(jQueryMap.$container, 'main-evaluateexpression', onEvaluateExpression);
+            $.gevent.subscribe(jQueryMap.$container, 'main-evaluateexpression', onEvaluateExpression);
+        });
     }
 
     function initView() {
