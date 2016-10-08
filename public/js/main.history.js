@@ -1,7 +1,37 @@
 main.history = (function () {
     'use strict';
 
-    var jQueryMap = {};
+    var configMap = {
+            mainHtml: '' +
+                '<div>' +
+                '    <button id="main-history-removeAllResults">Remove All</button>' +
+                '</div>' +
+                '<table class="main-history-expressionResults">' +
+                '    <colgroup>' +
+                '        <col class="main-history-expressionText">' +
+                '        <col class="main-history-expressionCanonicalText">' +
+                '        <col class="main-history-expressionResultText">' +
+                '        <col class="main-history-expressionResultValue">' +
+                '        <col class="main-history-expressionResultsActions">' +
+                '    </colgroup>' +
+                '    <thead>' +
+                '        <tr>' +
+                '            <th colspan="2">Expression</th>' +
+                '            <th colspan="2">Expression Result</th>' +
+                '            <th rowspan="2">Actions</th>' +
+                '        </tr>' +
+                '        <tr>' +
+                '            <th>Text</th>' +
+                '            <th>Canonical Text</th>' +
+                '            <th>Text</th>' +
+                '            <th>Value</th>' +
+                '        </tr>' +
+                '    </thead>' +
+                '    <tbody id="main-history-expressionResults">' +
+                '    </tbody>' +
+                '</table>'
+        },
+        jQueryMap = {};
 
     function addExpressionResult(response) {
         var $actionsCell,
@@ -40,16 +70,17 @@ main.history = (function () {
         jQueryMap.$removeAllResults.click(removeAllResults);
     }
 
-    function initJQueryMap() {
+    function initJQueryMap($container) {
         jQueryMap = {
-            $container: $('#main-history-container'),
-            $expressionResults: $('#main-history-expressionResults'),
-            $removeAllResults: $('#main-history-removeAllResults')
+            $container: $container,
+            $expressionResults: $container.find('#main-history-expressionResults'),
+            $removeAllResults: $container.find('#main-history-removeAllResults')
         };
     }
 
-    function initModule() {
-        initJQueryMap();
+    function initModule($container) {
+        $container.html(configMap.mainHtml);
+        initJQueryMap($container);
         initController();
 
         $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);

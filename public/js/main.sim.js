@@ -4,6 +4,8 @@ main.sim = (function () {
     var configMap = {
             dicePerRow: null,
             dieSize: 40,
+            mainHtml: '' +
+                '<canvas class="main-sim-dieRollResults" height="200" id="main-sim-dieRollResults" width="300"></canvas>',
             margin: 20
         },
         jQueryMap = {};
@@ -229,15 +231,16 @@ main.sim = (function () {
         drawDieValue(dieRollResult, center);
     }
 
-    function initJQueryMap() {
+    function initJQueryMap($container) {
         jQueryMap = {
-            $canvas: $('#main-sim-dieRollResults'),
-            $container: $('#main-sim-container')
+            $canvas: $container.find('#main-sim-dieRollResults'),
+            $container: $container
         };
     }
 
-    function initModule() {
-        initJQueryMap();
+    function initModule($container) {
+        $container.html(configMap.mainHtml);
+        initJQueryMap($container);
 
         configMap.dicePerRow = Math.floor(
             (jQueryMap.$canvas.width() - 2 * configMap.margin) /

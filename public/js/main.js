@@ -1,10 +1,10 @@
 var main = (function () {
     'use strict';
 
-    function initModule() {
+    function initModule($container) {
         installJQueryPlugins();
 
-        main.shell.initModule();
+        main.shell.initModule($container);
     }
 
     function installJQueryPlugins() {

@@ -11,77 +11,7 @@
         <link href="/css/main.sim.css" rel="stylesheet">
     </head>
     <body>
-        <header>
-            <h1>Dice Server</h1>
-        </header>
-        <main>
-            <div id="main-eval-container">
-                <form id="main-eval-expressionForm">
-                    <div>
-                        <label for="main-eval-expressionText">Expression:</label>
-                        <input id="main-eval-expressionText" required type="text">
-                        <button id="main-eval-evaluate" type="submit">Evaluate</button>
-                        <a href="#" id="main-eval-toggleHelp">help</a>
-                    </div>
-                    <div>
-                        <label>Rounding mode:</label>
-                        <input checked id="main-eval-roundingModeNone" name="roundingMode" type="radio" value="">No rounding
-                        <input id="main-eval-roundingModeTruncate" name="roundingMode" type="radio" value="trunc">Round towards zero
-                        <input id="main-eval-roundingModeFloor" name="roundingMode" type="radio" value="floor">Round down
-                        <input id="main-eval-roundingModeCeiling" name="roundingMode" type="radio" value="ceil">Round up
-                        <input id="main-eval-roundingModeNearest" name="roundingMode" type="radio" value="round">Round to nearest
-                    </div>
-                    <input id="main-eval-randomNumberGeneratorJson" type="hidden" value="">
-                </form>
-                <div id="main-eval-help">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula maximus
-                    purus. Suspendisse sollicitudin quam a auctor viverra. Nullam enim nunc,
-                    scelerisque in metus eu, elementum interdum ligula. Sed sit amet dui sed nisi
-                    consectetur pharetra eu vel ligula. Aliquam bibendum, massa at maximus tristique,
-                    urna massa posuere nisi, vel aliquet magna eros nec urna. Nunc et lacinia purus.
-                    Fusce non venenatis nisl, pharetra tristique metus. Pellentesque mollis facilisis
-                    est et pulvinar. In facilisis consequat sollicitudin. Vestibulum leo nisl, iaculis
-                    et porta id, semper sed ipsum. Pellentesque habitant morbi tristique senectus et
-                    netus et malesuada fames ac turpis egestas. Vestibulum ullamcorper ultrices rutrum.
-                    Aliquam sit amet bibendum elit, eu pellentesque quam.
-                </div>
-                <div class="main-eval-error" id="main-eval-errorMessage">
-                    &nbsp;
-                </div>
-            </div>
-            <div id="main-sim-container">
-              <canvas class="main-sim-dieRollResults" height="200" id="main-sim-dieRollResults" width="300"></canvas>
-            </div>
-            <div id="main-history-container">
-                <div>
-                    <button id="main-history-removeAllResults">Remove All</button>
-                </div>
-                <table class="main-history-expressionResults">
-                    <colgroup>
-                        <col class="main-history-expressionText">
-                        <col class="main-history-expressionCanonicalText">
-                        <col class="main-history-expressionResultText">
-                        <col class="main-history-expressionResultValue">
-                        <col class="main-history-expressionResultsActions">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th colspan="2">Expression</th>
-                            <th colspan="2">Expression Result</th>
-                            <th rowspan="2">Actions</th>
-                        </tr>
-                        <tr>
-                            <th>Text</th>
-                            <th>Canonical Text</th>
-                            <th>Text</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody id="main-history-expressionResults">
-                    </tbody>
-                </table>
-            </div>
-        </main>
+        <div id="main"></div>
         <script src="/js/vendor/jquery.js"></script>
         <script src="/js/vendor/jquery.event.gevent.js"></script>
         <script src="/js/vendor/jcanvas.js"></script>
@@ -91,7 +21,9 @@
         <script src="/js/main.history.js"></script>
         <script src="/js/main.sim.js"></script>
         <script>
-            $(main.initModule);
+            $(function () {
+                main.initModule($('#main'));
+            });
         </script>
     </body>
 </html>
