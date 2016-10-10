@@ -78,6 +78,10 @@ check:
 	$(JSHINT) .
 	$(JSCS) .
 	$(HTML_VALIDATOR) --file=$(PUBLIC_DIR)/index.html --verbose
+	$(ECHO) $$SHELL;
+	$$SHELL --version;
+	which $(BASH);
+	$(BASH) --version;
 	{ \
 		$(FIND) $(PUBLIC_DIR)/html -name '*.html' \
 		| \
