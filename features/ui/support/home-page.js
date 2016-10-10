@@ -26,6 +26,7 @@ var webdriver = require('selenium-webdriver');
 var security = require('../../support/security');
 
 var By = webdriver.By,
+    promise = webdriver.promise,
     until = webdriver.until;
 
 function HomePage(driver) {
@@ -90,7 +91,18 @@ HomePage.prototype.isErrorMessageDisplayed = function () {
 };
 
 HomePage.prototype.open = function () {
-    return this.driver.get('http://localhost:3000/');
+    var driver = this.driver;
+
+    return driver.get('http://localhost:3000/').then(function () {
+        var timeoutInMilliseconds = 5000;
+
+        // wait for async load of all feature fragments to complete
+        return promise.all([
+            driver.wait(until.elementLocated(By.id('main-eval-expressionForm')), timeoutInMilliseconds),
+            driver.wait(until.elementLocated(By.id('main-history-removeAllResults')), timeoutInMilliseconds),
+            driver.wait(until.elementLocated(By.id('main-sim-dieRollResults')), timeoutInMilliseconds)
+        ]);
+    });
 };
 
 HomePage.prototype.reevaluateResultAtIndex = function (index) {
