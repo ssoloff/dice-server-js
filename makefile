@@ -14,6 +14,7 @@
 	unit-test \
 	unit-test-with-coverage
 
+BASH = bash
 BOWER = $(NODE_MODULES_BIN_DIR)/bower
 CAT = cat
 COVERALLS = $(NODE_MODULES_BIN_DIR)/coveralls
@@ -22,7 +23,6 @@ CSSLINT = $(NODE_MODULES_BIN_DIR)/csslint
 CUCUMBER = $(NODE_MODULES_BIN_DIR)/cucumber-js
 ECHO = echo
 FIND = find
-GREP = grep
 HTML_VALIDATOR = $(NODE_MODULES_BIN_DIR)/html-validator
 ISTANBUL = $(NODE_MODULES_BIN_DIR)/istanbul
 JASMINE = $(NODE_MODULES_BIN_DIR)/jasmine JASMINE_CONFIG_PATH=$(JASMINE_CONFIG)
@@ -32,11 +32,11 @@ JSDOC = $(NODE_MODULES_BIN_DIR)/jsdoc
 JSHINT = $(NODE_MODULES_BIN_DIR)/jshint
 KILL = kill
 MKDIR = mkdir -p
+MKTEMP = mktemp
 NODE = node
 NPM = npm
 RM = rm -f
 RMDIR = $(RM) -r
-TEE = tee
 TEST = test
 XARGS = xargs
 
@@ -77,7 +77,26 @@ acceptance-test:
 check:
 	$(JSHINT) .
 	$(JSCS) .
-	$(HTML_VALIDATOR) --file=$(PUBLIC_DIR)/index.html | $(TEE) /dev/tty | { $(GREP) -q -E "^(Error|Warning):"; $(TEST) $$? -eq 1; }
+	$(HTML_VALIDATOR) --file=$(PUBLIC_DIR)/index.html --verbose
+	{ \
+		$(FIND) $(PUBLIC_DIR)/html -name '*.html' \
+		| \
+		$(XARGS) -I % $(BASH) -c $$' \
+			htmlFile=$$($(MKTEMP)); \
+			$(ECHO) %; \
+			$(CAT) % \
+			| \
+			{ \
+				$(ECHO) \'<!DOCTYPE html><html lang="en"><head><title>FRAGMENT</title></head><body>\'; \
+				$(CAT); \
+				$(ECHO) \'</body></html>\'; \
+			} > $$htmlFile; \
+			$(HTML_VALIDATOR) --file=$$htmlFile --verbose; \
+			htmlValidatorExit=$$?; \
+			$(RM) $$htmlFile; \
+			$(TEST) $$htmlValidatorExit -eq 0 \
+		'; \
+	}
 	$(CSSLINT) $(CSS_DIR)
 
 clean:
@@ -90,7 +109,7 @@ compile-jison: $(DICE_EXPRESSION_PARSER_JS)
 compile-js:
 	$(MKDIR) $(COMPILE_OUTPUT_DIR)
 	$(CP) $(SERVER_JS) $(APP_DIR) $(PUBLIC_DIR) $(SPEC_DIR) $(TEST_DIR) $(COMPILE_OUTPUT_DIR)
-	$(FIND) $(SRC_DIR) -name "*.js" | $(XARGS) -I {} $(CP) {} $(COMPILE_OUTPUT_DIR)/$(SRC_DIR)
+	$(FIND) $(SRC_DIR) -name '*.js' | $(XARGS) -I % $(CP) % $(COMPILE_OUTPUT_DIR)/$(SRC_DIR)
 
 dist:
 	$(RMDIR) $(DIST_OUTPUT_DIR)
