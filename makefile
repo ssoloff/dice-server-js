@@ -86,11 +86,11 @@ check:
 			$(ECHO) %; \
 			$(CAT) % \
 			| \
-			{ \
+			( \
 				$(ECHO) \'<!DOCTYPE html><html lang="en"><head><title>FRAGMENT</title></head><body>\'; \
 				$(CAT); \
 				$(ECHO) \'</body></html>\'; \
-			} > $$htmlFile; \
+			) > $$htmlFile; \
 			$(HTML_VALIDATOR) --file=$$htmlFile --verbose; \
 			htmlValidatorExit=$$?; \
 			$(RM) $$htmlFile; \
