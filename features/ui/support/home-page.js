@@ -94,7 +94,7 @@ HomePage.prototype.open = function () {
     var driver = this.driver;
 
     return driver.get('http://localhost:3000/').then(function () {
-        var timeoutInMilliseconds = 5000;
+        var timeoutInMilliseconds = 60000;
 
         // wait for async load of all feature fragments to complete
         return promise.all([
