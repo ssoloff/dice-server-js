@@ -14,7 +14,6 @@
 	unit-test \
 	unit-test-with-coverage
 
-BASH = bash
 BOWER = $(NODE_MODULES_BIN_DIR)/bower
 CAT = cat
 COVERALLS = $(NODE_MODULES_BIN_DIR)/coveralls
@@ -37,6 +36,7 @@ NODE = node
 NPM = npm
 RM = rm -f
 RMDIR = $(RM) -r
+SH = sh
 TEST = test
 XARGS = xargs
 
@@ -78,25 +78,25 @@ check:
 	$(JSHINT) .
 	$(JSCS) .
 	$(HTML_VALIDATOR) --file=$(PUBLIC_DIR)/index.html --verbose
-	#{ \
-	#	$(FIND) $(PUBLIC_DIR)/html -name '*.html' \
-	#	| \
-	#	$(XARGS) -I % $(BASH) -c $$' \
-	#		htmlFile=$$($(MKTEMP)); \
-	#		$(ECHO) %; \
-	#		$(CAT) % \
-	#		| \
-	#		{ \
-	#			$(ECHO) \'<!DOCTYPE html><html lang="en"><head><title>FRAGMENT</title></head><body>\' > $$htmlFile; \
-	#			$(CAT) >> $$htmlFile; \
-	#			$(ECHO) \'</body></html>\' >> $$htmlFile; \
-	#		}; \
-	#		$(HTML_VALIDATOR) --file=$$htmlFile --verbose; \
-	#		htmlValidatorExit=$$?; \
-	#		$(RM) $$htmlFile; \
-	#		$(TEST) $$htmlValidatorExit -eq 0 \
-	#	'; \
-	#}
+	{ \
+		$(FIND) $(PUBLIC_DIR)/html -name '*.html' \
+		| \
+		$(XARGS) -I % $(SH) -c ' \
+			htmlFile=$$($(MKTEMP)); \
+			$(ECHO) %; \
+			$(CAT) % \
+			| \
+			{ \
+				$(ECHO) '"'"'<!DOCTYPE html><html lang="en"><head><title>FRAGMENT</title></head><body>'"'"'; \
+				$(CAT); \
+				$(ECHO) '"'"'</body></html>'"'"'; \
+			} > $$htmlFile; \
+			$(HTML_VALIDATOR) --file=$$htmlFile --verbose; \
+			htmlValidatorExit=$$?; \
+			$(RM) $$htmlFile; \
+			$(TEST) $$htmlValidatorExit -eq 0 \
+		'; \
+	}
 	$(CSSLINT) $(CSS_DIR)
 
 clean:
