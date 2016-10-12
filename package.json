@@ -2,7 +2,7 @@
   "name": "dice-server-js",
   "version": "0.1.0",
   "description": "Server for parsing and executing dice notation.",
-  "main": "index.js",
+  "main": "server.js",
   "dependencies": {
     "base64url": "~2.0.0",
     "body-parser": "~1.15.2",
