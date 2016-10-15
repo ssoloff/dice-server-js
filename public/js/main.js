@@ -1,6 +1,18 @@
+/**
+ * Top-level module for the Dice Server client application.
+ *
+ * @namespace main
+ */
 var main = (function () {
     'use strict';
 
+    /**
+     * Initializes the application module.
+     * @function main.initModule
+     *
+     * @param {Object!} $container - A jQuery collection that represents a
+     *      single DOM element to be used as the container for the shell.
+     */
     function initModule($container) {
         installJQueryPlugins();
 

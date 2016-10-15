@@ -11,6 +11,7 @@
     "excludePattern": "(^|\\/|\\\\)_",
     "include": [
       "lib",
+      "public",
       "spec"
     ],
     "includePattern": ".+\\.js(doc)?$"
@@ -27,4 +28,3 @@
     "monospaceLinks": false
   }
 }
-

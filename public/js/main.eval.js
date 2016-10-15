@@ -1,3 +1,9 @@
+/**
+ * The eval module is used to submit the expression to be evaluated and
+ * configure all associated options for the evaluation operation.
+ *
+ * @namespace main.eval
+ */
 main.eval = (function () {
     'use strict';
 
@@ -65,6 +71,14 @@ main.eval = (function () {
         };
     }
 
+    /**
+     * Initializes the eval module.
+     * @function main.eval.initModule
+     *
+     * @param {Object!} $container - A jQuery collection that represents a
+     *      single DOM element to be used as the container for the eval
+     *      controls.
+     */
     function initModule($container) {
         $.get('/html/main.eval.html', function (data) {
             $container.html(data);

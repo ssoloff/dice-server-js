@@ -1,6 +1,18 @@
+/**
+ * The shell module is used to compose all core feature modules.
+ *
+ * @namespace main.shell
+ */
 main.shell = (function () {
     'use strict';
 
+    /**
+     * Initializes the shell module.
+     * @function main.shell.initModule
+     *
+     * @param {Object!} $container - A jQuery collection that represents a
+     *      single DOM element to be used as the container for the shell.
+     */
     function initModule($container) {
         $.get('/html/main.shell.html', function (data) {
             $container.html(data);

@@ -1,3 +1,9 @@
+/**
+ * The history module is used to display and manage previously evaluated
+ * expressions.
+ *
+ * @namespace main.history
+ */
 main.history = (function () {
     'use strict';
 
@@ -48,6 +54,14 @@ main.history = (function () {
         };
     }
 
+    /**
+     * Initializes the history module.
+     * @function main.history.initModule
+     *
+     * @param {Object!} $container - A jQuery collection that represents a
+     *      single DOM element to be used as the container for the history
+     *      controls.
+     */
     function initModule($container) {
         $.get('/html/main.history.html', function (data) {
             $container.html(data);

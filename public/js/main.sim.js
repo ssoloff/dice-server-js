@@ -1,3 +1,9 @@
+/**
+ * The sim module is used to display a 2D simulation of the dice rolled as part
+ * of evaluating an expression.
+ *
+ * @namespace main.sim
+ */
 main.sim = (function () {
     'use strict';
 
@@ -236,6 +242,14 @@ main.sim = (function () {
         };
     }
 
+    /**
+     * Initializes the sim module.
+     * @function main.sim.initModule
+     *
+     * @param {Object!} $container - A jQuery collection that represents a
+     *      single DOM element to be used as the container for the sim
+     *      controls.
+     */
     function initModule($container) {
         $.get('/html/main.sim.html', function (data) {
             $container.html(data);
