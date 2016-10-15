@@ -7,12 +7,18 @@
 main.sim = (function () {
     'use strict';
 
+    // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
+
     var configMap = {
             dicePerRow: null,
             dieSize: 40,
             margin: 20
         },
         jQueryMap = {};
+
+    // --- END MODULE SCOPE VARIABLES ----------------------------------------
+
+    // --- BEGIN UTILITY METHODS ---------------------------------------------
 
     function calculateCentroid(vertices, vertexIndexes) {
         var centroid = {
@@ -40,6 +46,10 @@ main.sim = (function () {
         });
         return vertices;
     }
+
+    // --- END UTILITY METHODS -----------------------------------------------
+
+    // --- BEGIN DOM METHODS -------------------------------------------------
 
     function drawDice(dieRollResults) {
         var drawDieMapBySides = {
@@ -242,6 +252,18 @@ main.sim = (function () {
         };
     }
 
+    // --- END DOM METHODS ---------------------------------------------------
+
+    // --- BEGIN EVENT HANDLERS ----------------------------------------------
+
+    function onExpressionEvaluated(event, response) {
+        drawDice(response.dieRollResults);
+    }
+
+    // --- END EVENT HANDLERS ------------------------------------------------
+
+    // --- BEGIN PUBLIC METHODS ----------------------------------------------
+
     /**
      * Initializes the sim module.
      * @function main.sim.initModule
@@ -264,11 +286,10 @@ main.sim = (function () {
         });
     }
 
-    function onExpressionEvaluated(event, response) {
-        drawDice(response.dieRollResults);
-    }
-
     return {
         initModule: initModule
     };
+
+    // --- END PUBLIC METHODS ------------------------------------------------
+
 })();

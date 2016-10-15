@@ -7,7 +7,13 @@
 main.history = (function () {
     'use strict';
 
+    // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
+
     var jQueryMap = {};
+
+    // --- END MODULE SCOPE VARIABLES ----------------------------------------
+
+    // --- BEGIN DOM METHODS -------------------------------------------------
 
     function addExpressionResult(response) {
         var $actionsCell,
@@ -54,6 +60,22 @@ main.history = (function () {
         };
     }
 
+    function removeAllResults() {
+        jQueryMap.$expressionResults.empty();
+    }
+
+    // --- END DOM METHODS ---------------------------------------------------
+
+    // --- BEGIN EVENT HANDLERS ----------------------------------------------
+
+    function onExpressionEvaluated(event, response) {
+        addExpressionResult(response);
+    }
+
+    // --- END EVENT HANDLERS ------------------------------------------------
+
+    // --- BEGIN PUBLIC METHODS ----------------------------------------------
+
     /**
      * Initializes the history module.
      * @function main.history.initModule
@@ -72,15 +94,10 @@ main.history = (function () {
         });
     }
 
-    function onExpressionEvaluated(event, response) {
-        addExpressionResult(response);
-    }
-
-    function removeAllResults() {
-        jQueryMap.$expressionResults.empty();
-    }
-
     return {
         initModule: initModule
     };
+
+    // --- END PUBLIC METHODS ------------------------------------------------
+
 })();

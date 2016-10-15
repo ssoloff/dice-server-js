@@ -6,6 +6,8 @@
 main.shell = (function () {
     'use strict';
 
+    // --- BEGIN PUBLIC METHODS ----------------------------------------------
+
     /**
      * Initializes the shell module.
      * @function main.shell.initModule
@@ -26,4 +28,7 @@ main.shell = (function () {
     return {
         initModule: initModule
     };
+
+    // --- END PUBLIC METHODS ------------------------------------------------
+
 })();

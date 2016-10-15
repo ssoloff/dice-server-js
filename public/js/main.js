@@ -6,18 +6,7 @@
 var main = (function () {
     'use strict';
 
-    /**
-     * Initializes the application module.
-     * @function main.initModule
-     *
-     * @param {Object!} $container - A jQuery collection that represents a
-     *      single DOM element to be used as the container for the shell.
-     */
-    function initModule($container) {
-        installJQueryPlugins();
-
-        main.shell.initModule($container);
-    }
+    // --- BEGIN UTILITY METHODS ---------------------------------------------
 
     function installJQueryPlugins() {
         jQuery.fn.visible = function () {
@@ -43,7 +32,27 @@ var main = (function () {
         });
     }
 
+    // --- END UTILITY METHODS -----------------------------------------------
+
+    // --- BEGIN PUBLIC METHODS ----------------------------------------------
+
+    /**
+     * Initializes the application module.
+     * @function main.initModule
+     *
+     * @param {Object!} $container - A jQuery collection that represents a
+     *      single DOM element to be used as the container for the shell.
+     */
+    function initModule($container) {
+        installJQueryPlugins();
+
+        main.shell.initModule($container);
+    }
+
     return {
         initModule: initModule
     };
+
+    // --- END PUBLIC METHODS ------------------------------------------------
+
 })();

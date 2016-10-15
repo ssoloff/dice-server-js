@@ -7,7 +7,13 @@
 main.eval = (function () {
     'use strict';
 
+    // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
+
     var jQueryMap = {};
+
+    // --- END MODULE SCOPE VARIABLES ----------------------------------------
+
+    // --- BEGIN DOM METHODS -------------------------------------------------
 
     function clearExpressionText() {
         jQueryMap.$expressionText.val('');
@@ -28,7 +34,12 @@ main.eval = (function () {
             requestBody.randomNumberGenerator = JSON.parse(randomNumberGeneratorJson);
         }
 
-        $.postJSON('/expression/evaluate', requestBody, processResponse, processErrorResponse);
+        $.postJSON(
+            '/expression/evaluate',
+            requestBody,
+            onEvaluateExpressionResponseSuccess,
+            onEvaluateExpressionResponseError
+        );
     }
 
     function getExpressionText() {
@@ -71,6 +82,53 @@ main.eval = (function () {
         };
     }
 
+    function initView() {
+        hideHelp();
+        hideErrorMessage();
+    }
+
+    function showErrorMessage(message) {
+        jQueryMap.$errorMessage.text(message).visible();
+    }
+
+    function toggleHelp() {
+        var newHelpVisible,
+            oldHelpVisible;
+
+        oldHelpVisible = jQueryMap.$help.is(':visible');
+        jQueryMap.$help.toggle(400);
+
+        newHelpVisible = !oldHelpVisible;
+        jQueryMap.$toggleHelp.text(newHelpVisible ? 'hide help' : 'help');
+    }
+
+    // --- END DOM METHODS ---------------------------------------------------
+
+    // --- BEGIN EVENT HANDLERS ----------------------------------------------
+
+    function onEvaluateExpression(event, expressionText) {
+        evaluateExpression(expressionText);
+    }
+
+    function onEvaluateExpressionResponseError(jqxhr) {
+        var responseBody = jqxhr.responseJSON;
+
+        if (responseBody && responseBody.error) {
+            showErrorMessage(responseBody.error.message);
+        }
+    }
+
+    function onEvaluateExpressionResponseSuccess(responseBody) {
+        clearExpressionText();
+        hideErrorMessage();
+
+        $.gevent.publish('main-expressionevaluated', [responseBody]);
+    }
+
+    // --- END EVENT HANDLERS ------------------------------------------------
+
+    // --- BEGIN PUBLIC METHODS ----------------------------------------------
+
     /**
      * Initializes the eval module.
      * @function main.eval.initModule
@@ -90,46 +148,10 @@ main.eval = (function () {
         });
     }
 
-    function initView() {
-        hideHelp();
-        hideErrorMessage();
-    }
-
-    function onEvaluateExpression(event, expressionText) {
-        evaluateExpression(expressionText);
-    }
-
-    function processErrorResponse(jqxhr) {
-        var responseBody = jqxhr.responseJSON;
-
-        if (responseBody && responseBody.error) {
-            showErrorMessage(responseBody.error.message);
-        }
-    }
-
-    function processResponse(responseBody) {
-        clearExpressionText();
-        hideErrorMessage();
-
-        $.gevent.publish('main-expressionevaluated', [responseBody]);
-    }
-
-    function showErrorMessage(message) {
-        jQueryMap.$errorMessage.text(message).visible();
-    }
-
-    function toggleHelp() {
-        var newHelpVisible,
-            oldHelpVisible;
-
-        oldHelpVisible = jQueryMap.$help.is(':visible');
-        jQueryMap.$help.toggle(400);
-
-        newHelpVisible = !oldHelpVisible;
-        jQueryMap.$toggleHelp.text(newHelpVisible ? 'hide help' : 'help');
-    }
-
     return {
         initModule: initModule
     };
+
+    // --- END PUBLIC METHODS ------------------------------------------------
+
 })();
