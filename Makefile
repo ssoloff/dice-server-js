@@ -60,7 +60,8 @@ DICE_EXPRESSION_JISON = $(SRC_DIR)/dice-expression.jison
 DICE_EXPRESSION_PARSER_JS = $(COMPILE_OUTPUT_DIR)/$(SRC_DIR)/dice-expression-parser.js
 ISTANBUL_CONFIG = .istanbul.yml
 JASMINE_CONFIG = jasmine.json
-JSDOC_CONFIG = jsdoc-conf.json
+JSDOC_CLIENT_CONFIG = jsdoc-client-conf.json
+JSDOC_SERVER_CONFIG = jsdoc-server-conf.json
 SERVER_JS = server.js
 SERVER_PID = server.pid
 TEST_PRIVATE_KEY = $(TEST_DIR)/private-key.pem
@@ -122,7 +123,8 @@ dist:
 	$(CP) $(BOWER_COMPONENTS_DIR)/normalize-css/normalize.css $(DIST_OUTPUT_DIR)/$(CSS_DIR)
 
 docs:
-	$(JSDOC) -c $(JSDOC_CONFIG)
+	$(JSDOC) -c $(JSDOC_CLIENT_CONFIG)
+	$(JSDOC) -c $(JSDOC_SERVER_CONFIG)
 
 init:
 	$(NPM) install

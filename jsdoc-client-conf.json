@@ -1,6 +1,6 @@
 {
   "opts": {
-    "destination": "build/docs",
+    "destination": "build/docs/client",
     "readme": "README.md",
     "recurse": true
   },
@@ -10,11 +10,9 @@
   "source": {
     "excludePattern": "(^|\\/|\\\\)_",
     "include": [
-      "lib",
-      "public",
-      "spec"
+      "public"
     ],
-    "includePattern": ".+\\.js(doc)?$"
+    "includePattern": ".+\\.js$"
   },
   "tags": {
     "allowUnknownTags": true,
