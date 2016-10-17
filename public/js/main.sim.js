@@ -273,8 +273,7 @@ main.sim = (function () {
      *      controls.
      */
     function initModule($container) {
-        $.get('/html/main.sim.html', function (data) {
-            $container.html(data);
+        $container.load('/html/main.sim.html', function () {
             initJQueryMap($container);
 
             configMap.dicePerRow = Math.floor(

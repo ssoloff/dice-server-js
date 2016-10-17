@@ -85,8 +85,7 @@ main.history = (function () {
      *      controls.
      */
     function initModule($container) {
-        $.get('/html/main.history.html', function (data) {
-            $container.html(data);
+        $container.load('/html/main.history.html', function () {
             initJQueryMap($container);
             initController();
 
