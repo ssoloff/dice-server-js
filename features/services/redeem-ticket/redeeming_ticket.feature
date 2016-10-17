@@ -1,3 +1,11 @@
+#
+# Copyright (c) 2016 Steven Soloff
+#
+# This is free software: you can redistribute it and/or modify it under the
+# terms of the MIT License (https://opensource.org/licenses/MIT).
+# This software comes with ABSOLUTELY NO WARRANTY.
+#
+
 Feature: Redeeming a ticket
     In order to fulfil a game master's request to evaluate a dice notation expression
     As a player
@@ -26,4 +34,3 @@ Scenario: Failing to redeem a ticket with an invalid signature
     Given a ticket with an invalid signature
     When the redeem ticket service is invoked
     Then the response should indicate failure
-

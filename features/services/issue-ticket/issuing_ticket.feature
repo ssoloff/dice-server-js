@@ -1,3 +1,11 @@
+#
+# Copyright (c) 2016 Steven Soloff
+#
+# This is free software: you can redistribute it and/or modify it under the
+# terms of the MIT License (https://opensource.org/licenses/MIT).
+# This software comes with ABSOLUTELY NO WARRANTY.
+#
+
 Feature: Issuing a ticket
     In order to ask a player to evaluate a dice notation expression
     As a game master
@@ -29,4 +37,3 @@ Scenario: Failing to issue a ticket due to an unknown random number generator
         And a request with the random number generator named "<<UNKNOWN>>"
     When the issue ticket service is invoked
     Then the response should indicate failure
-

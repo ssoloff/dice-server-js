@@ -1,3 +1,11 @@
+#
+# Copyright (c) 2016 Steven Soloff
+#
+# This is free software: you can redistribute it and/or modify it under the
+# terms of the MIT License (https://opensource.org/licenses/MIT).
+# This software comes with ABSOLUTELY NO WARRANTY.
+#
+
 Feature: Displaying dice expression evaluation history
     In order to easily reevaluate a previously-evaluated dice expression
     As a player
@@ -45,4 +53,3 @@ Scenario: Removing a result from the results table
         And the 1st expression canonical text should be "5"
         And the 1st expression result text should be "5"
         And the 1st expression result value should be "5"
-

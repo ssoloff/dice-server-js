@@ -1,3 +1,11 @@
+#
+# Copyright (c) 2016 Steven Soloff
+#
+# This is free software: you can redistribute it and/or modify it under the
+# terms of the MIT License (https://opensource.org/licenses/MIT).
+# This software comes with ABSOLUTELY NO WARRANTY.
+#
+
 Feature: Evaluating dice notation via web UI
     In order to simplify game play
     As a player
@@ -58,4 +66,3 @@ Scenario Outline: Rounding mode
         | Floor         | 3/2        | floor(3/2) | floor(3 / 2)   | [floor(3 / 2) -> 1] | 1            |
         | Ceiling       | 3/2        | ceil(3/2)  | ceil(3 / 2)    | [ceil(3 / 2) -> 2]  | 2            |
         | Nearest       | 3/2        | round(3/2) | round(3 / 2)   | [round(3 / 2) -> 2] | 2            |
-
