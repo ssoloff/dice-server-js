@@ -64,6 +64,7 @@ main.sim = (function () {
             '4': drawDie4,
             '6': drawDie6,
             '8': drawDie8,
+            '10': drawDie10,
             '12': drawDie12,
             '20': drawDie20
         };
@@ -149,6 +150,27 @@ main.sim = (function () {
             [0, 2],
             [0, 4],
             [2, 4]
+        ]);
+        drawDieValue(dieRollResult, center);
+    }
+
+    function drawDie10(dieRollResult, center) {
+        drawDieEdges(calculateVertices(center, configMap.dieSize / 3, [
+            { x:  0.0000000, y:  0.6498394 },
+            { x:  0.6180340, y:  0.2008114 },
+            { x: -0.6180340, y:  0.2008114 },
+            { x:  0.0000000, y: -1.7013016 },
+            { x:  1.0000000, y: -0.3249196 },
+            { x:  1.0000000, y:  0.3249197 },
+            { x:  0.0000000, y:  1.7013016 },
+            { x: -1.0000000, y:  0.3249196 },
+            { x: -1.0000000, y: -0.3249197 }
+        ]), [
+            [0, 2, 3, 1, 0],
+            [3, 4, 5, 6, 7, 8, 3],
+            [1, 5],
+            [0, 6],
+            [2, 7]
         ]);
         drawDieValue(dieRollResult, center);
     }
