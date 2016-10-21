@@ -172,7 +172,9 @@ main.sim = (function () {
             [0, 6],
             [2, 7]
         ]);
-        drawDieValue(dieRollResult, center);
+        drawDieValue(dieRollResult, $.extend({}, center, {
+            fontSize: configMap.dieSize / 3
+        }));
     }
 
     function drawDie12(dieRollResult, center) {
@@ -201,7 +203,9 @@ main.sim = (function () {
             [3, 11],
             [4, 13]
         ]);
-        drawDieValue(dieRollResult, center);
+        drawDieValue(dieRollResult, $.extend({}, center, {
+            fontSize: configMap.dieSize / 3
+        }));
     }
 
     function drawDie20(dieRollResult, center) {
@@ -228,7 +232,9 @@ main.sim = (function () {
             [2, 7],
             [2, 8]
         ]);
-        drawDieValue(dieRollResult, center);
+        drawDieValue(dieRollResult, $.extend({}, center, {
+            fontSize: configMap.dieSize / 4
+        }));
     }
 
     function drawDieEdges(vertices, vertexIndexesList) {
