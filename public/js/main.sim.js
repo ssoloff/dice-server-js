@@ -172,9 +172,14 @@ main.sim = (function () {
             [0, 6],
             [2, 7]
         ]);
-        drawDieValue(dieRollResult, $.extend({}, center, {
-            fontSize: configMap.dieSize / 3
-        }));
+        drawDieValue(
+            $.extend({}, dieRollResult, {
+                value: dieRollResult.value === 10 ? 0 : dieRollResult.value
+            }),
+            $.extend({}, center, {
+                fontSize: configMap.dieSize / 3
+            })
+        );
     }
 
     function drawDie12(dieRollResult, center) {
