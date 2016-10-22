@@ -10,7 +10,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var security = require('../../../../app/controllers/support/security');
+var security = require('../../../../src/app/controllers/support/security');
 
 describe('security', function () {
     var payload,

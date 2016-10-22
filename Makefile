@@ -36,11 +36,12 @@ NODE = node
 NPM = npm
 RM = rm -f
 RMDIR = $(RM) -r
+RSYNC = rsync -r
 SH = sh
 TEST = test
 XARGS = xargs
 
-APP_DIR = app
+APP_DIR = $(SRC_DIR)/app
 BOWER_COMPONENTS_DIR = bower_components
 BUILD_OUTPUT_DIR = build
 COMPILE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/compile
@@ -50,14 +51,15 @@ DIST_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/dist
 FEATURES_DIR = features
 JS_DIR = $(PUBLIC_DIR)/js
 JS_VENDOR_DIR = $(JS_DIR)/vendor
+LIB_DIR = $(SRC_DIR)/lib
 NODE_MODULES_BIN_DIR = node_modules/.bin
 PUBLIC_DIR = public
 SPEC_DIR = spec
-SRC_DIR = lib
+SRC_DIR = src
 TEST_DIR = test
 
-DICE_EXPRESSION_JISON = $(SRC_DIR)/dice-expression.jison
-DICE_EXPRESSION_PARSER_JS = $(COMPILE_OUTPUT_DIR)/$(SRC_DIR)/dice-expression-parser.js
+DICE_EXPRESSION_JISON = $(LIB_DIR)/dice-expression.jison
+DICE_EXPRESSION_PARSER_JS = $(COMPILE_OUTPUT_DIR)/$(LIB_DIR)/dice-expression-parser.js
 ISTANBUL_CONFIG = .istanbul.yml
 JASMINE_CONFIG = jasmine.json
 JSDOC_CLIENT_CONFIG = jsdoc-client-conf.json
@@ -109,13 +111,13 @@ compile-jison: $(DICE_EXPRESSION_PARSER_JS)
 
 compile-js:
 	$(MKDIR) $(COMPILE_OUTPUT_DIR)
-	$(CP) $(SERVER_JS) $(APP_DIR) $(PUBLIC_DIR) $(SPEC_DIR) $(TEST_DIR) $(COMPILE_OUTPUT_DIR)
-	$(FIND) $(SRC_DIR) -name '*.js' | $(XARGS) -I % $(CP) % $(COMPILE_OUTPUT_DIR)/$(SRC_DIR)
+	$(CP) $(PUBLIC_DIR) $(SPEC_DIR) $(TEST_DIR) $(COMPILE_OUTPUT_DIR)
+	$(RSYNC) --include '*/' --include '*.js' --exclude '*' --prune-empty-dirs $(SRC_DIR) $(COMPILE_OUTPUT_DIR)
 
 dist:
 	$(RMDIR) $(DIST_OUTPUT_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)
-	$(CP) $(COMPILE_OUTPUT_DIR)/$(SERVER_JS) $(COMPILE_OUTPUT_DIR)/$(APP_DIR) $(COMPILE_OUTPUT_DIR)/$(PUBLIC_DIR) $(COMPILE_OUTPUT_DIR)/$(SRC_DIR) $(DIST_OUTPUT_DIR)
+	$(CP) $(COMPILE_OUTPUT_DIR)/$(PUBLIC_DIR) $(COMPILE_OUTPUT_DIR)/$(SRC_DIR)/* $(DIST_OUTPUT_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)
 	$(CP) $(BOWER_COMPONENTS_DIR)/jcanvas/jcanvas.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jcanvas.js
 	$(CP) $(BOWER_COMPONENTS_DIR)/jquery/dist/jquery.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jquery.js

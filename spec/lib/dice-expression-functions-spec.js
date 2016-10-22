@@ -8,7 +8,7 @@
 
 'use strict';
 
-var diceExpressionFunctions = require('../../lib/dice-expression-functions');
+var diceExpressionFunctions = require('../../src/lib/dice-expression-functions');
 var diceTest = require('./test-support/dice-test');
 
 describe('diceExpressionFunctions', function () {

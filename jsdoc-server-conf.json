@@ -10,8 +10,7 @@
   "source": {
     "excludePattern": "(^|\\/|\\\\)_",
     "include": [
-      "app",
-      "lib",
+      "src",
       "spec"
     ],
     "includePattern": ".+\\.js(doc)?$"

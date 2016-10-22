@@ -9,7 +9,7 @@
 'use strict';
 
 var controllerTest = require('../test-support/controller-test');
-var controllerUtils = require('../../../../app/controllers/support/controller-utils');
+var controllerUtils = require('../../../../src/app/controllers/support/controller-utils');
 var httpStatus = require('http-status-codes');
 
 describe('controllerUtils', function () {

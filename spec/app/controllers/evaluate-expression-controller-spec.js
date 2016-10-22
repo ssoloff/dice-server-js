@@ -13,7 +13,7 @@ var fs = require('fs');
 var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 var path = require('path');
-var security = require('../../../app/controllers/support/security');
+var security = require('../../../src/app/controllers/support/security');
 
 describe('evaluateExpressionController', function () {
     var controller,
@@ -22,7 +22,7 @@ describe('evaluateExpressionController', function () {
         responseBody;
 
     function createEvaluateExpressionController() {
-        return require('../../../app/controllers/evaluate-expression-controller').create({
+        return require('../../../src/app/controllers/evaluate-expression-controller').create({
             publicKey: controllerTest.getPublicKey()
         });
     }

@@ -9,7 +9,7 @@
 'use strict';
 
 var _ = require('underscore');
-var dice = require('../../../lib/dice');
+var dice = require('../../../src/lib/dice');
 
 /**
  * Provides useful methods for testing the dice server.

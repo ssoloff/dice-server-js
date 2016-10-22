@@ -19,10 +19,10 @@ describe('redeemTicketController', function () {
         responseBody;
 
     function createRedeemTicketController(evaluateExpressionController) {
-        evaluateExpressionController = evaluateExpressionController || require('../../../app/controllers/evaluate-expression-controller').create({
+        evaluateExpressionController = evaluateExpressionController || require('../../../src/app/controllers/evaluate-expression-controller').create({
             publicKey: controllerTest.getPublicKey()
         });
-        return require('../../../app/controllers/redeem-ticket-controller').create({
+        return require('../../../src/app/controllers/redeem-ticket-controller').create({
             evaluateExpressionController: evaluateExpressionController,
             privateKey: controllerTest.getPrivateKey(),
             publicKey: controllerTest.getPublicKey(),

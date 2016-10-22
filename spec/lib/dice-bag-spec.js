@@ -8,7 +8,7 @@
 
 'use strict';
 
-var dice = require('../../lib/dice');
+var dice = require('../../src/lib/dice');
 
 describe('diceBag', function () {
     var bag;
