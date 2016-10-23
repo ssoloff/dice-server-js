@@ -8,7 +8,7 @@
 
 'use strict';
 
-var ControllerError = require('../../../../src/app/controllers/support/controller-error');
+var ControllerError = require('../../../../../src/server/app/controllers/support/controller-error');
 
 describe('ControllerError', function () {
     describe('.constructor', function () {

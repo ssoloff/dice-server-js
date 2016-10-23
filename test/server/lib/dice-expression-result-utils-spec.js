@@ -8,8 +8,8 @@
 
 'use strict';
 
-var dice = require('../../src/lib/dice');
-var diceExpressionResultUtils = require('../../src/lib/dice-expression-result-utils');
+var dice = require('../../../src/server/lib/dice');
+var diceExpressionResultUtils = require('../../../src/server/lib/dice-expression-result-utils');
 
 describe('diceExpressionResultUtils', function () {
     var bag = dice.bag.create(),

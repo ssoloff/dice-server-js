@@ -13,7 +13,7 @@ var fs = require('fs');
 var httpStatus = require('http-status-codes');
 var ja = require('json-assert');
 var path = require('path');
-var security = require('../../../src/app/controllers/support/security');
+var security = require('../../../../src/server/app/controllers/support/security');
 
 describe('evaluateExpressionController', function () {
     var controller,
@@ -22,7 +22,7 @@ describe('evaluateExpressionController', function () {
         responseBody;
 
     function createEvaluateExpressionController() {
-        return require('../../../src/app/controllers/evaluate-expression-controller').create({
+        return require('../../../../src/server/app/controllers/evaluate-expression-controller').create({
             publicKey: controllerTest.getPublicKey()
         });
     }
@@ -177,8 +177,8 @@ describe('evaluateExpressionController', function () {
 
             describe('when random number generator specification has an invalid signature', function () {
                 it('should respond with bad request error', function () {
-                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../../test/other-private-key.pem')),
-                        otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../test/other-public-key.pem'));
+                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../../../test/server/other-private-key.pem')),
+                        otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../../test/server/other-public-key.pem'));
 
                     request.body.randomNumberGenerator.signature = security.createSignature(
                         request.body.randomNumberGenerator.content,

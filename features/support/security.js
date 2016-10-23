@@ -10,14 +10,14 @@
 
 var fs = require('fs');
 var path = require('path');
-var security = require('../../src/app/controllers/support/security');
+var security = require('../../src/server/app/controllers/support/security');
 
 module.exports = {
     createSignature: function (payload) {
         return security.createSignature(
             payload,
-            fs.readFileSync(path.join(__dirname, '../../test/private-key.pem')),
-            fs.readFileSync(path.join(__dirname, '../../test/public-key.pem'))
+            fs.readFileSync(path.join(__dirname, '../../test/server/private-key.pem')),
+            fs.readFileSync(path.join(__dirname, '../../test/server/public-key.pem'))
         );
     }
 };

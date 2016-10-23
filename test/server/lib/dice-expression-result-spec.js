@@ -8,7 +8,7 @@
 
 'use strict';
 
-var dice = require('../../src/lib/dice');
+var dice = require('../../../src/server/lib/dice');
 
 describe('diceExpressionResult', function () {
     var three,

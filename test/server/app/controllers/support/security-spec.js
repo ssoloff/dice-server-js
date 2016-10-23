@@ -10,7 +10,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var security = require('../../../../src/app/controllers/support/security');
+var security = require('../../../../../src/server/app/controllers/support/security');
 
 describe('security', function () {
     var payload,
@@ -24,8 +24,8 @@ describe('security', function () {
             c: 3
         };
 
-        privateKey = fs.readFileSync(path.join(__dirname, '../../../../test/private-key.pem'));
-        publicKey = fs.readFileSync(path.join(__dirname, '../../../../test/public-key.pem'));
+        privateKey = fs.readFileSync(path.join(__dirname, '../../../../../test/server/private-key.pem'));
+        publicKey = fs.readFileSync(path.join(__dirname, '../../../../../test/server/public-key.pem'));
     });
 
     describe('.createSignature', function () {
@@ -107,7 +107,7 @@ describe('security', function () {
                     otherPublicKey,
                     signature;
 
-                otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../../test/other-public-key.pem'));
+                otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../../../test/server/other-public-key.pem'));
                 signature = security.createSignature(payload, privateKey, publicKey);
 
                 isValid = security.verifySignature(payload, signature, otherPublicKey);

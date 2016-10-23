@@ -11,7 +11,7 @@
 var fs = require('fs');
 var ja = require('json-assert');
 var path = require('path');
-var security = require('../../../../src/app/controllers/support/security');
+var security = require('../../../../../src/server/app/controllers/support/security');
 
 /**
  * Provides useful methods for testing a dice server controller.
@@ -82,7 +82,7 @@ module.exports = {
      * @returns {Object!} The private key to be used by secure controllers.
      */
     getPrivateKey: function () {
-        return fs.readFileSync(path.join(__dirname, '../../../../test/private-key.pem'));
+        return fs.readFileSync(path.join(__dirname, '../../../../../test/server/private-key.pem'));
     },
 
     /**
@@ -91,7 +91,7 @@ module.exports = {
      * @returns {Object!} The public key to be used by secure controllers.
      */
     getPublicKey: function () {
-        return fs.readFileSync(path.join(__dirname, '../../../../test/public-key.pem'));
+        return fs.readFileSync(path.join(__dirname, '../../../../../test/server/public-key.pem'));
     },
 
     /**

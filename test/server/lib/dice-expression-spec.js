@@ -9,7 +9,7 @@
 'use strict';
 
 var _ = require('underscore');
-var dice = require('../../src/lib/dice');
+var dice = require('../../../src/server/lib/dice');
 var diceTest = require('./test-support/dice-test');
 
 describe('diceExpression', function () {

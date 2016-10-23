@@ -10,7 +10,7 @@
   "source": {
     "excludePattern": "(^|\\/|\\\\)_",
     "include": [
-      "public"
+      "src/client"
     ],
     "includePattern": ".+\\.js$"
   },

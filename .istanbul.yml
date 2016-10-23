@@ -1,5 +1,5 @@
 instrumentation:
   excludes:
-    - build/compile/src/lib/dice-expression-parser.js
+    - build/compile/src/server/lib/dice-expression-parser.js
 reporting:
   dir: build/coverage

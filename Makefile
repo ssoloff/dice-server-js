@@ -36,14 +36,14 @@ NODE = node
 NPM = npm
 RM = rm -f
 RMDIR = $(RM) -r
-RSYNC = rsync -r
+RSYNC = rsync -r --prune-empty-dirs
 SH = sh
 TEST = test
 XARGS = xargs
 
-APP_DIR = $(SRC_DIR)/app
 BOWER_COMPONENTS_DIR = bower_components
 BUILD_OUTPUT_DIR = build
+CLIENT_SRC_DIR = $(SRC_DIR)/client
 COMPILE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/compile
 COVERAGE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/coverage
 CSS_DIR = $(PUBLIC_DIR)/css
@@ -51,9 +51,11 @@ DIST_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/dist
 FEATURES_DIR = features
 JS_DIR = $(PUBLIC_DIR)/js
 JS_VENDOR_DIR = $(JS_DIR)/vendor
-LIB_DIR = $(SRC_DIR)/lib
+LIB_DIR = $(SERVER_SRC_DIR)/lib
 NODE_MODULES_BIN_DIR = node_modules/.bin
 PUBLIC_DIR = public
+SERVER_SRC_DIR = $(SRC_DIR)/server
+SERVER_TEST_DIR = $(TEST_DIR)/server
 SRC_DIR = src
 TEST_DIR = test
 
@@ -65,8 +67,8 @@ JSDOC_CLIENT_CONFIG = jsdoc-client-conf.json
 JSDOC_SERVER_CONFIG = jsdoc-server-conf.json
 SERVER_JS = server.js
 SERVER_PID = server.pid
-TEST_PRIVATE_KEY = $(TEST_DIR)/private-key.pem
-TEST_PUBLIC_KEY = $(TEST_DIR)/public-key.pem
+TEST_PRIVATE_KEY = $(SERVER_TEST_DIR)/private-key.pem
+TEST_PUBLIC_KEY = $(SERVER_TEST_DIR)/public-key.pem
 
 acceptance-test:
 	for dir in $(FEATURES_DIR)/services/*/; \
@@ -110,13 +112,15 @@ compile-jison: $(DICE_EXPRESSION_PARSER_JS)
 
 compile-js:
 	$(MKDIR) $(COMPILE_OUTPUT_DIR)
-	$(CP) $(PUBLIC_DIR) $(TEST_DIR) $(COMPILE_OUTPUT_DIR)
-	$(RSYNC) --include '*/' --include '*.js' --exclude '*' --prune-empty-dirs $(SRC_DIR) $(COMPILE_OUTPUT_DIR)
+	$(CP) $(SRC_DIR) $(TEST_DIR) $(COMPILE_OUTPUT_DIR)
 
 dist:
 	$(RMDIR) $(DIST_OUTPUT_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)
-	$(CP) $(COMPILE_OUTPUT_DIR)/$(PUBLIC_DIR) $(COMPILE_OUTPUT_DIR)/$(SRC_DIR)/* $(DIST_OUTPUT_DIR)
+	$(RSYNC) --include '*/' --include '*.js' --exclude '*' $(COMPILE_OUTPUT_DIR)/$(SERVER_SRC_DIR)/* $(DIST_OUTPUT_DIR)
+	$(CP) $(PUBLIC_DIR) $(DIST_OUTPUT_DIR)
+	$(MKDIR) $(DIST_OUTPUT_DIR)/$(JS_DIR)
+	$(RSYNC) --include '*/' --include '*.js' --exclude '*' $(COMPILE_OUTPUT_DIR)/$(CLIENT_SRC_DIR)/* $(DIST_OUTPUT_DIR)/$(JS_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)
 	$(CP) $(BOWER_COMPONENTS_DIR)/jcanvas/jcanvas.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jcanvas.js
 	$(CP) $(BOWER_COMPONENTS_DIR)/jquery/dist/jquery.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jquery.js
