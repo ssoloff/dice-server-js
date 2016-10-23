@@ -11,7 +11,7 @@
     "excludePattern": "(^|\\/|\\\\)_",
     "include": [
       "src",
-      "spec"
+      "test"
     ],
     "includePattern": ".+\\.js(doc)?$"
   },

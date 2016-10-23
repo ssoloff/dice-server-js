@@ -54,7 +54,6 @@ JS_VENDOR_DIR = $(JS_DIR)/vendor
 LIB_DIR = $(SRC_DIR)/lib
 NODE_MODULES_BIN_DIR = node_modules/.bin
 PUBLIC_DIR = public
-SPEC_DIR = spec
 SRC_DIR = src
 TEST_DIR = test
 
@@ -111,7 +110,7 @@ compile-jison: $(DICE_EXPRESSION_PARSER_JS)
 
 compile-js:
 	$(MKDIR) $(COMPILE_OUTPUT_DIR)
-	$(CP) $(PUBLIC_DIR) $(SPEC_DIR) $(TEST_DIR) $(COMPILE_OUTPUT_DIR)
+	$(CP) $(PUBLIC_DIR) $(TEST_DIR) $(COMPILE_OUTPUT_DIR)
 	$(RSYNC) --include '*/' --include '*.js' --exclude '*' --prune-empty-dirs $(SRC_DIR) $(COMPILE_OUTPUT_DIR)
 
 dist:

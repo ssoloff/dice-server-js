@@ -1,5 +1,5 @@
 {
-  "spec_dir": "build/compile/spec",
+  "spec_dir": "build/compile/test",
   "spec_files": [
     "**/*[sS]pec.js"
   ],
@@ -7,4 +7,3 @@
     "helpers/**/*.js"
   ]
 }
-
