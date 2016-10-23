@@ -1,22 +1,22 @@
 {
-    "bitwise": true,
-    "browser": true,
-    "curly": true,
-    "eqeqeq": true,
-    "forin": true,
-    "freeze": true,
-    "globals": {
-        "main": true
-    },
-    "jquery": true,
-    "latedef": "nofunc",
-    "noarg": true,
-    "nocomma": true,
-    "nonbsp": true,
-    "nonew": true,
-    "plusplus": true,
-    "singleGroups": true,
-    "strict": true,
-    "undef": true,
-    "unused": true
+  "bitwise": true,
+  "browser": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "freeze": true,
+  "globals": {
+    "main": true
+  },
+  "jquery": true,
+  "latedef": "nofunc",
+  "noarg": true,
+  "nocomma": true,
+  "nonbsp": true,
+  "nonew": true,
+  "plusplus": true,
+  "singleGroups": true,
+  "strict": true,
+  "undef": true,
+  "unused": true
 }
