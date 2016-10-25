@@ -1,18 +1,18 @@
 language: node_js
 node_js:
-    - "6.4.0"
+  - "6.4.0"
 before_install:
-    - "export DISPLAY=:99.0"
-    - "sh -e /etc/init.d/xvfb start"
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
 install:
-    - make init
+  - make init
 script:
-    - make unit-test-with-coverage
-    - make dist
-    - make start-server
-    - make acceptance-test
-    - make stop-server
-    - make check
-    - make docs
+  - make unit-test-with-coverage
+  - make dist
+  - make start-server
+  - make acceptance-test
+  - make stop-server
+  - make check
+  - make docs
 after_script:
-    - make publish-coverage
+  - make publish-coverage
