@@ -8,11 +8,10 @@
 
 'use strict';
 
-var express = require('express');
-var fs = require('fs');
-var path = require('path');
-
-var privateKey = fs.readFileSync(process.argv[2]),
+var express = require('express'),
+    fs = require('fs'),
+    path = require('path'),
+    privateKey = fs.readFileSync(process.argv[2]),
     publicKey = fs.readFileSync(process.argv[3]),
     app = express();
 

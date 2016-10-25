@@ -8,10 +8,9 @@
 
 'use strict';
 
-var webdriver = require('selenium-webdriver');
-var security = require('../../support/security');
-
-var By = webdriver.By,
+var webdriver = require('selenium-webdriver'),
+    security = require('../../support/security'),
+    By = webdriver.By,
     promise = webdriver.promise,
     until = webdriver.until;
 

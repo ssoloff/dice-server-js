@@ -8,8 +8,8 @@
 
 'use strict';
 
-var _ = require('underscore');
-var Random = require('random-js');
+var _ = require('underscore'),
+    Random = require('random-js');
 
 module.exports = {
     constantMax: function () {

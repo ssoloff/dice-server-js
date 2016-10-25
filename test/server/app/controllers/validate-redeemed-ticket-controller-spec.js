@@ -8,9 +8,9 @@
 
 'use strict';
 
-var controllerTest = require('./test-support/controller-test');
-var httpStatus = require('http-status-codes');
-var ja = require('json-assert');
+var controllerTest = require('./test-support/controller-test'),
+    httpStatus = require('http-status-codes'),
+    ja = require('json-assert');
 
 describe('validateRedeemedTicketController', function () {
     var controller,

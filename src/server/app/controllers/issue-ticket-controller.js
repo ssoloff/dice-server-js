@@ -8,10 +8,10 @@
 
 'use strict';
 
-var _ = require('underscore');
-var controllerUtils = require('./support/controller-utils');
-var crypto = require('crypto');
-var security = require('./support/security');
+var _ = require('underscore'),
+    controllerUtils = require('./support/controller-utils'),
+    crypto = require('crypto'),
+    security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {

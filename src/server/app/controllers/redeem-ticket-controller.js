@@ -8,9 +8,9 @@
 
 'use strict';
 
-var controllerUtils = require('./support/controller-utils');
-var httpStatus = require('http-status-codes');
-var security = require('./support/security');
+var controllerUtils = require('./support/controller-utils'),
+    httpStatus = require('http-status-codes'),
+    security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {

@@ -8,10 +8,9 @@
 
 'use strict';
 
-var chai = require('chai');
-var httpStatus = require('http-status-codes');
-
-var expect = chai.expect;
+var chai = require('chai'),
+    httpStatus = require('http-status-codes'),
+    expect = chai.expect;
 
 module.exports = function () {
     this.Before(function (scenario, callback) {

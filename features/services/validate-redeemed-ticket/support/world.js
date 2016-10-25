@@ -8,9 +8,9 @@
 
 'use strict';
 
-var IssueTicketService = require('../../support/issue-ticket-service');
-var RedeemTicketService = require('../../support/redeem-ticket-service');
-var ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service');
+var IssueTicketService = require('../../support/issue-ticket-service'),
+    RedeemTicketService = require('../../support/redeem-ticket-service'),
+    ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service');
 
 function World() {
     this.createIssueTicketService = function () {

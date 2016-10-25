@@ -8,9 +8,9 @@
 
 'use strict';
 
-var diceBag = require('./dice-bag');
-var diceExpression = require('./dice-expression');
-var diceExpressionFunctions = require('./dice-expression-functions');
+var diceBag = require('./dice-bag'),
+    diceExpression = require('./dice-expression'),
+    diceExpressionFunctions = require('./dice-expression-functions');
 
 function createDefaultContext() {
     return {

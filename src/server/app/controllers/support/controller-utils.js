@@ -8,8 +8,8 @@
 
 'use strict';
 
-var ControllerError = require('./controller-error');
-var httpStatus = require('http-status-codes');
+var ControllerError = require('./controller-error'),
+    httpStatus = require('http-status-codes');
 
 module.exports = {
     createControllerError: function (status, message) {

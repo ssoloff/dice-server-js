@@ -8,9 +8,9 @@
 
 'use strict';
 
-var controllerTest = require('../test-support/controller-test');
-var controllerUtils = require('../../../../../src/server/app/controllers/support/controller-utils');
-var httpStatus = require('http-status-codes');
+var controllerTest = require('../test-support/controller-test'),
+    controllerUtils = require('../../../../../src/server/app/controllers/support/controller-utils'),
+    httpStatus = require('http-status-codes');
 
 describe('controllerUtils', function () {
     describe('.createControllerErrorFromResponse', function () {

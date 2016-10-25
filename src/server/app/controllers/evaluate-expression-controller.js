@@ -8,13 +8,13 @@
 
 'use strict';
 
-var _ = require('underscore');
-var controllerUtils = require('./support/controller-utils');
-var dice = require('../../lib/dice');
-var diceExpressionResultUtils = require('../../lib/dice-expression-result-utils');
-var httpStatus = require('http-status-codes');
-var random = require('./support/random');
-var security = require('./support/security');
+var _ = require('underscore'),
+    controllerUtils = require('./support/controller-utils'),
+    dice = require('../../lib/dice'),
+    diceExpressionResultUtils = require('../../lib/dice-expression-result-utils'),
+    httpStatus = require('http-status-codes'),
+    random = require('./support/random'),
+    security = require('./support/security');
 
 module.exports = {
     create: function (controllerData) {

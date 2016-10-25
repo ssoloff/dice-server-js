@@ -8,8 +8,8 @@
 
 'use strict';
 
-var diceExpressionFunctions = require('../../../src/server/lib/dice-expression-functions');
-var diceTest = require('./test-support/dice-test');
+var diceExpressionFunctions = require('../../../src/server/lib/dice-expression-functions'),
+    diceTest = require('./test-support/dice-test');
 
 describe('diceExpressionFunctions', function () {
     describe('.ceil', function () {

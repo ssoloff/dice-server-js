@@ -8,8 +8,8 @@
 
 'use strict';
 
-var req = require('request');
-var security = require('../../support/security');
+var req = require('request'),
+    security = require('../../support/security');
 
 function IssueTicketService() {
     this.requestBody = {

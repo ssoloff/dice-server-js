@@ -8,9 +8,8 @@
 
 'use strict';
 
-var chai = require('chai');
-
-var expect = chai.expect;
+var chai = require('chai'),
+    expect = chai.expect;
 
 module.exports = function () {
     this.Before(function (scenario, callback) {

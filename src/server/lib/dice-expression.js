@@ -8,9 +8,9 @@
 
 'use strict';
 
-var _ = require('underscore');
-var diceExpressionResult = require('./dice-expression-result');
-var diceExpressionTypeIds = require('./dice-expression-type-ids');
+var _ = require('underscore'),
+    diceExpressionResult = require('./dice-expression-result'),
+    diceExpressionTypeIds = require('./dice-expression-type-ids');
 
 /**
  * Provides methods for creating dice expressions.

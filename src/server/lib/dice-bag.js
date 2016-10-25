@@ -8,9 +8,9 @@
 
 'use strict';
 
-var _ = require('underscore');
-var assert = require('assert');
-var Random = require('random-js');
+var _ = require('underscore'),
+    assert = require('assert'),
+    Random = require('random-js');
 
 /**
  * Provides methods for creating a dice bag.

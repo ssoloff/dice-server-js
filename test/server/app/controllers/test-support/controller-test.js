@@ -8,10 +8,10 @@
 
 'use strict';
 
-var fs = require('fs');
-var ja = require('json-assert');
-var path = require('path');
-var security = require('../../../../../src/server/app/controllers/support/security');
+var fs = require('fs'),
+    ja = require('json-assert'),
+    path = require('path'),
+    security = require('../../../../../src/server/app/controllers/support/security');
 
 /**
  * Provides useful methods for testing a dice server controller.

@@ -8,9 +8,9 @@
 
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var security = require('../../../../../src/server/app/controllers/support/security');
+var fs = require('fs'),
+    path = require('path'),
+    security = require('../../../../../src/server/app/controllers/support/security');
 
 describe('security', function () {
     var payload,

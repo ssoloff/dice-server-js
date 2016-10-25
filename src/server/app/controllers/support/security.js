@@ -8,13 +8,12 @@
 
 'use strict';
 
-var base64url = require('base64url');
-var canonicalJsonStringify = require('canonical-json');
-var jwkToPem = require('jwk-to-pem');
-var jws = require('jws');
-var rsaPemToJwk = require('rsa-pem-to-jwk');
-
-var SIGNATURE_ALGORITHM = 'RS256';
+var base64url = require('base64url'),
+    canonicalJsonStringify = require('canonical-json'),
+    jwkToPem = require('jwk-to-pem'),
+    jws = require('jws'),
+    rsaPemToJwk = require('rsa-pem-to-jwk'),
+    SIGNATURE_ALGORITHM = 'RS256';
 
 module.exports = {
     /**

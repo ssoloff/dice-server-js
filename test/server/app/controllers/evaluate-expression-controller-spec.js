@@ -8,12 +8,12 @@
 
 'use strict';
 
-var controllerTest = require('./test-support/controller-test');
-var fs = require('fs');
-var httpStatus = require('http-status-codes');
-var ja = require('json-assert');
-var path = require('path');
-var security = require('../../../../src/server/app/controllers/support/security');
+var controllerTest = require('./test-support/controller-test'),
+    fs = require('fs'),
+    httpStatus = require('http-status-codes'),
+    ja = require('json-assert'),
+    path = require('path'),
+    security = require('../../../../src/server/app/controllers/support/security');
 
 describe('evaluateExpressionController', function () {
     var controller,
