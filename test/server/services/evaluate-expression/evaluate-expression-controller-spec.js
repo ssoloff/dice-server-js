@@ -177,8 +177,8 @@ describe('evaluateExpressionController', function () {
 
             describe('when random number generator specification has an invalid signature', function () {
                 it('should respond with bad request error', function () {
-                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../../../test/server/other-private-key.pem')),
-                        otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../../test/server/other-public-key.pem'));
+                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../../../test/server/test-keys/other-private-key.pem')),
+                        otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../../test/server/test-keys/other-public-key.pem'));
 
                     request.body.randomNumberGenerator.signature = security.createSignature(
                         request.body.randomNumberGenerator.content,

@@ -66,8 +66,8 @@ JSDOC_CLIENT_CONFIG = jsdoc-client-conf.json
 JSDOC_SERVER_CONFIG = jsdoc-server-conf.json
 SERVER_JS = server.js
 SERVER_PID = server.pid
-TEST_PRIVATE_KEY = $(SERVER_TEST_DIR)/private-key.pem
-TEST_PUBLIC_KEY = $(SERVER_TEST_DIR)/public-key.pem
+TEST_PRIVATE_KEY = $(SERVER_TEST_DIR)/test-keys/private-key.pem
+TEST_PUBLIC_KEY = $(SERVER_TEST_DIR)/test-keys/public-key.pem
 
 acceptance-test:
 	for dir in $(FEATURES_DIR)/services/*/; \

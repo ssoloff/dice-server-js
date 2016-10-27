@@ -82,7 +82,7 @@ module.exports = {
      * @returns {Object!} The private key to be used by secure controllers.
      */
     getPrivateKey: function () {
-        return fs.readFileSync(path.join(__dirname, '../../../test/server/private-key.pem'));
+        return fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/private-key.pem'));
     },
 
     /**
@@ -91,7 +91,7 @@ module.exports = {
      * @returns {Object!} The public key to be used by secure controllers.
      */
     getPublicKey: function () {
-        return fs.readFileSync(path.join(__dirname, '../../../test/server/public-key.pem'));
+        return fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem'));
     },
 
     /**
