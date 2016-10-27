@@ -8,10 +8,9 @@
 
 'use strict';
 
-var fs = require('fs'),
-    ja = require('json-assert'),
-    path = require('path'),
-    security = require('../../../src/server/util/security');
+var ja = require('json-assert'),
+    security = require('../../../src/server/util/security'),
+    securityTest = require('./security-test');
 
 /**
  * Provides useful methods for testing a dice server controller.
@@ -77,12 +76,32 @@ module.exports = {
     },
 
     /**
+     * Returns the alternate private key to be used by secure controllers.
+     *
+     * @returns {Object!} The alternate private key to be used by secure
+     *      controllers.
+     */
+    getOtherPrivateKey: function () {
+        return securityTest.getOtherPrivateKey();
+    },
+
+    /**
+     * Returns the alternate public key to be used by secure controllers.
+     *
+     * @returns {Object!} The alternate public key to be used by secure
+     *      controllers.
+     */
+    getOtherPublicKey: function () {
+        return securityTest.getOtherPublicKey();
+    },
+
+    /**
      * Returns the private key to be used by secure controllers.
      *
      * @returns {Object!} The private key to be used by secure controllers.
      */
     getPrivateKey: function () {
-        return fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/private-key.pem'));
+        return securityTest.getPrivateKey();
     },
 
     /**
@@ -91,7 +110,7 @@ module.exports = {
      * @returns {Object!} The public key to be used by secure controllers.
      */
     getPublicKey: function () {
-        return fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem'));
+        return securityTest.getPublicKey();
     },
 
     /**

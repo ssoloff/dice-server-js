@@ -9,10 +9,8 @@
 'use strict';
 
 var controllerTest = require('../../test-support/controller-test'),
-    fs = require('fs'),
     httpStatus = require('http-status-codes'),
     ja = require('json-assert'),
-    path = require('path'),
     security = require('../../../../src/server/util/security');
 
 describe('evaluateExpressionController', function () {
@@ -177,8 +175,8 @@ describe('evaluateExpressionController', function () {
 
             describe('when random number generator specification has an invalid signature', function () {
                 it('should respond with bad request error', function () {
-                    var otherPrivateKey = fs.readFileSync(path.join(__dirname, '../../../../test/server/test-keys/other-private-key.pem')),
-                        otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../../test/server/test-keys/other-public-key.pem'));
+                    var otherPrivateKey = controllerTest.getOtherPrivateKey(),
+                        otherPublicKey = controllerTest.getOtherPublicKey();
 
                     request.body.randomNumberGenerator.signature = security.createSignature(
                         request.body.randomNumberGenerator.content,

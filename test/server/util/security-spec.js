@@ -8,9 +8,8 @@
 
 'use strict';
 
-var fs = require('fs'),
-    path = require('path'),
-    security = require('../../../src/server/util/security');
+var security = require('../../../src/server/util/security'),
+    securityTest = require('../test-support/security-test');
 
 describe('security', function () {
     var payload,
@@ -24,8 +23,8 @@ describe('security', function () {
             c: 3
         };
 
-        privateKey = fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/private-key.pem'));
-        publicKey = fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem'));
+        privateKey = securityTest.getPrivateKey();
+        publicKey = securityTest.getPublicKey();
     });
 
     describe('.createSignature', function () {
@@ -107,7 +106,7 @@ describe('security', function () {
                     otherPublicKey,
                     signature;
 
-                otherPublicKey = fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/other-public-key.pem'));
+                otherPublicKey = securityTest.getOtherPublicKey();
                 signature = security.createSignature(payload, privateKey, publicKey);
 
                 isValid = security.verifySignature(payload, signature, otherPublicKey);
