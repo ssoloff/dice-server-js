@@ -16,6 +16,6 @@ var express = require('express'),
     app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
-require('./app/routes')(app, privateKey, publicKey);
+require('./routes')(app, privateKey, publicKey);
 
 app.listen(3000);

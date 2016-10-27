@@ -10,7 +10,7 @@
 
 var fs = require('fs'),
     path = require('path'),
-    security = require('../../src/server/app/controllers/support/security');
+    security = require('../../src/server/util/security');
 
 module.exports = {
     createSignature: function (payload) {
