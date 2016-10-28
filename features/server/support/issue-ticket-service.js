@@ -9,17 +9,19 @@
 'use strict';
 
 var req = require('request'),
-    security = require('../../support/security');
+    security = require('../../common/support/security');
 
-function EvaluateExpressionService() {
-    this.requestBody = {};
+function IssueTicketService() {
+    this.requestBody = {
+        evaluateExpressionRequestBody: {}
+    };
 }
 
-EvaluateExpressionService.prototype.call = function (callback) {
+IssueTicketService.prototype.call = function (callback) {
     var requestData = {
         body: this.requestBody,
         json: true,
-        uri: 'http://localhost:3000/expression/evaluate'
+        uri: 'http://localhost:3000/ticket/issue'
     };
     req.post(requestData, function (error, response, body) {
         if (!error) {
@@ -30,13 +32,17 @@ EvaluateExpressionService.prototype.call = function (callback) {
     });
 };
 
-EvaluateExpressionService.prototype.setExpression = function (expressionText) {
-    this.requestBody.expression = {
+IssueTicketService.prototype.setDescription = function (description) {
+    this.requestBody.description = description;
+};
+
+IssueTicketService.prototype.setExpression = function (expressionText) {
+    this.requestBody.evaluateExpressionRequestBody.expression = {
         text: expressionText
     };
 };
 
-EvaluateExpressionService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
+IssueTicketService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
     var randomNumberGenerator = {
         content: {
             name: randomNumberGeneratorName
@@ -44,7 +50,7 @@ EvaluateExpressionService.prototype.setRandomNumberGenerator = function (randomN
         signature: null
     };
     randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
-    this.requestBody.randomNumberGenerator = randomNumberGenerator;
+    this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator = randomNumberGenerator;
 };
 
-module.exports = EvaluateExpressionService;
+module.exports = IssueTicketService;

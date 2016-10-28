@@ -9,19 +9,17 @@
 'use strict';
 
 var req = require('request'),
-    security = require('../../support/security');
+    security = require('../../common/support/security');
 
-function IssueTicketService() {
-    this.requestBody = {
-        evaluateExpressionRequestBody: {}
-    };
+function EvaluateExpressionService() {
+    this.requestBody = {};
 }
 
-IssueTicketService.prototype.call = function (callback) {
+EvaluateExpressionService.prototype.call = function (callback) {
     var requestData = {
         body: this.requestBody,
         json: true,
-        uri: 'http://localhost:3000/ticket/issue'
+        uri: 'http://localhost:3000/expression/evaluate'
     };
     req.post(requestData, function (error, response, body) {
         if (!error) {
@@ -32,17 +30,13 @@ IssueTicketService.prototype.call = function (callback) {
     });
 };
 
-IssueTicketService.prototype.setDescription = function (description) {
-    this.requestBody.description = description;
-};
-
-IssueTicketService.prototype.setExpression = function (expressionText) {
-    this.requestBody.evaluateExpressionRequestBody.expression = {
+EvaluateExpressionService.prototype.setExpression = function (expressionText) {
+    this.requestBody.expression = {
         text: expressionText
     };
 };
 
-IssueTicketService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
+EvaluateExpressionService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
     var randomNumberGenerator = {
         content: {
             name: randomNumberGeneratorName
@@ -50,7 +44,7 @@ IssueTicketService.prototype.setRandomNumberGenerator = function (randomNumberGe
         signature: null
     };
     randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
-    this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator = randomNumberGenerator;
+    this.requestBody.randomNumberGenerator = randomNumberGenerator;
 };
 
-module.exports = IssueTicketService;
+module.exports = EvaluateExpressionService;

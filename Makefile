@@ -70,12 +70,16 @@ TEST_PRIVATE_KEY = $(SERVER_TEST_DIR)/test-keys/private-key.pem
 TEST_PUBLIC_KEY = $(SERVER_TEST_DIR)/test-keys/public-key.pem
 
 acceptance-test:
-	for dir in $(FEATURES_DIR)/services/*/; \
+	for dir in $(FEATURES_DIR)/server/*/; \
 	do \
-		[ "$$dir" = $(FEATURES_DIR)/services/support/ ] && continue; \
+		[ "$$dir" = $(FEATURES_DIR)/server/support/ ] && continue; \
 		$(CUCUMBER) $$dir || exit $$?; \
 	done
-	$(CUCUMBER) $(FEATURES_DIR)/ui
+	for dir in $(FEATURES_DIR)/client/*/; \
+	do \
+		[ "$$dir" = $(FEATURES_DIR)/client/support/ ] && continue; \
+		$(CUCUMBER) $$dir || exit $$?; \
+	done
 
 check:
 	$(JSHINT) .

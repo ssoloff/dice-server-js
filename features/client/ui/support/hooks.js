@@ -8,7 +8,7 @@
 
 'use strict';
 
-var driver = require('../support/driver');
+var driver = require('./driver');
 
 module.exports = function () {
     this.registerHandler('AfterFeatures', function (event, callback) {
