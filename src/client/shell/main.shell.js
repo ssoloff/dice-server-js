@@ -24,7 +24,7 @@ main.shell = (function () {
      *      single DOM element to be used as the container for the shell.
      */
     function initModule($container) {
-        $container.load('/html/main.shell.html', function () {
+        $container.load('/main.shell.html', function () {
             main.eval.initModule($container.find('#main-eval-container'));
             main.history.initModule($container.find('#main-history-container'));
             main.sim.initModule($container.find('#main-sim-container'));

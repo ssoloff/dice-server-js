@@ -93,7 +93,7 @@ main.history = (function () {
      *      controls.
      */
     function initModule($container) {
-        $container.load('/html/main.history.html', function () {
+        $container.load('/main.history.html', function () {
             initJQueryMap($container);
             initController();
 

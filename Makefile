@@ -49,6 +49,7 @@ COVERAGE_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/coverage
 CSS_DIR = $(PUBLIC_DIR)/css
 DIST_OUTPUT_DIR = $(BUILD_OUTPUT_DIR)/dist
 FEATURES_DIR = features
+HTML_DIR = $(PUBLIC_DIR)
 JS_DIR = $(PUBLIC_DIR)/js
 JS_VENDOR_DIR = $(JS_DIR)/vendor
 MODEL_DIR = $(SERVER_SRC_DIR)/model
@@ -85,9 +86,9 @@ acceptance-test:
 check:
 	$(JSHINT) .
 	$(JSCS) .
-	$(HTML_VALIDATOR) --file=$(PUBLIC_DIR)/index.html --verbose
+	$(HTML_VALIDATOR) --file=$(CLIENT_SRC_DIR)/index.html --verbose
 	{ \
-		$(FIND) $(PUBLIC_DIR)/html -name '*.html' \
+		$(FIND) $(CLIENT_SRC_DIR)/*/ -name '*.html' \
 		| \
 		$(XARGS) -I % $(SH) -c ' \
 			htmlFile=$$($(MKTEMP)); \
@@ -105,7 +106,7 @@ check:
 			$(TEST) $$htmlValidatorExit -eq 0 \
 		'; \
 	}
-	$(CSSLINT) $(CSS_DIR)
+	$(CSSLINT) $(CLIENT_SRC_DIR)
 
 clean:
 	$(RMDIR) $(BUILD_OUTPUT_DIR)
@@ -122,9 +123,12 @@ dist:
 	$(RMDIR) $(DIST_OUTPUT_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)
 	$(RSYNC) --include '*/' --include '*.js' --exclude '*' $(COMPILE_OUTPUT_DIR)/$(SERVER_SRC_DIR)/* $(DIST_OUTPUT_DIR)
-	$(CP) $(PUBLIC_DIR) $(DIST_OUTPUT_DIR)
+	$(MKDIR) $(DIST_OUTPUT_DIR)/$(HTML_DIR)
+	$(FIND) $(COMPILE_OUTPUT_DIR)/$(CLIENT_SRC_DIR) -name '*.html' | $(XARGS) -I % $(CP) % $(DIST_OUTPUT_DIR)/$(HTML_DIR)
+	$(MKDIR) $(DIST_OUTPUT_DIR)/$(CSS_DIR)
+	$(FIND) $(COMPILE_OUTPUT_DIR)/$(CLIENT_SRC_DIR) -name '*.css' | $(XARGS) -I % $(CP) % $(DIST_OUTPUT_DIR)/$(CSS_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)/$(JS_DIR)
-	$(RSYNC) --include '*/' --include '*.js' --exclude '*' $(COMPILE_OUTPUT_DIR)/$(CLIENT_SRC_DIR)/* $(DIST_OUTPUT_DIR)/$(JS_DIR)
+	$(FIND) $(COMPILE_OUTPUT_DIR)/$(CLIENT_SRC_DIR) -name '*.js' | $(XARGS) -I % $(CP) % $(DIST_OUTPUT_DIR)/$(JS_DIR)
 	$(MKDIR) $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)
 	$(CP) $(BOWER_COMPONENTS_DIR)/jcanvas/jcanvas.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jcanvas.js
 	$(CP) $(BOWER_COMPONENTS_DIR)/jquery/dist/jquery.min.js $(DIST_OUTPUT_DIR)/$(JS_VENDOR_DIR)/jquery.js

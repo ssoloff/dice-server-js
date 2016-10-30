@@ -146,7 +146,7 @@ main.eval = (function () {
      *      controls.
      */
     function initModule($container) {
-        $container.load('/html/main.eval.html', function () {
+        $container.load('/main.eval.html', function () {
             initJQueryMap($container);
             initView();
             initController();
