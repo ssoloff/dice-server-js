@@ -2,7 +2,7 @@
   "name": "dice-server-js",
   "version": "0.1.0",
   "description": "Server for parsing and executing dice notation.",
-  "main": "server.js",
+  "keywords": ["dice"],
   "dependencies": {
     "base64url": "~2.0.0",
     "body-parser": "~1.15.2",
@@ -35,14 +35,15 @@
   "engines": {
     "node": ">= 6.4.0"
   },
-  "scripts": {
-    "test": "make unit-test"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ssoloff/dice-server-js.git"
   },
-  "author": "Steven Soloff",
+  "author": {
+    "name": "Steven Soloff",
+    "email": "steven.soloff@gmail.com"
+  },
+  "contributors": [],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ssoloff/dice-server-js/issues"
