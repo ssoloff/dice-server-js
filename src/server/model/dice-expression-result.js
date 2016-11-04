@@ -8,8 +8,8 @@
 
 'use strict';
 
-var _ = require('underscore'),
-    diceExpressionTypeIds = require('./dice-expression-type-ids');
+const _ = require('underscore');
+const diceExpressionTypeIds = require('./dice-expression-type-ids');
 
 /**
  * Provides methods for creating dice expression results.

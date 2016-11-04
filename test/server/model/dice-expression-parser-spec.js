@@ -8,17 +8,17 @@
 
 'use strict';
 
-var dice = require('../../../src/server/model/dice'),
-    diceExpressionFunctions = require('../../../src/server/model/dice-expression-functions'),
-    diceTest = require('./test-support/dice-test');
+const dice = require('../../../src/server/model/dice');
+const diceExpressionFunctions = require('../../../src/server/model/dice-expression-functions');
+const diceTest = require('./test-support/dice-test');
 
 describe('diceExpressionParser', function () {
-    var expressionParser,
-        expressionParserContext,
-        f = Math.max,
-        one,
-        two,
-        three;
+    const f = Math.max;
+    let expressionParser;
+    let expressionParserContext;
+    let one;
+    let two;
+    let three;
 
     beforeEach(function () {
         jasmine.addCustomEqualityTester(diceTest.isDiceExpressionEqual);

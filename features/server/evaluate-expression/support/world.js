@@ -8,7 +8,7 @@
 
 'use strict';
 
-var EvaluateExpressionService = require('../../support/evaluate-expression-service');
+const EvaluateExpressionService = require('../../support/evaluate-expression-service');
 
 function World() {
     this.createEvaluateExpressionService = function () {

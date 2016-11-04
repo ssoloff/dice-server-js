@@ -8,14 +8,13 @@
 
 'use strict';
 
-var dice = require('../../../src/server/model/dice');
+const dice = require('../../../src/server/model/dice');
 
 describe('diceExpressionResult', function () {
-    var three,
-        four,
-        d3,
-        expressionResult,
-        visitor;
+    let three;
+    let four;
+    let d3;
+    let visitor;
 
     beforeEach(function () {
         three = dice.expressionResult.forConstant(3);
@@ -63,7 +62,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result, the augend expression result, and the addend expression result', function () {
-                expressionResult = dice.expressionResult.forAddition(four, three);
+                const expressionResult = dice.expressionResult.forAddition(four, three);
 
                 expressionResult.accept(visitor.visit);
 
@@ -91,7 +90,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result and the array element expression results', function () {
-                expressionResult = dice.expressionResult.forArray([three, four]);
+                const expressionResult = dice.expressionResult.forArray([three, four]);
 
                 expressionResult.accept(visitor.visit);
 
@@ -122,7 +121,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result', function () {
-                expressionResult = dice.expressionResult.forConstant(5);
+                const expressionResult = dice.expressionResult.forConstant(5);
 
                 expressionResult.accept(visitor.visit);
 
@@ -148,7 +147,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result', function () {
-                expressionResult = dice.expressionResult.forDie(d3);
+                const expressionResult = dice.expressionResult.forDie(d3);
 
                 expressionResult.accept(visitor.visit);
 
@@ -158,9 +157,7 @@ describe('diceExpressionResult', function () {
 
         describe('.value', function () {
             it('should return die', function () {
-                var die;
-
-                die = dice.bag.create().d(3);
+                const die = dice.bag.create().d(3);
                 expect(dice.expressionResult.forDie(die).value).toBe(die);
             });
         });
@@ -201,7 +198,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result, the dividend expression result, and the divisor expression result', function () {
-                expressionResult = dice.expressionResult.forDivision(three, four);
+                const expressionResult = dice.expressionResult.forDivision(three, four);
 
                 expressionResult.accept(visitor.visit);
 
@@ -248,7 +245,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result and the argument list expression results', function () {
-                expressionResult = dice.expressionResult.forFunctionCall(42, 'f', [three, four]);
+                const expressionResult = dice.expressionResult.forFunctionCall(42, 'f', [three, four]);
 
                 expressionResult.accept(visitor.visit);
 
@@ -276,7 +273,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result and the child expression result', function () {
-                expressionResult = dice.expressionResult.forGroup(three);
+                const expressionResult = dice.expressionResult.forGroup(three);
 
                 expressionResult.accept(visitor.visit);
 
@@ -327,7 +324,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result, the dividend expression result, and the divisor expression result', function () {
-                expressionResult = dice.expressionResult.forModulo(four, three);
+                const expressionResult = dice.expressionResult.forModulo(four, three);
 
                 expressionResult.accept(visitor.visit);
 
@@ -379,7 +376,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result, the multiplicand expression result, and the multiplier expression result', function () {
-                expressionResult = dice.expressionResult.forMultiplication(four, three);
+                const expressionResult = dice.expressionResult.forMultiplication(four, three);
 
                 expressionResult.accept(visitor.visit);
 
@@ -407,7 +404,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result and the child expression result', function () {
-                expressionResult = dice.expressionResult.forNegative(three);
+                const expressionResult = dice.expressionResult.forNegative(three);
 
                 expressionResult.accept(visitor.visit);
 
@@ -434,7 +431,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result and the child expression result', function () {
-                expressionResult = dice.expressionResult.forPositive(three);
+                const expressionResult = dice.expressionResult.forPositive(three);
 
                 expressionResult.accept(visitor.visit);
 
@@ -485,7 +482,7 @@ describe('diceExpressionResult', function () {
 
         describe('.accept', function () {
             it('should visit the expression result, the minuend expression result, and the subtrahend expression result', function () {
-                expressionResult = dice.expressionResult.forSubtraction(four, three);
+                const expressionResult = dice.expressionResult.forSubtraction(four, three);
 
                 expressionResult.accept(visitor.visit);
 

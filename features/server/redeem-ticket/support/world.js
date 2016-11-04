@@ -8,8 +8,8 @@
 
 'use strict';
 
-var IssueTicketService = require('../../support/issue-ticket-service'),
-    RedeemTicketService = require('../../support/redeem-ticket-service');
+const IssueTicketService = require('../../support/issue-ticket-service');
+const RedeemTicketService = require('../../support/redeem-ticket-service');
 
 function World() {
     this.createIssueTicketService = function () {

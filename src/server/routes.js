@@ -8,34 +8,30 @@
 
 'use strict';
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 module.exports = function (app, privateKey, publicKey) {
-    var evaluateExpressionController,
-        evaluateExpressionPath = '/expression/evaluate',
-        issueTicketController,
-        issueTicketPath = '/ticket/issue',
-        redeemTicketController,
-        redeemTicketPath = '/ticket/redeem',
-        validateRedeemedTicketController,
-        validateRedeemedTicketPath = '/ticket/validate-redeemed';
+    const evaluateExpressionPath = '/expression/evaluate';
+    const issueTicketPath = '/ticket/issue';
+    const redeemTicketPath = '/ticket/redeem';
+    const validateRedeemedTicketPath = '/ticket/validate-redeemed';
 
-    evaluateExpressionController = require('./services/evaluate-expression/evaluate-expression-controller.js').create({
+    const evaluateExpressionController = require('./services/evaluate-expression/evaluate-expression-controller.js').create({
         publicKey: publicKey
     });
-    issueTicketController = require('./services/issue-ticket/issue-ticket-controller.js').create({
+    const issueTicketController = require('./services/issue-ticket/issue-ticket-controller.js').create({
         evaluateExpressionController: evaluateExpressionController,
         privateKey: privateKey,
         publicKey: publicKey,
         redeemTicketPath: redeemTicketPath
     });
-    redeemTicketController = require('./services/redeem-ticket/redeem-ticket-controller.js').create({
+    const redeemTicketController = require('./services/redeem-ticket/redeem-ticket-controller.js').create({
         evaluateExpressionController: evaluateExpressionController,
         privateKey: privateKey,
         publicKey: publicKey,
         validateRedeemedTicketPath: validateRedeemedTicketPath
     });
-    validateRedeemedTicketController = require('./services/validate-redeemed-ticket/validate-redeemed-ticket-controller.js').create({
+    const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/validate-redeemed-ticket-controller.js').create({
         publicKey: publicKey
     });
 

@@ -55,6 +55,7 @@
       "build/**",
       "node_modules/**"
     ],
-    "preset": "crockford"
+    "preset": "crockford",
+    "requireMultipleVarDecl": false
   }
 }

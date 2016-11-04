@@ -8,9 +8,9 @@
 
 'use strict';
 
-var ja = require('json-assert'),
-    security = require('../../../src/server/util/security'),
-    securityTest = require('./security-test');
+const ja = require('json-assert');
+const security = require('../../../src/server/util/security');
+const securityTest = require('./security-test');
 
 /**
  * Provides useful methods for testing a dice server controller.
@@ -43,7 +43,7 @@ module.exports = {
      * @returns {Object!} A new response.
      */
     createResponse: function (jsonCallback) {
-        var response = {
+        const response = {
             json: function (json) {
                 jsonCallback(json);
                 return this;

@@ -8,22 +8,19 @@
 
 'use strict';
 
-var dice = require('../../../src/server/model/dice'),
-    diceExpressionResultUtils = require('../../../src/server/model/dice-expression-result-utils');
+const dice = require('../../../src/server/model/dice');
+const diceExpressionResultUtils = require('../../../src/server/model/dice-expression-result-utils');
 
 describe('diceExpressionResultUtils', function () {
-    var bag = dice.bag.create(),
-        expressionResult;
+    const bag = dice.bag.create();
 
     describe('.enumerateDieRollResults', function () {
-        var dieRollResults;
-
         describe('when expression result contains no die rolls', function () {
             it('should enumerate zero die roll results', function () {
                 // '3'
-                expressionResult = dice.expressionResult.forConstant(3);
+                const expressionResult = dice.expressionResult.forConstant(3);
 
-                dieRollResults = diceExpressionResultUtils.enumerateDieRollResults(expressionResult);
+                const dieRollResults = diceExpressionResultUtils.enumerateDieRollResults(expressionResult);
 
                 expect(dieRollResults).toEqual([]);
             });
@@ -32,14 +29,14 @@ describe('diceExpressionResultUtils', function () {
         describe('when expression result contains one die roll', function () {
             it('should enumerate one die roll result', function () {
                 // '1d6' -> 'sum(roll(1, d6))'
-                expressionResult = dice.expressionResult.forFunctionCall(3, 'sum', [
+                const expressionResult = dice.expressionResult.forFunctionCall(3, 'sum', [
                     dice.expressionResult.forFunctionCall([3], 'roll', [
                         dice.expressionResult.forConstant(1),
                         dice.expressionResult.forDie(bag.d(6))
                     ])
                 ]);
 
-                dieRollResults = diceExpressionResultUtils.enumerateDieRollResults(expressionResult);
+                const dieRollResults = diceExpressionResultUtils.enumerateDieRollResults(expressionResult);
 
                 expect(dieRollResults).toEqual([
                     {
@@ -53,7 +50,7 @@ describe('diceExpressionResultUtils', function () {
         describe('when expression result contains multiple die rolls', function () {
             it('should enumerate multiple die roll results', function () {
                 // '2d12 + 3d4' -> 'sum(roll(2, d12)) + sum(roll(3, d4))'
-                expressionResult = dice.expressionResult.forAddition(
+                const expressionResult = dice.expressionResult.forAddition(
                     dice.expressionResult.forFunctionCall(18, 'sum', [
                         dice.expressionResult.forFunctionCall([7, 11], 'roll', [
                             dice.expressionResult.forConstant(2),
@@ -68,7 +65,7 @@ describe('diceExpressionResultUtils', function () {
                     ])
                 );
 
-                dieRollResults = diceExpressionResultUtils.enumerateDieRollResults(expressionResult);
+                const dieRollResults = diceExpressionResultUtils.enumerateDieRollResults(expressionResult);
 
                 expect(dieRollResults).toEqual([
                     {

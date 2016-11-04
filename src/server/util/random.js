@@ -8,8 +8,8 @@
 
 'use strict';
 
-var _ = require('underscore'),
-    Random = require('random-js');
+const _ = require('underscore');
+const Random = require('random-js');
 
 module.exports = {
     constantMax: function () {
@@ -19,7 +19,7 @@ module.exports = {
     },
 
     uniform: function (options) {
-        var engine = Random.engines.mt19937();
+        let engine = Random.engines.mt19937();
         if (options && options.seed) {
             if (_.isArray(options.seed)) {
                 engine = engine.seedWithArray(options.seed);

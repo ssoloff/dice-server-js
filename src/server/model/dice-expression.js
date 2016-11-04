@@ -8,9 +8,9 @@
 
 'use strict';
 
-var _ = require('underscore'),
-    diceExpressionResult = require('./dice-expression-result'),
-    diceExpressionTypeIds = require('./dice-expression-type-ids');
+const _ = require('underscore');
+const diceExpressionResult = require('./dice-expression-result');
+const diceExpressionTypeIds = require('./dice-expression-type-ids');
 
 /**
  * Provides methods for creating dice expressions.
@@ -367,13 +367,9 @@ module.exports = {
              *      The result of evaluating the expression.
              */
             evaluate: function () {
-                var argumentList,
-                    argumentListExpressionResults,
-                    returnValue;
-
-                argumentListExpressionResults = _.invoke(argumentListExpressions, 'evaluate');
-                argumentList = _.pluck(argumentListExpressionResults, 'value');
-                returnValue = func.apply(null, argumentList);
+                const argumentListExpressionResults = _.invoke(argumentListExpressions, 'evaluate');
+                const argumentList = _.pluck(argumentListExpressionResults, 'value');
+                const returnValue = func.apply(null, argumentList);
                 return diceExpressionResult.forFunctionCall(returnValue, name, argumentListExpressionResults);
             },
 

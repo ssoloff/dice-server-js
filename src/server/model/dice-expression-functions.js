@@ -8,14 +8,9 @@
 
 'use strict';
 
-var _ = require('underscore');
+const _ = require('underscore');
 
 function cloneRolls(rolls, count, findIndexOfRoll) {
-    var index,
-        newRolls,
-        oldRolls,
-        pass;
-
     if (!rolls) {
         throw new Error('rolls is not defined');
     } else if (!_.isNumber(count)) {
@@ -24,13 +19,13 @@ function cloneRolls(rolls, count, findIndexOfRoll) {
         throw new Error('count is negative');
     }
 
-    newRolls = rolls.slice(0);
-    oldRolls = rolls.slice(0);
-    for (pass = 0; pass < count; pass += 1) {
+    const newRolls = rolls.slice(0);
+    const oldRolls = rolls.slice(0);
+    for (let pass = 0; pass < count; pass += 1) {
         if (oldRolls.length === 0) {
             break;
         }
-        index = oldRolls.reduce(findIndexOfRoll, 0);
+        const index = oldRolls.reduce(findIndexOfRoll, 0);
         newRolls.push(oldRolls[index]);
         oldRolls.splice(index, 1);
     }
@@ -38,10 +33,6 @@ function cloneRolls(rolls, count, findIndexOfRoll) {
 }
 
 function dropRolls(rolls, count, findIndexOfRoll) {
-    var index,
-        newRolls,
-        pass;
-
     if (!rolls) {
         throw new Error('rolls is not defined');
     } else if (!_.isNumber(count)) {
@@ -50,12 +41,12 @@ function dropRolls(rolls, count, findIndexOfRoll) {
         throw new Error('count is negative');
     }
 
-    newRolls = rolls.slice(0);
-    for (pass = 0; pass < count; pass += 1) {
+    const newRolls = rolls.slice(0);
+    for (let pass = 0; pass < count; pass += 1) {
         if (newRolls.length === 0) {
             break;
         }
-        index = newRolls.reduce(findIndexOfRoll, 0);
+        const index = newRolls.reduce(findIndexOfRoll, 0);
         newRolls.splice(index, 1);
     }
     return newRolls;

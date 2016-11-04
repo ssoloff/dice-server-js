@@ -8,8 +8,8 @@
 
 'use strict';
 
-var driver = require('./driver'),
-    HomePage = require('./home-page');
+const driver = require('./driver');
+const HomePage = require('./home-page');
 
 function World() {
     this.createHomePage = function () {

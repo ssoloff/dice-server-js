@@ -8,9 +8,9 @@
 
 'use strict';
 
-var controllerUtils = require('../../util/controller-utils'),
-    httpStatus = require('http-status-codes'),
-    security = require('../../util/security');
+const controllerUtils = require('../../util/controller-utils');
+const httpStatus = require('http-status-codes');
+const security = require('../../util/security');
 
 module.exports = {
     create: function (controllerData) {
@@ -25,7 +25,7 @@ module.exports = {
         }
 
         function validateRequest(request) {
-            var redeemedTicket = request.body.redeemedTicket;
+            const redeemedTicket = request.body.redeemedTicket;
             if (!isSignatureValid(redeemedTicket.content, redeemedTicket.signature)) {
                 throw controllerUtils.createControllerError(
                     httpStatus.BAD_REQUEST,

@@ -8,15 +8,15 @@
 
 'use strict';
 
-var req = require('request'),
-    security = require('../../common/support/security');
+const req = require('request');
+const security = require('../../common/support/security');
 
 function EvaluateExpressionService() {
     this.requestBody = {};
 }
 
 EvaluateExpressionService.prototype.call = function (callback) {
-    var requestData = {
+    const requestData = {
         body: this.requestBody,
         json: true,
         uri: 'http://localhost:3000/expression/evaluate'
@@ -37,7 +37,7 @@ EvaluateExpressionService.prototype.setExpression = function (expressionText) {
 };
 
 EvaluateExpressionService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
-    var randomNumberGenerator = {
+    const randomNumberGenerator = {
         content: {
             name: randomNumberGeneratorName
         },

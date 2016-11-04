@@ -8,7 +8,7 @@
 
 'use strict';
 
-var diceExpressionTypeIds = require('./dice-expression-type-ids');
+const diceExpressionTypeIds = require('./dice-expression-type-ids');
 
 /**
  * Provides utility methods for working with dice expression results.
@@ -46,15 +46,12 @@ module.exports = {
      * diceExpressionResultUtils.enumerateDieRollResults(diceExpressionParser.parse('2d6+1d4+1'));
      */
     enumerateDieRollResults: function (expressionResult) {
-        var dieRollResults = [];
+        const dieRollResults = [];
 
         expressionResult.accept(function (expressionResult) {
-            var dieRollValues,
-                dieSides;
-
             if (expressionResult.typeId === diceExpressionTypeIds.FUNCTION_CALL && expressionResult.name === 'roll') {
-                dieRollValues = expressionResult.value;
-                dieSides = expressionResult.argumentListExpressionResults[1].value.sides;
+                const dieRollValues = expressionResult.value;
+                const dieSides = expressionResult.argumentListExpressionResults[1].value.sides;
                 dieRollValues.forEach(function (dieRollValue) {
                     dieRollResults.push({
                         sides: dieSides,

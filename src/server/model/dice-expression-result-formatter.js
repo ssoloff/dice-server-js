@@ -8,9 +8,8 @@
 
 'use strict';
 
-var _ = require('underscore'),
-    diceExpressionTypeIds = require('./dice-expression-type-ids'),
-    formatters = {};
+const _ = require('underscore');
+const diceExpressionTypeIds = require('./dice-expression-type-ids');
 
 /**
  * Provides methods for formatting dice expression results.
@@ -18,6 +17,7 @@ var _ = require('underscore'),
  * @module dice-expression-result-formatter
  */
 
+const formatters = {};
 formatters[diceExpressionTypeIds.ADDITION] = formatAdditionExpressionResult;
 formatters[diceExpressionTypeIds.ARRAY] = formatArrayExpressionResult;
 formatters[diceExpressionTypeIds.CONSTANT] = formatConstantExpressionResult;
@@ -45,7 +45,7 @@ formatters[diceExpressionTypeIds.SUBTRACTION] = formatSubtractionExpressionResul
  *      not available for the specified expression result.
  */
 function format(expressionResult) {
-    var formatter = formatters[expressionResult.typeId];
+    const formatter = formatters[expressionResult.typeId];
     if (formatter) {
         return formatter(expressionResult);
     } else {

@@ -8,10 +8,10 @@
 
 'use strict';
 
-var _ = require('underscore'),
-    controllerUtils = require('../../util/controller-utils'),
-    crypto = require('crypto'),
-    security = require('../../util/security');
+const _ = require('underscore');
+const controllerUtils = require('../../util/controller-utils');
+const crypto = require('crypto');
+const security = require('../../util/security');
 
 module.exports = {
     create: function (controllerData) {
@@ -26,9 +26,7 @@ module.exports = {
         }
 
         function createTicket(request) {
-            var ticketContent;
-
-            ticketContent = createTicketContent(request);
+            const ticketContent = createTicketContent(request);
             return {
                 content: ticketContent,
                 signature: createSignature(ticketContent)
@@ -36,15 +34,11 @@ module.exports = {
         }
 
         function createTicketContent(request) {
-            var evaluateExpressionRequestBody,
-                evaluateExpressionResponseBody,
-                evaluateExpressionResponseStatus,
-                evaluateExpressionResult,
-                requestBody = request.body;
+            const requestBody = request.body;
 
-            evaluateExpressionRequestBody = getEvaluateExpressionRequestBody(requestBody);
-            evaluateExpressionResult = evaluateExpression(evaluateExpressionRequestBody);
-            evaluateExpressionResponseStatus = evaluateExpressionResult[0];
+            const evaluateExpressionRequestBody = getEvaluateExpressionRequestBody(requestBody);
+            const evaluateExpressionResult = evaluateExpression(evaluateExpressionRequestBody);
+            const evaluateExpressionResponseStatus = evaluateExpressionResult[0];
             if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
                 return {
                     description: requestBody.description,
@@ -53,7 +47,7 @@ module.exports = {
                     redeemUrl: getRedeemTicketUrl(request)
                 };
             } else {
-                evaluateExpressionResponseBody = evaluateExpressionResult[1];
+                const evaluateExpressionResponseBody = evaluateExpressionResult[1];
                 throw controllerUtils.createControllerErrorFromResponse(
                     evaluateExpressionResponseStatus,
                     evaluateExpressionResponseBody
@@ -66,11 +60,11 @@ module.exports = {
         }
 
         function generateRandomNumberGeneratorSeed() {
-            var SEED_ELEMENT_LENGTH_IN_BYTES = 4,
-                SEED_ARRAY_LENGTH = 16,
-                data = crypto.randomBytes(SEED_ARRAY_LENGTH * SEED_ELEMENT_LENGTH_IN_BYTES),
-                seed = [];
+            const SEED_ELEMENT_LENGTH_IN_BYTES = 4;
+            const SEED_ARRAY_LENGTH = 16;
 
+            const seed = [];
+            const data = crypto.randomBytes(SEED_ARRAY_LENGTH * SEED_ELEMENT_LENGTH_IN_BYTES);
             _.times(SEED_ARRAY_LENGTH, function (i) {
                 seed[i] = data.readUIntBE(i * SEED_ELEMENT_LENGTH_IN_BYTES, SEED_ELEMENT_LENGTH_IN_BYTES);
             });
@@ -82,11 +76,9 @@ module.exports = {
         }
 
         function getEvaluateExpressionRequestBody(requestBody) {
-            var evaluateExpressionRequestBody = requestBody.evaluateExpressionRequestBody,
-                randomNumberGenerator;
-
+            const evaluateExpressionRequestBody = requestBody.evaluateExpressionRequestBody;
             if (!evaluateExpressionRequestBody.randomNumberGenerator) {
-                randomNumberGenerator = {
+                const randomNumberGenerator = {
                     content: {
                         name: 'uniform',
                         options: {

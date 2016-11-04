@@ -8,9 +8,9 @@
 
 'use strict';
 
-var fs = require('fs'),
-    path = require('path'),
-    security = require('../../../src/server/util/security');
+const fs = require('fs');
+const path = require('path');
+const security = require('../../../src/server/util/security');
 
 module.exports = {
     createSignature: function (payload) {

@@ -8,9 +8,9 @@
 
 'use strict';
 
-var diceBag = require('./dice-bag'),
-    diceExpression = require('./dice-expression'),
-    diceExpressionFunctions = require('./dice-expression-functions');
+const diceBag = require('./dice-bag');
+const diceExpression = require('./dice-expression');
+const diceExpressionFunctions = require('./dice-expression-functions');
 
 function createDefaultContext() {
     return {
@@ -20,15 +20,11 @@ function createDefaultContext() {
 }
 
 function createDiceRollExpression(context, literal) {
-    var components,
-        isRollModifierPresent,
-        rollExpression;
+    const components = literal.match(/^(\d+)(d[\d%]+)(([-+])(\d*)([HL]))?$/);
 
-    components = literal.match(/^(\d+)(d[\d%]+)(([-+])(\d*)([HL]))?$/);
+    let rollExpression = createRollFunctionCallExpression(context, components);
 
-    rollExpression = createRollFunctionCallExpression(context, components);
-
-    isRollModifierPresent = components[3] !== undefined;
+    const isRollModifierPresent = components[3] !== undefined;
     if (isRollModifierPresent) {
         rollExpression = createRollModifierFunctionCallExpression(context, rollExpression, components);
     }
@@ -37,27 +33,19 @@ function createDiceRollExpression(context, literal) {
 }
 
 function createDieExpression(context, literal) {
-    var formattedSides,
-        sides;
-
-    formattedSides = literal.slice(1);
-    sides = formattedSides === '%' ? 100 : Number(formattedSides);
+    const formattedSides = literal.slice(1);
+    const sides = formattedSides === '%' ? 100 : Number(formattedSides);
     return diceExpression.forDie(context.bag.d(sides));
 }
 
 function createFunctionCallExpression(context, name, argumentListExpressions) {
-    var func;
-
-    func = context.functions[name] || diceExpressionFunctions[name];
+    const func = context.functions[name] || diceExpressionFunctions[name];
     return diceExpression.forFunctionCall(name, func, argumentListExpressions);
 }
 
 function createRollFunctionCallExpression(context, components) {
-    var dieLiteral,
-        rollCount;
-
-    rollCount = Number(components[1]);
-    dieLiteral = components[2];
+    const rollCount = Number(components[1]);
+    const dieLiteral = components[2];
     return createFunctionCallExpression(context, 'roll', [
         diceExpression.forConstant(rollCount),
         createDieExpression(context, dieLiteral)
@@ -65,15 +53,10 @@ function createRollFunctionCallExpression(context, components) {
 }
 
 function createRollModifierFunctionCallExpression(context, rollExpression, components) {
-    var rollModifierOperation,
-        rollModifierCount,
-        rollModifierDieType,
-        rollModifierFunctionName;
-
-    rollModifierOperation = components[4];
-    rollModifierCount = components[5] ? Number(components[5]) : 1;
-    rollModifierDieType = components[6];
-    rollModifierFunctionName = getRollModifierFunctionName(rollModifierOperation, rollModifierDieType);
+    const rollModifierOperation = components[4];
+    const rollModifierCount = components[5] ? Number(components[5]) : 1;
+    const rollModifierDieType = components[6];
+    const rollModifierFunctionName = getRollModifierFunctionName(rollModifierOperation, rollModifierDieType);
     return createFunctionCallExpression(context, rollModifierFunctionName, [
         rollExpression,
         diceExpression.forConstant(rollModifierCount)
@@ -85,7 +68,7 @@ function createSumFunctionCallExpression(context, rollExpression) {
 }
 
 function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType) {
-    var rollModifierFunctionNames = {
+    const rollModifierFunctionNames = {
         '+': {
             H: 'cloneHighestRolls',
             L: 'cloneLowestRolls'
@@ -95,7 +78,6 @@ function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType)
             L: 'dropLowestRolls'
         }
     };
-
     return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType];
 }
 

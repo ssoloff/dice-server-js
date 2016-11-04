@@ -8,16 +8,14 @@
 
 'use strict';
 
-var controllerUtils = require('../../util/controller-utils'),
-    httpStatus = require('http-status-codes'),
-    security = require('../../util/security');
+const controllerUtils = require('../../util/controller-utils');
+const httpStatus = require('http-status-codes');
+const security = require('../../util/security');
 
 module.exports = {
     create: function (controllerData) {
         function createRedeemedTicket(request) {
-            var redeemedTicketContent;
-
-            redeemedTicketContent = createRedeemedTicketContent(request);
+            const redeemedTicketContent = createRedeemedTicketContent(request);
             return {
                 content: redeemedTicketContent,
                 signature: createSignature(redeemedTicketContent)
@@ -25,14 +23,11 @@ module.exports = {
         }
 
         function createRedeemedTicketContent(request) {
-            var evaluateExpressionResponseBody,
-                evaluateExpressionResponseStatus,
-                evaluateExpressionResult,
-                ticketContent = request.body.ticket.content;
+            const ticketContent = request.body.ticket.content;
 
-            evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody);
-            evaluateExpressionResponseStatus = evaluateExpressionResult[0];
-            evaluateExpressionResponseBody = evaluateExpressionResult[1];
+            const evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody);
+            const evaluateExpressionResponseStatus = evaluateExpressionResult[0];
+            const evaluateExpressionResponseBody = evaluateExpressionResult[1];
             if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
                 return {
                     description: ticketContent.description,
@@ -73,8 +68,7 @@ module.exports = {
         }
 
         function validateRequest(request) {
-            var ticket = request.body.ticket;
-
+            const ticket = request.body.ticket;
             if (!isSignatureValid(ticket.content, ticket.signature)) {
                 throw controllerUtils.createControllerError(
                     httpStatus.BAD_REQUEST,

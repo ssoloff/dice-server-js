@@ -8,9 +8,10 @@
 
 'use strict';
 
-var chai = require('chai'),
-    httpStatus = require('http-status-codes'),
-    expect = chai.expect;
+const chai = require('chai');
+const httpStatus = require('http-status-codes');
+
+const expect = chai.expect;
 
 module.exports = function () {
     this.Before(function (scenario, callback) {
@@ -39,9 +40,9 @@ module.exports = function () {
     });
 
     this.When(/^the validate redeemed ticket service is invoked$/, function (callback) {
-        var runner = this;
+        const runner = this;
         this.issueTicketService.call(function (responseStatus, responseBody) {
-            var issueTicketResponseBody = responseBody;
+            const issueTicketResponseBody = responseBody;
 
             if (responseStatus !== httpStatus.OK) {
                 throw new Error('failed to issue ticket');
@@ -49,7 +50,7 @@ module.exports = function () {
 
             this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
             this.redeemTicketService.call(function (responseStatus, responseBody) {
-                var redeemTicketResponseBody = responseBody;
+                const redeemTicketResponseBody = responseBody;
 
                 if (responseStatus !== httpStatus.OK) {
                     throw new Error('failed to redeem ticket');

@@ -8,15 +8,15 @@
 
 'use strict';
 
-var controllerTest = require('../../test-support/controller-test'),
-    httpStatus = require('http-status-codes'),
-    ja = require('json-assert');
+const controllerTest = require('../../test-support/controller-test');
+const httpStatus = require('http-status-codes');
+const ja = require('json-assert');
 
 describe('issueTicketController', function () {
-    var controller,
-        request,
-        response,
-        responseBody;
+    let controller;
+    let request;
+    let response;
+    let responseBody;
 
     function createIssueTicketController(evaluateExpressionController) {
         evaluateExpressionController = evaluateExpressionController || require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
@@ -31,11 +31,9 @@ describe('issueTicketController', function () {
     }
 
     function modifyRequestBody(callback) {
-        var randomNumberGenerator;
-
         callback();
 
-        randomNumberGenerator = request.body.evaluateExpressionRequestBody.randomNumberGenerator;
+        const randomNumberGenerator = request.body.evaluateExpressionRequestBody.randomNumberGenerator;
         if (randomNumberGenerator) {
             randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
         }
@@ -114,17 +112,17 @@ describe('issueTicketController', function () {
 
         describe('when evaluate expression controller responds with error', function () {
             it('should respond with same error', function () {
-                var expectedStatus = httpStatus.BAD_GATEWAY,
-                    expectedErrorMessage = 'message',
-                    stubEvaluateExpressionController = {
-                        evaluateExpression: function (request, response) {
-                            response.status(expectedStatus).json({
-                                error: {
-                                    message: expectedErrorMessage
-                                }
-                            });
-                        }
-                    };
+                const expectedStatus = httpStatus.BAD_GATEWAY;
+                const expectedErrorMessage = 'message';
+                const stubEvaluateExpressionController = {
+                    evaluateExpression: function (request, response) {
+                        response.status(expectedStatus).json({
+                            error: {
+                                message: expectedErrorMessage
+                            }
+                        });
+                    }
+                };
 
                 controller = createIssueTicketController(stubEvaluateExpressionController);
 

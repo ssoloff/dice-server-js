@@ -101,7 +101,7 @@ Literal
         }
     | INTEGER_LITERAL
         {
-            var constant = Number($1);
+            const constant = Number($1);
             $$ = diceExpression.forConstant(constant);
         }
     ;
@@ -169,12 +169,11 @@ UnaryExpression
 
 %%
 
-var diceExpression = require('./dice-expression');
-var diceExpressionParserUtils = require('./dice-expression-parser-utils');
+const diceExpression = require('./dice-expression');
+const diceExpressionParserUtils = require('./dice-expression-parser-utils');
 
 function createParser(context) {
-    var parser = new Parser();
-
+    const parser = new Parser();
     parser.yy.__context = context || diceExpressionParserUtils.createDefaultContext();
     return parser;
 }

@@ -8,15 +8,15 @@
 
 'use strict';
 
-var controllerTest = require('../../test-support/controller-test'),
-    httpStatus = require('http-status-codes'),
-    ja = require('json-assert');
+const controllerTest = require('../../test-support/controller-test');
+const httpStatus = require('http-status-codes');
+const ja = require('json-assert');
 
 describe('validateRedeemedTicketController', function () {
-    var controller,
-        request,
-        response,
-        responseBody;
+    let controller;
+    let request;
+    let response;
+    let responseBody;
 
     function createValidateRedeemedTicketController() {
         return require('../../../../src/server/services/validate-redeemed-ticket/validate-redeemed-ticket-controller').create({
@@ -25,11 +25,9 @@ describe('validateRedeemedTicketController', function () {
     }
 
     function modifyRequestBody(callback) {
-        var redeemedTicket;
-
         modifyRequestBodyWithoutSignatureUpdate(callback);
 
-        redeemedTicket = request.body.redeemedTicket;
+        const redeemedTicket = request.body.redeemedTicket;
         redeemedTicket.signature = controllerTest.createSignature(redeemedTicket.content);
     }
 

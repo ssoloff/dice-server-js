@@ -8,12 +8,13 @@
 
 'use strict';
 
-var base64url = require('base64url'),
-    canonicalJsonStringify = require('canonical-json'),
-    jwkToPem = require('jwk-to-pem'),
-    jws = require('jws'),
-    rsaPemToJwk = require('rsa-pem-to-jwk'),
-    SIGNATURE_ALGORITHM = 'RS256';
+const base64url = require('base64url');
+const canonicalJsonStringify = require('canonical-json');
+const jwkToPem = require('jwk-to-pem');
+const jws = require('jws');
+const rsaPemToJwk = require('rsa-pem-to-jwk');
+
+const SIGNATURE_ALGORITHM = 'RS256';
 
 module.exports = {
     /**
@@ -35,12 +36,8 @@ module.exports = {
      * @returns {Object!} The detached JSON web signature.
      */
     createSignature: function (payload, privateKey, publicKey) {
-        var canonicalPayload,
-            decodedJwsSignature,
-            jwsSignature;
-
-        canonicalPayload = this.toCanonicalString(payload);
-        jwsSignature = jws.sign({
+        const canonicalPayload = this.toCanonicalString(payload);
+        const jwsSignature = jws.sign({
             header: {
                 alg: SIGNATURE_ALGORITHM,
                 jwk: rsaPemToJwk(publicKey, {alg: SIGNATURE_ALGORITHM, key_ops: 'verify', use: 'sig'})
@@ -48,7 +45,7 @@ module.exports = {
             payload: canonicalPayload,
             privateKey: privateKey
         });
-        decodedJwsSignature = jws.decode(jwsSignature);
+        const decodedJwsSignature = jws.decode(jwsSignature);
         return {
             protected: base64url.encode(JSON.stringify(decodedJwsSignature.header)),
             signature: decodedJwsSignature.signature
@@ -101,17 +98,13 @@ module.exports = {
      * @returns {Boolean!} `true` if the signature is valid; otherwise `false`.
      */
     verifySignature: function (payload, signature, publicKey) {
-        var canonicalPayload,
-            decodedProtectedHeader,
-            jwsSignature;
-
-        canonicalPayload = this.toCanonicalString(payload);
-        jwsSignature = signature.protected +
+        const canonicalPayload = this.toCanonicalString(payload);
+        const jwsSignature = signature.protected +
             '.' +
             base64url.encode(canonicalPayload) +
             '.' +
             signature.signature;
-        decodedProtectedHeader = JSON.parse(base64url.decode(signature.protected));
+        const decodedProtectedHeader = JSON.parse(base64url.decode(signature.protected));
         publicKey = publicKey || jwkToPem(decodedProtectedHeader.jwk);
         return jws.verify(jwsSignature, SIGNATURE_ALGORITHM, publicKey);
     }

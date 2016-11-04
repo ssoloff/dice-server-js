@@ -8,11 +8,12 @@
 
 'use strict';
 
-var webdriver = require('selenium-webdriver'),
-    security = require('../../../common/support/security'),
-    By = webdriver.By,
-    promise = webdriver.promise,
-    until = webdriver.until;
+const webdriver = require('selenium-webdriver');
+const security = require('../../../common/support/security');
+
+const By = webdriver.By;
+const promise = webdriver.promise;
+const until = webdriver.until;
 
 function HomePage(driver) {
     this.driver = driver;
@@ -76,12 +77,10 @@ HomePage.prototype.isErrorMessageDisplayed = function () {
 };
 
 HomePage.prototype.open = function () {
-    var driver = this.driver;
-
+    const driver = this.driver;
     return driver.get('http://localhost:3000/').then(function () {
-        var timeoutInMilliseconds = 60000;
-
         // wait for async load of all feature fragments to complete
+        const timeoutInMilliseconds = 60000;
         return promise.all([
             driver.wait(until.elementLocated(By.id('main-eval-expressionForm')), timeoutInMilliseconds),
             driver.wait(until.elementLocated(By.id('main-history-removeAllResults')), timeoutInMilliseconds),
@@ -111,7 +110,7 @@ HomePage.prototype.removeResultAtIndex = function (index) {
 };
 
 HomePage.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
-    var randomNumberGenerator = {
+    const randomNumberGenerator = {
         content: {
             name: randomNumberGeneratorName
         },

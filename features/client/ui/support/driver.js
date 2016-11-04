@@ -8,9 +8,10 @@
 
 'use strict';
 
-var webdriver = require('selenium-webdriver'),
-    driver = new webdriver.Builder()
-        .withCapabilities(webdriver.Capabilities.firefox())
-        .build();
+const webdriver = require('selenium-webdriver');
+
+const driver = new webdriver.Builder()
+    .withCapabilities(webdriver.Capabilities.firefox())
+    .build();
 
 module.exports = driver;

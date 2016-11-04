@@ -8,12 +8,11 @@
 
 'use strict';
 
-var dice = require('../../../src/server/model/dice');
+const dice = require('../../../src/server/model/dice');
 
 describe('diceExpressionFormatter', function () {
-    var three,
-        four,
-        expression;
+    let three;
+    let four;
 
     beforeEach(function () {
         three = dice.expression.forConstant(3);
@@ -23,7 +22,7 @@ describe('diceExpressionFormatter', function () {
     describe('.format', function () {
         describe('when expression is an addition expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forAddition(three, four);
+                const expression = dice.expression.forAddition(three, four);
                 expect(dice.expressionFormatter.format(expression)).toBe('3 + 4');
             });
         });
@@ -31,14 +30,14 @@ describe('diceExpressionFormatter', function () {
         describe('when expression is an array expression', function () {
             describe('when array contains one element', function () {
                 it('should return formatted expression', function () {
-                    expression = dice.expression.forArray([three]);
+                    const expression = dice.expression.forArray([three]);
                     expect(dice.expressionFormatter.format(expression)).toBe('[3]');
                 });
             });
 
             describe('when array contains two elements', function () {
                 it('should return formatted expression', function () {
-                    expression = dice.expression.forArray([three, four]);
+                    const expression = dice.expression.forArray([three, four]);
                     expect(dice.expressionFormatter.format(expression)).toBe('[3, 4]');
                 });
             });
@@ -46,23 +45,22 @@ describe('diceExpressionFormatter', function () {
 
         describe('when expression is a constant expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forConstant(42);
+                const expression = dice.expression.forConstant(42);
                 expect(dice.expressionFormatter.format(expression)).toBe('42');
             });
         });
 
         describe('when expression is a die expression', function () {
             it('should return formatted expression', function () {
-                var d3 = dice.bag.create().d(3);
-
-                expression = dice.expression.forDie(d3);
+                const d3 = dice.bag.create().d(3);
+                const expression = dice.expression.forDie(d3);
                 expect(dice.expressionFormatter.format(expression)).toBe('d3');
             });
         });
 
         describe('when expression is a division expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forDivision(three, four);
+                const expression = dice.expression.forDivision(three, four);
                 expect(dice.expressionFormatter.format(expression)).toBe('3 / 4');
             });
         });
@@ -70,21 +68,21 @@ describe('diceExpressionFormatter', function () {
         describe('when expression is a function call expression', function () {
             describe('when zero arguments specified', function () {
                 it('should return formatted expression', function () {
-                    expression = dice.expression.forFunctionCall('max', Math.max, []);
+                    const expression = dice.expression.forFunctionCall('max', Math.max, []);
                     expect(dice.expressionFormatter.format(expression)).toBe('max()');
                 });
             });
 
             describe('when one argument specified', function () {
                 it('should return formatted expression', function () {
-                    expression = dice.expression.forFunctionCall('max', Math.max, [three]);
+                    const expression = dice.expression.forFunctionCall('max', Math.max, [three]);
                     expect(dice.expressionFormatter.format(expression)).toBe('max(3)');
                 });
             });
 
             describe('when two arguments specified', function () {
                 it('should return formatted expression', function () {
-                    expression = dice.expression.forFunctionCall('max', Math.max, [three, four]);
+                    const expression = dice.expression.forFunctionCall('max', Math.max, [three, four]);
                     expect(dice.expressionFormatter.format(expression)).toBe('max(3, 4)');
                 });
             });
@@ -92,42 +90,42 @@ describe('diceExpressionFormatter', function () {
 
         describe('when expression is a group expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forGroup(three);
+                const expression = dice.expression.forGroup(three);
                 expect(dice.expressionFormatter.format(expression)).toBe('(3)');
             });
         });
 
         describe('when expression is a modulo expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forModulo(four, three);
+                const expression = dice.expression.forModulo(four, three);
                 expect(dice.expressionFormatter.format(expression)).toBe('4 % 3');
             });
         });
 
         describe('when expression is a multiplication expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forMultiplication(three, four);
+                const expression = dice.expression.forMultiplication(three, four);
                 expect(dice.expressionFormatter.format(expression)).toBe('3 * 4');
             });
         });
 
         describe('when expression is a negative expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forNegative(three);
+                const expression = dice.expression.forNegative(three);
                 expect(dice.expressionFormatter.format(expression)).toBe('-3');
             });
         });
 
         describe('when expression is a positive expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forPositive(three);
+                const expression = dice.expression.forPositive(three);
                 expect(dice.expressionFormatter.format(expression)).toBe('+3');
             });
         });
 
         describe('when expression is a subtraction expression', function () {
             it('should return formatted expression', function () {
-                expression = dice.expression.forSubtraction(three, four);
+                const expression = dice.expression.forSubtraction(three, four);
                 expect(dice.expressionFormatter.format(expression)).toBe('3 - 4');
             });
         });

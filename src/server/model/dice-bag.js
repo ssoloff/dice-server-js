@@ -8,9 +8,9 @@
 
 'use strict';
 
-var _ = require('underscore'),
-    assert = require('assert'),
-    Random = require('random-js');
+const _ = require('underscore');
+const assert = require('assert');
+const Random = require('random-js');
 
 /**
  * Provides methods for creating a dice bag.
@@ -82,7 +82,7 @@ module.exports = {
                      *      in the range [1,{@link module:dice-bag~Die.sides}].
                      */
                     roll: function () {
-                        var roll = randomNumberGenerator(sides);
+                        const roll = randomNumberGenerator(sides);
                         assert.ok(roll >= 1 && roll <= sides, 'random number generator value out of range');
                         return roll;
                     },

@@ -8,8 +8,8 @@
 
 'use strict';
 
-var fs = require('fs'),
-    path = require('path');
+const fs = require('fs');
+const path = require('path');
 
 /**
  * Provides useful methods for testing aspects related to security.

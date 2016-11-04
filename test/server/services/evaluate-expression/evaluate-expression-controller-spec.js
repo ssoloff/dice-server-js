@@ -8,16 +8,16 @@
 
 'use strict';
 
-var controllerTest = require('../../test-support/controller-test'),
-    httpStatus = require('http-status-codes'),
-    ja = require('json-assert'),
-    security = require('../../../../src/server/util/security');
+const controllerTest = require('../../test-support/controller-test');
+const httpStatus = require('http-status-codes');
+const ja = require('json-assert');
+const security = require('../../../../src/server/util/security');
 
 describe('evaluateExpressionController', function () {
-    var controller,
-        request,
-        response,
-        responseBody;
+    let controller;
+    let request;
+    let response;
+    let responseBody;
 
     function createEvaluateExpressionController() {
         return require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
@@ -26,11 +26,9 @@ describe('evaluateExpressionController', function () {
     }
 
     function modifyRequestBody(callback) {
-        var randomNumberGenerator;
-
         callback();
 
-        randomNumberGenerator = request.body.randomNumberGenerator;
+        const randomNumberGenerator = request.body.randomNumberGenerator;
         if (randomNumberGenerator) {
             randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
         }
@@ -175,8 +173,8 @@ describe('evaluateExpressionController', function () {
 
             describe('when random number generator specification has an invalid signature', function () {
                 it('should respond with bad request error', function () {
-                    var otherPrivateKey = controllerTest.getOtherPrivateKey(),
-                        otherPublicKey = controllerTest.getOtherPublicKey();
+                    const otherPrivateKey = controllerTest.getOtherPrivateKey();
+                    const otherPublicKey = controllerTest.getOtherPublicKey();
 
                     request.body.randomNumberGenerator.signature = security.createSignature(
                         request.body.randomNumberGenerator.content,

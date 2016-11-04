@@ -8,7 +8,7 @@
 
 'use strict';
 
-var req = require('request');
+const req = require('request');
 
 function RedeemTicketService() {
     this.requestBody = {};
@@ -16,7 +16,7 @@ function RedeemTicketService() {
 }
 
 RedeemTicketService.prototype.call = function (callback) {
-    var requestData = {
+    const requestData = {
         body: this.requestBody,
         json: true,
         uri: this.requestUrl

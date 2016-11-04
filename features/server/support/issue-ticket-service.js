@@ -8,8 +8,8 @@
 
 'use strict';
 
-var req = require('request'),
-    security = require('../../common/support/security');
+const req = require('request');
+const security = require('../../common/support/security');
 
 function IssueTicketService() {
     this.requestBody = {
@@ -18,7 +18,7 @@ function IssueTicketService() {
 }
 
 IssueTicketService.prototype.call = function (callback) {
-    var requestData = {
+    const requestData = {
         body: this.requestBody,
         json: true,
         uri: 'http://localhost:3000/ticket/issue'
@@ -43,7 +43,7 @@ IssueTicketService.prototype.setExpression = function (expressionText) {
 };
 
 IssueTicketService.prototype.setRandomNumberGenerator = function (randomNumberGeneratorName) {
-    var randomNumberGenerator = {
+    const randomNumberGenerator = {
         content: {
             name: randomNumberGeneratorName
         },

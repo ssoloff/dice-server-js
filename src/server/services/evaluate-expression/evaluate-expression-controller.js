@@ -8,13 +8,13 @@
 
 'use strict';
 
-var _ = require('underscore'),
-    controllerUtils = require('../../util/controller-utils'),
-    dice = require('../../model/dice'),
-    diceExpressionResultUtils = require('../../model/dice-expression-result-utils'),
-    httpStatus = require('http-status-codes'),
-    random = require('../../util/random'),
-    security = require('../../util/security');
+const _ = require('underscore');
+const controllerUtils = require('../../util/controller-utils');
+const dice = require('../../model/dice');
+const diceExpressionResultUtils = require('../../model/dice-expression-result-utils');
+const httpStatus = require('http-status-codes');
+const random = require('../../util/random');
+const security = require('../../util/security');
 
 module.exports = {
     create: function (controllerData) {
@@ -34,22 +34,19 @@ module.exports = {
         }
 
         function createResponseBody(request) {
-            var expression,
-                expressionResult,
-                randomNumberGeneratorSpecification,
-                requestBody = request.body,
-                responseBody = {};
+            const requestBody = request.body;
+            const responseBody = {};
 
-            randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(requestBody);
+            const randomNumberGeneratorSpecification = getRandomNumberGeneratorSpecification(requestBody);
             responseBody.randomNumberGenerator = randomNumberGeneratorSpecification;
 
-            expression = parseExpressionText(requestBody.expression.text, randomNumberGeneratorSpecification);
+            const expression = parseExpressionText(requestBody.expression.text, randomNumberGeneratorSpecification);
             responseBody.expression = {
                 canonicalText: formatExpression(expression),
                 text: requestBody.expression.text
             };
 
-            expressionResult = expression.evaluate();
+            const expressionResult = expression.evaluate();
             if (!_.isFinite(expressionResult.value)) {
                 throw controllerUtils.createControllerError(
                     httpStatus.BAD_REQUEST,
@@ -85,8 +82,7 @@ module.exports = {
         }
 
         function getRandomNumberGeneratorSpecification(requestBody) {
-            var randomNumberGenerator = requestBody.randomNumberGenerator;
-
+            const randomNumberGenerator = requestBody.randomNumberGenerator;
             if (!randomNumberGenerator) {
                 return getDefaultRandomNumberGeneratorSpecification();
             }
@@ -105,12 +101,9 @@ module.exports = {
         }
 
         function parseExpressionText(expressionText, randomNumberGeneratorSpecification) {
-            var expressionParser,
-                expressionParserContext;
-
-            expressionParserContext = dice.expressionParser.createDefaultContext();
+            const expressionParserContext = dice.expressionParser.createDefaultContext();
             expressionParserContext.bag = dice.bag.create(createRandomNumberGenerator(randomNumberGeneratorSpecification));
-            expressionParser = dice.expressionParser.create(expressionParserContext);
+            const expressionParser = dice.expressionParser.create(expressionParserContext);
             try {
                 return expressionParser.parse(expressionText);
             } catch (e) {

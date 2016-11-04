@@ -8,8 +8,8 @@
 
 'use strict';
 
-var _ = require('underscore'),
-    dice = require('../../../../src/server/model/dice');
+const _ = require('underscore');
+const dice = require('../../../../src/server/model/dice');
 
 /**
  * Provides useful methods for testing the dice server.
@@ -42,15 +42,13 @@ module.exports = {
      * @throws {RangeError} If `sides` is not positive.
      */
     createDieThatRollsEachSideSuccessively: function (sides) {
-        var bag,
-            rollCount = 0;
-
+        let rollCount = 0;
         function randomNumberGenerator() {
-            var roll = rollCount % sides + 1;
+            const roll = rollCount % sides + 1;
             rollCount += 1;
             return roll;
         }
-        bag = dice.bag.create(randomNumberGenerator);
+        const bag = dice.bag.create(randomNumberGenerator);
         return bag.d(sides);
     },
 

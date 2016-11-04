@@ -8,8 +8,8 @@
 
 'use strict';
 
-var ControllerError = require('./controller-error'),
-    httpStatus = require('http-status-codes');
+const ControllerError = require('./controller-error');
+const httpStatus = require('http-status-codes');
 
 module.exports = {
     createControllerError: function (status, message) {
@@ -17,8 +17,7 @@ module.exports = {
     },
 
     createControllerErrorFromResponse: function (responseStatus, responseBody) {
-        var message = responseBody.error ? responseBody.error.message : null;
-
+        const message = responseBody.error ? responseBody.error.message : null;
         return new ControllerError(responseStatus, message);
     },
 
@@ -31,15 +30,12 @@ module.exports = {
     },
 
     postJson: function (callback, requestBody) {
-        var request,
-            response,
-            responseBody,
-            responseStatus;
-
-        request = {
+        let responseBody;
+        let responseStatus;
+        const request = {
             body: requestBody
         };
-        response = {
+        const response = {
             json: function (json) {
                 responseBody = json;
                 return this;
@@ -54,15 +50,13 @@ module.exports = {
     },
 
     setFailureResponse: function (response, e) {
-        var responseBody;
-
         if (e instanceof ControllerError) {
             response.status(e.status);
         } else {
             response.status(httpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        responseBody = {
+        const responseBody = {
             error: {
                 message: e.message
             }

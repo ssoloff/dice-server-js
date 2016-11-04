@@ -8,13 +8,13 @@
 
 'use strict';
 
-var security = require('../../../src/server/util/security'),
-    securityTest = require('../test-support/security-test');
+const security = require('../../../src/server/util/security');
+const securityTest = require('../test-support/security-test');
 
 describe('security', function () {
-    var payload,
-        privateKey,
-        publicKey;
+    let payload;
+    let privateKey;
+    let publicKey;
 
     beforeEach(function () {
         payload = {
@@ -29,9 +29,7 @@ describe('security', function () {
 
     describe('.createSignature', function () {
         it('should return a signature object using flattened JWS JSON serialization syntax with no unprotected header and no payload', function () {
-            var signature;
-
-            signature = security.createSignature(payload, privateKey, publicKey);
+            const signature = security.createSignature(payload, privateKey, publicKey);
 
             expect(signature.protected).toMatch(/^[-_0-9A-Za-z]+$/);
             expect(signature.signature).toMatch(/^[-_0-9A-Za-z]+$/);
@@ -61,7 +59,7 @@ describe('security', function () {
 
         describe('when object is anything else', function () {
             it('should return the object as a canonical JSON string', function () {
-                var obj = {
+                const obj = {
                     c: 3,
                     a: 1,
                     b: 2
@@ -75,12 +73,9 @@ describe('security', function () {
     describe('.verifySignature', function () {
         describe('when signature is valid', function () {
             it('should return true', function () {
-                var isValid,
-                    signature;
+                const signature = security.createSignature(payload, privateKey, publicKey);
 
-                signature = security.createSignature(payload, privateKey, publicKey);
-
-                isValid = security.verifySignature(payload, signature);
+                const isValid = security.verifySignature(payload, signature);
 
                 expect(isValid).toBe(true);
             });
@@ -88,13 +83,10 @@ describe('security', function () {
 
         describe('when signature is not valid', function () {
             it('should return false', function () {
-                var isValid,
-                    signature;
-
-                signature = security.createSignature(payload, privateKey, publicKey);
+                const signature = security.createSignature(payload, privateKey, publicKey);
                 payload.a = -payload.a; // simulate attacker modifying payload
 
-                isValid = security.verifySignature(payload, signature);
+                const isValid = security.verifySignature(payload, signature);
 
                 expect(isValid).toBe(false);
             });
@@ -102,14 +94,10 @@ describe('security', function () {
 
         describe('when public key is specified', function () {
             it('should use the specified public key instead of the public key in the signature', function () {
-                var isValid,
-                    otherPublicKey,
-                    signature;
+                const otherPublicKey = securityTest.getOtherPublicKey();
+                const signature = security.createSignature(payload, privateKey, publicKey);
 
-                otherPublicKey = securityTest.getOtherPublicKey();
-                signature = security.createSignature(payload, privateKey, publicKey);
-
-                isValid = security.verifySignature(payload, signature, otherPublicKey);
+                const isValid = security.verifySignature(payload, signature, otherPublicKey);
 
                 expect(isValid).toBe(false);
             });

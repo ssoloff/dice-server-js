@@ -8,7 +8,7 @@
 
 'use strict';
 
-var IssueTicketService = require('../../support/issue-ticket-service');
+const IssueTicketService = require('../../support/issue-ticket-service');
 
 function World() {
     this.createIssueTicketService = function () {

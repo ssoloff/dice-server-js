@@ -8,11 +8,11 @@
 
 'use strict';
 
-var diceTest = require('./dice-test');
+const diceTest = require('./dice-test');
 
 describe('diceTest', function () {
     describe('.createBagThatProvidesDiceThatAlwaysRollOne', function () {
-        var bag;
+        let bag;
 
         beforeEach(function () {
             bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
@@ -20,7 +20,7 @@ describe('diceTest', function () {
 
         describe('when die has 3 sides', function () {
             it('should always roll 1', function () {
-                var d3 = bag.d(3);
+                const d3 = bag.d(3);
                 expect(d3.roll()).toBe(1);
                 expect(d3.roll()).toBe(1);
                 expect(d3.roll()).toBe(1);
@@ -29,7 +29,7 @@ describe('diceTest', function () {
 
         describe('when die has 6 sides', function () {
             it('should always roll 1', function () {
-                var d6 = bag.d(6);
+                const d6 = bag.d(6);
                 expect(d6.roll()).toBe(1);
                 expect(d6.roll()).toBe(1);
                 expect(d6.roll()).toBe(1);
@@ -43,7 +43,7 @@ describe('diceTest', function () {
     describe('.createDieThatRollsEachSideSuccessively', function () {
         describe('when die has 3 sides', function () {
             it('should roll each side successively and rollover to 1', function () {
-                var d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
+                const d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
                 expect(d3.roll()).toBe(1);
                 expect(d3.roll()).toBe(2);
                 expect(d3.roll()).toBe(3);
@@ -53,7 +53,7 @@ describe('diceTest', function () {
 
         describe('when die has 6 sides', function () {
             it('should roll each side successively and rollover to 1', function () {
-                var d6 = diceTest.createDieThatRollsEachSideSuccessively(6);
+                const d6 = diceTest.createDieThatRollsEachSideSuccessively(6);
                 expect(d6.roll()).toBe(1);
                 expect(d6.roll()).toBe(2);
                 expect(d6.roll()).toBe(3);

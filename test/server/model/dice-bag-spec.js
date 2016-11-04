@@ -8,25 +8,25 @@
 
 'use strict';
 
-var dice = require('../../../src/server/model/dice');
+const dice = require('../../../src/server/model/dice');
 
 describe('diceBag', function () {
-    var bag;
+    let bag;
 
     beforeEach(function () {
-        var randomNumberGenerator = jasmine.createSpy('randomNumberGenerator');
+        const randomNumberGenerator = jasmine.createSpy('randomNumberGenerator');
         bag = dice.bag.create(randomNumberGenerator);
     });
 
     it('should use a default random number generator', function () {
         expect(function () {
-            var bag = dice.bag.create();
+            const bag = dice.bag.create();
             bag.d(6).roll();
         }).not.toThrow();
     });
 
     describe('#d', function () {
-        var d6;
+        let d6;
 
         beforeEach(function () {
             d6 = bag.d(6);

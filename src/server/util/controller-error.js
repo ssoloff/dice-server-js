@@ -8,7 +8,7 @@
 
 'use strict';
 
-var httpStatus = require('http-status-codes');
+const httpStatus = require('http-status-codes');
 
 function ControllerError(status, message) {
     this.name = 'ControllerError';

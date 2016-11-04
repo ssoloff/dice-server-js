@@ -8,8 +8,8 @@
 
 'use strict';
 
-var diceExpressionFunctions = require('../../../src/server/model/dice-expression-functions'),
-    diceTest = require('./test-support/dice-test');
+const diceExpressionFunctions = require('../../../src/server/model/dice-expression-functions');
+const diceTest = require('./test-support/dice-test');
 
 describe('diceExpressionFunctions', function () {
     describe('.ceil', function () {
@@ -297,7 +297,7 @@ describe('diceExpressionFunctions', function () {
     });
 
     describe('.roll', function () {
-        var d3;
+        let d3;
 
         beforeEach(function () {
             d3 = diceTest.createDieThatRollsEachSideSuccessively(3);

@@ -8,8 +8,7 @@
 
 'use strict';
 
-var diceExpressionTypeIds = require('./dice-expression-type-ids'),
-    formatters = {};
+const diceExpressionTypeIds = require('./dice-expression-type-ids');
 
 /**
  * Provides methods for formatting dice expressions.
@@ -17,6 +16,7 @@ var diceExpressionTypeIds = require('./dice-expression-type-ids'),
  * @module dice-expression-formatter
  */
 
+const formatters = {};
 formatters[diceExpressionTypeIds.ADDITION] = formatAdditionExpression;
 formatters[diceExpressionTypeIds.ARRAY] = formatArrayExpression;
 formatters[diceExpressionTypeIds.CONSTANT] = formatConstantExpression;
@@ -44,7 +44,7 @@ formatters[diceExpressionTypeIds.SUBTRACTION] = formatSubtractionExpression;
  *      available for the specified expression.
  */
 function format(expression) {
-    var formatter = formatters[expression.typeId];
+    const formatter = formatters[expression.typeId];
     if (formatter) {
         return formatter(expression);
     } else {

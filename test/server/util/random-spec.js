@@ -8,20 +8,17 @@
 
 'use strict';
 
-var random = require('../../../src/server/util/random');
+const random = require('../../../src/server/util/random');
 
 describe('random', function () {
-    var SIDES = 0xFFFFFFFF;
+    const SIDES = 0xFFFFFFFF;
 
     describe('.uniform', function () {
         describe('when options not provided', function () {
             it('should use auto seed', function () {
-                var randomNumberGenerator,
-                    randomValue;
+                const randomNumberGenerator = random.uniform();
 
-                randomNumberGenerator = random.uniform();
-
-                randomValue = randomNumberGenerator(SIDES);
+                const randomValue = randomNumberGenerator(SIDES);
 
                 expect(randomValue).toBeGreaterThan(0);
                 expect(randomValue).toBeLessThan(SIDES + 1);
@@ -30,12 +27,9 @@ describe('random', function () {
 
         describe('when seed not provided', function () {
             it('should use auto seed', function () {
-                var randomNumberGenerator,
-                    randomValue;
+                const randomNumberGenerator = random.uniform({});
 
-                randomNumberGenerator = random.uniform({});
-
-                randomValue = randomNumberGenerator(SIDES);
+                const randomValue = randomNumberGenerator(SIDES);
 
                 expect(randomValue).toBeGreaterThan(0);
                 expect(randomValue).toBeLessThan(SIDES + 1);
@@ -44,16 +38,11 @@ describe('random', function () {
 
         describe('when number seed provided', function () {
             it('should use provided seed', function () {
-                var randomNumberGenerator1,
-                    randomNumberGenerator2,
-                    randomValue1,
-                    randomValue2;
+                const randomNumberGenerator1 = random.uniform({seed: 42});
+                const randomNumberGenerator2 = random.uniform({seed: 42});
 
-                randomNumberGenerator1 = random.uniform({seed: 42});
-                randomNumberGenerator2 = random.uniform({seed: 42});
-
-                randomValue1 = randomNumberGenerator1(SIDES);
-                randomValue2 = randomNumberGenerator2(SIDES);
+                const randomValue1 = randomNumberGenerator1(SIDES);
+                const randomValue2 = randomNumberGenerator2(SIDES);
 
                 expect(randomValue1).toBe(randomValue2);
             });
@@ -61,16 +50,11 @@ describe('random', function () {
 
         describe('when array seed provided', function () {
             it('should use provided seed', function () {
-                var randomNumberGenerator1,
-                    randomNumberGenerator2,
-                    randomValue1,
-                    randomValue2;
+                const randomNumberGenerator1 = random.uniform({seed: [42, 2112]});
+                const randomNumberGenerator2 = random.uniform({seed: [42, 2112]});
 
-                randomNumberGenerator1 = random.uniform({seed: [42, 2112]});
-                randomNumberGenerator2 = random.uniform({seed: [42, 2112]});
-
-                randomValue1 = randomNumberGenerator1(SIDES);
-                randomValue2 = randomNumberGenerator2(SIDES);
+                const randomValue1 = randomNumberGenerator1(SIDES);
+                const randomValue2 = randomNumberGenerator2(SIDES);
 
                 expect(randomValue1).toBe(randomValue2);
             });
