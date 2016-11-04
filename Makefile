@@ -64,6 +64,8 @@ DICE_EXPRESSION_JISON = $(MODEL_DIR)/dice-expression.jison
 DICE_EXPRESSION_PARSER_JS = $(COMPILE_OUTPUT_DIR)/$(MODEL_DIR)/dice-expression-parser.js
 ISTANBUL_CONFIG = $(COMPILE_OUTPUT_DIR)/$(SERVER_TEST_DIR)/.istanbul.yml
 JASMINE_CONFIG = $(COMPILE_OUTPUT_DIR)/$(SERVER_TEST_DIR)/.jasmine.json
+JSCS_ES5_CONFIG = .jscs-es5-conf.json
+JSCS_ES6_CONFIG = .jscs-es6-conf.json
 JSDOC_CLIENT_CONFIG = .jsdoc-client-conf.json
 JSDOC_SERVER_CONFIG = .jsdoc-server-conf.json
 SERVER_JS = server.js
@@ -85,7 +87,8 @@ acceptance-test:
 
 check:
 	$(JSHINT) .
-	$(JSCS) .
+	$(JSCS) $(CLIENT_SRC_DIR) --config=$(JSCS_ES5_CONFIG)
+	$(JSCS) $(FEATURES_DIR) $(SERVER_SRC_DIR) $(SERVER_TEST_DIR) --config=$(JSCS_ES6_CONFIG)
 	$(HTML_VALIDATOR) --file=$(CLIENT_SRC_DIR)/index.html --verbose
 	{ \
 		$(FIND) $(CLIENT_SRC_DIR)/*/ -name '*.html' \

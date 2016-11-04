@@ -48,14 +48,5 @@
   "bugs": {
     "url": "https://github.com/ssoloff/dice-server-js/issues"
   },
-  "homepage": "https://github.com/ssoloff/dice-server-js",
-  "jscsConfig": {
-    "excludeFiles": [
-      "bower_components/**",
-      "build/**",
-      "node_modules/**"
-    ],
-    "preset": "crockford",
-    "requireMultipleVarDecl": false
-  }
+  "homepage": "https://github.com/ssoloff/dice-server-js"
 }
