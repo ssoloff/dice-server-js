@@ -35,7 +35,7 @@ class HomePage {
     getExpressionCanonicalTextAtIndex(index) {
         return this.driver
             .findElement(By.id('main-history-expressionResults'))
-            .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(2)'))
+            .findElement(By.css(`tr:nth-child(${index}) td:nth-child(2)`))
             .getText();
     }
 
@@ -49,21 +49,21 @@ class HomePage {
     getExpressionResultTextAtIndex(index) {
         return this.driver
             .findElement(By.id('main-history-expressionResults'))
-            .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(3)'))
+            .findElement(By.css(`tr:nth-child(${index}) td:nth-child(3)`))
             .getText();
     }
 
     getExpressionResultValueAtIndex(index) {
         return this.driver
             .findElement(By.id('main-history-expressionResults'))
-            .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(4)'))
+            .findElement(By.css(`tr:nth-child(${index}) td:nth-child(4)`))
             .getText();
     }
 
     getExpressionTextAtIndex(index) {
         return this.driver
             .findElement(By.id('main-history-expressionResults'))
-            .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(1)'))
+            .findElement(By.css(`tr:nth-child(${index}) td:nth-child(1)`))
             .getText();
     }
 
@@ -91,7 +91,7 @@ class HomePage {
     reevaluateResultAtIndex(index) {
         return this.driver
             .findElement(By.id('main-history-expressionResults'))
-            .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(5)'))
+            .findElement(By.css(`tr:nth-child(${index}) td:nth-child(5)`))
             .findElement(By.name('reevaluate'))
             .click();
     }
@@ -103,7 +103,7 @@ class HomePage {
     removeResultAtIndex(index) {
         return this.driver
             .findElement(By.id('main-history-expressionResults'))
-            .findElement(By.css('tr:nth-child(' + index + ') td:nth-child(5)'))
+            .findElement(By.css(`tr:nth-child(${index}) td:nth-child(5)`))
             .findElement(By.name('remove'))
             .click();
     }
@@ -124,7 +124,7 @@ class HomePage {
     }
 
     setRoundingMode(roundingMode) {
-        return this.driver.findElement(By.id('main-eval-roundingMode' + roundingMode)).click();
+        return this.driver.findElement(By.id(`main-eval-roundingMode${roundingMode}`)).click();
     }
 
     toggleHelp() {

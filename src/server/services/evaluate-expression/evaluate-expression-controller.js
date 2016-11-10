@@ -29,7 +29,7 @@ module.exports = {
 
             throw controllerUtils.createControllerError(
                 httpStatus.BAD_REQUEST,
-                'unknown random number generator "' + randomNumberGeneratorSpecification.name + '"'
+                `unknown random number generator "${randomNumberGeneratorSpecification.name}"`
             );
         }
 

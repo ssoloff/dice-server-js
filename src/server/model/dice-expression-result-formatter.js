@@ -49,7 +49,7 @@ function format(expressionResult) {
     if (formatter) {
         return formatter(expressionResult);
     } else {
-        throw new Error('unknown expression result type: "' + expressionResult.typeId + '"');
+        throw new Error(`unknown expression result type: "${expressionResult.typeId}"`);
     }
 }
 
@@ -66,11 +66,11 @@ function formatArrayExpressionResult(expressionResult) {
 }
 
 function formatConstantExpressionResult(expressionResult) {
-    return expressionResult.value.toString();
+    return `${expressionResult.value}`;
 }
 
 function formatDieExpressionResult(expressionResult) {
-    return 'd' + expressionResult.value.sides.toString();
+    return `d${expressionResult.value.sides}`;
 }
 
 function formatDivisionExpressionResult(expressionResult) {
@@ -108,11 +108,11 @@ function formatMultiplicationExpressionResult(expressionResult) {
 }
 
 function formatNegativeExpressionResult(expressionResult) {
-    return '-' + format(expressionResult.childExpressionResult);
+    return `-${format(expressionResult.childExpressionResult)}`;
 }
 
 function formatPositiveExpressionResult(expressionResult) {
-    return '+' + format(expressionResult.childExpressionResult);
+    return `+${format(expressionResult.childExpressionResult)}`;
 }
 
 function formatSubtractionExpressionResult(expressionResult) {
@@ -123,10 +123,10 @@ function formatSubtractionExpressionResult(expressionResult) {
 
 function formatValue(value) {
     if (_.isArray(value)) {
-        return '[' + value.join(', ') + ']';
+        return `[${value.join(', ')}]`;
     }
 
-    return value.toString();
+    return `${value}`;
 }
 
 module.exports.format = format;

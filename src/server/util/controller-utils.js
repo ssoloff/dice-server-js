@@ -22,7 +22,7 @@ module.exports = {
     },
 
     getRequestRootUrl(request) {
-        return request.protocol + '://' + request.get('host');
+        return `${request.protocol}://${request.get('host')}`;
     },
 
     isSuccessResponse(responseStatus) {

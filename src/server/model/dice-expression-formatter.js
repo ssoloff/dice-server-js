@@ -48,7 +48,7 @@ function format(expression) {
     if (formatter) {
         return formatter(expression);
     } else {
-        throw new Error('unknown expression type: "' + expression.typeId + '"');
+        throw new Error(`unknown expression type: "${expression.typeId}"`);
     }
 }
 
@@ -65,11 +65,11 @@ function formatArrayExpression(expression) {
 }
 
 function formatConstantExpression(expression) {
-    return expression.constant.toString();
+    return `${expression.constant}`;
 }
 
 function formatDieExpression(expression) {
-    return 'd' + expression.die.sides.toString();
+    return `d${expression.die.sides}`;
 }
 
 function formatDivisionExpression(expression) {
@@ -104,11 +104,11 @@ function formatMultiplicationExpression(expression) {
 }
 
 function formatNegativeExpression(expression) {
-    return '-' + format(expression.childExpression);
+    return `-${format(expression.childExpression)}`;
 }
 
 function formatPositiveExpression(expression) {
-    return '+' + format(expression.childExpression);
+    return `+${format(expression.childExpression)}`;
 }
 
 function formatSubtractionExpression(expression) {
