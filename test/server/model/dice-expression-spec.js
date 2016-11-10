@@ -158,10 +158,7 @@ describe('diceExpression', () => {
 
     describe('.forFunctionCall', () => {
         function f() {
-            function sum(first, second) {
-                return first + second;
-            }
-            return 42 + _.toArray(arguments).reduce(sum, 0);
+            return 42 + _.toArray(arguments).reduce((first, second) => first + second, 0);
         }
 
         describe('when function name is not a string', () => {
