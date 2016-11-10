@@ -45,14 +45,14 @@ module.exports = {
      * // (values may differ)
      * diceExpressionResultUtils.enumerateDieRollResults(diceExpressionParser.parse('2d6+1d4+1'));
      */
-    enumerateDieRollResults: function (expressionResult) {
+    enumerateDieRollResults(expressionResult) {
         const dieRollResults = [];
 
-        expressionResult.accept(function (expressionResult) {
+        expressionResult.accept((expressionResult) => {
             if (expressionResult.typeId === diceExpressionTypeIds.FUNCTION_CALL && expressionResult.name === 'roll') {
                 const dieRollValues = expressionResult.value;
                 const dieSides = expressionResult.argumentListExpressionResults[1].value.sides;
-                dieRollValues.forEach(function (dieRollValue) {
+                dieRollValues.forEach((dieRollValue) => {
                     dieRollResults.push({
                         sides: dieSides,
                         value: dieRollValue

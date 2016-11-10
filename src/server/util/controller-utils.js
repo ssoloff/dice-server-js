@@ -12,35 +12,36 @@ const ControllerError = require('./controller-error');
 const httpStatus = require('http-status-codes');
 
 module.exports = {
-    createControllerError: function (status, message) {
+    createControllerError(status, message) {
         return new ControllerError(status, message);
     },
 
-    createControllerErrorFromResponse: function (responseStatus, responseBody) {
+    createControllerErrorFromResponse(responseStatus, responseBody) {
         const message = responseBody.error ? responseBody.error.message : null;
         return new ControllerError(responseStatus, message);
     },
 
-    getRequestRootUrl: function (request) {
+    getRequestRootUrl(request) {
         return request.protocol + '://' + request.get('host');
     },
 
-    isSuccessResponse: function (responseStatus) {
+    isSuccessResponse(responseStatus) {
         return responseStatus === httpStatus.OK;
     },
 
-    postJson: function (callback, requestBody) {
+    postJson(callback, requestBody) {
         let responseBody;
         let responseStatus;
         const request = {
             body: requestBody
         };
         const response = {
-            json: function (json) {
+            json(json) {
                 responseBody = json;
                 return this;
             },
-            status: function (status) {
+
+            status(status) {
                 responseStatus = status;
                 return this;
             }
@@ -49,7 +50,7 @@ module.exports = {
         return [responseStatus, responseBody];
     },
 
-    setFailureResponse: function (response, e) {
+    setFailureResponse(response, e) {
         if (e instanceof ControllerError) {
             response.status(e.status);
         } else {
@@ -64,7 +65,7 @@ module.exports = {
         response.json(responseBody);
     },
 
-    setSuccessResponse: function (response, responseBody) {
+    setSuccessResponse(response, responseBody) {
         response.status(httpStatus.OK).json(responseBody);
     }
 };

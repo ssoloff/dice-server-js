@@ -42,9 +42,7 @@ HomePage.prototype.getExpressionResultCount = function () {
     return this.driver
         .findElement(By.id('main-history-expressionResults'))
         .findElements(By.css('tr'))
-        .then(function (elements) {
-            return elements.length;
-        });
+        .then((elements) => elements.length);
 };
 
 HomePage.prototype.getExpressionResultTextAtIndex = function (index) {
@@ -78,7 +76,7 @@ HomePage.prototype.isErrorMessageDisplayed = function () {
 
 HomePage.prototype.open = function () {
     const driver = this.driver;
-    return driver.get('http://localhost:3000/').then(function () {
+    return driver.get('http://localhost:3000/').then(() => {
         // wait for async load of all feature fragments to complete
         const timeoutInMilliseconds = 60000;
         return promise.all([
@@ -137,15 +135,15 @@ HomePage.prototype.typeExpressionText = function (expressionText) {
 };
 
 HomePage.prototype.waitUntilHelpIsDisplayed = function () {
-    return this.driver.wait(until.elementIsVisible(this.driver.findElement(By.id('main-eval-help'))), 5000).then(function (element) {
-        return element.isDisplayed();
-    });
+    return this.driver
+        .wait(until.elementIsVisible(this.driver.findElement(By.id('main-eval-help'))), 5000)
+        .then((element) => element.isDisplayed());
 };
 
 HomePage.prototype.waitUntilHelpIsNotDisplayed = function () {
-    return this.driver.wait(until.elementIsNotVisible(this.driver.findElement(By.id('main-eval-help'))), 5000).then(function (element) {
-        return element.isDisplayed();
-    });
+    return this.driver
+        .wait(until.elementIsNotVisible(this.driver.findElement(By.id('main-eval-help'))), 5000)
+        .then((element) => element.isDisplayed());
 };
 
 module.exports = HomePage;

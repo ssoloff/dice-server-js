@@ -10,12 +10,12 @@
 
 const random = require('../../../src/server/util/random');
 
-describe('random', function () {
+describe('random', () => {
     const SIDES = 0xFFFFFFFF;
 
-    describe('.uniform', function () {
-        describe('when options not provided', function () {
-            it('should use auto seed', function () {
+    describe('.uniform', () => {
+        describe('when options not provided', () => {
+            it('should use auto seed', () => {
                 const randomNumberGenerator = random.uniform();
 
                 const randomValue = randomNumberGenerator(SIDES);
@@ -25,8 +25,8 @@ describe('random', function () {
             });
         });
 
-        describe('when seed not provided', function () {
-            it('should use auto seed', function () {
+        describe('when seed not provided', () => {
+            it('should use auto seed', () => {
                 const randomNumberGenerator = random.uniform({});
 
                 const randomValue = randomNumberGenerator(SIDES);
@@ -36,8 +36,8 @@ describe('random', function () {
             });
         });
 
-        describe('when number seed provided', function () {
-            it('should use provided seed', function () {
+        describe('when number seed provided', () => {
+            it('should use provided seed', () => {
                 const randomNumberGenerator1 = random.uniform({seed: 42});
                 const randomNumberGenerator2 = random.uniform({seed: 42});
 
@@ -48,8 +48,8 @@ describe('random', function () {
             });
         });
 
-        describe('when array seed provided', function () {
-            it('should use provided seed', function () {
+        describe('when array seed provided', () => {
+            it('should use provided seed', () => {
                 const randomNumberGenerator1 = random.uniform({seed: [42, 2112]});
                 const randomNumberGenerator2 = random.uniform({seed: [42, 2112]});
 

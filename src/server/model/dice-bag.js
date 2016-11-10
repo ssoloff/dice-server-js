@@ -38,10 +38,10 @@ module.exports = {
      *
      * @returns {module:dice-bag~Bag!} The new dice bag.
      */
-    create: function (randomNumberGenerator) {
-        randomNumberGenerator = randomNumberGenerator || function (sides) {
-            return Random.die(sides)(Random.engines.nativeMath);
-        };
+    create(randomNumberGenerator) {
+        // jshint -W126
+        randomNumberGenerator = randomNumberGenerator || ((sides) => Random.die(sides)(Random.engines.nativeMath));
+        // jshint +W126
 
         /**
          * A dice bag.
@@ -60,7 +60,7 @@ module.exports = {
              *
              * @throws {RangeError} If `sides` is not positive.
              */
-            d: function (sides) {
+            d(sides) {
                 if (!_.isNumber(sides)) {
                     throw new Error('sides is not a number');
                 } else if (sides < 1) {
@@ -81,7 +81,7 @@ module.exports = {
                      * @returns {Number!} The result of rolling the die: a value
                      *      in the range [1,{@link module:dice-bag~Die.sides}].
                      */
-                    roll: function () {
+                    roll() {
                         const roll = randomNumberGenerator(sides);
                         assert.ok(roll >= 1 && roll <= sides, 'random number generator value out of range');
                         return roll;

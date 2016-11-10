@@ -35,7 +35,7 @@ module.exports = {
      *
      * @returns {Object!} The detached JSON web signature.
      */
-    createSignature: function (payload, privateKey, publicKey) {
+    createSignature(payload, privateKey, publicKey) {
         const canonicalPayload = this.toCanonicalString(payload);
         const jwsSignature = jws.sign({
             header: {
@@ -61,7 +61,7 @@ module.exports = {
      * @returns {String!} The canonical string representation of the specified
      *      object.
      */
-    toCanonicalString: function (obj) {
+    toCanonicalString(obj) {
         if (typeof obj === 'string') {
             return obj;
         } else if (typeof obj === 'number' || Buffer.isBuffer(obj)) {
@@ -97,7 +97,7 @@ module.exports = {
      *
      * @returns {Boolean!} `true` if the signature is valid; otherwise `false`.
      */
-    verifySignature: function (payload, signature, publicKey) {
+    verifySignature(payload, signature, publicKey) {
         const canonicalPayload = this.toCanonicalString(payload);
         const jwsSignature = signature.protected +
             '.' +

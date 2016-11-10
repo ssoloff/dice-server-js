@@ -32,7 +32,7 @@ module.exports = {
      *      is not a number, or if `addendExpressionResult` is not defined or
      *      its value is not a number.
      */
-    forAddition: function (augendExpressionResult, addendExpressionResult) {
+    forAddition(augendExpressionResult, addendExpressionResult) {
         if (!augendExpressionResult) {
             throw new Error('augend expression result is not defined');
         } else if (!_.isNumber(augendExpressionResult.value)) {
@@ -56,7 +56,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 augendExpressionResult.accept(visit);
                 addendExpressionResult.accept(visit);
@@ -111,7 +111,7 @@ module.exports = {
      *
      * @throws {Error} If `expressionResults` is not an array.
      */
-    forArray: function (expressionResults) {
+    forArray(expressionResults) {
         if (!_.isArray(expressionResults)) {
             throw new Error('expression results is not an array');
         }
@@ -129,7 +129,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 _.invoke(expressionResults, 'accept', visit);
             },
@@ -173,7 +173,7 @@ module.exports = {
      *
      * @throws {Error} If `constant` is not a number.
      */
-    forConstant: function (constant) {
+    forConstant(constant) {
         if (!_.isNumber(constant)) {
             throw new Error('constant is not a number');
         }
@@ -191,7 +191,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
             },
 
@@ -225,7 +225,7 @@ module.exports = {
      *
      * @throws {Error} If `die` is not defined.
      */
-    forDie: function (die) {
+    forDie(die) {
         if (!die) {
             throw new Error('die is not defined');
         }
@@ -243,7 +243,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
             },
 
@@ -282,7 +282,7 @@ module.exports = {
      *      value is not a number, or if `divisorExpressionResult` is not
      *      defined or its value is not a number.
      */
-    forDivision: function (dividendExpressionResult, divisorExpressionResult) {
+    forDivision(dividendExpressionResult, divisorExpressionResult) {
         if (!dividendExpressionResult) {
             throw new Error('dividend expression result is not defined');
         } else if (!_.isNumber(dividendExpressionResult.value)) {
@@ -306,7 +306,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 dividendExpressionResult.accept(visit);
                 divisorExpressionResult.accept(visit);
@@ -366,7 +366,7 @@ module.exports = {
      *      is not a string, or if `argumentListExpressionResults` is not an
      *      array.
      */
-    forFunctionCall: function (returnValue, name, argumentListExpressionResults) {
+    forFunctionCall(returnValue, name, argumentListExpressionResults) {
         if (returnValue === undefined || returnValue === null) {
             throw new Error('return value is not defined');
         } else if (!_.isString(name)) {
@@ -388,7 +388,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 _.invoke(argumentListExpressionResults, 'accept', visit);
             },
@@ -443,7 +443,7 @@ module.exports = {
      *
      * @throws {Error} If `childExpressionResult` is not defined.
      */
-    forGroup: function (childExpressionResult) {
+    forGroup(childExpressionResult) {
         if (!childExpressionResult) {
             throw new Error('child expression result is not defined');
         }
@@ -461,7 +461,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 childExpressionResult.accept(visit);
             },
@@ -510,7 +510,7 @@ module.exports = {
      *      value is not a number, or if `divisorExpressionResult` is not
      *      defined or its value is not a number.
      */
-    forModulo: function (dividendExpressionResult, divisorExpressionResult) {
+    forModulo(dividendExpressionResult, divisorExpressionResult) {
         if (!dividendExpressionResult) {
             throw new Error('dividend expression result is not defined');
         } else if (!_.isNumber(dividendExpressionResult.value)) {
@@ -534,7 +534,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 dividendExpressionResult.accept(visit);
                 divisorExpressionResult.accept(visit);
@@ -593,7 +593,7 @@ module.exports = {
      *      value is not a number, or if `multiplierExpressionResult` is not
      *      defined or its value is not a number.
      */
-    forMultiplication: function (multiplicandExpressionResult, multiplierExpressionResult) {
+    forMultiplication(multiplicandExpressionResult, multiplierExpressionResult) {
         if (!multiplicandExpressionResult) {
             throw new Error('multiplicand expression result is not defined');
         } else if (!_.isNumber(multiplicandExpressionResult.value)) {
@@ -617,7 +617,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 multiplicandExpressionResult.accept(visit);
                 multiplierExpressionResult.accept(visit);
@@ -672,7 +672,7 @@ module.exports = {
      *
      * @throws {Error} If `childExpressionResult` is not defined.
      */
-    forNegative: function (childExpressionResult) {
+    forNegative(childExpressionResult) {
         if (!childExpressionResult) {
             throw new Error('child expression result is not defined');
         }
@@ -690,7 +690,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 childExpressionResult.accept(visit);
             },
@@ -735,7 +735,7 @@ module.exports = {
      *
      * @throws {Error} If `childExpressionResult` is not defined.
      */
-    forPositive: function (childExpressionResult) {
+    forPositive(childExpressionResult) {
         if (!childExpressionResult) {
             throw new Error('child expression result is not defined');
         }
@@ -753,7 +753,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 childExpressionResult.accept(visit);
             },
@@ -802,7 +802,7 @@ module.exports = {
      *      is not a number, or if `subtrahendExpressionResult` is not defined
      *      or its value is not a number.
      */
-    forSubtraction: function (minuendExpressionResult, subtrahendExpressionResult) {
+    forSubtraction(minuendExpressionResult, subtrahendExpressionResult) {
         if (!minuendExpressionResult) {
             throw new Error('minuend expression result is not defined');
         } else if (!_.isNumber(minuendExpressionResult.value)) {
@@ -826,7 +826,7 @@ module.exports = {
              *
              * @param {Function!} visit - The visitor callback.
              */
-            accept: function (visit) {
+            accept(visit) {
                 visit(this);
                 minuendExpressionResult.accept(visit);
                 subtrahendExpressionResult.accept(visit);

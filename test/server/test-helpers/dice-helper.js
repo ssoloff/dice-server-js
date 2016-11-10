@@ -14,11 +14,11 @@ function hasValidSignature(obj) {
     return security.verifySignature(obj.content, obj.signature);
 }
 
-beforeEach(function () {
+beforeEach(() => {
     jasmine.addMatchers({
-        toBeSigned: function () {
+        toBeSigned() {
             return {
-                compare: function (obj) {
+                compare(obj) {
                     return {
                         message: 'Expected object to have a valid signature.',
                         pass: hasValidSignature(obj)

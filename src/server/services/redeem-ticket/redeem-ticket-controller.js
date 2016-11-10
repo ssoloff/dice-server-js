@@ -13,7 +13,7 @@ const httpStatus = require('http-status-codes');
 const security = require('../../util/security');
 
 module.exports = {
-    create: function (controllerData) {
+    create(controllerData) {
         function createRedeemedTicket(request) {
             const redeemedTicketContent = createRedeemedTicketContent(request);
             return {
@@ -78,7 +78,7 @@ module.exports = {
         }
 
         return {
-            redeemTicket: function (request, response) {
+            redeemTicket(request, response) {
                 try {
                     controllerUtils.setSuccessResponse(response, createResponseBody(request));
                 } catch (e) {

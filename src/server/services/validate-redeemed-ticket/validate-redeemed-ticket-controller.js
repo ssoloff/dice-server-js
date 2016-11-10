@@ -13,7 +13,7 @@ const httpStatus = require('http-status-codes');
 const security = require('../../util/security');
 
 module.exports = {
-    create: function (controllerData) {
+    create(controllerData) {
         function createResponseBody(request) {
             validateRequest(request);
 
@@ -35,7 +35,7 @@ module.exports = {
         }
 
         return {
-            validateRedeemedTicket: function (request, response) {
+            validateRedeemedTicket(request, response) {
                 try {
                     controllerUtils.setSuccessResponse(response, createResponseBody(request));
                 } catch (e) {

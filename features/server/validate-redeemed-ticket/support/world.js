@@ -13,15 +13,9 @@ const RedeemTicketService = require('../../support/redeem-ticket-service');
 const ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service');
 
 function World() {
-    this.createIssueTicketService = function () {
-        return new IssueTicketService();
-    };
-    this.createRedeemTicketService = function () {
-        return new RedeemTicketService();
-    };
-    this.createValidateRedeemedTicketService = function () {
-        return new ValidateRedeemedTicketService();
-    };
+    this.createIssueTicketService = () => new IssueTicketService();
+    this.createRedeemTicketService = () => new RedeemTicketService();
+    this.createValidateRedeemedTicketService = () => new ValidateRedeemedTicketService();
 }
 
 module.exports = function () {

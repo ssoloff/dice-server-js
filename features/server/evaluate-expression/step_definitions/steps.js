@@ -32,11 +32,11 @@ module.exports = function () {
     });
 
     this.When(/^the evaluate expression service is invoked$/, function (callback) {
-        this.evaluateExpressionService.call(function (responseStatus, responseBody) {
+        this.evaluateExpressionService.call((responseStatus, responseBody) => {
             this.response.status = responseStatus;
             this.response.body = responseBody;
             callback();
-        }.bind(this));
+        });
     });
 
     this.Then(/^the response should be$/, function (jsonResponse) {

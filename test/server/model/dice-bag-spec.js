@@ -10,64 +10,64 @@
 
 const dice = require('../../../src/server/model/dice');
 
-describe('diceBag', function () {
+describe('diceBag', () => {
     let bag;
 
-    beforeEach(function () {
+    beforeEach(() => {
         const randomNumberGenerator = jasmine.createSpy('randomNumberGenerator');
         bag = dice.bag.create(randomNumberGenerator);
     });
 
-    it('should use a default random number generator', function () {
-        expect(function () {
+    it('should use a default random number generator', () => {
+        expect(() => {
             const bag = dice.bag.create();
             bag.d(6).roll();
         }).not.toThrow();
     });
 
-    describe('#d', function () {
+    describe('#d', () => {
         let d6;
 
-        beforeEach(function () {
+        beforeEach(() => {
             d6 = bag.d(6);
         });
 
-        describe('when sides not a number', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when sides not a number', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     bag.d(undefined);
                 }).toThrow();
-                expect(function () {
+                expect(() => {
                     bag.d('3');
                 }).toThrow();
             });
         });
 
-        describe('when sides less than one', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when sides less than one', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     bag.d(0);
                 }).toThrowError(RangeError);
-                expect(function () {
+                expect(() => {
                     bag.d(Number.MIN_SAFE_INTEGER);
                 }).toThrowError(RangeError);
             });
         });
 
-        describe('.roll', function () {
-            it('should return 1 when random number is 1', function () {
+        describe('.roll', () => {
+            it('should return 1 when random number is 1', () => {
                 bag.randomNumberGenerator.and.returnValue(1);
                 expect(d6.roll()).toBe(1);
             });
 
-            it('should return <sides> when random number is <sides>', function () {
+            it('should return <sides> when random number is <sides>', () => {
                 bag.randomNumberGenerator.and.returnValue(d6.sides);
                 expect(d6.roll()).toBe(d6.sides);
             });
         });
 
-        describe('.sides', function () {
-            it('should return the die sides', function () {
+        describe('.sides', () => {
+            it('should return the die sides', () => {
                 expect(d6.sides).toBe(6);
             });
         });

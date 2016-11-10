@@ -36,11 +36,11 @@ module.exports = function () {
     });
 
     this.When(/^the issue ticket service is invoked$/, function (callback) {
-        this.issueTicketService.call(function (responseStatus, responseBody) {
+        this.issueTicketService.call((responseStatus, responseBody) => {
             this.response.status = responseStatus;
             this.response.body = responseBody;
             callback();
-        }.bind(this));
+        });
     });
 
     this.Then(/^the response should contain a link to the redeem ticket service$/, function () {

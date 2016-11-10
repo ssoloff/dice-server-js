@@ -76,7 +76,7 @@ module.exports = {
      *      specified number, or `NaN` if `x` is not defined, or `0` if `x` is
      *      `null`.
      */
-    ceil: function (x) {
+    ceil(x) {
         return Math.ceil(x);
     },
 
@@ -94,7 +94,7 @@ module.exports = {
      * @throws {Error} If `rolls` is not defined or if `count` is not a
      *      positive number.
      */
-    cloneHighestRolls: function (rolls, count) {
+    cloneHighestRolls(rolls, count) {
         return cloneRolls(rolls, count, findIndexOfHighestRoll);
     },
 
@@ -112,7 +112,7 @@ module.exports = {
      * @throws {Error} If `rolls` is not defined or if `count` is not a
      *      positive number.
      */
-    cloneLowestRolls: function (rolls, count) {
+    cloneLowestRolls(rolls, count) {
         return cloneRolls(rolls, count, findIndexOfLowestRoll);
     },
 
@@ -129,7 +129,7 @@ module.exports = {
      * @throws {Error} If `rolls` is not defined or if `count` is not a
      *      positive number.
      */
-    dropHighestRolls: function (rolls, count) {
+    dropHighestRolls(rolls, count) {
         return dropRolls(rolls, count, findIndexOfHighestRoll);
     },
 
@@ -146,7 +146,7 @@ module.exports = {
      * @throws {Error} If `rolls` is not defined or if `count` is not a
      *      positive number.
      */
-    dropLowestRolls: function (rolls, count) {
+    dropLowestRolls(rolls, count) {
         return dropRolls(rolls, count, findIndexOfLowestRoll);
     },
 
@@ -159,7 +159,7 @@ module.exports = {
      *      specified number, or `NaN` if `x` is not defined, or `0` if `x` is
      *      `null`.
      */
-    floor: function (x) {
+    floor(x) {
         return Math.floor(x);
     },
 
@@ -174,7 +174,7 @@ module.exports = {
      * @throws {Error} If `count` is not a positive number or if `die` is not
      *      defined.
      */
-    roll: function (count, die) {
+    roll(count, die) {
         if (!_.isNumber(count)) {
             throw new Error('count is not a number');
         } else if (count < 1) {
@@ -201,7 +201,7 @@ module.exports = {
      *      nearest integer, or `NaN` if `x` is not defined, or `0` if `x` is
      *      `null`.
      */
-    round: function (x) {
+    round(x) {
         return Math.round(x);
     },
 
@@ -215,17 +215,12 @@ module.exports = {
      * @throws {Error} If `rolls` is not defined or if `rolls` contains less
      *      than one element.
      */
-    sum: function (rolls) {
+    sum(rolls) {
         if (!rolls || rolls.length < 1) {
             throw new Error('roll count is not positive');
         }
 
-        return rolls.reduce(
-            function (first, second) {
-                return first + second;
-            },
-            0
-        );
+        return rolls.reduce((first, second) => first + second, 0);
     },
 
     /**
@@ -240,7 +235,7 @@ module.exports = {
      * @returns {Number!} The integral part of the specified number, or `NaN`
      *      if `x` is not defined, or `0` if `x` is `null`.
      */
-    trunc: function (x) {
+    trunc(x) {
         return Math.trunc(x);
     }
 };

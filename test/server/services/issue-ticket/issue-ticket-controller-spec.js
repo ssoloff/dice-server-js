@@ -12,7 +12,7 @@ const controllerTest = require('../../test-support/controller-test');
 const httpStatus = require('http-status-codes');
 const ja = require('json-assert');
 
-describe('issueTicketController', function () {
+describe('issueTicketController', () => {
     let controller;
     let request;
     let response;
@@ -39,11 +39,11 @@ describe('issueTicketController', function () {
         }
     }
 
-    beforeEach(function () {
+    beforeEach(() => {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
         request = controllerTest.createRequest();
-        modifyRequestBody(function () {
+        modifyRequestBody(() => {
             request.body = {
                 description: 'description',
                 evaluateExpressionRequestBody: {
@@ -60,7 +60,7 @@ describe('issueTicketController', function () {
             };
         });
 
-        response = controllerTest.createResponse(function (json) {
+        response = controllerTest.createResponse((json) => {
             responseBody = json;
         });
         responseBody = null;
@@ -68,9 +68,9 @@ describe('issueTicketController', function () {
         controller = createIssueTicketController();
     });
 
-    describe('.issueTicket', function () {
-        describe('when evaluate expression controller responds with success', function () {
-            it('should respond with OK', function () {
+    describe('.issueTicket', () => {
+        describe('when evaluate expression controller responds with success', () => {
+            it('should respond with OK', () => {
                 controller.issueTicket(request, response);
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
@@ -97,25 +97,25 @@ describe('issueTicketController', function () {
                 });
             });
 
-            it('should respond with a valid ticket', function () {
+            it('should respond with a valid ticket', () => {
                 controller.issueTicket(request, response);
 
                 expect(responseBody.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
             });
 
-            it('should respond with a signed ticket', function () {
+            it('should respond with a signed ticket', () => {
                 controller.issueTicket(request, response);
 
                 expect(responseBody.ticket).toBeSigned();
             });
         });
 
-        describe('when evaluate expression controller responds with error', function () {
-            it('should respond with same error', function () {
+        describe('when evaluate expression controller responds with error', () => {
+            it('should respond with same error', () => {
                 const expectedStatus = httpStatus.BAD_GATEWAY;
                 const expectedErrorMessage = 'message';
                 const stubEvaluateExpressionController = {
-                    evaluateExpression: function (request, response) {
+                    evaluateExpression(request, response) {
                         response.status(expectedStatus).json({
                             error: {
                                 message: expectedErrorMessage
@@ -137,9 +137,9 @@ describe('issueTicketController', function () {
             });
         });
 
-        describe('when random number generator specification is not provided', function () {
-            it('should use uniform random number generator with seed', function () {
-                modifyRequestBody(function () {
+        describe('when random number generator specification is not provided', () => {
+            it('should use uniform random number generator with seed', () => {
+                modifyRequestBody(() => {
                     request.body = {
                         description: 'description',
                         evaluateExpressionRequestBody: {

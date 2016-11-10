@@ -17,7 +17,7 @@ const random = require('../../util/random');
 const security = require('../../util/security');
 
 module.exports = {
-    create: function (controllerData) {
+    create(controllerData) {
         function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
             switch (randomNumberGeneratorSpecification.name) {
                 case 'constantMax':
@@ -112,7 +112,7 @@ module.exports = {
         }
 
         return {
-            evaluateExpression: function (request, response) {
+            evaluateExpression(request, response) {
                 try {
                     controllerUtils.setSuccessResponse(response, createResponseBody(request));
                 } catch (e) {

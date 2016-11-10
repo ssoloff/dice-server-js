@@ -11,9 +11,7 @@
 const driver = require('./driver');
 
 module.exports = function () {
-    this.registerHandler('AfterFeatures', function (event, callback) {
-        driver.quit().then(function () {
-            callback();
-        });
+    this.registerHandler('AfterFeatures', (event, callback) => {
+        driver.quit().then(() => callback());
     });
 };

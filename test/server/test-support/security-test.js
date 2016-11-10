@@ -23,7 +23,7 @@ module.exports = {
      * @returns {Object!} The alternate private key to use for security
      *      testing.
      */
-    getOtherPrivateKey: function () {
+    getOtherPrivateKey() {
         return fs.readFileSync(path.join(__dirname, '../test-keys/other-private-key.pem'));
     },
 
@@ -33,7 +33,7 @@ module.exports = {
      * @returns {Object!} The alternate public key to use for security
      *      testing.
      */
-    getOtherPublicKey: function () {
+    getOtherPublicKey() {
         return fs.readFileSync(path.join(__dirname, '../test-keys/other-public-key.pem'));
     },
 
@@ -42,7 +42,7 @@ module.exports = {
      *
      * @returns {Object!} The primary private key to use for security testing.
      */
-    getPrivateKey: function () {
+    getPrivateKey() {
         return fs.readFileSync(path.join(__dirname, '../test-keys/private-key.pem'));
     },
 
@@ -51,7 +51,7 @@ module.exports = {
      *
      * @returns {Object!} The primary public key to use for security testing.
      */
-    getPublicKey: function () {
+    getPublicKey() {
         return fs.readFileSync(path.join(__dirname, '../test-keys/public-key.pem'));
     }
 };

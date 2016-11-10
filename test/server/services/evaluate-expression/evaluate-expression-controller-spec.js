@@ -13,7 +13,7 @@ const httpStatus = require('http-status-codes');
 const ja = require('json-assert');
 const security = require('../../../../src/server/util/security');
 
-describe('evaluateExpressionController', function () {
+describe('evaluateExpressionController', () => {
     let controller;
     let request;
     let response;
@@ -34,11 +34,11 @@ describe('evaluateExpressionController', function () {
         }
     }
 
-    beforeEach(function () {
+    beforeEach(() => {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
         request = controllerTest.createRequest();
-        modifyRequestBody(function () {
+        modifyRequestBody(() => {
             request.body = {
                 expression: {
                     text: '3d6+4'
@@ -52,7 +52,7 @@ describe('evaluateExpressionController', function () {
             };
         });
 
-        response = controllerTest.createResponse(function (json) {
+        response = controllerTest.createResponse((json) => {
             responseBody = json;
         });
         responseBody = null;
@@ -60,9 +60,9 @@ describe('evaluateExpressionController', function () {
         controller = createEvaluateExpressionController();
     });
 
-    describe('.evaluateExpression', function () {
-        describe('when expression is well-formed', function () {
-            it('should respond with OK', function () {
+    describe('.evaluateExpression', () => {
+        describe('when expression is well-formed', () => {
+            it('should respond with OK', () => {
                 controller.evaluateExpression(request, response);
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
@@ -96,14 +96,14 @@ describe('evaluateExpressionController', function () {
             });
         });
 
-        describe('when expression is malformed', function () {
-            beforeEach(function () {
-                modifyRequestBody(function () {
+        describe('when expression is malformed', () => {
+            beforeEach(() => {
+                modifyRequestBody(() => {
                     request.body.expression.text = '<<INVALID>>';
                 });
             });
 
-            it('should respond with bad request error', function () {
+            it('should respond with bad request error', () => {
                 controller.evaluateExpression(request, response);
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
@@ -115,10 +115,10 @@ describe('evaluateExpressionController', function () {
             });
         });
 
-        describe('specifying a random number generator', function () {
-            describe('when the random number generator is not specified', function () {
-                it('should use the default random number generator', function () {
-                    modifyRequestBody(function () {
+        describe('specifying a random number generator', () => {
+            describe('when the random number generator is not specified', () => {
+                it('should use the default random number generator', () => {
+                    modifyRequestBody(() => {
                         delete request.body.randomNumberGenerator;
                     });
 
@@ -129,9 +129,9 @@ describe('evaluateExpressionController', function () {
                 });
             });
 
-            describe('when the uniform random number generator is specified', function () {
-                it('should use the uniform random number generator', function () {
-                    modifyRequestBody(function () {
+            describe('when the uniform random number generator is specified', () => {
+                it('should use the uniform random number generator', () => {
+                    modifyRequestBody(() => {
                         request.body.randomNumberGenerator.content.name = 'uniform';
                     });
 
@@ -144,9 +144,9 @@ describe('evaluateExpressionController', function () {
                 });
             });
 
-            describe('when the constantMax random number generator is specified', function () {
-                it('should use the constantMax random number generator', function () {
-                    modifyRequestBody(function () {
+            describe('when the constantMax random number generator is specified', () => {
+                it('should use the constantMax random number generator', () => {
+                    modifyRequestBody(() => {
                         request.body.randomNumberGenerator.content.name = 'constantMax';
                     });
 
@@ -158,9 +158,9 @@ describe('evaluateExpressionController', function () {
                 });
             });
 
-            describe('when an unknown random number generator is specified', function () {
-                it('should respond with bad request error', function () {
-                    modifyRequestBody(function () {
+            describe('when an unknown random number generator is specified', () => {
+                it('should respond with bad request error', () => {
+                    modifyRequestBody(() => {
                         request.body.randomNumberGenerator.content.name = '<<UNKNOWN>>';
                     });
 
@@ -171,8 +171,8 @@ describe('evaluateExpressionController', function () {
                 });
             });
 
-            describe('when random number generator specification has an invalid signature', function () {
-                it('should respond with bad request error', function () {
+            describe('when random number generator specification has an invalid signature', () => {
+                it('should respond with bad request error', () => {
                     const otherPrivateKey = controllerTest.getOtherPrivateKey();
                     const otherPublicKey = controllerTest.getOtherPublicKey();
 
@@ -190,10 +190,10 @@ describe('evaluateExpressionController', function () {
             });
         });
 
-        describe('evaluating an expression whose result value is not a finite number', function () {
-            describe('when result value is not a number', function () {
-                it('should respond with bad request error', function () {
-                    modifyRequestBody(function () {
+        describe('evaluating an expression whose result value is not a finite number', () => {
+            describe('when result value is not a number', () => {
+                it('should respond with bad request error', () => {
+                    modifyRequestBody(() => {
                         request.body.expression.text = 'd6';
                     });
 
@@ -204,9 +204,9 @@ describe('evaluateExpressionController', function () {
                 });
             });
 
-            describe('when result value is NaN', function () {
-                it('should respond with bad request error', function () {
-                    modifyRequestBody(function () {
+            describe('when result value is NaN', () => {
+                it('should respond with bad request error', () => {
+                    modifyRequestBody(() => {
                         request.body.expression.text = 'round(d6)';
                     });
 

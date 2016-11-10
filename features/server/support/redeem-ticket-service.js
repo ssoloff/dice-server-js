@@ -21,7 +21,7 @@ RedeemTicketService.prototype.call = function (callback) {
         json: true,
         uri: this.requestUrl
     };
-    req.post(requestData, function (error, response, body) {
+    req.post(requestData, (error, response, body) => {
         if (!error) {
             callback(response.statusCode, body);
         } else {

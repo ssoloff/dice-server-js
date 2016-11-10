@@ -12,7 +12,7 @@ const dice = require('../../../src/server/model/dice');
 const diceExpressionFunctions = require('../../../src/server/model/dice-expression-functions');
 const diceTest = require('./test-support/dice-test');
 
-describe('diceExpressionParser', function () {
+describe('diceExpressionParser', () => {
     const f = Math.max;
     let expressionParser;
     let expressionParserContext;
@@ -20,7 +20,7 @@ describe('diceExpressionParser', function () {
     let two;
     let three;
 
-    beforeEach(function () {
+    beforeEach(() => {
         jasmine.addCustomEqualityTester(diceTest.isDiceExpressionEqual);
         expressionParserContext = dice.expressionParser.createDefaultContext();
         expressionParserContext.functions.f = f;
@@ -30,47 +30,47 @@ describe('diceExpressionParser', function () {
         three = dice.expression.forConstant(3);
     });
 
-    describe('.create', function () {
-        it('should use a default context if one is not provided', function () {
+    describe('.create', () => {
+        it('should use a default context if one is not provided', () => {
             expressionParser = dice.expressionParser.create();
             expect(expressionParser.parse('trunc(3/2)').evaluate().value).toBe(1);
         });
 
-        it('should use the dice bag in the context', function () {
+        it('should use the dice bag in the context', () => {
             expressionParserContext.bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
             expect(expressionParser.parse('3d6').evaluate().value).toBe(3);
         });
     });
 
-    describe('#parse', function () {
-        describe('when source empty', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('#parse', () => {
+        describe('when source empty', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     expressionParser.parse('');
                 }).toThrow();
             });
         });
 
-        describe('literals', function () {
-            it('should parse an integer literal', function () {
+        describe('literals', () => {
+            it('should parse an integer literal', () => {
                 expect(expressionParser.parse('2')).toEqual(two);
             });
 
-            it('should parse an array literal', function () {
+            it('should parse an array literal', () => {
                 expect(expressionParser.parse('[]')).toEqual(dice.expression.forArray([]));
                 expect(expressionParser.parse('[1]')).toEqual(dice.expression.forArray([one]));
                 expect(expressionParser.parse('[1, 2]')).toEqual(dice.expression.forArray([one, two]));
             });
 
-            it('should parse a die literal', function () {
+            it('should parse a die literal', () => {
                 expect(expressionParser.parse('d6')).toEqual(dice.expression.forDie(expressionParserContext.bag.d(6)));
             });
 
-            it('should parse a percentile die literal', function () {
+            it('should parse a percentile die literal', () => {
                 expect(expressionParser.parse('d%')).toEqual(dice.expression.forDie(expressionParserContext.bag.d(100)));
             });
 
-            it('should parse a dice roll literal', function () {
+            it('should parse a dice roll literal', () => {
                 expect(expressionParser.parse('3d6')).toEqual(
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
@@ -81,7 +81,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse a percentile dice roll literal', function () {
+            it('should parse a percentile dice roll literal', () => {
                 expect(expressionParser.parse('2d%')).toEqual(
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
@@ -92,7 +92,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse a dice roll and clone highest literal', function () {
+            it('should parse a dice roll and clone highest literal', () => {
                 expect(expressionParser.parse('4d6+H')).toEqual(
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('cloneHighestRolls', diceExpressionFunctions.cloneHighestRolls, [
@@ -117,7 +117,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse a dice roll and clone lowest literal', function () {
+            it('should parse a dice roll and clone lowest literal', () => {
                 expect(expressionParser.parse('4d6+L')).toEqual(
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('cloneLowestRolls', diceExpressionFunctions.cloneLowestRolls, [
@@ -142,7 +142,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse a dice roll and drop highest literal', function () {
+            it('should parse a dice roll and drop highest literal', () => {
                 expect(expressionParser.parse('4d6-H')).toEqual(
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('dropHighestRolls', diceExpressionFunctions.dropHighestRolls, [
@@ -167,7 +167,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse a dice roll and drop lowest literal', function () {
+            it('should parse a dice roll and drop lowest literal', () => {
                 expect(expressionParser.parse('4d6-L')).toEqual(
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('dropLowestRolls', diceExpressionFunctions.dropLowestRolls, [
@@ -193,30 +193,30 @@ describe('diceExpressionParser', function () {
             });
         });
 
-        describe('arithmetic operators', function () {
-            it('should parse the addition of two constants', function () {
+        describe('arithmetic operators', () => {
+            it('should parse the addition of two constants', () => {
                 expect(expressionParser.parse('1 + 2')).toEqual(dice.expression.forAddition(one, two));
             });
 
-            it('should parse the subtraction of two constants', function () {
+            it('should parse the subtraction of two constants', () => {
                 expect(expressionParser.parse('1 - 2')).toEqual(dice.expression.forSubtraction(one, two));
             });
 
-            it('should parse the multiplication of two constants', function () {
+            it('should parse the multiplication of two constants', () => {
                 expect(expressionParser.parse('1 * 2')).toEqual(dice.expression.forMultiplication(one, two));
             });
 
-            it('should parse the division of two constants', function () {
+            it('should parse the division of two constants', () => {
                 expect(expressionParser.parse('1 / 2')).toEqual(dice.expression.forDivision(one, two));
             });
 
-            it('should parse the modulo of two constants', function () {
+            it('should parse the modulo of two constants', () => {
                 expect(expressionParser.parse('3 % 2')).toEqual(dice.expression.forModulo(three, two));
             });
         });
 
-        describe('extended divide and round operators', function () {
-            it('should parse divide and round towards zero', function () {
+        describe('extended divide and round operators', () => {
+            it('should parse divide and round towards zero', () => {
                 expect(expressionParser.parse('1 // 2')).toEqual(
                     dice.expression.forFunctionCall('trunc', diceExpressionFunctions.trunc, [
                         dice.expression.forDivision(one, two)
@@ -224,7 +224,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse divide and round to nearest', function () {
+            it('should parse divide and round to nearest', () => {
                 expect(expressionParser.parse('1 /~ 2')).toEqual(
                     dice.expression.forFunctionCall('round', diceExpressionFunctions.round, [
                         dice.expression.forDivision(one, two)
@@ -232,7 +232,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse divide and round up', function () {
+            it('should parse divide and round up', () => {
                 expect(expressionParser.parse('1 /+ 2')).toEqual(
                     dice.expression.forFunctionCall('ceil', diceExpressionFunctions.ceil, [
                         dice.expression.forDivision(one, two)
@@ -240,7 +240,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse divide and round down', function () {
+            it('should parse divide and round down', () => {
                 expect(expressionParser.parse('1 /- 2')).toEqual(
                     dice.expression.forFunctionCall('floor', diceExpressionFunctions.floor, [
                         dice.expression.forDivision(one, two)
@@ -249,18 +249,18 @@ describe('diceExpressionParser', function () {
             });
         });
 
-        describe('unary operators', function () {
-            it('should parse positive', function () {
+        describe('unary operators', () => {
+            it('should parse positive', () => {
                 expect(expressionParser.parse('+1')).toEqual(dice.expression.forPositive(one));
             });
 
-            it('should parse negative', function () {
+            it('should parse negative', () => {
                 expect(expressionParser.parse('-1')).toEqual(dice.expression.forNegative(one));
             });
         });
 
-        describe('operator precedence', function () {
-            it('should give precedence to multiplication over addition', function () {
+        describe('operator precedence', () => {
+            it('should give precedence to multiplication over addition', () => {
                 expect(expressionParser.parse('3*1+1*3')).toEqual(
                     dice.expression.forAddition(
                         dice.expression.forMultiplication(three, one),
@@ -269,7 +269,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should allow grouping to override operator precedence', function () {
+            it('should allow grouping to override operator precedence', () => {
                 expect(expressionParser.parse('(3*1)+(1*3)')).toEqual(
                     dice.expression.forAddition(
                         dice.expression.forGroup(dice.expression.forMultiplication(three, one)),
@@ -309,7 +309,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should give precedence to divide and round down operator over unary negative operator', function () {
+            it('should give precedence to divide and round down operator over unary negative operator', () => {
                 expect(expressionParser.parse('1/-2')).toEqual(
                     dice.expression.forFunctionCall('floor', diceExpressionFunctions.floor, [
                         dice.expression.forDivision(one, two)
@@ -320,7 +320,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should give precedence to divide and round up operator over unary positive operator', function () {
+            it('should give precedence to divide and round up operator over unary positive operator', () => {
                 expect(expressionParser.parse('1/+2')).toEqual(
                     dice.expression.forFunctionCall('ceil', diceExpressionFunctions.ceil, [
                         dice.expression.forDivision(one, two)
@@ -332,43 +332,43 @@ describe('diceExpressionParser', function () {
             });
         });
 
-        describe('function calls', function () {
-            describe('when function is unknown', function () {
-                it('should throw exception', function () {
-                    expect(function () {
+        describe('function calls', () => {
+            describe('when function is unknown', () => {
+                it('should throw exception', () => {
+                    expect(() => {
                         expressionParser.parse('unknown()');
                     }).toThrow();
                 });
             });
 
-            it('should parse a function call with zero arguments', function () {
+            it('should parse a function call with zero arguments', () => {
                 expect(expressionParser.parse('f()')).toEqual(dice.expression.forFunctionCall('f', f, []));
             });
 
-            it('should parse a function call with one argument', function () {
+            it('should parse a function call with one argument', () => {
                 expect(expressionParser.parse('f(1)')).toEqual(dice.expression.forFunctionCall('f', f, [one]));
             });
 
-            it('should parse a function call with two arguments', function () {
+            it('should parse a function call with two arguments', () => {
                 expect(expressionParser.parse('f(1, 2)')).toEqual(dice.expression.forFunctionCall('f', f, [one, two]));
             });
         });
 
-        describe('built-in functions', function () {
-            describe('when context contains a function with the same name as a built-in function', function () {
-                it('should use the function from the context', function () {
-                    expressionParserContext.functions.ceil = function () {
+        describe('built-in functions', () => {
+            describe('when context contains a function with the same name as a built-in function', () => {
+                it('should use the function from the context', () => {
+                    expressionParserContext.functions.ceil = () => {
                         return 42;
                     };
                     expect(expressionParser.parse('ceil(1)').evaluate().value).toBe(42);
                 });
             });
 
-            it('should parse the built-in ceil() function', function () {
+            it('should parse the built-in ceil() function', () => {
                 expect(expressionParser.parse('ceil(1)')).toEqual(dice.expression.forFunctionCall('ceil', diceExpressionFunctions.ceil, [one]));
             });
 
-            it('should parse the built-in cloneHighestRolls() function', function () {
+            it('should parse the built-in cloneHighestRolls() function', () => {
                 expect(expressionParser.parse('cloneHighestRolls(roll(3, d6), 2)')).toEqual(
                     dice.expression.forFunctionCall('cloneHighestRolls', diceExpressionFunctions.cloneHighestRolls, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
@@ -380,7 +380,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse the built-in cloneLowestRolls() function', function () {
+            it('should parse the built-in cloneLowestRolls() function', () => {
                 expect(expressionParser.parse('cloneLowestRolls(roll(3, d6), 2)')).toEqual(
                     dice.expression.forFunctionCall('cloneLowestRolls', diceExpressionFunctions.cloneLowestRolls, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
@@ -392,7 +392,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse the built-in dropHighestRolls() function', function () {
+            it('should parse the built-in dropHighestRolls() function', () => {
                 expect(expressionParser.parse('dropHighestRolls(roll(3, d6), 2)')).toEqual(
                     dice.expression.forFunctionCall('dropHighestRolls', diceExpressionFunctions.dropHighestRolls, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
@@ -404,7 +404,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse the built-in dropLowestRolls() function', function () {
+            it('should parse the built-in dropLowestRolls() function', () => {
                 expect(expressionParser.parse('dropLowestRolls(roll(3, d6), 2)')).toEqual(
                     dice.expression.forFunctionCall('dropLowestRolls', diceExpressionFunctions.dropLowestRolls, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
@@ -416,11 +416,11 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse the built-in floor() function', function () {
+            it('should parse the built-in floor() function', () => {
                 expect(expressionParser.parse('floor(1)')).toEqual(dice.expression.forFunctionCall('floor', diceExpressionFunctions.floor, [one]));
             });
 
-            it('should parse the built-in roll() function', function () {
+            it('should parse the built-in roll() function', () => {
                 expect(expressionParser.parse('roll(3, d6)')).toEqual(
                     dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                         dice.expression.forConstant(3),
@@ -429,11 +429,11 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse the built-in round() function', function () {
+            it('should parse the built-in round() function', () => {
                 expect(expressionParser.parse('round(1)')).toEqual(dice.expression.forFunctionCall('round', diceExpressionFunctions.round, [one]));
             });
 
-            it('should parse the built-in sum() function', function () {
+            it('should parse the built-in sum() function', () => {
                 expect(expressionParser.parse('sum(roll(2, d8))')).toEqual(
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
@@ -444,7 +444,7 @@ describe('diceExpressionParser', function () {
                 );
             });
 
-            it('should parse the built-in trunc() function', function () {
+            it('should parse the built-in trunc() function', () => {
                 expect(expressionParser.parse('trunc(1)')).toEqual(dice.expression.forFunctionCall('trunc', diceExpressionFunctions.trunc, [one]));
             });
         });

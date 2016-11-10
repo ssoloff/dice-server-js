@@ -40,8 +40,7 @@ module.exports = function () {
     });
 
     this.When(/^the validate redeemed ticket service is invoked$/, function (callback) {
-        const runner = this;
-        this.issueTicketService.call(function (responseStatus, responseBody) {
+        this.issueTicketService.call((responseStatus, responseBody) => {
             const issueTicketResponseBody = responseBody;
 
             if (responseStatus !== httpStatus.OK) {
@@ -49,7 +48,7 @@ module.exports = function () {
             }
 
             this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
-            this.redeemTicketService.call(function (responseStatus, responseBody) {
+            this.redeemTicketService.call((responseStatus, responseBody) => {
                 const redeemTicketResponseBody = responseBody;
 
                 if (responseStatus !== httpStatus.OK) {
@@ -60,13 +59,13 @@ module.exports = function () {
                     redeemTicketResponseBody.redeemedTicket.content.description += '...'; // change content so signature will not match
                 }
                 this.validateRedeemedTicketService.setRequestFromRedeemTicketResponseBody(redeemTicketResponseBody);
-                this.validateRedeemedTicketService.call(function (responseStatus, responseBody) {
+                this.validateRedeemedTicketService.call((responseStatus, responseBody) => {
                     this.response.status = responseStatus;
                     this.response.body = responseBody;
                     callback();
-                }.bind(runner));
-            }.bind(runner));
-        }.bind(runner));
+                });
+            });
+        });
     });
 
     this.Then(/^the response should indicate failure$/, function () {

@@ -12,7 +12,7 @@ const controllerTest = require('../../test-support/controller-test');
 const httpStatus = require('http-status-codes');
 const ja = require('json-assert');
 
-describe('validateRedeemedTicketController', function () {
+describe('validateRedeemedTicketController', () => {
     let controller;
     let request;
     let response;
@@ -35,11 +35,11 @@ describe('validateRedeemedTicketController', function () {
         callback();
     }
 
-    beforeEach(function () {
+    beforeEach(() => {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
         request = controllerTest.createRequest();
-        modifyRequestBody(function () {
+        modifyRequestBody(() => {
             request.body = {
                 redeemedTicket: {
                     content: {
@@ -65,7 +65,7 @@ describe('validateRedeemedTicketController', function () {
             };
         });
 
-        response = controllerTest.createResponse(function (json) {
+        response = controllerTest.createResponse((json) => {
             responseBody = json;
         });
         responseBody = null;
@@ -73,9 +73,9 @@ describe('validateRedeemedTicketController', function () {
         controller = createValidateRedeemedTicketController();
     });
 
-    describe('.validateRedeemedTicket', function () {
-        describe('when redeemed ticket is valid', function () {
-            it('should respond with OK', function () {
+    describe('.validateRedeemedTicket', () => {
+        describe('when redeemed ticket is valid', () => {
+            it('should respond with OK', () => {
                 controller.validateRedeemedTicket(request, response);
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
@@ -83,9 +83,9 @@ describe('validateRedeemedTicketController', function () {
             });
         });
 
-        describe('when redeemed ticket has an invalid signature', function () {
-            it('should respond with bad request error', function () {
-                modifyRequestBodyWithoutSignatureUpdate(function () {
+        describe('when redeemed ticket has an invalid signature', () => {
+            it('should respond with bad request error', () => {
+                modifyRequestBodyWithoutSignatureUpdate(() => {
                     request.body.redeemedTicket.content.description += '...'; // simulate forged content
                 });
 

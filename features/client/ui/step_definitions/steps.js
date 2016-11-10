@@ -61,7 +61,7 @@ module.exports = function () {
     });
 
     this.Then(/^an error message should be displayed$/, function () {
-        this.homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
+        this.homePage.isErrorMessageDisplayed().then((isDisplayed) => {
             // jshint expr: true
             expect(isDisplayed).to.be.true;
         });
@@ -71,7 +71,7 @@ module.exports = function () {
     });
 
     this.Then(/^an error message should not be displayed$/, function () {
-        return this.homePage.isErrorMessageDisplayed().then(function (isDisplayed) {
+        return this.homePage.isErrorMessageDisplayed().then((isDisplayed) => {
             // jshint expr: true
             expect(isDisplayed).to.be.false;
         });
@@ -79,12 +79,12 @@ module.exports = function () {
 
     this.Then(/^help should( not)? be displayed$/, function (negate) {
         if (negate) {
-            return this.homePage.waitUntilHelpIsNotDisplayed().then(function (isDisplayed) {
+            return this.homePage.waitUntilHelpIsNotDisplayed().then((isDisplayed) => {
                 // jshint expr: true
                 expect(isDisplayed).to.be.false;
             });
         } else {
-            return this.homePage.waitUntilHelpIsDisplayed().then(function (isDisplayed) {
+            return this.homePage.waitUntilHelpIsDisplayed().then((isDisplayed) => {
                 // jshint expr: true
                 expect(isDisplayed).to.be.true;
             });
@@ -92,37 +92,37 @@ module.exports = function () {
     });
 
     this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "(.*)"$/, function (index, expressionCanonicalText) {
-        return this.homePage.getExpressionCanonicalTextAtIndex(Number(index ? index : "1")).then(function (text) {
+        return this.homePage.getExpressionCanonicalTextAtIndex(Number(index ? index : "1")).then((text) => {
             expect(text).to.equal(expressionCanonicalText);
         });
     });
 
     this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "(.*)"$/, function (index, expressionText) {
-        return this.homePage.getExpressionTextAtIndex(Number(index ? index : "1")).then(function (text) {
+        return this.homePage.getExpressionTextAtIndex(Number(index ? index : "1")).then((text) => {
             expect(text).to.equal(expressionText);
         });
     });
 
     this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression result text should be "(.*)"$/, function (index, expressionResultText) {
-        return this.homePage.getExpressionResultTextAtIndex(Number(index ? index : "1")).then(function (text) {
+        return this.homePage.getExpressionResultTextAtIndex(Number(index ? index : "1")).then((text) => {
             expect(text).to.equal(expressionResultText);
         });
     });
 
     this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression result value should be "(.*)"$/, function (index, expressionResultValue) {
-        return this.homePage.getExpressionResultValueAtIndex(Number(index ? index : "1")).then(function (text) {
+        return this.homePage.getExpressionResultValueAtIndex(Number(index ? index : "1")).then((text) => {
             expect(text).to.equal(expressionResultValue);
         });
     });
 
     this.Then(/^the help link text should be "(.*)"$/, function (helpLinkText) {
-        return this.homePage.getHelpLinkText().then(function (text) {
+        return this.homePage.getHelpLinkText().then((text) => {
             expect(text).to.equal(helpLinkText);
         });
     });
 
     this.Then(/^the results table should be empty$/, function () {
-        return this.homePage.getExpressionResultCount().then(function (expressionResultCount) {
+        return this.homePage.getExpressionResultCount().then((expressionResultCount) => {
             expect(expressionResultCount).to.equal(0);
         });
     });

@@ -10,7 +10,7 @@
 
 const bodyParser = require('body-parser');
 
-module.exports = function (app, privateKey, publicKey) {
+module.exports = (app, privateKey, publicKey) => {
     const evaluateExpressionPath = '/expression/evaluate';
     const issueTicketPath = '/ticket/issue';
     const redeemTicketPath = '/ticket/redeem';

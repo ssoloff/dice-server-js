@@ -23,13 +23,14 @@ module.exports = {
      *
      * @returns {Object!} A new request.
      */
-    createRequest: function () {
+    createRequest() {
         return {
             body: null,
-            get: function () {
+            protocol: 'http',
+
+            get() {
                 return 'host:1234';
-            },
-            protocol: 'http'
+            }
         };
     },
 
@@ -42,13 +43,14 @@ module.exports = {
      *
      * @returns {Object!} A new response.
      */
-    createResponse: function (jsonCallback) {
+    createResponse(jsonCallback) {
         const response = {
-            json: function (json) {
+            json(json) {
                 jsonCallback(json);
                 return this;
             },
-            status: function () {
+
+            status() {
                 return this;
             }
         };
@@ -71,7 +73,7 @@ module.exports = {
      *
      * @returns {Object!} The detached JSON web signature.
      */
-    createSignature: function (content) {
+    createSignature(content) {
         return security.createSignature(content, this.getPrivateKey(), this.getPublicKey());
     },
 
@@ -81,7 +83,7 @@ module.exports = {
      * @returns {Object!} The alternate private key to be used by secure
      *      controllers.
      */
-    getOtherPrivateKey: function () {
+    getOtherPrivateKey() {
         return securityTest.getOtherPrivateKey();
     },
 
@@ -91,7 +93,7 @@ module.exports = {
      * @returns {Object!} The alternate public key to be used by secure
      *      controllers.
      */
-    getOtherPublicKey: function () {
+    getOtherPublicKey() {
         return securityTest.getOtherPublicKey();
     },
 
@@ -100,7 +102,7 @@ module.exports = {
      *
      * @returns {Object!} The private key to be used by secure controllers.
      */
-    getPrivateKey: function () {
+    getPrivateKey() {
         return securityTest.getPrivateKey();
     },
 
@@ -109,7 +111,7 @@ module.exports = {
      *
      * @returns {Object!} The public key to be used by secure controllers.
      */
-    getPublicKey: function () {
+    getPublicKey() {
         return securityTest.getPublicKey();
     },
 
@@ -128,7 +130,7 @@ module.exports = {
      *      `actual` does not equal `expected`; or `undefined` if both `actual`
      *      and `expected` are not response body objects.
      */
-    isResponseBodyEqual: function (actual, expected) {
+    isResponseBodyEqual(actual, expected) {
         // istanbul ignore else
         if (ja.isEqual(expected, actual, true)) {
             return true;

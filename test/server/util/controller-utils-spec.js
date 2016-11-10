@@ -12,10 +12,10 @@ const controllerTest = require('../test-support/controller-test');
 const controllerUtils = require('../../../src/server/util/controller-utils');
 const httpStatus = require('http-status-codes');
 
-describe('controllerUtils', function () {
-    describe('.createControllerErrorFromResponse', function () {
-        describe('when response body does not contain an error', function () {
-            it('should create error with empty message', function () {
+describe('controllerUtils', () => {
+    describe('.createControllerErrorFromResponse', () => {
+        describe('when response body does not contain an error', () => {
+            it('should create error with empty message', () => {
                 const e = controllerUtils.createControllerErrorFromResponse(httpStatus.INTERNAL_SERVER_ERROR, {});
 
                 expect(e.message).toBe('');
@@ -23,10 +23,10 @@ describe('controllerUtils', function () {
         });
     });
 
-    describe('.setFailureResponse', function () {
-        describe('when error is not an instance of ControllerError', function () {
-            it('should set response status to internal server error', function () {
-                const response = controllerTest.createResponse(function () {
+    describe('.setFailureResponse', () => {
+        describe('when error is not an instance of ControllerError', () => {
+            it('should set response status to internal server error', () => {
+                const response = controllerTest.createResponse(() => {
                 });
 
                 controllerUtils.setFailureResponse(response, new Error('message'));

@@ -12,35 +12,35 @@ const _ = require('underscore');
 const dice = require('../../../src/server/model/dice');
 const diceTest = require('./test-support/dice-test');
 
-describe('diceExpression', function () {
+describe('diceExpression', () => {
     let three;
     let four;
 
-    beforeEach(function () {
+    beforeEach(() => {
         jasmine.addCustomEqualityTester(diceTest.isDiceExpressionResultEqual);
         three = dice.expression.forConstant(3);
         four = dice.expression.forConstant(4);
     });
 
-    describe('.forAddition', function () {
-        describe('when augend expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forAddition', () => {
+        describe('when augend expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forAddition(undefined, three);
                 }).toThrow();
             });
         });
 
-        describe('when addend expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when addend expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forAddition(four, undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to sum of augend and addend', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to sum of augend and addend', () => {
                 const expression = dice.expression.forAddition(four, three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forAddition(
@@ -50,27 +50,27 @@ describe('diceExpression', function () {
                 );
             });
 
-            it('should evaluate subexpressions', function () {
+            it('should evaluate subexpressions', () => {
                 const expression = dice.expression.forAddition(dice.expression.forAddition(four, three), three);
                 expect(expression.evaluate().value).toBe(10);
             });
         });
     });
 
-    describe('.forArray', function () {
-        describe('when expressions is not an array', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forArray', () => {
+        describe('when expressions is not an array', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forArray(undefined);
                 }).toThrow();
-                expect(function () {
+                expect(() => {
                     dice.expression.forArray('3');
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to array of expression result values', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to array of expression result values', () => {
                 const expression = dice.expression.forArray([three, four]);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forArray([
@@ -82,20 +82,20 @@ describe('diceExpression', function () {
         });
     });
 
-    describe('.forConstant', function () {
-        describe('when constant is not a number', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forConstant', () => {
+        describe('when constant is not a number', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forConstant(undefined);
                 }).toThrow();
-                expect(function () {
+                expect(() => {
                     dice.expression.forConstant('3');
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to constant', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to constant', () => {
                 const constant = 5;
                 const expression = dice.expression.forConstant(constant);
                 expect(expression.evaluate()).toEqual(dice.expressionResult.forConstant(constant));
@@ -103,17 +103,17 @@ describe('diceExpression', function () {
         });
     });
 
-    describe('.forDie', function () {
-        describe('when die is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forDie', () => {
+        describe('when die is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forDie(undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to die', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to die', () => {
                 const d3 = dice.bag.create().d(3);
                 const expression = dice.expression.forDie(d3);
                 expect(expression.evaluate()).toEqual(dice.expressionResult.forDie(d3));
@@ -121,25 +121,25 @@ describe('diceExpression', function () {
         });
     });
 
-    describe('.forDivision', function () {
-        describe('when dividend expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forDivision', () => {
+        describe('when dividend expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forDivision(undefined, three);
                 }).toThrow();
             });
         });
 
-        describe('when divisor expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when divisor expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forDivision(four, undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to quotient of dividend and divisor', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to quotient of dividend and divisor', () => {
                 const expression = dice.expression.forDivision(three, four);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forDivision(
@@ -149,14 +149,14 @@ describe('diceExpression', function () {
                 );
             });
 
-            it('should evaluate subexpressions', function () {
+            it('should evaluate subexpressions', () => {
                 const expression = dice.expression.forDivision(dice.expression.forDivision(three, four), four);
                 expect(expression.evaluate().value).toBe(0.1875);
             });
         });
     });
 
-    describe('.forFunctionCall', function () {
+    describe('.forFunctionCall', () => {
         function f() {
             function sum(first, second) {
                 return first + second;
@@ -164,39 +164,39 @@ describe('diceExpression', function () {
             return 42 + _.toArray(arguments).reduce(sum, 0);
         }
 
-        describe('when function name is not a string', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when function name is not a string', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forFunctionCall(undefined, f, []);
                 }).toThrow();
-                expect(function () {
+                expect(() => {
                     dice.expression.forFunctionCall(1, f, []);
                 }).toThrow();
             });
         });
 
-        describe('when function is not a function', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when function is not a function', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forFunctionCall('f', undefined, []);
                 }).toThrow();
-                expect(function () {
+                expect(() => {
                     dice.expression.forFunctionCall('f', 'return 1;', []);
                 }).toThrow();
             });
         });
 
-        describe('when function argument list expressions is not an array', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when function argument list expressions is not an array', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forFunctionCall('f', f, undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            describe('when zero arguments specified', function () {
-                it('should return result with value equal to function return value', function () {
+        describe('.evaluate', () => {
+            describe('when zero arguments specified', () => {
+                it('should return result with value equal to function return value', () => {
                     const expression = dice.expression.forFunctionCall('f', f, []);
                     expect(expression.evaluate()).toEqual(
                         dice.expressionResult.forFunctionCall(
@@ -208,8 +208,8 @@ describe('diceExpression', function () {
                 });
             });
 
-            describe('when one argument specified', function () {
-                it('should return result with value equal to function return value', function () {
+            describe('when one argument specified', () => {
+                it('should return result with value equal to function return value', () => {
                     const expression = dice.expression.forFunctionCall('f', f, [three]);
                     expect(expression.evaluate()).toEqual(
                         dice.expressionResult.forFunctionCall(
@@ -223,8 +223,8 @@ describe('diceExpression', function () {
                 });
             });
 
-            describe('when two arguments specified', function () {
-                it('should return result with value equal to function return value', function () {
+            describe('when two arguments specified', () => {
+                it('should return result with value equal to function return value', () => {
                     const expression = dice.expression.forFunctionCall('f', f, [three, four]);
                     expect(expression.evaluate()).toEqual(
                         dice.expressionResult.forFunctionCall(
@@ -241,17 +241,17 @@ describe('diceExpression', function () {
         });
     });
 
-    describe('.forGroup', function () {
-        describe('when child expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forGroup', () => {
+        describe('when child expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forGroup(undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to child expression result value', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to child expression result value', () => {
                 const expression = dice.expression.forGroup(three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forGroup(
@@ -262,25 +262,25 @@ describe('diceExpression', function () {
         });
     });
 
-    describe('.forModulo', function () {
-        describe('when dividend expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forModulo', () => {
+        describe('when dividend expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forModulo(undefined, three);
                 }).toThrow();
             });
         });
 
-        describe('when divisor expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when divisor expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forModulo(four, undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to remainder of division of dividend and divisor', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to remainder of division of dividend and divisor', () => {
                 const expression = dice.expression.forModulo(four, three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forModulo(
@@ -290,32 +290,32 @@ describe('diceExpression', function () {
                 );
             });
 
-            it('should evaluate subexpressions', function () {
+            it('should evaluate subexpressions', () => {
                 const expression = dice.expression.forModulo(dice.expression.forModulo(three, four), three);
                 expect(expression.evaluate().value).toBe(0);
             });
         });
     });
 
-    describe('.forMultiplication', function () {
-        describe('when multiplicand expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forMultiplication', () => {
+        describe('when multiplicand expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forMultiplication(undefined, three);
                 }).toThrow();
             });
         });
 
-        describe('when multiplier expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when multiplier expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forMultiplication(four, undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to product of multiplicand and multiplier', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to product of multiplicand and multiplier', () => {
                 const expression = dice.expression.forMultiplication(four, three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forMultiplication(
@@ -325,24 +325,24 @@ describe('diceExpression', function () {
                 );
             });
 
-            it('should evaluate subexpressions', function () {
+            it('should evaluate subexpressions', () => {
                 const expression = dice.expression.forMultiplication(dice.expression.forMultiplication(four, three), three);
                 expect(expression.evaluate().value).toBe(36);
             });
         });
     });
 
-    describe('.forNegative', function () {
-        describe('when child expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forNegative', () => {
+        describe('when child expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forNegative(undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to negative of child expression result value', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to negative of child expression result value', () => {
                 const expression = dice.expression.forNegative(three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forNegative(
@@ -353,17 +353,17 @@ describe('diceExpression', function () {
         });
     });
 
-    describe('.forPositive', function () {
-        describe('when child expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forPositive', () => {
+        describe('when child expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forPositive(undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to child expression result value', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to child expression result value', () => {
                 const expression = dice.expression.forPositive(three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forPositive(
@@ -374,25 +374,25 @@ describe('diceExpression', function () {
         });
     });
 
-    describe('.forSubtraction', function () {
-        describe('when minuend expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+    describe('.forSubtraction', () => {
+        describe('when minuend expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forSubtraction(undefined, three);
                 }).toThrow();
             });
         });
 
-        describe('when subtrahend expression is falsy', function () {
-            it('should throw exception', function () {
-                expect(function () {
+        describe('when subtrahend expression is falsy', () => {
+            it('should throw exception', () => {
+                expect(() => {
                     dice.expression.forSubtraction(four, undefined);
                 }).toThrow();
             });
         });
 
-        describe('.evaluate', function () {
-            it('should return result with value equal to difference between minuend and subtrahend', function () {
+        describe('.evaluate', () => {
+            it('should return result with value equal to difference between minuend and subtrahend', () => {
                 const expression = dice.expression.forSubtraction(four, three);
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forSubtraction(
@@ -402,7 +402,7 @@ describe('diceExpression', function () {
                 );
             });
 
-            it('should evaluate subexpressions', function () {
+            it('should evaluate subexpressions', () => {
                 const expression = dice.expression.forSubtraction(dice.expression.forSubtraction(four, three), three);
                 expect(expression.evaluate().value).toBe(-2);
             });

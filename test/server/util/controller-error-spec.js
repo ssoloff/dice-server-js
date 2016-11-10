@@ -10,15 +10,15 @@
 
 const ControllerError = require('../../../src/server/util/controller-error');
 
-describe('ControllerError', function () {
-    describe('.constructor', function () {
-        it('should use a default message if one is not provided', function () {
+describe('ControllerError', () => {
+    describe('.constructor', () => {
+        it('should use a default message if one is not provided', () => {
             const error = new ControllerError(200, null);
 
             expect(error.message).not.toBeNull();
         });
 
-        it('should use a default status if one is not provided', function () {
+        it('should use a default status if one is not provided', () => {
             const error = new ControllerError(null, 'message');
 
             expect(error.status).not.toBeNull();

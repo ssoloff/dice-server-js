@@ -12,13 +12,11 @@ const _ = require('underscore');
 const Random = require('random-js');
 
 module.exports = {
-    constantMax: function () {
-        return function (sides) {
-            return sides;
-        };
+    constantMax() {
+        return (sides) => sides;
     },
 
-    uniform: function (options) {
+    uniform(options) {
         let engine = Random.engines.mt19937();
         if (options && options.seed) {
             if (_.isArray(options.seed)) {
@@ -30,8 +28,6 @@ module.exports = {
             engine = engine.autoSeed();
         }
 
-        return function (sides) {
-            return Random.die(sides)(engine);
-        };
+        return (sides) => Random.die(sides)(engine);
     }
 };

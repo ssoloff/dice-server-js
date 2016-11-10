@@ -11,12 +11,12 @@
 const security = require('../../../src/server/util/security');
 const securityTest = require('../test-support/security-test');
 
-describe('security', function () {
+describe('security', () => {
     let payload;
     let privateKey;
     let publicKey;
 
-    beforeEach(function () {
+    beforeEach(() => {
         payload = {
             a: 1,
             b: 2,
@@ -27,8 +27,8 @@ describe('security', function () {
         publicKey = securityTest.getPublicKey();
     });
 
-    describe('.createSignature', function () {
-        it('should return a signature object using flattened JWS JSON serialization syntax with no unprotected header and no payload', function () {
+    describe('.createSignature', () => {
+        it('should return a signature object using flattened JWS JSON serialization syntax with no unprotected header and no payload', () => {
             const signature = security.createSignature(payload, privateKey, publicKey);
 
             expect(signature.protected).toMatch(/^[-_0-9A-Za-z]+$/);
@@ -38,27 +38,27 @@ describe('security', function () {
         });
     });
 
-    describe('.toCanonicalString', function () {
-        describe('when object is a string', function () {
-            it('should return the object', function () {
+    describe('.toCanonicalString', () => {
+        describe('when object is a string', () => {
+            it('should return the object', () => {
                 expect(security.toCanonicalString('test')).toBe('test');
             });
         });
 
-        describe('when object is a number', function () {
-            it('should return the object as a string', function () {
+        describe('when object is a number', () => {
+            it('should return the object as a string', () => {
                 expect(security.toCanonicalString(42)).toBe('42');
             });
         });
 
-        describe('when object is a buffer', function () {
-            it('should return the object as a string using UTF-8 encoding', function () {
+        describe('when object is a buffer', () => {
+            it('should return the object as a string using UTF-8 encoding', () => {
                 expect(security.toCanonicalString(new Buffer('test'))).toBe('test');
             });
         });
 
-        describe('when object is anything else', function () {
-            it('should return the object as a canonical JSON string', function () {
+        describe('when object is anything else', () => {
+            it('should return the object as a canonical JSON string', () => {
                 const obj = {
                     c: 3,
                     a: 1,
@@ -70,9 +70,9 @@ describe('security', function () {
         });
     });
 
-    describe('.verifySignature', function () {
-        describe('when signature is valid', function () {
-            it('should return true', function () {
+    describe('.verifySignature', () => {
+        describe('when signature is valid', () => {
+            it('should return true', () => {
                 const signature = security.createSignature(payload, privateKey, publicKey);
 
                 const isValid = security.verifySignature(payload, signature);
@@ -81,8 +81,8 @@ describe('security', function () {
             });
         });
 
-        describe('when signature is not valid', function () {
-            it('should return false', function () {
+        describe('when signature is not valid', () => {
+            it('should return false', () => {
                 const signature = security.createSignature(payload, privateKey, publicKey);
                 payload.a = -payload.a; // simulate attacker modifying payload
 
@@ -92,8 +92,8 @@ describe('security', function () {
             });
         });
 
-        describe('when public key is specified', function () {
-            it('should use the specified public key instead of the public key in the signature', function () {
+        describe('when public key is specified', () => {
+            it('should use the specified public key instead of the public key in the signature', () => {
                 const otherPublicKey = securityTest.getOtherPublicKey();
                 const signature = security.createSignature(payload, privateKey, publicKey);
 

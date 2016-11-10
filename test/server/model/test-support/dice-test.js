@@ -23,7 +23,7 @@ module.exports = {
      *
      * @returns {module:dice-bag~Bag!} The new dice bag.
      */
-    createBagThatProvidesDiceThatAlwaysRollOne: function () {
+    createBagThatProvidesDiceThatAlwaysRollOne() {
         function randomNumberGenerator() {
             return 1;
         }
@@ -41,7 +41,7 @@ module.exports = {
      *
      * @throws {RangeError} If `sides` is not positive.
      */
-    createDieThatRollsEachSideSuccessively: function (sides) {
+    createDieThatRollsEachSideSuccessively(sides) {
         let rollCount = 0;
         function randomNumberGenerator() {
             const roll = rollCount % sides + 1;
@@ -61,7 +61,7 @@ module.exports = {
      * @returns {Boolean!} `true` if the specified dice expressions are equal;
      *      otherwise `false`.
      */
-    isDiceExpressionEqual: function (first, second) {
+    isDiceExpressionEqual(first, second) {
         // istanbul ignore else
         if (_.has(first, 'typeId') &&
                 _.has(first, 'evaluate') &&
@@ -81,7 +81,7 @@ module.exports = {
      * @returns {Boolean!} `true` if the specified dice expression results are
      *      equal; otherwise `false`.
      */
-    isDiceExpressionResultEqual: function (first, second) {
+    isDiceExpressionResultEqual(first, second) {
         // istanbul ignore else
         if (_.has(first, 'typeId') &&
                 _.has(first, 'value') &&

@@ -61,8 +61,7 @@ module.exports = function () {
     });
 
     this.When(/^the redeem ticket service is invoked$/, function (callback) {
-        const runner = this;
-        this.issueTicketService.call(function (responseStatus, responseBody) {
+        this.issueTicketService.call((responseStatus, responseBody) => {
             const issueTicketResponseBody = responseBody;
 
             if (responseStatus !== httpStatus.OK) {
@@ -77,20 +76,20 @@ module.exports = function () {
             }
             this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
 
-            const redeemTicketServiceResponseHandler = function (responseStatus, responseBody) {
+            const redeemTicketServiceResponseHandler = (responseStatus, responseBody) => {
                 this.response.status = responseStatus;
                 this.response.body = responseBody;
                 callback();
-            }.bind(runner);
+            };
             if (this.ticket.forceRedeemed) {
-                this.redeemTicketService.call(function () {
+                this.redeemTicketService.call(() => {
                     this.previousResponse = this.response;
                     this.redeemTicketService.call(redeemTicketServiceResponseHandler);
-                }.bind(runner));
+                });
             } else {
                 this.redeemTicketService.call(redeemTicketServiceResponseHandler);
             }
-        }.bind(runner));
+        });
     });
 
     this.Then(/^the response should contain a link to the validate redeemed ticket service$/, function () {

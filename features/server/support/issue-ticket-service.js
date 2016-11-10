@@ -23,7 +23,7 @@ IssueTicketService.prototype.call = function (callback) {
         json: true,
         uri: 'http://localhost:3000/ticket/issue'
     };
-    req.post(requestData, function (error, response, body) {
+    req.post(requestData, (error, response, body) => {
         if (!error) {
             callback(response.statusCode, body);
         } else {

@@ -12,7 +12,7 @@ const controllerTest = require('../../test-support/controller-test');
 const httpStatus = require('http-status-codes');
 const ja = require('json-assert');
 
-describe('redeemTicketController', function () {
+describe('redeemTicketController', () => {
     let controller;
     let request;
     let response;
@@ -44,11 +44,11 @@ describe('redeemTicketController', function () {
         callback();
     }
 
-    beforeEach(function () {
+    beforeEach(() => {
         jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
         request = controllerTest.createRequest();
-        modifyRequestBody(function () {
+        modifyRequestBody(() => {
             request.body = {
                 ticket: {
                     content: {
@@ -72,7 +72,7 @@ describe('redeemTicketController', function () {
             };
         });
 
-        response = controllerTest.createResponse(function (json) {
+        response = controllerTest.createResponse((json) => {
             responseBody = json;
         });
         responseBody = null;
@@ -80,9 +80,9 @@ describe('redeemTicketController', function () {
         controller = createRedeemTicketController();
     });
 
-    describe('.redeemTicket', function () {
-        describe('when evaluate expression controller responds with success', function () {
-            it('should respond with OK', function () {
+    describe('.redeemTicket', () => {
+        describe('when evaluate expression controller responds with success', () => {
+            it('should respond with OK', () => {
                 controller.redeemTicket(request, response);
 
                 expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
@@ -125,19 +125,19 @@ describe('redeemTicketController', function () {
                 });
             });
 
-            it('should respond with a signed redeemed ticket', function () {
+            it('should respond with a signed redeemed ticket', () => {
                 controller.redeemTicket(request, response);
 
                 expect(responseBody.redeemedTicket).toBeSigned();
             });
         });
 
-        describe('when evaluate expression controller responds with error', function () {
-            it('should respond with same error', function () {
+        describe('when evaluate expression controller responds with error', () => {
+            it('should respond with same error', () => {
                 const expectedStatus = httpStatus.BAD_GATEWAY;
                 const expectedErrorMessage = 'message';
                 const stubEvaluateExpressionController = {
-                    evaluateExpression: function (request, response) {
+                    evaluateExpression(request, response) {
                         response.status(expectedStatus).json({
                             error: {
                                 message: expectedErrorMessage
@@ -159,9 +159,9 @@ describe('redeemTicketController', function () {
             });
         });
 
-        describe('when ticket has an invalid signature', function () {
-            it('should respond with bad request error', function () {
-                modifyRequestBodyWithoutSignatureUpdate(function () {
+        describe('when ticket has an invalid signature', () => {
+            it('should respond with bad request error', () => {
+                modifyRequestBodyWithoutSignatureUpdate(() => {
                     request.body.ticket.content.description += '...'; // simulate forged content
                 });
 
@@ -176,9 +176,9 @@ describe('redeemTicketController', function () {
             });
         });
 
-        describe('when ticket has already been redeemed', function () {
-            it('should respond with same result as previous redemption', function () {
-                modifyRequestBody(function () {
+        describe('when ticket has already been redeemed', () => {
+            it('should respond with same result as previous redemption', () => {
+                modifyRequestBody(() => {
                     request.body = {
                         ticket: {
                             content: {

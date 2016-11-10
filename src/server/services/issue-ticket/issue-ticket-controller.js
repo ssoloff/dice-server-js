@@ -14,7 +14,7 @@ const crypto = require('crypto');
 const security = require('../../util/security');
 
 module.exports = {
-    create: function (controllerData) {
+    create(controllerData) {
         function createResponseBody(request) {
             return {
                 ticket: createTicket(request)
@@ -65,7 +65,7 @@ module.exports = {
 
             const seed = [];
             const data = crypto.randomBytes(SEED_ARRAY_LENGTH * SEED_ELEMENT_LENGTH_IN_BYTES);
-            _.times(SEED_ARRAY_LENGTH, function (i) {
+            _.times(SEED_ARRAY_LENGTH, (i) => {
                 seed[i] = data.readUIntBE(i * SEED_ELEMENT_LENGTH_IN_BYTES, SEED_ELEMENT_LENGTH_IN_BYTES);
             });
             return seed;
@@ -102,7 +102,7 @@ module.exports = {
         }
 
         return {
-            issueTicket: function (request, response) {
+            issueTicket(request, response) {
                 try {
                     controllerUtils.setSuccessResponse(response, createResponseBody(request));
                 } catch (e) {

@@ -11,9 +11,7 @@
 const IssueTicketService = require('../../support/issue-ticket-service');
 
 function World() {
-    this.createIssueTicketService = function () {
-        return new IssueTicketService();
-    };
+    this.createIssueTicketService = () => new IssueTicketService();
 }
 
 module.exports = function () {

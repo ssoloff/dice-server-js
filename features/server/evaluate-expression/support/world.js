@@ -11,9 +11,7 @@
 const EvaluateExpressionService = require('../../support/evaluate-expression-service');
 
 function World() {
-    this.createEvaluateExpressionService = function () {
-        return new EvaluateExpressionService();
-    };
+    this.createEvaluateExpressionService = () => new EvaluateExpressionService();
 }
 
 module.exports = function () {

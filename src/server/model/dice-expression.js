@@ -32,7 +32,7 @@ module.exports = {
      * @throws {Error} If `augendExpression` is not defined or if
      *      `addendExpression` is not defined.
      */
-    forAddition: function (augendExpression, addendExpression) {
+    forAddition(augendExpression, addendExpression) {
         if (!augendExpression) {
             throw new Error('augend expression is not defined');
         } else if (!addendExpression) {
@@ -71,7 +71,7 @@ module.exports = {
              * @returns {module:dice-expression-result~AdditionExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forAddition(
                     augendExpression.evaluate(),
                     addendExpression.evaluate()
@@ -100,7 +100,7 @@ module.exports = {
      *
      * @throws {Error} If `expressions` is not an array.
      */
-    forArray: function (expressions) {
+    forArray(expressions) {
         if (!_.isArray(expressions)) {
             throw new Error('expressions is not an array');
         }
@@ -119,7 +119,7 @@ module.exports = {
              * @returns {module:dice-expression-result~ArrayExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forArray(_.invoke(expressions, 'evaluate'));
             },
 
@@ -153,7 +153,7 @@ module.exports = {
      *
      * @throws {Error} If `constant` is not a number.
      */
-    forConstant: function (constant) {
+    forConstant(constant) {
         if (!_.isNumber(constant)) {
             throw new Error('constant is not a number');
         }
@@ -181,7 +181,7 @@ module.exports = {
              * @returns {module:dice-expression-result~ConstantExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forConstant(constant);
             },
 
@@ -205,7 +205,7 @@ module.exports = {
      *
      * @throws {Error} If `die` is not defined.
      */
-    forDie: function (die) {
+    forDie(die) {
         if (!die) {
             throw new Error('die is not defined');
         }
@@ -233,7 +233,7 @@ module.exports = {
              * @returns {module:dice-expression-result~DieExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forDie(die);
             },
 
@@ -262,7 +262,7 @@ module.exports = {
      * @throws {Error} If `dividendExpression` is not defined or if
      *      `divisorExpression` is not defined.
      */
-    forDivision: function (dividendExpression, divisorExpression) {
+    forDivision(dividendExpression, divisorExpression) {
         if (!dividendExpression) {
             throw new Error('dividend expression is not defined');
         } else if (!divisorExpression) {
@@ -301,7 +301,7 @@ module.exports = {
              * @returns {module:dice-expression-result~DivisionExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forDivision(
                     dividendExpression.evaluate(),
                     divisorExpression.evaluate()
@@ -333,7 +333,7 @@ module.exports = {
      * @throws {Error} If `name` is not a string, or if `func` is not a
      *      function, or if `argumentListExpressions` is not an array.
      */
-    forFunctionCall: function (name, func, argumentListExpressions) {
+    forFunctionCall(name, func, argumentListExpressions) {
         if (!_.isString(name)) {
             throw new Error('function name is not a string');
         } else if (!_.isFunction(func)) {
@@ -366,7 +366,7 @@ module.exports = {
              * @returns {module:dice-expression-result~FunctionCallExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 const argumentListExpressionResults = _.invoke(argumentListExpressions, 'evaluate');
                 const argumentList = _.pluck(argumentListExpressionResults, 'value');
                 const returnValue = func.apply(null, argumentList);
@@ -404,7 +404,7 @@ module.exports = {
      *
      * @throws {Error} If `childExpression` is not defined.
      */
-    forGroup: function (childExpression) {
+    forGroup(childExpression) {
         if (!childExpression) {
             throw new Error('child expression is not defined');
         }
@@ -432,7 +432,7 @@ module.exports = {
              * @returns {module:dice-expression-result~GroupExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forGroup(childExpression.evaluate());
             },
 
@@ -461,7 +461,7 @@ module.exports = {
      * @throws {Error} If `dividendExpression` is not defined or if
      *      `divisorExpression` is not defined.
      */
-    forModulo: function (dividendExpression, divisorExpression) {
+    forModulo(dividendExpression, divisorExpression) {
         if (!dividendExpression) {
             throw new Error('dividend expression is not defined');
         } else if (!divisorExpression) {
@@ -500,7 +500,7 @@ module.exports = {
              * @returns {module:dice-expression-result~ModuloExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forModulo(
                     dividendExpression.evaluate(),
                     divisorExpression.evaluate()
@@ -532,7 +532,7 @@ module.exports = {
      * @throws {Error} If `multiplicandExpression` is not defined or if
      *      `multiplierExpression` is not defined.
      */
-    forMultiplication: function (multiplicandExpression, multiplierExpression) {
+    forMultiplication(multiplicandExpression, multiplierExpression) {
         if (!multiplicandExpression) {
             throw new Error('multiplicand expression is not defined');
         } else if (!multiplierExpression) {
@@ -553,7 +553,7 @@ module.exports = {
              * @returns {module:dice-expression-result~MultiplicationExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forMultiplication(
                     multiplicandExpression.evaluate(),
                     multiplierExpression.evaluate()
@@ -600,7 +600,7 @@ module.exports = {
      *
      * @throws {Error} If `childExpression` is not defined.
      */
-    forNegative: function (childExpression) {
+    forNegative(childExpression) {
         if (!childExpression) {
             throw new Error('child expression is not defined');
         }
@@ -628,7 +628,7 @@ module.exports = {
              * @returns {module:dice-expression-result~NegativeExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forNegative(childExpression.evaluate());
             },
 
@@ -654,7 +654,7 @@ module.exports = {
      *
      * @throws {Error} If `childExpression` is not defined.
      */
-    forPositive: function (childExpression) {
+    forPositive(childExpression) {
         if (!childExpression) {
             throw new Error('child expression is not defined');
         }
@@ -682,7 +682,7 @@ module.exports = {
              * @returns {module:dice-expression-result~PositiveExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forPositive(childExpression.evaluate());
             },
 
@@ -711,7 +711,7 @@ module.exports = {
      * @throws {Error} If `minuendExpression` is not defined or if
      *      `subtrahendExpression` is not defined.
      */
-    forSubtraction: function (minuendExpression, subtrahendExpression) {
+    forSubtraction(minuendExpression, subtrahendExpression) {
         if (!minuendExpression) {
             throw new Error('minuend expression is not defined');
         } else if (!subtrahendExpression) {
@@ -732,7 +732,7 @@ module.exports = {
              * @returns {module:dice-expression-result~SubtractionExpressionResult!}
              *      The result of evaluating the expression.
              */
-            evaluate: function () {
+            evaluate() {
                 return diceExpressionResult.forSubtraction(
                     minuendExpression.evaluate(),
                     subtrahendExpression.evaluate()
