@@ -23,5 +23,11 @@ describe('ControllerError', () => {
 
             expect(error.status).not.toBeNull();
         });
+
+        it('should provide a stack trace', () => {
+            const error = new ControllerError(200, 'message');
+
+            expect(error.stack).not.toBeUndefined();
+        });
     });
 });

@@ -9,7 +9,7 @@
 'use strict';
 
 const driver = require('./driver');
-const HomePage = require('./home-page');
+const HomePage = require('../../support/home-page');
 
 function World() {
     this.createHomePage = () => new HomePage(driver);

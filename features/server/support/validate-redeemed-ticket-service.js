@@ -10,29 +10,31 @@
 
 const req = require('request');
 
-function ValidateRedeemedTicketService() {
-    this.requestBody = {};
-    this.requestUrl = null;
+class ValidateRedeemedTicketService {
+    constructor() {
+        this.requestBody = {};
+        this.requestUrl = null;
+    }
+
+    call(callback) {
+        const requestData = {
+            body: this.requestBody,
+            json: true,
+            uri: this.requestUrl
+        };
+        req.post(requestData, (error, response, body) => {
+            if (!error) {
+                callback(response.statusCode, body);
+            } else {
+                throw new Error(error);
+            }
+        });
+    }
+
+    setRequestFromRedeemTicketResponseBody(redeemTicketResponseBody) {
+        this.requestBody.redeemedTicket = redeemTicketResponseBody.redeemedTicket;
+        this.requestUrl = redeemTicketResponseBody.redeemedTicket.content.validateUrl;
+    }
 }
-
-ValidateRedeemedTicketService.prototype.call = function (callback) {
-    const requestData = {
-        body: this.requestBody,
-        json: true,
-        uri: this.requestUrl
-    };
-    req.post(requestData, (error, response, body) => {
-        if (!error) {
-            callback(response.statusCode, body);
-        } else {
-            throw new Error(error);
-        }
-    });
-};
-
-ValidateRedeemedTicketService.prototype.setRequestFromRedeemTicketResponseBody = function (redeemTicketResponseBody) {
-    this.requestBody.redeemedTicket = redeemTicketResponseBody.redeemedTicket;
-    this.requestUrl = redeemTicketResponseBody.redeemedTicket.content.validateUrl;
-};
 
 module.exports = ValidateRedeemedTicketService;
