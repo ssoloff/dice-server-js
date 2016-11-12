@@ -64,11 +64,13 @@ module.exports = {
     toCanonicalString(obj) {
         if (typeof obj === 'string') {
             return obj;
-        } else if (typeof obj === 'number' || Buffer.isBuffer(obj)) {
-            return obj.toString();
-        } else {
-            return canonicalJsonStringify(obj);
         }
+
+        if (typeof obj === 'number' || Buffer.isBuffer(obj)) {
+            return obj.toString();
+        }
+
+        return canonicalJsonStringify(obj);
     },
 
     /**

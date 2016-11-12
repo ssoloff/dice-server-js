@@ -47,9 +47,9 @@ function format(expression) {
     const formatter = formatters[expression.typeId];
     if (formatter) {
         return formatter(expression);
-    } else {
-        throw new Error(`unknown expression type: "${expression.typeId}"`);
     }
+
+    throw new Error(`unknown expression type: "${expression.typeId}"`);
 }
 
 function formatAdditionExpression(expression) {

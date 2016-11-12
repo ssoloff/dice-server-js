@@ -5,7 +5,6 @@
   "requireCamelCaseOrUpperCaseIdentifiers": false,
   "requireCapitalizedComments": false,
   "requireCurlyBraces": false,
-  "requireEarlyReturn": false,
   "requireTrailingComma": false,
   "validateIndentation": 4
 }

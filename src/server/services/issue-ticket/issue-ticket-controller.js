@@ -46,13 +46,13 @@ module.exports = {
                     id: generateTicketId(),
                     redeemUrl: getRedeemTicketUrl(request)
                 };
-            } else {
-                const evaluateExpressionResponseBody = evaluateExpressionResult[1];
-                throw controllerUtils.createControllerErrorFromResponse(
-                    evaluateExpressionResponseStatus,
-                    evaluateExpressionResponseBody
-                );
             }
+
+            const evaluateExpressionResponseBody = evaluateExpressionResult[1];
+            throw controllerUtils.createControllerErrorFromResponse(
+                evaluateExpressionResponseStatus,
+                evaluateExpressionResponseBody
+            );
         }
 
         function evaluateExpression(requestBody) {

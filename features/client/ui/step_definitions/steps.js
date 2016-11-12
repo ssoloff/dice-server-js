@@ -83,12 +83,12 @@ module.exports = function () {
                 // jshint expr: true
                 expect(isDisplayed).to.be.false;
             });
-        } else {
-            return this.homePage.waitUntilHelpIsDisplayed().then((isDisplayed) => {
-                // jshint expr: true
-                expect(isDisplayed).to.be.true;
-            });
         }
+
+        return this.homePage.waitUntilHelpIsDisplayed().then((isDisplayed) => {
+            // jshint expr: true
+            expect(isDisplayed).to.be.true;
+        });
     });
 
     this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "(.*)"$/, function (index, expressionCanonicalText) {

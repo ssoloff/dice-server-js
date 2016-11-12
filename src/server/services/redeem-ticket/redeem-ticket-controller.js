@@ -35,12 +35,12 @@ module.exports = {
                     id: ticketContent.id,
                     validateUrl: getValidateRedeemedTicketUrl(request)
                 };
-            } else {
-                throw controllerUtils.createControllerErrorFromResponse(
-                    evaluateExpressionResponseStatus,
-                    evaluateExpressionResponseBody
-                );
             }
+
+            throw controllerUtils.createControllerErrorFromResponse(
+                evaluateExpressionResponseStatus,
+                evaluateExpressionResponseBody
+            );
         }
 
         function createResponseBody(request) {
