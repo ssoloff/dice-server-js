@@ -117,9 +117,9 @@ class HomePage {
         };
         randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
         return this.driver.executeScript(
-            "$('#main-eval-randomNumberGeneratorJson').val('" +
+            '$(\'#main-eval-randomNumberGeneratorJson\').val(\'' +
             JSON.stringify(randomNumberGenerator) +
-            "');"
+            '\');'
         );
     }
 
