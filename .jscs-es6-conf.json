@@ -1,4 +1,12 @@
 {
-  "preset": "crockford",
-  "requireMultipleVarDecl": false
+  "preset": "node-style-guide",
+  "disallowSpacesInFunction": false,
+  "maximumLineLength": 999,
+  "requireCamelCaseOrUpperCaseIdentifiers": false,
+  "requireCapitalizedComments": false,
+  "requireCurlyBraces": false,
+  "requireEarlyReturn": false,
+  "requireTrailingComma": false,
+  "validateIndentation": 4,
+  "validateQuoteMarks": false
 }
