@@ -16,6 +16,6 @@ function World() {
     this.createRedeemTicketService = () => new RedeemTicketService();
 }
 
-module.exports = function () {
+module.exports = function() {
     this.World = World;
 };

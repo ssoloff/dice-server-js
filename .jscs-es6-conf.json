@@ -1,6 +1,5 @@
 {
   "preset": "node-style-guide",
-  "disallowSpacesInFunction": false,
   "maximumLineLength": 999,
   "requireCapitalizedComments": false,
   "requireTrailingComma": false,

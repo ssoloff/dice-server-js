@@ -18,6 +18,6 @@ function World() {
     this.createValidateRedeemedTicketService = () => new ValidateRedeemedTicketService();
 }
 
-module.exports = function () {
+module.exports = function() {
     this.World = World;
 };

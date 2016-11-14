@@ -14,6 +14,6 @@ function World() {
     this.createEvaluateExpressionService = () => new EvaluateExpressionService();
 }
 
-module.exports = function () {
+module.exports = function() {
     this.World = World;
 };

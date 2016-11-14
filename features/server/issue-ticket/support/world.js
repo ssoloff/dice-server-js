@@ -14,6 +14,6 @@ function World() {
     this.createIssueTicketService = () => new IssueTicketService();
 }
 
-module.exports = function () {
+module.exports = function() {
     this.World = World;
 };

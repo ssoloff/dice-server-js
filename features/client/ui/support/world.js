@@ -15,6 +15,6 @@ function World() {
     this.createHomePage = () => new HomePage(driver);
 }
 
-module.exports = function () {
+module.exports = function() {
     this.World = World;
 };
