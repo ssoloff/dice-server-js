@@ -41,7 +41,7 @@ module.exports = {
                 } catch (e) {
                     controllerUtils.setFailureResponse(response, e);
                 }
-            }
+            },
         };
-    }
+    },
 };

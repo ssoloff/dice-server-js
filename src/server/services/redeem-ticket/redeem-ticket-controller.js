@@ -18,7 +18,7 @@ module.exports = {
             const redeemedTicketContent = createRedeemedTicketContent(request);
             return {
                 content: redeemedTicketContent,
-                signature: createSignature(redeemedTicketContent)
+                signature: createSignature(redeemedTicketContent),
             };
         }
 
@@ -33,7 +33,7 @@ module.exports = {
                     description: ticketContent.description,
                     evaluateExpressionResponseBody: evaluateExpressionResponseBody,
                     id: ticketContent.id,
-                    validateUrl: getValidateRedeemedTicketUrl(request)
+                    validateUrl: getValidateRedeemedTicketUrl(request),
                 };
             }
 
@@ -47,7 +47,7 @@ module.exports = {
             validateRequest(request);
 
             return {
-                redeemedTicket: createRedeemedTicket(request)
+                redeemedTicket: createRedeemedTicket(request),
             };
         }
 
@@ -84,7 +84,7 @@ module.exports = {
                 } catch (e) {
                     controllerUtils.setFailureResponse(response, e);
                 }
-            }
+            },
         };
-    }
+    },
 };

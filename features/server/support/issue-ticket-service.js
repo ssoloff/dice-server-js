@@ -14,7 +14,7 @@ const security = require('../../common/support/security');
 class IssueTicketService {
     constructor() {
         this.requestBody = {
-            evaluateExpressionRequestBody: {}
+            evaluateExpressionRequestBody: {},
         };
     }
 
@@ -22,7 +22,7 @@ class IssueTicketService {
         const requestData = {
             body: this.requestBody,
             json: true,
-            uri: 'http://localhost:3000/ticket/issue'
+            uri: 'http://localhost:3000/ticket/issue',
         };
         req.post(requestData, (error, response, body) => {
             if (!error) {
@@ -39,16 +39,16 @@ class IssueTicketService {
 
     setExpression(expressionText) {
         this.requestBody.evaluateExpressionRequestBody.expression = {
-            text: expressionText
+            text: expressionText,
         };
     }
 
     setRandomNumberGenerator(randomNumberGeneratorName) {
         const randomNumberGenerator = {
             content: {
-                name: randomNumberGeneratorName
+                name: randomNumberGeneratorName,
             },
-            signature: null
+            signature: null,
         };
         randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
         this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator = randomNumberGenerator;

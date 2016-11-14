@@ -17,22 +17,22 @@ module.exports = (app, privateKey, publicKey) => {
     const validateRedeemedTicketPath = '/ticket/validate-redeemed';
 
     const evaluateExpressionController = require('./services/evaluate-expression/evaluate-expression-controller.js').create({
-        publicKey: publicKey
+        publicKey: publicKey,
     });
     const issueTicketController = require('./services/issue-ticket/issue-ticket-controller.js').create({
         evaluateExpressionController: evaluateExpressionController,
         privateKey: privateKey,
         publicKey: publicKey,
-        redeemTicketPath: redeemTicketPath
+        redeemTicketPath: redeemTicketPath,
     });
     const redeemTicketController = require('./services/redeem-ticket/redeem-ticket-controller.js').create({
         evaluateExpressionController: evaluateExpressionController,
         privateKey: privateKey,
         publicKey: publicKey,
-        validateRedeemedTicketPath: validateRedeemedTicketPath
+        validateRedeemedTicketPath: validateRedeemedTicketPath,
     });
     const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/validate-redeemed-ticket-controller.js').create({
-        publicKey: publicKey
+        publicKey: publicKey,
     });
 
     app.use(bodyParser.json());

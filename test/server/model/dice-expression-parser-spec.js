@@ -75,8 +75,8 @@ describe('diceExpressionParser', () => {
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                             dice.expression.forConstant(3),
-                            dice.expression.forDie(expressionParserContext.bag.d(6))
-                        ])
+                            dice.expression.forDie(expressionParserContext.bag.d(6)),
+                        ]),
                     ])
                 );
             });
@@ -86,8 +86,8 @@ describe('diceExpressionParser', () => {
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                             dice.expression.forConstant(2),
-                            dice.expression.forDie(expressionParserContext.bag.d(100))
-                        ])
+                            dice.expression.forDie(expressionParserContext.bag.d(100)),
+                        ]),
                     ])
                 );
             });
@@ -98,10 +98,10 @@ describe('diceExpressionParser', () => {
                         dice.expression.forFunctionCall('cloneHighestRolls', diceExpressionFunctions.cloneHighestRolls, [
                             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                                 dice.expression.forConstant(4),
-                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                                dice.expression.forDie(expressionParserContext.bag.d(6)),
                             ]),
-                            dice.expression.forConstant(1)
-                        ])
+                            dice.expression.forConstant(1),
+                        ]),
                     ])
                 );
                 expect(expressionParser.parse('4d6+2H')).toEqual(
@@ -109,10 +109,10 @@ describe('diceExpressionParser', () => {
                         dice.expression.forFunctionCall('cloneHighestRolls', diceExpressionFunctions.cloneHighestRolls, [
                             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                                 dice.expression.forConstant(4),
-                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                                dice.expression.forDie(expressionParserContext.bag.d(6)),
                             ]),
-                            dice.expression.forConstant(2)
-                        ])
+                            dice.expression.forConstant(2),
+                        ]),
                     ])
                 );
             });
@@ -123,10 +123,10 @@ describe('diceExpressionParser', () => {
                         dice.expression.forFunctionCall('cloneLowestRolls', diceExpressionFunctions.cloneLowestRolls, [
                             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                                 dice.expression.forConstant(4),
-                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                                dice.expression.forDie(expressionParserContext.bag.d(6)),
                             ]),
-                            dice.expression.forConstant(1)
-                        ])
+                            dice.expression.forConstant(1),
+                        ]),
                     ])
                 );
                 expect(expressionParser.parse('4d6+2L')).toEqual(
@@ -134,10 +134,10 @@ describe('diceExpressionParser', () => {
                         dice.expression.forFunctionCall('cloneLowestRolls', diceExpressionFunctions.cloneLowestRolls, [
                             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                                 dice.expression.forConstant(4),
-                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                                dice.expression.forDie(expressionParserContext.bag.d(6)),
                             ]),
-                            dice.expression.forConstant(2)
-                        ])
+                            dice.expression.forConstant(2),
+                        ]),
                     ])
                 );
             });
@@ -148,10 +148,10 @@ describe('diceExpressionParser', () => {
                         dice.expression.forFunctionCall('dropHighestRolls', diceExpressionFunctions.dropHighestRolls, [
                             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                                 dice.expression.forConstant(4),
-                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                                dice.expression.forDie(expressionParserContext.bag.d(6)),
                             ]),
-                            dice.expression.forConstant(1)
-                        ])
+                            dice.expression.forConstant(1),
+                        ]),
                     ])
                 );
                 expect(expressionParser.parse('4d6-2H')).toEqual(
@@ -159,10 +159,10 @@ describe('diceExpressionParser', () => {
                         dice.expression.forFunctionCall('dropHighestRolls', diceExpressionFunctions.dropHighestRolls, [
                             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                                 dice.expression.forConstant(4),
-                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                                dice.expression.forDie(expressionParserContext.bag.d(6)),
                             ]),
-                            dice.expression.forConstant(2)
-                        ])
+                            dice.expression.forConstant(2),
+                        ]),
                     ])
                 );
             });
@@ -173,10 +173,10 @@ describe('diceExpressionParser', () => {
                         dice.expression.forFunctionCall('dropLowestRolls', diceExpressionFunctions.dropLowestRolls, [
                             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                                 dice.expression.forConstant(4),
-                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                                dice.expression.forDie(expressionParserContext.bag.d(6)),
                             ]),
-                            dice.expression.forConstant(1)
-                        ])
+                            dice.expression.forConstant(1),
+                        ]),
                     ])
                 );
                 expect(expressionParser.parse('4d6-2L')).toEqual(
@@ -184,10 +184,10 @@ describe('diceExpressionParser', () => {
                         dice.expression.forFunctionCall('dropLowestRolls', diceExpressionFunctions.dropLowestRolls, [
                             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                                 dice.expression.forConstant(4),
-                                dice.expression.forDie(expressionParserContext.bag.d(6))
+                                dice.expression.forDie(expressionParserContext.bag.d(6)),
                             ]),
-                            dice.expression.forConstant(2)
-                        ])
+                            dice.expression.forConstant(2),
+                        ]),
                     ])
                 );
             });
@@ -219,7 +219,7 @@ describe('diceExpressionParser', () => {
             it('should parse divide and round towards zero', () => {
                 expect(expressionParser.parse('1 // 2')).toEqual(
                     dice.expression.forFunctionCall('trunc', diceExpressionFunctions.trunc, [
-                        dice.expression.forDivision(one, two)
+                        dice.expression.forDivision(one, two),
                     ])
                 );
             });
@@ -227,7 +227,7 @@ describe('diceExpressionParser', () => {
             it('should parse divide and round to nearest', () => {
                 expect(expressionParser.parse('1 /~ 2')).toEqual(
                     dice.expression.forFunctionCall('round', diceExpressionFunctions.round, [
-                        dice.expression.forDivision(one, two)
+                        dice.expression.forDivision(one, two),
                     ])
                 );
             });
@@ -235,7 +235,7 @@ describe('diceExpressionParser', () => {
             it('should parse divide and round up', () => {
                 expect(expressionParser.parse('1 /+ 2')).toEqual(
                     dice.expression.forFunctionCall('ceil', diceExpressionFunctions.ceil, [
-                        dice.expression.forDivision(one, two)
+                        dice.expression.forDivision(one, two),
                     ])
                 );
             });
@@ -243,7 +243,7 @@ describe('diceExpressionParser', () => {
             it('should parse divide and round down', () => {
                 expect(expressionParser.parse('1 /- 2')).toEqual(
                     dice.expression.forFunctionCall('floor', diceExpressionFunctions.floor, [
-                        dice.expression.forDivision(one, two)
+                        dice.expression.forDivision(one, two),
                     ])
                 );
             });
@@ -312,7 +312,7 @@ describe('diceExpressionParser', () => {
             it('should give precedence to divide and round down operator over unary negative operator', () => {
                 expect(expressionParser.parse('1/-2')).toEqual(
                     dice.expression.forFunctionCall('floor', diceExpressionFunctions.floor, [
-                        dice.expression.forDivision(one, two)
+                        dice.expression.forDivision(one, two),
                     ])
                 );
                 expect(expressionParser.parse('1/ -2')).toEqual(
@@ -323,7 +323,7 @@ describe('diceExpressionParser', () => {
             it('should give precedence to divide and round up operator over unary positive operator', () => {
                 expect(expressionParser.parse('1/+2')).toEqual(
                     dice.expression.forFunctionCall('ceil', diceExpressionFunctions.ceil, [
-                        dice.expression.forDivision(one, two)
+                        dice.expression.forDivision(one, two),
                     ])
                 );
                 expect(expressionParser.parse('1/ +2')).toEqual(
@@ -373,9 +373,9 @@ describe('diceExpressionParser', () => {
                     dice.expression.forFunctionCall('cloneHighestRolls', diceExpressionFunctions.cloneHighestRolls, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                             dice.expression.forConstant(3),
-                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                            dice.expression.forDie(expressionParserContext.bag.d(6)),
                         ]),
-                        dice.expression.forConstant(2)
+                        dice.expression.forConstant(2),
                     ])
                 );
             });
@@ -385,9 +385,9 @@ describe('diceExpressionParser', () => {
                     dice.expression.forFunctionCall('cloneLowestRolls', diceExpressionFunctions.cloneLowestRolls, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                             dice.expression.forConstant(3),
-                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                            dice.expression.forDie(expressionParserContext.bag.d(6)),
                         ]),
-                        dice.expression.forConstant(2)
+                        dice.expression.forConstant(2),
                     ])
                 );
             });
@@ -397,9 +397,9 @@ describe('diceExpressionParser', () => {
                     dice.expression.forFunctionCall('dropHighestRolls', diceExpressionFunctions.dropHighestRolls, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                             dice.expression.forConstant(3),
-                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                            dice.expression.forDie(expressionParserContext.bag.d(6)),
                         ]),
-                        dice.expression.forConstant(2)
+                        dice.expression.forConstant(2),
                     ])
                 );
             });
@@ -409,9 +409,9 @@ describe('diceExpressionParser', () => {
                     dice.expression.forFunctionCall('dropLowestRolls', diceExpressionFunctions.dropLowestRolls, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                             dice.expression.forConstant(3),
-                            dice.expression.forDie(expressionParserContext.bag.d(6))
+                            dice.expression.forDie(expressionParserContext.bag.d(6)),
                         ]),
-                        dice.expression.forConstant(2)
+                        dice.expression.forConstant(2),
                     ])
                 );
             });
@@ -424,7 +424,7 @@ describe('diceExpressionParser', () => {
                 expect(expressionParser.parse('roll(3, d6)')).toEqual(
                     dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                         dice.expression.forConstant(3),
-                        dice.expression.forDie(expressionParserContext.bag.d(6))
+                        dice.expression.forDie(expressionParserContext.bag.d(6)),
                     ])
                 );
             });
@@ -438,8 +438,8 @@ describe('diceExpressionParser', () => {
                     dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
                         dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
                             dice.expression.forConstant(2),
-                            dice.expression.forDie(expressionParserContext.bag.d(8))
-                        ])
+                            dice.expression.forDie(expressionParserContext.bag.d(8)),
+                        ]),
                     ])
                 );
             });

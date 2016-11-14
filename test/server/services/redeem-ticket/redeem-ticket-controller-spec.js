@@ -20,13 +20,13 @@ describe('redeemTicketController', () => {
 
     function createRedeemTicketController(evaluateExpressionController) {
         evaluateExpressionController = evaluateExpressionController || require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
-            publicKey: controllerTest.getPublicKey()
+            publicKey: controllerTest.getPublicKey(),
         });
         return require('../../../../src/server/services/redeem-ticket/redeem-ticket-controller').create({
             evaluateExpressionController: evaluateExpressionController,
             privateKey: controllerTest.getPrivateKey(),
             publicKey: controllerTest.getPublicKey(),
-            validateRedeemedTicketPath: '/validateRedeemedTicketPath'
+            validateRedeemedTicketPath: '/validateRedeemedTicketPath',
         });
     }
 
@@ -55,20 +55,20 @@ describe('redeemTicketController', () => {
                         description: 'description',
                         evaluateExpressionRequestBody: {
                             expression: {
-                                text: '3d6+4'
+                                text: '3d6+4',
                             },
                             randomNumberGenerator: {
                                 content: {
-                                    name: 'constantMax'
+                                    name: 'constantMax',
                                 },
-                                signature: null
-                            }
+                                signature: null,
+                            },
                         },
                         id: '00112233445566778899aabbccddeeff00112233',
-                        redeemUrl: 'http://host:1234/redeemTicketPath'
+                        redeemUrl: 'http://host:1234/redeemTicketPath',
                     },
-                    signature: null
-                }
+                    signature: null,
+                },
             };
         });
 
@@ -94,34 +94,34 @@ describe('redeemTicketController', () => {
                                 dieRollResults: [
                                     {
                                         sides: 6,
-                                        value: 6
+                                        value: 6,
                                     },
                                     {
                                         sides: 6,
-                                        value: 6
+                                        value: 6,
                                     },
                                     {
                                         sides: 6,
-                                        value: 6
-                                    }
+                                        value: 6,
+                                    },
                                 ],
                                 expression: {
                                     canonicalText: 'sum(roll(3, d6)) + 4',
-                                    text: '3d6+4'
+                                    text: '3d6+4',
                                 },
                                 expressionResult: {
                                     text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                                    value: 22
+                                    value: 22,
                                 },
                                 randomNumberGenerator: {
-                                    name: 'constantMax'
-                                }
+                                    name: 'constantMax',
+                                },
                             },
                             id: '00112233445566778899aabbccddeeff00112233',
-                            validateUrl: ja.matchType('string')
+                            validateUrl: ja.matchType('string'),
                         },
-                        signature: ja.matchType('object')
-                    }
+                        signature: ja.matchType('object'),
+                    },
                 });
             });
 
@@ -140,10 +140,10 @@ describe('redeemTicketController', () => {
                     evaluateExpression(request, response) {
                         response.status(expectedStatus).json({
                             error: {
-                                message: expectedErrorMessage
-                            }
+                                message: expectedErrorMessage,
+                            },
                         });
-                    }
+                    },
                 };
 
                 controller = createRedeemTicketController(stubEvaluateExpressionController);
@@ -153,8 +153,8 @@ describe('redeemTicketController', () => {
                 expect(response.status).toHaveBeenCalledWith(expectedStatus);
                 expect(responseBody).toEqual({
                     error: {
-                        message: expectedErrorMessage
-                    }
+                        message: expectedErrorMessage,
+                    },
                 });
             });
         });
@@ -170,8 +170,8 @@ describe('redeemTicketController', () => {
                 expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
                     error: {
-                        message: ja.matchType('string')
-                    }
+                        message: ja.matchType('string'),
+                    },
                 });
             });
         });
@@ -185,23 +185,23 @@ describe('redeemTicketController', () => {
                                 description: 'description',
                                 evaluateExpressionRequestBody: {
                                     expression: {
-                                        text: '3d6+4'
+                                        text: '3d6+4',
                                     },
                                     randomNumberGenerator: {
                                         content: {
                                             name: 'uniform',
                                             options: {
-                                                seed: [1, 2, 3]
-                                            }
+                                                seed: [1, 2, 3],
+                                            },
                                         },
-                                        signature: null
-                                    }
+                                        signature: null,
+                                    },
                                 },
                                 id: '00112233445566778899aabbccddeeff00112233',
-                                redeemUrl: 'http://host:1234/redeemTicketPath'
+                                redeemUrl: 'http://host:1234/redeemTicketPath',
                             },
-                            signature: null
-                        }
+                            signature: null,
+                        },
                     };
                 });
                 controller.redeemTicket(request, response);

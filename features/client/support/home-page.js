@@ -83,7 +83,7 @@ class HomePage {
             return promise.all([
                 driver.wait(until.elementLocated(By.id('main-eval-expressionForm')), timeoutInMilliseconds),
                 driver.wait(until.elementLocated(By.id('main-history-removeAllResults')), timeoutInMilliseconds),
-                driver.wait(until.elementLocated(By.id('main-sim-dieRollResults')), timeoutInMilliseconds)
+                driver.wait(until.elementLocated(By.id('main-sim-dieRollResults')), timeoutInMilliseconds),
             ]);
         });
     }
@@ -111,9 +111,9 @@ class HomePage {
     setRandomNumberGenerator(randomNumberGeneratorName) {
         const randomNumberGenerator = {
             content: {
-                name: randomNumberGeneratorName
+                name: randomNumberGeneratorName,
             },
-            signature: null
+            signature: null,
         };
         randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
         return this.driver.executeScript(

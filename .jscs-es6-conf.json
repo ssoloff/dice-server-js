@@ -2,6 +2,5 @@
   "preset": "node-style-guide",
   "maximumLineLength": 999,
   "requireCapitalizedComments": false,
-  "requireTrailingComma": false,
   "validateIndentation": 4
 }

@@ -96,7 +96,7 @@ module.exports = {
              *
              * @type {Number!}
              */
-            value: augendExpressionResult.value + addendExpressionResult.value
+            value: augendExpressionResult.value + addendExpressionResult.value,
         };
     },
 
@@ -159,7 +159,7 @@ module.exports = {
              *
              * @type {Object[]!}
              */
-            value: _.pluck(expressionResults, 'value')
+            value: _.pluck(expressionResults, 'value'),
         };
     },
 
@@ -211,7 +211,7 @@ module.exports = {
              *
              * @type {Number!}
              */
-            value: constant
+            value: constant,
         };
     },
 
@@ -263,7 +263,7 @@ module.exports = {
              *
              * @type {module:dice-bag~Die!}
              */
-            value: die
+            value: die,
         };
     },
 
@@ -346,7 +346,7 @@ module.exports = {
              *
              * @type {Number!}
              */
-            value: dividendExpressionResult.value / divisorExpressionResult.value
+            value: dividendExpressionResult.value / divisorExpressionResult.value,
         };
     },
 
@@ -428,7 +428,7 @@ module.exports = {
              *
              * @type {Object!}
              */
-            value: returnValue
+            value: returnValue,
         };
     },
 
@@ -491,7 +491,7 @@ module.exports = {
              *
              * @type {Object!}
              */
-            value: childExpressionResult.value
+            value: childExpressionResult.value,
         };
     },
 
@@ -574,7 +574,7 @@ module.exports = {
              *
              * @type {Number!}
              */
-            value: dividendExpressionResult.value % divisorExpressionResult.value
+            value: dividendExpressionResult.value % divisorExpressionResult.value,
         };
     },
 
@@ -657,7 +657,7 @@ module.exports = {
              *
              * @type {Number!}
              */
-            value: multiplicandExpressionResult.value * multiplierExpressionResult.value
+            value: multiplicandExpressionResult.value * multiplierExpressionResult.value,
         };
     },
 
@@ -720,7 +720,7 @@ module.exports = {
              *
              * @type {Object!}
              */
-            value: -childExpressionResult.value
+            value: -childExpressionResult.value,
         };
     },
 
@@ -783,7 +783,7 @@ module.exports = {
              *
              * @type {Object!}
              */
-            value: childExpressionResult.value
+            value: childExpressionResult.value,
         };
     },
 
@@ -866,7 +866,7 @@ module.exports = {
              *
              * @type {Number!}
              */
-            value: minuendExpressionResult.value - subtrahendExpressionResult.value
+            value: minuendExpressionResult.value - subtrahendExpressionResult.value,
         };
-    }
+    },
 };

@@ -33,7 +33,7 @@ module.exports = {
         let responseBody;
         let responseStatus;
         const request = {
-            body: requestBody
+            body: requestBody,
         };
         const response = {
             json(json) {
@@ -44,7 +44,7 @@ module.exports = {
             status(status) {
                 responseStatus = status;
                 return this;
-            }
+            },
         };
         callback(request, response);
         return [responseStatus, responseBody];
@@ -59,13 +59,13 @@ module.exports = {
 
         const responseBody = {
             error: {
-                message: e.message
-            }
+                message: e.message,
+            },
         };
         response.json(responseBody);
     },
 
     setSuccessResponse(response, responseBody) {
         response.status(httpStatus.OK).json(responseBody);
-    }
+    },
 };

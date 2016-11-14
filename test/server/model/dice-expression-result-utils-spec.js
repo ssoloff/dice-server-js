@@ -32,8 +32,8 @@ describe('diceExpressionResultUtils', () => {
                 const expressionResult = dice.expressionResult.forFunctionCall(3, 'sum', [
                     dice.expressionResult.forFunctionCall([3], 'roll', [
                         dice.expressionResult.forConstant(1),
-                        dice.expressionResult.forDie(bag.d(6))
-                    ])
+                        dice.expressionResult.forDie(bag.d(6)),
+                    ]),
                 ]);
 
                 const dieRollResults = diceExpressionResultUtils.enumerateDieRollResults(expressionResult);
@@ -41,8 +41,8 @@ describe('diceExpressionResultUtils', () => {
                 expect(dieRollResults).toEqual([
                     {
                         sides: 6,
-                        value: 3
-                    }
+                        value: 3,
+                    },
                 ]);
             });
         });
@@ -54,14 +54,14 @@ describe('diceExpressionResultUtils', () => {
                     dice.expressionResult.forFunctionCall(18, 'sum', [
                         dice.expressionResult.forFunctionCall([7, 11], 'roll', [
                             dice.expressionResult.forConstant(2),
-                            dice.expressionResult.forDie(bag.d(12))
-                        ])
+                            dice.expressionResult.forDie(bag.d(12)),
+                        ]),
                     ]),
                     dice.expressionResult.forFunctionCall(6, 'sum', [
                         dice.expressionResult.forFunctionCall([2, 1, 3], 'roll', [
                             dice.expressionResult.forConstant(3),
-                            dice.expressionResult.forDie(bag.d(4))
-                        ])
+                            dice.expressionResult.forDie(bag.d(4)),
+                        ]),
                     ])
                 );
 
@@ -70,24 +70,24 @@ describe('diceExpressionResultUtils', () => {
                 expect(dieRollResults).toEqual([
                     {
                         sides: 12,
-                        value: 7
+                        value: 7,
                     },
                     {
                         sides: 12,
-                        value: 11
+                        value: 11,
                     },
                     {
                         sides: 4,
-                        value: 2
+                        value: 2,
                     },
                     {
                         sides: 4,
-                        value: 1
+                        value: 1,
                     },
                     {
                         sides: 4,
-                        value: 3
-                    }
+                        value: 3,
+                    },
                 ]);
             });
         });

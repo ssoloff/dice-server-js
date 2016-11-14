@@ -30,7 +30,7 @@ module.exports = {
 
             get() {
                 return 'host:1234';
-            }
+            },
         };
     },
 
@@ -52,7 +52,7 @@ module.exports = {
 
             status() {
                 return this;
-            }
+            },
         };
         spyOn(response, 'json').and.callThrough();
         spyOn(response, 'status').and.callThrough();
@@ -135,5 +135,5 @@ module.exports = {
         if (ja.isEqual(expected, actual, true)) {
             return true;
         }
-    }
+    },
 };

@@ -54,5 +54,5 @@ module.exports = {
      *
      * @type {module:dice-expression-result-formatter}
      */
-    expressionResultFormatter: require('./dice-expression-result-formatter')
+    expressionResultFormatter: require('./dice-expression-result-formatter'),
 };

@@ -20,7 +20,7 @@ describe('security', () => {
         payload = {
             a: 1,
             b: 2,
-            c: 3
+            c: 3,
         };
 
         privateKey = securityTest.getPrivateKey();
@@ -62,7 +62,7 @@ describe('security', () => {
                 const obj = {
                     c: 3,
                     a: 1,
-                    b: 2
+                    b: 2,
                 };
 
                 expect(security.toCanonicalString(obj)).toBe('{"a":1,"b":2,"c":3}');

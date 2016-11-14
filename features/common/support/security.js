@@ -19,5 +19,5 @@ module.exports = {
             fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/private-key.pem')),
             fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem'))
         );
-    }
+    },
 };

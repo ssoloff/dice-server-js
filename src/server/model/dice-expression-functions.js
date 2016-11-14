@@ -237,5 +237,5 @@ module.exports = {
      */
     trunc(x) {
         return Math.trunc(x);
-    }
+    },
 };

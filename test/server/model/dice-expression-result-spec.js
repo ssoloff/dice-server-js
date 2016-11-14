@@ -22,7 +22,7 @@ describe('diceExpressionResult', () => {
         d3 = dice.expressionResult.forDie(dice.bag.create().d(3));
 
         visitor = {
-            visit: null
+            visit: null,
         };
         spyOn(visitor, 'visit');
     });

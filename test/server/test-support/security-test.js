@@ -53,5 +53,5 @@ module.exports = {
      */
     getPublicKey() {
         return fs.readFileSync(path.join(__dirname, '../test-keys/public-key.pem'));
-    }
+    },
 };

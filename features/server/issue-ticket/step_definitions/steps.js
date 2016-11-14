@@ -18,7 +18,7 @@ module.exports = function() {
         this.issueTicketService = this.createIssueTicketService();
         this.response = {
             body: null,
-            status: null
+            status: null,
         };
         callback();
     });

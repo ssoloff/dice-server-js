@@ -30,15 +30,15 @@ module.exports = {
      * // returns [
      * //     {
      * //         sides: 6,
-     * //         value: 2
+     * //         value: 2,
      * //     },
      * //     {
      * //         sides: 6,
-     * //         value: 5
+     * //         value: 5,
      * //     },
      * //     {
      * //         sides: 4,
-     * //         value: 3
+     * //         value: 3,
      * //     }
      * // ]
      * //
@@ -55,11 +55,11 @@ module.exports = {
                 dieRollValues.forEach((dieRollValue) => {
                     dieRollResults.push({
                         sides: dieSides,
-                        value: dieRollValue
+                        value: dieRollValue,
                     });
                 });
             }
         });
         return dieRollResults;
-    }
+    },
 };

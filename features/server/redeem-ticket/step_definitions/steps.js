@@ -19,14 +19,14 @@ module.exports = function() {
         this.redeemTicketService = this.createRedeemTicketService();
         this.response = {
             body: null,
-            status: null
+            status: null,
         };
         this.previousResponse = null;
         this.ticket = {
             description: null,
             forceInvalidSignature: false,
             forceRedeemed: false,
-            id: null
+            id: null,
         };
         callback();
     });

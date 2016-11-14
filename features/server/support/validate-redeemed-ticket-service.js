@@ -20,7 +20,7 @@ class ValidateRedeemedTicketService {
         const requestData = {
             body: this.requestBody,
             json: true,
-            uri: this.requestUrl
+            uri: this.requestUrl,
         };
         req.post(requestData, (error, response, body) => {
             if (!error) {

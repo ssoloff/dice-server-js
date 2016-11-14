@@ -90,5 +90,5 @@ module.exports = {
             // do not consider function members when testing for equality
             return JSON.stringify(first) === JSON.stringify(second);
         }
-    }
+    },
 };

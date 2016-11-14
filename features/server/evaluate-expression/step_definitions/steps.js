@@ -18,7 +18,7 @@ module.exports = function() {
         this.evaluateExpressionService = this.createEvaluateExpressionService();
         this.response = {
             body: null,
-            status: null
+            status: null,
         };
         callback();
     });

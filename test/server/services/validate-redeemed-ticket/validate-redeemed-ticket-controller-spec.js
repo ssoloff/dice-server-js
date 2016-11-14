@@ -20,7 +20,7 @@ describe('validateRedeemedTicketController', () => {
 
     function createValidateRedeemedTicketController() {
         return require('../../../../src/server/services/validate-redeemed-ticket/validate-redeemed-ticket-controller').create({
-            publicKey: controllerTest.getPublicKey()
+            publicKey: controllerTest.getPublicKey(),
         });
     }
 
@@ -47,21 +47,21 @@ describe('validateRedeemedTicketController', () => {
                         evaluateExpressionResponseBody: {
                             expression: {
                                 canonicalText: 'sum(roll(3, d6)) + 4',
-                                text: '3d6+4'
+                                text: '3d6+4',
                             },
                             expressionResult: {
                                 text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                                value: 22
+                                value: 22,
                             },
                             randomNumberGenerator: {
-                                name: 'constantMax'
-                            }
+                                name: 'constantMax',
+                            },
                         },
                         id: '00112233445566778899aabbccddeeff00112233',
-                        validateUrl: 'http://host:1234/validateRedeemedTicketPath'
+                        validateUrl: 'http://host:1234/validateRedeemedTicketPath',
                     },
-                    signature: null
-                }
+                    signature: null,
+                },
             };
         });
 
@@ -94,8 +94,8 @@ describe('validateRedeemedTicketController', () => {
                 expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
                     error: {
-                        message: ja.matchType('string')
-                    }
+                        message: ja.matchType('string'),
+                    },
                 });
             });
         });

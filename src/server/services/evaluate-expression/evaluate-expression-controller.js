@@ -45,7 +45,7 @@ module.exports = {
             const expression = parseExpressionText(requestBody.expression.text, randomNumberGeneratorSpecification);
             responseBody.expression = {
                 canonicalText: formatExpression(expression),
-                text: requestBody.expression.text
+                text: requestBody.expression.text,
             };
 
             const expressionResult = expression.evaluate();
@@ -57,7 +57,7 @@ module.exports = {
             }
             responseBody.expressionResult = {
                 text: formatExpressionResult(expressionResult),
-                value: expressionResult.value
+                value: expressionResult.value,
             };
 
             responseBody.dieRollResults = enumerateDieRollResults(expressionResult);
@@ -79,7 +79,7 @@ module.exports = {
 
         function getDefaultRandomNumberGeneratorSpecification() {
             return {
-                name: 'uniform'
+                name: 'uniform',
             };
         }
 
@@ -120,7 +120,7 @@ module.exports = {
                 } catch (e) {
                     controllerUtils.setFailureResponse(response, e);
                 }
-            }
+            },
         };
-    }
+    },
 };

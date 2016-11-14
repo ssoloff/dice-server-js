@@ -15,7 +15,7 @@ const diceExpressionFunctions = require('./dice-expression-functions');
 function createDefaultContext() {
     return {
         bag: diceBag.create(),
-        functions: {}
+        functions: {},
     };
 }
 
@@ -48,7 +48,7 @@ function createRollFunctionCallExpression(context, components) {
     const dieLiteral = components[2];
     return createFunctionCallExpression(context, 'roll', [
         diceExpression.forConstant(rollCount),
-        createDieExpression(context, dieLiteral)
+        createDieExpression(context, dieLiteral),
     ]);
 }
 
@@ -59,7 +59,7 @@ function createRollModifierFunctionCallExpression(context, rollExpression, compo
     const rollModifierFunctionName = getRollModifierFunctionName(rollModifierOperation, rollModifierDieType);
     return createFunctionCallExpression(context, rollModifierFunctionName, [
         rollExpression,
-        diceExpression.forConstant(rollModifierCount)
+        diceExpression.forConstant(rollModifierCount),
     ]);
 }
 
@@ -71,12 +71,12 @@ function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType)
     const rollModifierFunctionNames = {
         '+': {
             H: 'cloneHighestRolls',
-            L: 'cloneLowestRolls'
+            L: 'cloneLowestRolls',
         },
         '-': {
             H: 'dropHighestRolls',
-            L: 'dropLowestRolls'
-        }
+            L: 'dropLowestRolls',
+        },
     };
     return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType];
 }
@@ -140,5 +140,5 @@ module.exports = {
      * @returns {module:dice-expression~FunctionCallExpression!} A new
      *      function call expression.
      */
-    createFunctionCallExpression: createFunctionCallExpression
+    createFunctionCallExpression: createFunctionCallExpression,
 };

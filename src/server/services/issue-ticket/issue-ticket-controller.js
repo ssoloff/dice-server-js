@@ -17,7 +17,7 @@ module.exports = {
     create(controllerData) {
         function createResponseBody(request) {
             return {
-                ticket: createTicket(request)
+                ticket: createTicket(request),
             };
         }
 
@@ -29,7 +29,7 @@ module.exports = {
             const ticketContent = createTicketContent(request);
             return {
                 content: ticketContent,
-                signature: createSignature(ticketContent)
+                signature: createSignature(ticketContent),
             };
         }
 
@@ -44,7 +44,7 @@ module.exports = {
                     description: requestBody.description,
                     evaluateExpressionRequestBody: evaluateExpressionRequestBody,
                     id: generateTicketId(),
-                    redeemUrl: getRedeemTicketUrl(request)
+                    redeemUrl: getRedeemTicketUrl(request),
                 };
             }
 
@@ -82,10 +82,10 @@ module.exports = {
                     content: {
                         name: 'uniform',
                         options: {
-                            seed: generateRandomNumberGeneratorSeed()
-                        }
+                            seed: generateRandomNumberGeneratorSeed(),
+                        },
                     },
-                    signature: null
+                    signature: null,
                 };
                 randomNumberGenerator.signature = security.createSignature(
                     randomNumberGenerator.content,
@@ -108,7 +108,7 @@ module.exports = {
                 } catch (e) {
                     controllerUtils.setFailureResponse(response, e);
                 }
-            }
+            },
         };
-    }
+    },
 };

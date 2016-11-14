@@ -20,5 +20,5 @@ module.exports = {
     MULTIPLICATION: 'multiplication',
     NEGATIVE: 'negative',
     POSITIVE: 'positive',
-    SUBTRACTION: 'subtraction'
+    SUBTRACTION: 'subtraction',
 };

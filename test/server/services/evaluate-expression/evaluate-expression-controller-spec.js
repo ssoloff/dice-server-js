@@ -21,7 +21,7 @@ describe('evaluateExpressionController', () => {
 
     function createEvaluateExpressionController() {
         return require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
-            publicKey: controllerTest.getPublicKey()
+            publicKey: controllerTest.getPublicKey(),
         });
     }
 
@@ -41,14 +41,14 @@ describe('evaluateExpressionController', () => {
         modifyRequestBody(() => {
             request.body = {
                 expression: {
-                    text: '3d6+4'
+                    text: '3d6+4',
                 },
                 randomNumberGenerator: {
                     content: {
-                        name: 'constantMax'
+                        name: 'constantMax',
                     },
-                    signature: null
-                }
+                    signature: null,
+                },
             };
         });
 
@@ -70,28 +70,28 @@ describe('evaluateExpressionController', () => {
                     dieRollResults: [
                         {
                             sides: 6,
-                            value: 6
+                            value: 6,
                         },
                         {
                             sides: 6,
-                            value: 6
+                            value: 6,
                         },
                         {
                             sides: 6,
-                            value: 6
-                        }
+                            value: 6,
+                        },
                     ],
                     expression: {
                         canonicalText: 'sum(roll(3, d6)) + 4',
-                        text: '3d6+4'
+                        text: '3d6+4',
                     },
                     expressionResult: {
                         text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                        value: 22
+                        value: 22,
                     },
                     randomNumberGenerator: {
-                        name: 'constantMax'
-                    }
+                        name: 'constantMax',
+                    },
                 });
             });
         });
@@ -109,8 +109,8 @@ describe('evaluateExpressionController', () => {
                 expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
                 expect(responseBody).toEqual({
                     error: {
-                        message: ja.matchType('string')
-                    }
+                        message: ja.matchType('string'),
+                    },
                 });
             });
         });

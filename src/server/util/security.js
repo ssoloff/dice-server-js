@@ -40,15 +40,15 @@ module.exports = {
         const jwsSignature = jws.sign({
             header: {
                 alg: SIGNATURE_ALGORITHM,
-                jwk: rsaPemToJwk(publicKey, {alg: SIGNATURE_ALGORITHM, key_ops: 'verify', use: 'sig'}) // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+                jwk: rsaPemToJwk(publicKey, {alg: SIGNATURE_ALGORITHM, key_ops: 'verify', use: 'sig'}), // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
             },
             payload: canonicalPayload,
-            privateKey: privateKey
+            privateKey: privateKey,
         });
         const decodedJwsSignature = jws.decode(jwsSignature);
         return {
             protected: base64url.encode(JSON.stringify(decodedJwsSignature.header)),
-            signature: decodedJwsSignature.signature
+            signature: decodedJwsSignature.signature,
         };
     },
 
@@ -109,5 +109,5 @@ module.exports = {
         const decodedProtectedHeader = JSON.parse(base64url.decode(signature.protected));
         publicKey = publicKey || jwkToPem(decodedProtectedHeader.jwk);
         return jws.verify(jwsSignature, SIGNATURE_ALGORITHM, publicKey);
-    }
+    },
 };

@@ -85,7 +85,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.ADDITION
+            typeId: diceExpressionTypeIds.ADDITION,
         };
     },
 
@@ -139,7 +139,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.ARRAY
+            typeId: diceExpressionTypeIds.ARRAY,
         };
     },
 
@@ -192,7 +192,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.CONSTANT
+            typeId: diceExpressionTypeIds.CONSTANT,
         };
     },
 
@@ -244,7 +244,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.DIE
+            typeId: diceExpressionTypeIds.DIE,
         };
     },
 
@@ -315,7 +315,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.DIVISION
+            typeId: diceExpressionTypeIds.DIVISION,
         };
     },
 
@@ -389,7 +389,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.FUNCTION_CALL
+            typeId: diceExpressionTypeIds.FUNCTION_CALL,
         };
     },
 
@@ -443,7 +443,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.GROUP
+            typeId: diceExpressionTypeIds.GROUP,
         };
     },
 
@@ -514,7 +514,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.MODULO
+            typeId: diceExpressionTypeIds.MODULO,
         };
     },
 
@@ -585,7 +585,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.MULTIPLICATION
+            typeId: diceExpressionTypeIds.MULTIPLICATION,
         };
     },
 
@@ -639,7 +639,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.NEGATIVE
+            typeId: diceExpressionTypeIds.NEGATIVE,
         };
     },
 
@@ -693,7 +693,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.POSITIVE
+            typeId: diceExpressionTypeIds.POSITIVE,
         };
     },
 
@@ -764,7 +764,7 @@ module.exports = {
              *
              * @type {String!}
              */
-            typeId: diceExpressionTypeIds.SUBTRACTION
+            typeId: diceExpressionTypeIds.SUBTRACTION,
         };
-    }
+    },
 };

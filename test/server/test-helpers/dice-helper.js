@@ -21,10 +21,10 @@ beforeEach(() => {
                 compare(obj) {
                     return {
                         message: 'Expected object to have a valid signature.',
-                        pass: hasValidSignature(obj)
+                        pass: hasValidSignature(obj),
                     };
-                }
+                },
             };
-        }
+        },
     });
 });

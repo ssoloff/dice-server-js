@@ -20,13 +20,13 @@ describe('issueTicketController', () => {
 
     function createIssueTicketController(evaluateExpressionController) {
         evaluateExpressionController = evaluateExpressionController || require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
-            publicKey: controllerTest.getPublicKey()
+            publicKey: controllerTest.getPublicKey(),
         });
         return require('../../../../src/server/services/issue-ticket/issue-ticket-controller').create({
             evaluateExpressionController: evaluateExpressionController,
             privateKey: controllerTest.getPrivateKey(),
             publicKey: controllerTest.getPublicKey(),
-            redeemTicketPath: '/redeemTicketPath'
+            redeemTicketPath: '/redeemTicketPath',
         });
     }
 
@@ -48,15 +48,15 @@ describe('issueTicketController', () => {
                 description: 'description',
                 evaluateExpressionRequestBody: {
                     expression: {
-                        text: '3d6+4'
+                        text: '3d6+4',
                     },
                     randomNumberGenerator: {
                         content: {
-                            name: 'constantMax'
+                            name: 'constantMax',
                         },
-                        signature: null
-                    }
-                }
+                        signature: null,
+                    },
+                },
             };
         });
 
@@ -80,20 +80,20 @@ describe('issueTicketController', () => {
                             description: 'description',
                             evaluateExpressionRequestBody: {
                                 expression: {
-                                    text: '3d6+4'
+                                    text: '3d6+4',
                                 },
                                 randomNumberGenerator: {
                                     content: {
-                                        name: 'constantMax'
+                                        name: 'constantMax',
                                     },
-                                    signature: ja.matchType('object')
-                                }
+                                    signature: ja.matchType('object'),
+                                },
                             },
                             id: ja.matchType('string'),
-                            redeemUrl: ja.matchType('string')
+                            redeemUrl: ja.matchType('string'),
                         },
-                        signature: ja.matchType('object')
-                    }
+                        signature: ja.matchType('object'),
+                    },
                 });
             });
 
@@ -118,10 +118,10 @@ describe('issueTicketController', () => {
                     evaluateExpression(request, response) {
                         response.status(expectedStatus).json({
                             error: {
-                                message: expectedErrorMessage
-                            }
+                                message: expectedErrorMessage,
+                            },
                         });
-                    }
+                    },
                 };
 
                 controller = createIssueTicketController(stubEvaluateExpressionController);
@@ -131,8 +131,8 @@ describe('issueTicketController', () => {
                 expect(response.status).toHaveBeenCalledWith(expectedStatus);
                 expect(responseBody).toEqual({
                     error: {
-                        message: expectedErrorMessage
-                    }
+                        message: expectedErrorMessage,
+                    },
                 });
             });
         });
@@ -144,9 +144,9 @@ describe('issueTicketController', () => {
                         description: 'description',
                         evaluateExpressionRequestBody: {
                             expression: {
-                                text: '3d6+4'
-                            }
-                        }
+                                text: '3d6+4',
+                            },
+                        },
                     };
                 });
 
@@ -159,23 +159,23 @@ describe('issueTicketController', () => {
                             description: 'description',
                             evaluateExpressionRequestBody: {
                                 expression: {
-                                    text: '3d6+4'
+                                    text: '3d6+4',
                                 },
                                 randomNumberGenerator: {
                                     content: {
                                         name: 'uniform',
                                         options: {
-                                            seed: ja.matchType('object')
-                                        }
+                                            seed: ja.matchType('object'),
+                                        },
                                     },
-                                    signature: ja.matchType('object')
-                                }
+                                    signature: ja.matchType('object'),
+                                },
                             },
                             id: ja.matchType('string'),
-                            redeemUrl: ja.matchType('string')
+                            redeemUrl: ja.matchType('string'),
                         },
-                        signature: ja.matchType('object')
-                    }
+                        signature: ja.matchType('object'),
+                    },
                 });
             });
         });

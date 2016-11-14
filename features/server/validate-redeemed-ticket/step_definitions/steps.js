@@ -20,10 +20,10 @@ module.exports = function() {
         this.validateRedeemedTicketService = this.createValidateRedeemedTicketService();
         this.response = {
             body: null,
-            status: null
+            status: null,
         };
         this.redeemedTicket = {
-            forceInvalidSignature: false
+            forceInvalidSignature: false,
         };
         callback();
     });

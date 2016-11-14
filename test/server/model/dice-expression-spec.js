@@ -75,7 +75,7 @@ describe('diceExpression', () => {
                 expect(expression.evaluate()).toEqual(
                     dice.expressionResult.forArray([
                         dice.expressionResult.forConstant(three.constant),
-                        dice.expressionResult.forConstant(four.constant)
+                        dice.expressionResult.forConstant(four.constant),
                     ])
                 );
             });
@@ -213,7 +213,7 @@ describe('diceExpression', () => {
                             45,
                             'f',
                             [
-                                dice.expressionResult.forConstant(three.constant)
+                                dice.expressionResult.forConstant(three.constant),
                             ]
                         )
                     );
@@ -229,7 +229,7 @@ describe('diceExpression', () => {
                             'f',
                             [
                                 dice.expressionResult.forConstant(three.constant),
-                                dice.expressionResult.forConstant(four.constant)
+                                dice.expressionResult.forConstant(four.constant),
                             ]
                         )
                     );

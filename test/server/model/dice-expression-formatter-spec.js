@@ -134,7 +134,7 @@ describe('diceExpressionFormatter', () => {
             it('should throw an exception', () => {
                 expect(() => {
                     dice.expressionFormatter.format({
-                        typeId: '__unknown__'
+                        typeId: '__unknown__',
                     });
                 }).toThrow();
             });
