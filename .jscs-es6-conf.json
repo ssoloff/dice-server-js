@@ -2,7 +2,6 @@
   "preset": "node-style-guide",
   "disallowSpacesInFunction": false,
   "maximumLineLength": 999,
-  "requireCamelCaseOrUpperCaseIdentifiers": false,
   "requireCapitalizedComments": false,
   "requireCurlyBraces": false,
   "requireTrailingComma": false,
