@@ -3,7 +3,6 @@
   "disallowSpacesInFunction": false,
   "maximumLineLength": 999,
   "requireCapitalizedComments": false,
-  "requireCurlyBraces": false,
   "requireTrailingComma": false,
   "validateIndentation": 4
 }

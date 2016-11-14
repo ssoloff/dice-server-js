@@ -20,11 +20,13 @@ module.exports = {
     create(controllerData) {
         function createRandomNumberGenerator(randomNumberGeneratorSpecification) {
             switch (randomNumberGeneratorSpecification.name) {
-                case 'constantMax':
+                case 'constantMax': {
                     return random.constantMax();
+                }
 
-                case 'uniform':
+                case 'uniform': {
                     return random.uniform(randomNumberGeneratorSpecification.options);
+                }
             }
 
             throw controllerUtils.createControllerError(
