@@ -1,6 +1,5 @@
 {
   "preset": "node-style-guide",
   "maximumLineLength": 999,
-  "requireCapitalizedComments": false,
   "validateIndentation": 4
 }

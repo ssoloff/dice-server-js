@@ -86,7 +86,7 @@ describe('validateRedeemedTicketController', () => {
         describe('when redeemed ticket has an invalid signature', () => {
             it('should respond with bad request error', () => {
                 modifyRequestBodyWithoutSignatureUpdate(() => {
-                    request.body.redeemedTicket.content.description += '...'; // simulate forged content
+                    request.body.redeemedTicket.content.description += '...'; // Simulate forged content
                 });
 
                 controller.validateRedeemedTicket(request, response);

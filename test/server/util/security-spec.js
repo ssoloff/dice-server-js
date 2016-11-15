@@ -84,7 +84,7 @@ describe('security', () => {
         describe('when signature is not valid', () => {
             it('should return false', () => {
                 const signature = security.createSignature(payload, privateKey, publicKey);
-                payload.a = -payload.a; // simulate attacker modifying payload
+                payload.a = -payload.a; // Simulate attacker modifying payload
 
                 const isValid = security.verifySignature(payload, signature);
 

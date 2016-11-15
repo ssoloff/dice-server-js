@@ -67,7 +67,7 @@ module.exports = {
                 _.has(first, 'evaluate') &&
                 _.has(second, 'typeId') &&
                 _.has(second, 'evaluate')) {
-            // do not consider function members when testing for equality
+            // Do not consider function members when testing for equality
             return JSON.stringify(first) === JSON.stringify(second);
         }
     },
@@ -87,7 +87,7 @@ module.exports = {
                 _.has(first, 'value') &&
                 _.has(second, 'typeId') &&
                 _.has(second, 'value')) {
-            // do not consider function members when testing for equality
+            // Do not consider function members when testing for equality
             return JSON.stringify(first) === JSON.stringify(second);
         }
     },

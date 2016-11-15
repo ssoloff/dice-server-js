@@ -72,7 +72,7 @@ module.exports = function() {
             this.ticket.id = issueTicketResponseBody.ticket.content.id;
 
             if (this.ticket.forceInvalidSignature) {
-                issueTicketResponseBody.ticket.content.description += '...'; // change content so signature will not match
+                issueTicketResponseBody.ticket.content.description += '...'; // Change content so signature will not match
             }
             this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody);
 

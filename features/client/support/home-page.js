@@ -78,7 +78,7 @@ class HomePage {
     open() {
         const driver = this.driver;
         return driver.get('http://localhost:3000/').then(() => {
-            // wait for async load of all feature fragments to complete
+            // Wait for async load of all feature fragments to complete
             const timeoutInMilliseconds = 60000;
             return promise.all([
                 driver.wait(until.elementLocated(By.id('main-eval-expressionForm')), timeoutInMilliseconds),

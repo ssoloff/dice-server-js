@@ -56,7 +56,7 @@ module.exports = function() {
                 }
 
                 if (this.redeemedTicket.forceInvalidSignature) {
-                    redeemTicketResponseBody.redeemedTicket.content.description += '...'; // change content so signature will not match
+                    redeemTicketResponseBody.redeemedTicket.content.description += '...'; // Change content so signature will not match
                 }
                 this.validateRedeemedTicketService.setRequestFromRedeemTicketResponseBody(redeemTicketResponseBody);
                 this.validateRedeemedTicketService.call((responseStatus, responseBody) => {

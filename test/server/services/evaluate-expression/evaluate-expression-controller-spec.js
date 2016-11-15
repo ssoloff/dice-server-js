@@ -178,7 +178,7 @@ describe('evaluateExpressionController', () => {
 
                     request.body.randomNumberGenerator.signature = security.createSignature(
                         request.body.randomNumberGenerator.content,
-                        otherPrivateKey, // sign using unauthorized key
+                        otherPrivateKey, // Sign using unauthorized key
                         otherPublicKey
                     );
 
