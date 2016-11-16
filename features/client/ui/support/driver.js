@@ -11,7 +11,7 @@
 const webdriver = require('selenium-webdriver');
 
 const driver = new webdriver.Builder()
-    .withCapabilities(webdriver.Capabilities.firefox())
-    .build();
+  .withCapabilities(webdriver.Capabilities.firefox())
+  .build();
 
 module.exports = driver;

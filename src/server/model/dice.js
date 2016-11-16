@@ -14,45 +14,45 @@
  * @module dice
  */
 module.exports = {
-    /**
-     * The bag submodule.
-     *
-     * @type {module:dice-bag}
-     */
-    bag: require('./dice-bag'),
+  /**
+   * The bag submodule.
+   *
+   * @type {module:dice-bag}
+   */
+  bag: require('./dice-bag'),
 
-    /**
-     * The expression submodule.
-     *
-     * @type {module:dice-expression}
-     */
-    expression: require('./dice-expression'),
+  /**
+   * The expression submodule.
+   *
+   * @type {module:dice-expression}
+   */
+  expression: require('./dice-expression'),
 
-    /**
-     * The expression formatter submodule.
-     *
-     * @type {module:dice-expression-formatter}
-     */
-    expressionFormatter: require('./dice-expression-formatter'),
+  /**
+   * The expression formatter submodule.
+   *
+   * @type {module:dice-expression-formatter}
+   */
+  expressionFormatter: require('./dice-expression-formatter'),
 
-    /**
-     * The expression parser submodule.
-     *
-     * @type {module:dice-expression-parser}
-     */
-    expressionParser: require('./dice-expression-parser'),
+  /**
+   * The expression parser submodule.
+   *
+   * @type {module:dice-expression-parser}
+   */
+  expressionParser: require('./dice-expression-parser'),
 
-    /**
-     * The expression result submodule.
-     *
-     * @type {module:dice-expression-result}
-     */
-    expressionResult: require('./dice-expression-result'),
+  /**
+   * The expression result submodule.
+   *
+   * @type {module:dice-expression-result}
+   */
+  expressionResult: require('./dice-expression-result'),
 
-    /**
-     * The expression result formatter submodule.
-     *
-     * @type {module:dice-expression-result-formatter}
-     */
-    expressionResultFormatter: require('./dice-expression-result-formatter'),
+  /**
+   * The expression result formatter submodule.
+   *
+   * @type {module:dice-expression-result-formatter}
+   */
+  expressionResultFormatter: require('./dice-expression-result-formatter'),
 };

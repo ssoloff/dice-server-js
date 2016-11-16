@@ -18,753 +18,753 @@ const diceExpressionTypeIds = require('./dice-expression-type-ids');
  * @module dice-expression
  */
 module.exports = {
-    /**
-     * Creates a new addition expression.
-     *
-     * @param {module:dice-expression~Expression!} augendExpression - The
-     *      augend expression.
-     * @param {module:dice-expression~Expression!} addendExpression - The
-     *      addend expression.
-     *
-     * @returns {module:dice-expression~AdditionExpression!} The new addition
-     *      expression.
-     *
-     * @throws {Error} If `augendExpression` is not defined or if
-     *      `addendExpression` is not defined.
-     */
-    forAddition(augendExpression, addendExpression) {
-        if (!augendExpression) {
-            throw new Error('augend expression is not defined');
-        } else if (!addendExpression) {
-            throw new Error('addend expression is not defined');
-        }
-
-        /**
-         * An expression that adds two expressions.
-         *
-         * @namespace AdditionExpression
-         */
-        return {
-            /**
-             * The addend expression.
-             *
-             * @memberOf module:dice-expression~AdditionExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            addendExpression: addendExpression,
-
-            /**
-             * The augend expression.
-             *
-             * @memberOf module:dice-expression~AdditionExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            augendExpression: augendExpression,
-
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~AdditionExpression
-             *
-             * @returns {module:dice-expression-result~AdditionExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forAddition(
-                    augendExpression.evaluate(),
-                    addendExpression.evaluate()
-                );
-            },
-
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~AdditionExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.ADDITION,
-        };
-    },
+  /**
+   * Creates a new addition expression.
+   *
+   * @param {module:dice-expression~Expression!} augendExpression - The
+   *      augend expression.
+   * @param {module:dice-expression~Expression!} addendExpression - The
+   *      addend expression.
+   *
+   * @returns {module:dice-expression~AdditionExpression!} The new addition
+   *      expression.
+   *
+   * @throws {Error} If `augendExpression` is not defined or if
+   *      `addendExpression` is not defined.
+   */
+  forAddition(augendExpression, addendExpression) {
+    if (!augendExpression) {
+      throw new Error('augend expression is not defined');
+    } else if (!addendExpression) {
+      throw new Error('addend expression is not defined');
+    }
 
     /**
-     * Creates a new array expression.
+     * An expression that adds two expressions.
      *
-     * @param {module:dice-expression~Expression[]!} expressions - The
-     *      expressions that are the array elements.
-     *
-     * @returns {module:dice-expression~ArrayExpression!} The new array
-     *      expression.
-     *
-     * @throws {Error} If `expressions` is not an array.
+     * @namespace AdditionExpression
      */
-    forArray(expressions) {
-        if (!_.isArray(expressions)) {
-            throw new Error('expressions is not an array');
-        }
+    return {
+      /**
+       * The addend expression.
+       *
+       * @memberOf module:dice-expression~AdditionExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      addendExpression: addendExpression,
 
-        /**
-         * An expression that acts as an array of expressions.
-         *
-         * @namespace ArrayExpression
-         */
-        return {
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~ArrayExpression
-             *
-             * @returns {module:dice-expression-result~ArrayExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forArray(_.invoke(expressions, 'evaluate'));
-            },
+      /**
+       * The augend expression.
+       *
+       * @memberOf module:dice-expression~AdditionExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      augendExpression: augendExpression,
 
-            /**
-             * The expressions that are the array elements.
-             *
-             * @memberOf module:dice-expression~ArrayExpression
-             *
-             * @type {module:dice-expression~Expression[]!}
-             */
-            expressions: expressions,
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~AdditionExpression
+       *
+       * @returns {module:dice-expression-result~AdditionExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forAddition(
+          augendExpression.evaluate(),
+          addendExpression.evaluate()
+        );
+      },
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~ArrayExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.ARRAY,
-        };
-    },
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~AdditionExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.ADDITION,
+    };
+  },
+
+  /**
+   * Creates a new array expression.
+   *
+   * @param {module:dice-expression~Expression[]!} expressions - The
+   *      expressions that are the array elements.
+   *
+   * @returns {module:dice-expression~ArrayExpression!} The new array
+   *      expression.
+   *
+   * @throws {Error} If `expressions` is not an array.
+   */
+  forArray(expressions) {
+    if (!_.isArray(expressions)) {
+      throw new Error('expressions is not an array');
+    }
 
     /**
-     * Creates a new constant expression.
+     * An expression that acts as an array of expressions.
      *
-     * @param {Number!} constant - The constant.
-     *
-     * @returns {module:dice-expression~ConstantExpression!} The new constant
-     *      expression.
-     *
-     * @throws {Error} If `constant` is not a number.
+     * @namespace ArrayExpression
      */
-    forConstant(constant) {
-        if (!_.isNumber(constant)) {
-            throw new Error('constant is not a number');
-        }
+    return {
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~ArrayExpression
+       *
+       * @returns {module:dice-expression-result~ArrayExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forArray(_.invoke(expressions, 'evaluate'));
+      },
 
-        /**
-         * An expression that represents a constant value.
-         *
-         * @namespace ConstantExpression
-         */
-        return {
-            /**
-             * The constant associated with the expression.
-             *
-             * @memberOf module:dice-expression~ConstantExpression
-             *
-             * @type {Number!}
-             */
-            constant: constant,
+      /**
+       * The expressions that are the array elements.
+       *
+       * @memberOf module:dice-expression~ArrayExpression
+       *
+       * @type {module:dice-expression~Expression[]!}
+       */
+      expressions: expressions,
 
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~ConstantExpression
-             *
-             * @returns {module:dice-expression-result~ConstantExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forConstant(constant);
-            },
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~ArrayExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.ARRAY,
+    };
+  },
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~ConstantExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.CONSTANT,
-        };
-    },
+  /**
+   * Creates a new constant expression.
+   *
+   * @param {Number!} constant - The constant.
+   *
+   * @returns {module:dice-expression~ConstantExpression!} The new constant
+   *      expression.
+   *
+   * @throws {Error} If `constant` is not a number.
+   */
+  forConstant(constant) {
+    if (!_.isNumber(constant)) {
+      throw new Error('constant is not a number');
+    }
 
     /**
-     * Creates a new die expression.
+     * An expression that represents a constant value.
      *
-     * @param {module:dice-bag~Die!} die - The die.
-     *
-     * @returns {module:dice-expression~DieExpression!} The new die expression.
-     *
-     * @throws {Error} If `die` is not defined.
+     * @namespace ConstantExpression
      */
-    forDie(die) {
-        if (!die) {
-            throw new Error('die is not defined');
-        }
+    return {
+      /**
+       * The constant associated with the expression.
+       *
+       * @memberOf module:dice-expression~ConstantExpression
+       *
+       * @type {Number!}
+       */
+      constant: constant,
 
-        /**
-         * An expression that represents a die.
-         *
-         * @namespace DieExpression
-         */
-        return {
-            /**
-             * The die associated with the expression.
-             *
-             * @memberOf module:dice-expression~DieExpression
-             *
-             * @type {module:dice-bag~Die!}
-             */
-            die: die,
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~ConstantExpression
+       *
+       * @returns {module:dice-expression-result~ConstantExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forConstant(constant);
+      },
 
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~DieExpression
-             *
-             * @returns {module:dice-expression-result~DieExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forDie(die);
-            },
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~ConstantExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.CONSTANT,
+    };
+  },
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~DieExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.DIE,
-        };
-    },
+  /**
+   * Creates a new die expression.
+   *
+   * @param {module:dice-bag~Die!} die - The die.
+   *
+   * @returns {module:dice-expression~DieExpression!} The new die expression.
+   *
+   * @throws {Error} If `die` is not defined.
+   */
+  forDie(die) {
+    if (!die) {
+      throw new Error('die is not defined');
+    }
 
     /**
-     * Creates a new division expression.
+     * An expression that represents a die.
      *
-     * @param {module:dice-expression~Expression!} dividendExpression - The
-     *      dividend expression.
-     * @param {module:dice-expression~Expression!} divisorExpression - The
-     *      divisor expression.
-     *
-     * @returns {module:dice-expression~DivisionExpression!} The new division
-     *      expression.
-     *
-     * @throws {Error} If `dividendExpression` is not defined or if
-     *      `divisorExpression` is not defined.
+     * @namespace DieExpression
      */
-    forDivision(dividendExpression, divisorExpression) {
-        if (!dividendExpression) {
-            throw new Error('dividend expression is not defined');
-        } else if (!divisorExpression) {
-            throw new Error('divisor expression is not defined');
-        }
+    return {
+      /**
+       * The die associated with the expression.
+       *
+       * @memberOf module:dice-expression~DieExpression
+       *
+       * @type {module:dice-bag~Die!}
+       */
+      die: die,
 
-        /**
-         * An expression that divides two expressions.
-         *
-         * @namespace DivisionExpression
-         */
-        return {
-            /**
-             * The dividend expression.
-             *
-             * @memberOf module:dice-expression~DivisionExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            dividendExpression: dividendExpression,
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~DieExpression
+       *
+       * @returns {module:dice-expression-result~DieExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forDie(die);
+      },
 
-            /**
-             * The divisor expression.
-             *
-             * @memberOf module:dice-expression~DivisionExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            divisorExpression: divisorExpression,
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~DieExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.DIE,
+    };
+  },
 
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~DivisionExpression
-             *
-             * @returns {module:dice-expression-result~DivisionExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forDivision(
-                    dividendExpression.evaluate(),
-                    divisorExpression.evaluate()
-                );
-            },
-
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~DivisionExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.DIVISION,
-        };
-    },
+  /**
+   * Creates a new division expression.
+   *
+   * @param {module:dice-expression~Expression!} dividendExpression - The
+   *      dividend expression.
+   * @param {module:dice-expression~Expression!} divisorExpression - The
+   *      divisor expression.
+   *
+   * @returns {module:dice-expression~DivisionExpression!} The new division
+   *      expression.
+   *
+   * @throws {Error} If `dividendExpression` is not defined or if
+   *      `divisorExpression` is not defined.
+   */
+  forDivision(dividendExpression, divisorExpression) {
+    if (!dividendExpression) {
+      throw new Error('dividend expression is not defined');
+    } else if (!divisorExpression) {
+      throw new Error('divisor expression is not defined');
+    }
 
     /**
-     * Creates a new function call expression.
+     * An expression that divides two expressions.
      *
-     * @param {String!} name - The function name.
-     * @param {Function!} func - The function.
-     * @param {module:dice-expression~Expression[]!} argumentListExpressions -
-     *      The expressions that represent the arguments to the function call.
-     *
-     * @returns {module:dice-expression~FunctionCallExpression!} The new
-     *      function call expression.
-     *
-     * @throws {Error} If `name` is not a string, or if `func` is not a
-     *      function, or if `argumentListExpressions` is not an array.
+     * @namespace DivisionExpression
      */
-    forFunctionCall(name, func, argumentListExpressions) {
-        if (!_.isString(name)) {
-            throw new Error('function name is not a string');
-        } else if (!_.isFunction(func)) {
-            throw new Error('function is not a function');
-        } else if (!_.isArray(argumentListExpressions)) {
-            throw new Error('function argument list expressions is not an array');
-        }
+    return {
+      /**
+       * The dividend expression.
+       *
+       * @memberOf module:dice-expression~DivisionExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      dividendExpression: dividendExpression,
 
-        /**
-         * An expression that calls a function.
-         *
-         * @namespace FunctionCallExpression
-         */
-        return {
-            /**
-             * The expressions that represent the arguments to the function
-             * call.
-             *
-             * @memberOf module:dice-expression~FunctionCallExpression
-             *
-             * @type {module:dice-expression~Expression[]!}
-             */
-            argumentListExpressions: argumentListExpressions,
+      /**
+       * The divisor expression.
+       *
+       * @memberOf module:dice-expression~DivisionExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      divisorExpression: divisorExpression,
 
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~FunctionCallExpression
-             *
-             * @returns {module:dice-expression-result~FunctionCallExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                const argumentListExpressionResults = _.invoke(argumentListExpressions, 'evaluate');
-                const argumentList = _.pluck(argumentListExpressionResults, 'value');
-                const returnValue = func.apply(null, argumentList);
-                return diceExpressionResult.forFunctionCall(returnValue, name, argumentListExpressionResults);
-            },
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~DivisionExpression
+       *
+       * @returns {module:dice-expression-result~DivisionExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forDivision(
+          dividendExpression.evaluate(),
+          divisorExpression.evaluate()
+        );
+      },
 
-            /**
-             * The function name.
-             *
-             * @memberOf module:dice-expression~FunctionCallExpression
-             *
-             * @type {String!}
-             */
-            name: name,
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~DivisionExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.DIVISION,
+    };
+  },
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~FunctionCallExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.FUNCTION_CALL,
-        };
-    },
+  /**
+   * Creates a new function call expression.
+   *
+   * @param {String!} name - The function name.
+   * @param {Function!} func - The function.
+   * @param {module:dice-expression~Expression[]!} argumentListExpressions -
+   *      The expressions that represent the arguments to the function call.
+   *
+   * @returns {module:dice-expression~FunctionCallExpression!} The new
+   *      function call expression.
+   *
+   * @throws {Error} If `name` is not a string, or if `func` is not a
+   *      function, or if `argumentListExpressions` is not an array.
+   */
+  forFunctionCall(name, func, argumentListExpressions) {
+    if (!_.isString(name)) {
+      throw new Error('function name is not a string');
+    } else if (!_.isFunction(func)) {
+      throw new Error('function is not a function');
+    } else if (!_.isArray(argumentListExpressions)) {
+      throw new Error('function argument list expressions is not an array');
+    }
 
     /**
-     * Creates a new group expression.
+     * An expression that calls a function.
      *
-     * @param {module:dice-expression~Expression!} childExpression - The
-     *      expression that is grouped.
-     *
-     * @returns {module:dice-expression~GroupExpression!} The new group
-     *      expression.
-     *
-     * @throws {Error} If `childExpression` is not defined.
+     * @namespace FunctionCallExpression
      */
-    forGroup(childExpression) {
-        if (!childExpression) {
-            throw new Error('child expression is not defined');
-        }
+    return {
+      /**
+       * The expressions that represent the arguments to the function
+       * call.
+       *
+       * @memberOf module:dice-expression~FunctionCallExpression
+       *
+       * @type {module:dice-expression~Expression[]!}
+       */
+      argumentListExpressions: argumentListExpressions,
 
-        /**
-         * An expression that groups another expression.
-         *
-         * @namespace GroupExpression
-         */
-        return {
-            /**
-             * The expression that is grouped.
-             *
-             * @memberOf module:dice-expression~GroupExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            childExpression: childExpression,
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~FunctionCallExpression
+       *
+       * @returns {module:dice-expression-result~FunctionCallExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        const argumentListExpressionResults = _.invoke(argumentListExpressions, 'evaluate');
+        const argumentList = _.pluck(argumentListExpressionResults, 'value');
+        const returnValue = func.apply(null, argumentList);
+        return diceExpressionResult.forFunctionCall(returnValue, name, argumentListExpressionResults);
+      },
 
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~GroupExpression
-             *
-             * @returns {module:dice-expression-result~GroupExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forGroup(childExpression.evaluate());
-            },
+      /**
+       * The function name.
+       *
+       * @memberOf module:dice-expression~FunctionCallExpression
+       *
+       * @type {String!}
+       */
+      name: name,
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~GroupExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.GROUP,
-        };
-    },
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~FunctionCallExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.FUNCTION_CALL,
+    };
+  },
+
+  /**
+   * Creates a new group expression.
+   *
+   * @param {module:dice-expression~Expression!} childExpression - The
+   *      expression that is grouped.
+   *
+   * @returns {module:dice-expression~GroupExpression!} The new group
+   *      expression.
+   *
+   * @throws {Error} If `childExpression` is not defined.
+   */
+  forGroup(childExpression) {
+    if (!childExpression) {
+      throw new Error('child expression is not defined');
+    }
 
     /**
-     * Creates a new modulo expression.
+     * An expression that groups another expression.
      *
-     * @param {module:dice-expression~Expression!} dividendExpression - The
-     *      dividend expression.
-     * @param {module:dice-expression~Expression!} divisorExpression - The
-     *      divisor expression.
-     *
-     * @returns {module:dice-expression~ModuloExpression!} The new modulo
-     *      expression.
-     *
-     * @throws {Error} If `dividendExpression` is not defined or if
-     *      `divisorExpression` is not defined.
+     * @namespace GroupExpression
      */
-    forModulo(dividendExpression, divisorExpression) {
-        if (!dividendExpression) {
-            throw new Error('dividend expression is not defined');
-        } else if (!divisorExpression) {
-            throw new Error('divisor expression is not defined');
-        }
+    return {
+      /**
+       * The expression that is grouped.
+       *
+       * @memberOf module:dice-expression~GroupExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      childExpression: childExpression,
 
-        /**
-         * An expression that modulos two expressions.
-         *
-         * @namespace ModuloExpression
-         */
-        return {
-            /**
-             * The dividend expression.
-             *
-             * @memberOf module:dice-expression~ModuloExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            dividendExpression: dividendExpression,
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~GroupExpression
+       *
+       * @returns {module:dice-expression-result~GroupExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forGroup(childExpression.evaluate());
+      },
 
-            /**
-             * The divisor expression.
-             *
-             * @memberOf module:dice-expression~ModuloExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            divisorExpression: divisorExpression,
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~GroupExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.GROUP,
+    };
+  },
 
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~ModuloExpression
-             *
-             * @returns {module:dice-expression-result~ModuloExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forModulo(
-                    dividendExpression.evaluate(),
-                    divisorExpression.evaluate()
-                );
-            },
-
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~ModuloExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.MODULO,
-        };
-    },
+  /**
+   * Creates a new modulo expression.
+   *
+   * @param {module:dice-expression~Expression!} dividendExpression - The
+   *      dividend expression.
+   * @param {module:dice-expression~Expression!} divisorExpression - The
+   *      divisor expression.
+   *
+   * @returns {module:dice-expression~ModuloExpression!} The new modulo
+   *      expression.
+   *
+   * @throws {Error} If `dividendExpression` is not defined or if
+   *      `divisorExpression` is not defined.
+   */
+  forModulo(dividendExpression, divisorExpression) {
+    if (!dividendExpression) {
+      throw new Error('dividend expression is not defined');
+    } else if (!divisorExpression) {
+      throw new Error('divisor expression is not defined');
+    }
 
     /**
-     * Creates a new multiplication expression.
+     * An expression that modulos two expressions.
      *
-     * @param {module:dice-expression~Expression!} multiplicandExpression - The
-     *      multiplicand expression.
-     * @param {module:dice-expression~Expression!} multiplierExpression - The
-     *      multiplier expression.
-     *
-     * @returns {module:dice-expression~MultiplicationExpression!} The new
-     *      multiplication expression.
-     *
-     * @throws {Error} If `multiplicandExpression` is not defined or if
-     *      `multiplierExpression` is not defined.
+     * @namespace ModuloExpression
      */
-    forMultiplication(multiplicandExpression, multiplierExpression) {
-        if (!multiplicandExpression) {
-            throw new Error('multiplicand expression is not defined');
-        } else if (!multiplierExpression) {
-            throw new Error('multiplier expression is not defined');
-        }
+    return {
+      /**
+       * The dividend expression.
+       *
+       * @memberOf module:dice-expression~ModuloExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      dividendExpression: dividendExpression,
 
-        /**
-         * An expression that multiplies two expressions.
-         *
-         * @namespace MultiplicationExpression
-         */
-        return {
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~MultiplicationExpression
-             *
-             * @returns {module:dice-expression-result~MultiplicationExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forMultiplication(
-                    multiplicandExpression.evaluate(),
-                    multiplierExpression.evaluate()
-                );
-            },
+      /**
+       * The divisor expression.
+       *
+       * @memberOf module:dice-expression~ModuloExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      divisorExpression: divisorExpression,
 
-            /**
-             * The multiplicand expression.
-             *
-             * @memberOf module:dice-expression~MultiplicationExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            multiplicandExpression: multiplicandExpression,
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~ModuloExpression
+       *
+       * @returns {module:dice-expression-result~ModuloExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forModulo(
+          dividendExpression.evaluate(),
+          divisorExpression.evaluate()
+        );
+      },
 
-            /**
-             * The multiplier expression.
-             *
-             * @memberOf module:dice-expression~MultiplicationExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            multiplierExpression: multiplierExpression,
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~ModuloExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.MODULO,
+    };
+  },
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~MultiplicationExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.MULTIPLICATION,
-        };
-    },
+  /**
+   * Creates a new multiplication expression.
+   *
+   * @param {module:dice-expression~Expression!} multiplicandExpression - The
+   *      multiplicand expression.
+   * @param {module:dice-expression~Expression!} multiplierExpression - The
+   *      multiplier expression.
+   *
+   * @returns {module:dice-expression~MultiplicationExpression!} The new
+   *      multiplication expression.
+   *
+   * @throws {Error} If `multiplicandExpression` is not defined or if
+   *      `multiplierExpression` is not defined.
+   */
+  forMultiplication(multiplicandExpression, multiplierExpression) {
+    if (!multiplicandExpression) {
+      throw new Error('multiplicand expression is not defined');
+    } else if (!multiplierExpression) {
+      throw new Error('multiplier expression is not defined');
+    }
 
     /**
-     * Creates a new negative expression.
+     * An expression that multiplies two expressions.
      *
-     * @param {module:dice-expression~Expression!} childExpression - The
-     *      expression to be negated.
-     *
-     * @returns {module:dice-expression~NegativeExpression!} The new negative
-     *      expression.
-     *
-     * @throws {Error} If `childExpression` is not defined.
+     * @namespace MultiplicationExpression
      */
-    forNegative(childExpression) {
-        if (!childExpression) {
-            throw new Error('child expression is not defined');
-        }
+    return {
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~MultiplicationExpression
+       *
+       * @returns {module:dice-expression-result~MultiplicationExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forMultiplication(
+          multiplicandExpression.evaluate(),
+          multiplierExpression.evaluate()
+        );
+      },
 
-        /**
-         * An expression that negates another expression.
-         *
-         * @namespace NegativeExpression
-         */
-        return {
-            /**
-             * The expression to be negated.
-             *
-             * @memberOf module:dice-expression~NegativeExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            childExpression: childExpression,
+      /**
+       * The multiplicand expression.
+       *
+       * @memberOf module:dice-expression~MultiplicationExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      multiplicandExpression: multiplicandExpression,
 
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~NegativeExpression
-             *
-             * @returns {module:dice-expression-result~NegativeExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forNegative(childExpression.evaluate());
-            },
+      /**
+       * The multiplier expression.
+       *
+       * @memberOf module:dice-expression~MultiplicationExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      multiplierExpression: multiplierExpression,
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~NegativeExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.NEGATIVE,
-        };
-    },
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~MultiplicationExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.MULTIPLICATION,
+    };
+  },
+
+  /**
+   * Creates a new negative expression.
+   *
+   * @param {module:dice-expression~Expression!} childExpression - The
+   *      expression to be negated.
+   *
+   * @returns {module:dice-expression~NegativeExpression!} The new negative
+   *      expression.
+   *
+   * @throws {Error} If `childExpression` is not defined.
+   */
+  forNegative(childExpression) {
+    if (!childExpression) {
+      throw new Error('child expression is not defined');
+    }
 
     /**
-     * Creates a new positive expression.
+     * An expression that negates another expression.
      *
-     * @param {module:dice-expression~Expression!} childExpression - The
-     *      expression to be applied.
-     *
-     * @returns {module:dice-expression~PositiveExpression!} The new positive
-     *      expression.
-     *
-     * @throws {Error} If `childExpression` is not defined.
+     * @namespace NegativeExpression
      */
-    forPositive(childExpression) {
-        if (!childExpression) {
-            throw new Error('child expression is not defined');
-        }
+    return {
+      /**
+       * The expression to be negated.
+       *
+       * @memberOf module:dice-expression~NegativeExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      childExpression: childExpression,
 
-        /**
-         * An expression that applies another expression.
-         *
-         * @namespace PositiveExpression
-         */
-        return {
-            /**
-             * The expression to be applied.
-             *
-             * @memberOf module:dice-expression~PositiveExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            childExpression: childExpression,
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~NegativeExpression
+       *
+       * @returns {module:dice-expression-result~NegativeExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forNegative(childExpression.evaluate());
+      },
 
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~PositiveExpression
-             *
-             * @returns {module:dice-expression-result~PositiveExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forPositive(childExpression.evaluate());
-            },
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~NegativeExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.NEGATIVE,
+    };
+  },
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~PositiveExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.POSITIVE,
-        };
-    },
+  /**
+   * Creates a new positive expression.
+   *
+   * @param {module:dice-expression~Expression!} childExpression - The
+   *      expression to be applied.
+   *
+   * @returns {module:dice-expression~PositiveExpression!} The new positive
+   *      expression.
+   *
+   * @throws {Error} If `childExpression` is not defined.
+   */
+  forPositive(childExpression) {
+    if (!childExpression) {
+      throw new Error('child expression is not defined');
+    }
 
     /**
-     * Creates a new subtraction expression.
+     * An expression that applies another expression.
      *
-     * @param {module:dice-expression~Expression!} minuendExpression - The
-     *      minuend expression.
-     * @param {module:dice-expression~Expression!} subtrahendExpression - The
-     *      subtrahend expression.
-     *
-     * @returns {module:dice-expression~SubtractionExpression!} The new
-     *      subtraction expression.
-     *
-     * @throws {Error} If `minuendExpression` is not defined or if
-     *      `subtrahendExpression` is not defined.
+     * @namespace PositiveExpression
      */
-    forSubtraction(minuendExpression, subtrahendExpression) {
-        if (!minuendExpression) {
-            throw new Error('minuend expression is not defined');
-        } else if (!subtrahendExpression) {
-            throw new Error('subtrahend expression is not defined');
-        }
+    return {
+      /**
+       * The expression to be applied.
+       *
+       * @memberOf module:dice-expression~PositiveExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      childExpression: childExpression,
 
-        /**
-         * An expression that subtracts two expressions.
-         *
-         * @namespace SubtractionExpression
-         */
-        return {
-            /**
-             * Evaluates the expression.
-             *
-             * @memberOf module:dice-expression~SubtractionExpression
-             *
-             * @returns {module:dice-expression-result~SubtractionExpressionResult!}
-             *      The result of evaluating the expression.
-             */
-            evaluate() {
-                return diceExpressionResult.forSubtraction(
-                    minuendExpression.evaluate(),
-                    subtrahendExpression.evaluate()
-                );
-            },
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~PositiveExpression
+       *
+       * @returns {module:dice-expression-result~PositiveExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forPositive(childExpression.evaluate());
+      },
 
-            /**
-             * The minuend expression.
-             *
-             * @memberOf module:dice-expression~SubtractionExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            minuendExpression: minuendExpression,
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~PositiveExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.POSITIVE,
+    };
+  },
 
-            /**
-             * The subtrahend expression.
-             *
-             * @memberOf module:dice-expression~SubtractionExpression
-             *
-             * @type {module:dice-expression~Expression!}
-             */
-            subtrahendExpression: subtrahendExpression,
+  /**
+   * Creates a new subtraction expression.
+   *
+   * @param {module:dice-expression~Expression!} minuendExpression - The
+   *      minuend expression.
+   * @param {module:dice-expression~Expression!} subtrahendExpression - The
+   *      subtrahend expression.
+   *
+   * @returns {module:dice-expression~SubtractionExpression!} The new
+   *      subtraction expression.
+   *
+   * @throws {Error} If `minuendExpression` is not defined or if
+   *      `subtrahendExpression` is not defined.
+   */
+  forSubtraction(minuendExpression, subtrahendExpression) {
+    if (!minuendExpression) {
+      throw new Error('minuend expression is not defined');
+    } else if (!subtrahendExpression) {
+      throw new Error('subtrahend expression is not defined');
+    }
 
-            /**
-             * The expression type identifier.
-             *
-             * @memberOf module:dice-expression~SubtractionExpression
-             *
-             * @type {String!}
-             */
-            typeId: diceExpressionTypeIds.SUBTRACTION,
-        };
-    },
+    /**
+     * An expression that subtracts two expressions.
+     *
+     * @namespace SubtractionExpression
+     */
+    return {
+      /**
+       * Evaluates the expression.
+       *
+       * @memberOf module:dice-expression~SubtractionExpression
+       *
+       * @returns {module:dice-expression-result~SubtractionExpressionResult!}
+       *      The result of evaluating the expression.
+       */
+      evaluate() {
+        return diceExpressionResult.forSubtraction(
+          minuendExpression.evaluate(),
+          subtrahendExpression.evaluate()
+        );
+      },
+
+      /**
+       * The minuend expression.
+       *
+       * @memberOf module:dice-expression~SubtractionExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      minuendExpression: minuendExpression,
+
+      /**
+       * The subtrahend expression.
+       *
+       * @memberOf module:dice-expression~SubtractionExpression
+       *
+       * @type {module:dice-expression~Expression!}
+       */
+      subtrahendExpression: subtrahendExpression,
+
+      /**
+       * The expression type identifier.
+       *
+       * @memberOf module:dice-expression~SubtractionExpression
+       *
+       * @type {String!}
+       */
+      typeId: diceExpressionTypeIds.SUBTRACTION,
+    };
+  },
 };

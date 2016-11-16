@@ -11,23 +11,23 @@
 const ControllerError = require('../../../src/server/util/controller-error');
 
 describe('ControllerError', () => {
-    describe('.constructor', () => {
-        it('should use a default message if one is not provided', () => {
-            const error = new ControllerError(200, null);
+  describe('.constructor', () => {
+    it('should use a default message if one is not provided', () => {
+      const error = new ControllerError(200, null);
 
-            expect(error.message).not.toBeNull();
-        });
-
-        it('should use a default status if one is not provided', () => {
-            const error = new ControllerError(null, 'message');
-
-            expect(error.status).not.toBeNull();
-        });
-
-        it('should provide a stack trace', () => {
-            const error = new ControllerError(200, 'message');
-
-            expect(error.stack).not.toBeUndefined();
-        });
+      expect(error.message).not.toBeNull();
     });
+
+    it('should use a default status if one is not provided', () => {
+      const error = new ControllerError(null, 'message');
+
+      expect(error.status).not.toBeNull();
+    });
+
+    it('should provide a stack trace', () => {
+      const error = new ControllerError(200, 'message');
+
+      expect(error.stack).not.toBeUndefined();
+    });
+  });
 });

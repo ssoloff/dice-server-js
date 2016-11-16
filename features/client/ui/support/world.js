@@ -12,9 +12,9 @@ const driver = require('./driver');
 const HomePage = require('../../support/home-page');
 
 function World() {
-    this.createHomePage = () => new HomePage(driver);
+  this.createHomePage = () => new HomePage(driver);
 }
 
 module.exports = function() {
-    this.World = World;
+  this.World = World;
 };

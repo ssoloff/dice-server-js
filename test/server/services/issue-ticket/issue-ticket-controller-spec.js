@@ -13,171 +13,171 @@ const httpStatus = require('http-status-codes');
 const ja = require('json-assert');
 
 describe('issueTicketController', () => {
-    let controller;
-    let request;
-    let response;
-    let responseBody;
+  let controller;
+  let request;
+  let response;
+  let responseBody;
 
-    function createIssueTicketController(evaluateExpressionController) {
-        evaluateExpressionController = evaluateExpressionController || require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
-            publicKey: controllerTest.getPublicKey(),
-        });
-        return require('../../../../src/server/services/issue-ticket/issue-ticket-controller').create({
-            evaluateExpressionController: evaluateExpressionController,
-            privateKey: controllerTest.getPrivateKey(),
-            publicKey: controllerTest.getPublicKey(),
-            redeemTicketPath: '/redeemTicketPath',
-        });
+  function createIssueTicketController(evaluateExpressionController) {
+    evaluateExpressionController = evaluateExpressionController || require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
+      publicKey: controllerTest.getPublicKey(),
+    });
+    return require('../../../../src/server/services/issue-ticket/issue-ticket-controller').create({
+      evaluateExpressionController: evaluateExpressionController,
+      privateKey: controllerTest.getPrivateKey(),
+      publicKey: controllerTest.getPublicKey(),
+      redeemTicketPath: '/redeemTicketPath',
+    });
+  }
+
+  function modifyRequestBody(callback) {
+    callback();
+
+    const randomNumberGenerator = request.body.evaluateExpressionRequestBody.randomNumberGenerator;
+    if (randomNumberGenerator) {
+      randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
     }
+  }
 
-    function modifyRequestBody(callback) {
-        callback();
+  beforeEach(() => {
+    jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
 
-        const randomNumberGenerator = request.body.evaluateExpressionRequestBody.randomNumberGenerator;
-        if (randomNumberGenerator) {
-            randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
-        }
-    }
+    request = controllerTest.createRequest();
+    modifyRequestBody(() => {
+      request.body = {
+        description: 'description',
+        evaluateExpressionRequestBody: {
+          expression: {
+            text: '3d6+4',
+          },
+          randomNumberGenerator: {
+            content: {
+              name: 'constantMax',
+            },
+            signature: null,
+          },
+        },
+      };
+    });
 
-    beforeEach(() => {
-        jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
+    response = controllerTest.createResponse((json) => {
+      responseBody = json;
+    });
+    responseBody = null;
 
-        request = controllerTest.createRequest();
-        modifyRequestBody(() => {
-            request.body = {
-                description: 'description',
-                evaluateExpressionRequestBody: {
-                    expression: {
-                        text: '3d6+4',
-                    },
-                    randomNumberGenerator: {
-                        content: {
-                            name: 'constantMax',
-                        },
-                        signature: null,
-                    },
+    controller = createIssueTicketController();
+  });
+
+  describe('.issueTicket', () => {
+    describe('when evaluate expression controller responds with success', () => {
+      it('should respond with OK', () => {
+        controller.issueTicket(request, response);
+
+        expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+        expect(responseBody).toEqual({
+          ticket: {
+            content: {
+              description: 'description',
+              evaluateExpressionRequestBody: {
+                expression: {
+                  text: '3d6+4',
                 },
-            };
+                randomNumberGenerator: {
+                  content: {
+                    name: 'constantMax',
+                  },
+                  signature: ja.matchType('object'),
+                },
+              },
+              id: ja.matchType('string'),
+              redeemUrl: ja.matchType('string'),
+            },
+            signature: ja.matchType('object'),
+          },
         });
+      });
 
-        response = controllerTest.createResponse((json) => {
-            responseBody = json;
-        });
-        responseBody = null;
+      it('should respond with a valid ticket', () => {
+        controller.issueTicket(request, response);
 
-        controller = createIssueTicketController();
+        expect(responseBody.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
+      });
+
+      it('should respond with a signed ticket', () => {
+        controller.issueTicket(request, response);
+
+        expect(responseBody.ticket).toBeSigned();
+      });
     });
 
-    describe('.issueTicket', () => {
-        describe('when evaluate expression controller responds with success', () => {
-            it('should respond with OK', () => {
-                controller.issueTicket(request, response);
-
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(responseBody).toEqual({
-                    ticket: {
-                        content: {
-                            description: 'description',
-                            evaluateExpressionRequestBody: {
-                                expression: {
-                                    text: '3d6+4',
-                                },
-                                randomNumberGenerator: {
-                                    content: {
-                                        name: 'constantMax',
-                                    },
-                                    signature: ja.matchType('object'),
-                                },
-                            },
-                            id: ja.matchType('string'),
-                            redeemUrl: ja.matchType('string'),
-                        },
-                        signature: ja.matchType('object'),
-                    },
-                });
+    describe('when evaluate expression controller responds with error', () => {
+      it('should respond with same error', () => {
+        const expectedStatus = httpStatus.BAD_GATEWAY;
+        const expectedErrorMessage = 'message';
+        const stubEvaluateExpressionController = {
+          evaluateExpression(request, response) {
+            response.status(expectedStatus).json({
+              error: {
+                message: expectedErrorMessage,
+              },
             });
+          },
+        };
 
-            it('should respond with a valid ticket', () => {
-                controller.issueTicket(request, response);
+        controller = createIssueTicketController(stubEvaluateExpressionController);
 
-                expect(responseBody.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/);
-            });
+        controller.issueTicket(request, response);
 
-            it('should respond with a signed ticket', () => {
-                controller.issueTicket(request, response);
-
-                expect(responseBody.ticket).toBeSigned();
-            });
+        expect(response.status).toHaveBeenCalledWith(expectedStatus);
+        expect(responseBody).toEqual({
+          error: {
+            message: expectedErrorMessage,
+          },
         });
-
-        describe('when evaluate expression controller responds with error', () => {
-            it('should respond with same error', () => {
-                const expectedStatus = httpStatus.BAD_GATEWAY;
-                const expectedErrorMessage = 'message';
-                const stubEvaluateExpressionController = {
-                    evaluateExpression(request, response) {
-                        response.status(expectedStatus).json({
-                            error: {
-                                message: expectedErrorMessage,
-                            },
-                        });
-                    },
-                };
-
-                controller = createIssueTicketController(stubEvaluateExpressionController);
-
-                controller.issueTicket(request, response);
-
-                expect(response.status).toHaveBeenCalledWith(expectedStatus);
-                expect(responseBody).toEqual({
-                    error: {
-                        message: expectedErrorMessage,
-                    },
-                });
-            });
-        });
-
-        describe('when random number generator specification is not provided', () => {
-            it('should use uniform random number generator with seed', () => {
-                modifyRequestBody(() => {
-                    request.body = {
-                        description: 'description',
-                        evaluateExpressionRequestBody: {
-                            expression: {
-                                text: '3d6+4',
-                            },
-                        },
-                    };
-                });
-
-                controller.issueTicket(request, response);
-
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(responseBody).toEqual({
-                    ticket: {
-                        content: {
-                            description: 'description',
-                            evaluateExpressionRequestBody: {
-                                expression: {
-                                    text: '3d6+4',
-                                },
-                                randomNumberGenerator: {
-                                    content: {
-                                        name: 'uniform',
-                                        options: {
-                                            seed: ja.matchType('object'),
-                                        },
-                                    },
-                                    signature: ja.matchType('object'),
-                                },
-                            },
-                            id: ja.matchType('string'),
-                            redeemUrl: ja.matchType('string'),
-                        },
-                        signature: ja.matchType('object'),
-                    },
-                });
-            });
-        });
+      });
     });
+
+    describe('when random number generator specification is not provided', () => {
+      it('should use uniform random number generator with seed', () => {
+        modifyRequestBody(() => {
+          request.body = {
+            description: 'description',
+            evaluateExpressionRequestBody: {
+              expression: {
+                text: '3d6+4',
+              },
+            },
+          };
+        });
+
+        controller.issueTicket(request, response);
+
+        expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+        expect(responseBody).toEqual({
+          ticket: {
+            content: {
+              description: 'description',
+              evaluateExpressionRequestBody: {
+                expression: {
+                  text: '3d6+4',
+                },
+                randomNumberGenerator: {
+                  content: {
+                    name: 'uniform',
+                    options: {
+                      seed: ja.matchType('object'),
+                    },
+                  },
+                  signature: ja.matchType('object'),
+                },
+              },
+              id: ja.matchType('string'),
+              redeemUrl: ja.matchType('string'),
+            },
+            signature: ja.matchType('object'),
+          },
+        });
+      });
+    });
+  });
 });

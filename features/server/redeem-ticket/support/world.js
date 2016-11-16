@@ -12,10 +12,10 @@ const IssueTicketService = require('../../support/issue-ticket-service');
 const RedeemTicketService = require('../../support/redeem-ticket-service');
 
 function World() {
-    this.createIssueTicketService = () => new IssueTicketService();
-    this.createRedeemTicketService = () => new RedeemTicketService();
+  this.createIssueTicketService = () => new IssueTicketService();
+  this.createRedeemTicketService = () => new RedeemTicketService();
 }
 
 module.exports = function() {
-    this.World = World;
+  this.World = World;
 };

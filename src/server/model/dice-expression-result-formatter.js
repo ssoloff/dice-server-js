@@ -45,88 +45,88 @@ formatters[diceExpressionTypeIds.SUBTRACTION] = formatSubtractionExpressionResul
  *      not available for the specified expression result.
  */
 function format(expressionResult) {
-    const formatter = formatters[expressionResult.typeId];
-    if (formatter) {
-        return formatter(expressionResult);
-    }
+  const formatter = formatters[expressionResult.typeId];
+  if (formatter) {
+    return formatter(expressionResult);
+  }
 
-    throw new Error(`unknown expression result type: "${expressionResult.typeId}"`);
+  throw new Error(`unknown expression result type: "${expressionResult.typeId}"`);
 }
 
 function formatAdditionExpressionResult(expressionResult) {
-    return format(expressionResult.augendExpressionResult) +
-        ' + ' +
-        format(expressionResult.addendExpressionResult);
+  return format(expressionResult.augendExpressionResult) +
+    ' + ' +
+    format(expressionResult.addendExpressionResult);
 }
 
 function formatArrayExpressionResult(expressionResult) {
-    return '[' +
-        expressionResult.expressionResults.map(format).join(', ') +
-        ']';
+  return '[' +
+    expressionResult.expressionResults.map(format).join(', ') +
+    ']';
 }
 
 function formatConstantExpressionResult(expressionResult) {
-    return `${expressionResult.value}`;
+  return `${expressionResult.value}`;
 }
 
 function formatDieExpressionResult(expressionResult) {
-    return `d${expressionResult.value.sides}`;
+  return `d${expressionResult.value.sides}`;
 }
 
 function formatDivisionExpressionResult(expressionResult) {
-    return format(expressionResult.dividendExpressionResult) +
-        ' / ' +
-        format(expressionResult.divisorExpressionResult);
+  return format(expressionResult.dividendExpressionResult) +
+    ' / ' +
+    format(expressionResult.divisorExpressionResult);
 }
 
 function formatFunctionCallExpressionResult(expressionResult) {
-    return '[' +
-        expressionResult.name +
-        '(' +
-        expressionResult.argumentListExpressionResults.map(format).join(', ') +
-        ') -> ' +
-        formatValue(expressionResult.value) +
-        ']';
+  return '[' +
+    expressionResult.name +
+    '(' +
+    expressionResult.argumentListExpressionResults.map(format).join(', ') +
+    ') -> ' +
+    formatValue(expressionResult.value) +
+    ']';
 }
 
 function formatGroupExpressionResult(expressionResult) {
-    return '(' +
-        format(expressionResult.childExpressionResult) +
-        ')';
+  return '(' +
+    format(expressionResult.childExpressionResult) +
+    ')';
 }
 
 function formatModuloExpressionResult(expressionResult) {
-    return format(expressionResult.dividendExpressionResult) +
-        ' % ' +
-        format(expressionResult.divisorExpressionResult);
+  return format(expressionResult.dividendExpressionResult) +
+    ' % ' +
+    format(expressionResult.divisorExpressionResult);
 }
 
 function formatMultiplicationExpressionResult(expressionResult) {
-    return format(expressionResult.multiplicandExpressionResult) +
-        ' * ' +
-        format(expressionResult.multiplierExpressionResult);
+  return format(expressionResult.multiplicandExpressionResult) +
+    ' * ' +
+    format(expressionResult.multiplierExpressionResult);
 }
 
 function formatNegativeExpressionResult(expressionResult) {
-    return `-${format(expressionResult.childExpressionResult)}`;
+  return `-${format(expressionResult.childExpressionResult)}`;
 }
 
 function formatPositiveExpressionResult(expressionResult) {
-    return `+${format(expressionResult.childExpressionResult)}`;
+  return `+${format(expressionResult.childExpressionResult)}`;
 }
 
 function formatSubtractionExpressionResult(expressionResult) {
-    return format(expressionResult.minuendExpressionResult) +
-        ' - ' +
-        format(expressionResult.subtrahendExpressionResult);
+  return format(expressionResult.minuendExpressionResult) +
+    ' - ' +
+    format(expressionResult.subtrahendExpressionResult);
 }
 
 function formatValue(value) {
-    if (_.isArray(value)) {
-        return `[${value.join(', ')}]`;
-    }
+  if (_.isArray(value)) {
+    return `[${value.join(', ')}]`;
+  }
 
-    return `${value}`;
+  return `${value}`;
 }
 
 module.exports.format = format;

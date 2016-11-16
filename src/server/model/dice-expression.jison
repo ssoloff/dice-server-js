@@ -46,126 +46,126 @@ d({POSITIVE_INTEGER}|{PERCENT})                                                 
 %%
 
 AdditiveExpression
-    : AdditiveExpression PLUS MultiplicativeExpression
-        {
-            $$ = diceExpression.forAddition($1, $3);
-        }
-    | AdditiveExpression MINUS MultiplicativeExpression
-        {
-            $$ = diceExpression.forSubtraction($1, $3);
-        }
-    | MultiplicativeExpression
-    ;
+  : AdditiveExpression PLUS MultiplicativeExpression
+    {
+      $$ = diceExpression.forAddition($1, $3);
+    }
+  | AdditiveExpression MINUS MultiplicativeExpression
+    {
+      $$ = diceExpression.forSubtraction($1, $3);
+    }
+  | MultiplicativeExpression
+  ;
 
 ArrayLiteral
-    : LSQUAREBRACE ExpressionList RSQUAREBRACE
-        {
-            $$ = diceExpression.forArray($2);
-        }
-    ;
+  : LSQUAREBRACE ExpressionList RSQUAREBRACE
+    {
+      $$ = diceExpression.forArray($2);
+    }
+  ;
 
 Expression
-    : AdditiveExpression
-    ;
+  : AdditiveExpression
+  ;
 
 ExpressionList
-    : /* empty */
-        {
-            $$ = [];
-        }
-    | Expression
-        {
-            $$ = [$1];
-        }
-    | ExpressionList COMMA Expression
-        {
-            $$.push($3);
-        }
-    ;
+  : /* empty */
+    {
+      $$ = [];
+    }
+  | Expression
+    {
+      $$ = [$1];
+    }
+  | ExpressionList COMMA Expression
+    {
+      $$.push($3);
+    }
+  ;
 
 FunctionCall
-    : IDENTIFIER LPAREN ExpressionList RPAREN
-        {
-            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, $1, $3);
-        }
-    ;
+  : IDENTIFIER LPAREN ExpressionList RPAREN
+    {
+      $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, $1, $3);
+    }
+  ;
 
 Literal
-    : DIE_LITERAL
-        {
-            $$ = diceExpressionParserUtils.createDieExpression(yy.__context, $1);
-        }
-    | DICE_ROLL_LITERAL
-        {
-            $$ = diceExpressionParserUtils.createDiceRollExpression(yy.__context, $1);
-        }
-    | INTEGER_LITERAL
-        {
-            const constant = Number($1);
-            $$ = diceExpression.forConstant(constant);
-        }
-    ;
+  : DIE_LITERAL
+    {
+      $$ = diceExpressionParserUtils.createDieExpression(yy.__context, $1);
+    }
+  | DICE_ROLL_LITERAL
+    {
+      $$ = diceExpressionParserUtils.createDiceRollExpression(yy.__context, $1);
+    }
+  | INTEGER_LITERAL
+    {
+      const constant = Number($1);
+      $$ = diceExpression.forConstant(constant);
+    }
+  ;
 
 MultiplicativeExpression
-    : MultiplicativeExpression STAR UnaryExpression
-        {
-            $$ = diceExpression.forMultiplication($1, $3);
-        }
-    | MultiplicativeExpression SLASH UnaryExpression
-        {
-            $$ = diceExpression.forDivision($1, $3);
-        }
-    | MultiplicativeExpression SLASH_SLASH UnaryExpression
-        {
-            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'trunc', [diceExpression.forDivision($1, $3)]);
-        }
-    | MultiplicativeExpression SLASH_TILDE UnaryExpression
-        {
-            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'round', [diceExpression.forDivision($1, $3)]);
-        }
-    | MultiplicativeExpression SLASH_MINUS UnaryExpression
-        {
-            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'floor', [diceExpression.forDivision($1, $3)]);
-        }
-    | MultiplicativeExpression SLASH_PLUS UnaryExpression
-        {
-            $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'ceil', [diceExpression.forDivision($1, $3)]);
-        }
-    | MultiplicativeExpression PERCENT UnaryExpression
-        {
-            $$ = diceExpression.forModulo($1, $3);
-        }
-    | UnaryExpression
-    ;
+  : MultiplicativeExpression STAR UnaryExpression
+    {
+      $$ = diceExpression.forMultiplication($1, $3);
+    }
+  | MultiplicativeExpression SLASH UnaryExpression
+    {
+      $$ = diceExpression.forDivision($1, $3);
+    }
+  | MultiplicativeExpression SLASH_SLASH UnaryExpression
+    {
+      $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'trunc', [diceExpression.forDivision($1, $3)]);
+    }
+  | MultiplicativeExpression SLASH_TILDE UnaryExpression
+    {
+      $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'round', [diceExpression.forDivision($1, $3)]);
+    }
+  | MultiplicativeExpression SLASH_MINUS UnaryExpression
+    {
+      $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'floor', [diceExpression.forDivision($1, $3)]);
+    }
+  | MultiplicativeExpression SLASH_PLUS UnaryExpression
+    {
+      $$ = diceExpressionParserUtils.createFunctionCallExpression(yy.__context, 'ceil', [diceExpression.forDivision($1, $3)]);
+    }
+  | MultiplicativeExpression PERCENT UnaryExpression
+    {
+      $$ = diceExpression.forModulo($1, $3);
+    }
+  | UnaryExpression
+  ;
 
 PrimaryExpression
-    : Literal
-    | ArrayLiteral
-    | FunctionCall
-    | LPAREN Expression RPAREN
-        {
-            $$ = diceExpression.forGroup($2);
-        }
-    ;
+  : Literal
+  | ArrayLiteral
+  | FunctionCall
+  | LPAREN Expression RPAREN
+    {
+      $$ = diceExpression.forGroup($2);
+    }
+  ;
 
 Program
-    : Expression EOF
-        {
-            return $1;
-        }
-    ;
+  : Expression EOF
+    {
+      return $1;
+    }
+  ;
 
 UnaryExpression
-    : PLUS PrimaryExpression
-        {
-            $$ = diceExpression.forPositive($2);
-        }
-    | MINUS PrimaryExpression
-        {
-            $$ = diceExpression.forNegative($2);
-        }
-    | PrimaryExpression
-    ;
+  : PLUS PrimaryExpression
+    {
+      $$ = diceExpression.forPositive($2);
+    }
+  | MINUS PrimaryExpression
+    {
+      $$ = diceExpression.forNegative($2);
+    }
+  | PrimaryExpression
+  ;
 
 %%
 
@@ -173,12 +173,12 @@ const diceExpression = require('./dice-expression');
 const diceExpressionParserUtils = require('./dice-expression-parser-utils');
 
 function createParser(context) {
-    const parser = new Parser();
-    parser.yy.__context = context || diceExpressionParserUtils.createDefaultContext();
-    return parser;
+  const parser = new Parser();
+  parser.yy.__context = context || diceExpressionParserUtils.createDefaultContext();
+  return parser;
 }
 
 module.exports = {
-    create: createParser,
-    createDefaultContext: diceExpressionParserUtils.createDefaultContext
+  create: createParser,
+  createDefaultContext: diceExpressionParserUtils.createDefaultContext
 };

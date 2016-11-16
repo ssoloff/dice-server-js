@@ -14,208 +14,208 @@ const ja = require('json-assert');
 const security = require('../../../../src/server/util/security');
 
 describe('evaluateExpressionController', () => {
-    let controller;
-    let request;
-    let response;
-    let responseBody;
+  let controller;
+  let request;
+  let response;
+  let responseBody;
 
-    function createEvaluateExpressionController() {
-        return require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
-            publicKey: controllerTest.getPublicKey(),
+  function createEvaluateExpressionController() {
+    return require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
+      publicKey: controllerTest.getPublicKey(),
+    });
+  }
+
+  function modifyRequestBody(callback) {
+    callback();
+
+    const randomNumberGenerator = request.body.randomNumberGenerator;
+    if (randomNumberGenerator) {
+      randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
+    }
+  }
+
+  beforeEach(() => {
+    jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
+
+    request = controllerTest.createRequest();
+    modifyRequestBody(() => {
+      request.body = {
+        expression: {
+          text: '3d6+4',
+        },
+        randomNumberGenerator: {
+          content: {
+            name: 'constantMax',
+          },
+          signature: null,
+        },
+      };
+    });
+
+    response = controllerTest.createResponse((json) => {
+      responseBody = json;
+    });
+    responseBody = null;
+
+    controller = createEvaluateExpressionController();
+  });
+
+  describe('.evaluateExpression', () => {
+    describe('when expression is well-formed', () => {
+      it('should respond with OK', () => {
+        controller.evaluateExpression(request, response);
+
+        expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+        expect(responseBody).toEqual({
+          dieRollResults: [
+            {
+              sides: 6,
+              value: 6,
+            },
+            {
+              sides: 6,
+              value: 6,
+            },
+            {
+              sides: 6,
+              value: 6,
+            },
+          ],
+          expression: {
+            canonicalText: 'sum(roll(3, d6)) + 4',
+            text: '3d6+4',
+          },
+          expressionResult: {
+            text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
+            value: 22,
+          },
+          randomNumberGenerator: {
+            name: 'constantMax',
+          },
         });
-    }
+      });
+    });
 
-    function modifyRequestBody(callback) {
-        callback();
-
-        const randomNumberGenerator = request.body.randomNumberGenerator;
-        if (randomNumberGenerator) {
-            randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content);
-        }
-    }
-
-    beforeEach(() => {
-        jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
-
-        request = controllerTest.createRequest();
+    describe('when expression is malformed', () => {
+      beforeEach(() => {
         modifyRequestBody(() => {
-            request.body = {
-                expression: {
-                    text: '3d6+4',
-                },
-                randomNumberGenerator: {
-                    content: {
-                        name: 'constantMax',
-                    },
-                    signature: null,
-                },
-            };
+          request.body.expression.text = '<<INVALID>>';
         });
+      });
 
-        response = controllerTest.createResponse((json) => {
-            responseBody = json;
+      it('should respond with bad request error', () => {
+        controller.evaluateExpression(request, response);
+
+        expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+        expect(responseBody).toEqual({
+          error: {
+            message: ja.matchType('string'),
+          },
         });
-        responseBody = null;
-
-        controller = createEvaluateExpressionController();
+      });
     });
 
-    describe('.evaluateExpression', () => {
-        describe('when expression is well-formed', () => {
-            it('should respond with OK', () => {
-                controller.evaluateExpression(request, response);
+    describe('specifying a random number generator', () => {
+      describe('when the random number generator is not specified', () => {
+        it('should use the default random number generator', () => {
+          modifyRequestBody(() => {
+            delete request.body.randomNumberGenerator;
+          });
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
-                expect(responseBody).toEqual({
-                    dieRollResults: [
-                        {
-                            sides: 6,
-                            value: 6,
-                        },
-                        {
-                            sides: 6,
-                            value: 6,
-                        },
-                        {
-                            sides: 6,
-                            value: 6,
-                        },
-                    ],
-                    expression: {
-                        canonicalText: 'sum(roll(3, d6)) + 4',
-                        text: '3d6+4',
-                    },
-                    expressionResult: {
-                        text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                        value: 22,
-                    },
-                    randomNumberGenerator: {
-                        name: 'constantMax',
-                    },
-                });
-            });
+          controller.evaluateExpression(request, response);
+
+          expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+          expect(responseBody.randomNumberGenerator.name).toBe('uniform');
         });
+      });
 
-        describe('when expression is malformed', () => {
-            beforeEach(() => {
-                modifyRequestBody(() => {
-                    request.body.expression.text = '<<INVALID>>';
-                });
-            });
+      describe('when the uniform random number generator is specified', () => {
+        it('should use the uniform random number generator', () => {
+          modifyRequestBody(() => {
+            request.body.randomNumberGenerator.content.name = 'uniform';
+          });
 
-            it('should respond with bad request error', () => {
-                controller.evaluateExpression(request, response);
+          controller.evaluateExpression(request, response);
 
-                expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
-                expect(responseBody).toEqual({
-                    error: {
-                        message: ja.matchType('string'),
-                    },
-                });
-            });
+          expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+          expect(responseBody.randomNumberGenerator.name).toBe('uniform');
+          expect(responseBody.expressionResult.value).toBeGreaterThan(2 + 4);
+          expect(responseBody.expressionResult.value).toBeLessThan(19 + 4);
         });
+      });
 
-        describe('specifying a random number generator', () => {
-            describe('when the random number generator is not specified', () => {
-                it('should use the default random number generator', () => {
-                    modifyRequestBody(() => {
-                        delete request.body.randomNumberGenerator;
-                    });
+      describe('when the constantMax random number generator is specified', () => {
+        it('should use the constantMax random number generator', () => {
+          modifyRequestBody(() => {
+            request.body.randomNumberGenerator.content.name = 'constantMax';
+          });
 
-                    controller.evaluateExpression(request, response);
+          controller.evaluateExpression(request, response);
 
-                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(responseBody.randomNumberGenerator.name).toBe('uniform');
-                });
-            });
-
-            describe('when the uniform random number generator is specified', () => {
-                it('should use the uniform random number generator', () => {
-                    modifyRequestBody(() => {
-                        request.body.randomNumberGenerator.content.name = 'uniform';
-                    });
-
-                    controller.evaluateExpression(request, response);
-
-                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(responseBody.randomNumberGenerator.name).toBe('uniform');
-                    expect(responseBody.expressionResult.value).toBeGreaterThan(2 + 4);
-                    expect(responseBody.expressionResult.value).toBeLessThan(19 + 4);
-                });
-            });
-
-            describe('when the constantMax random number generator is specified', () => {
-                it('should use the constantMax random number generator', () => {
-                    modifyRequestBody(() => {
-                        request.body.randomNumberGenerator.content.name = 'constantMax';
-                    });
-
-                    controller.evaluateExpression(request, response);
-
-                    expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
-                    expect(responseBody.randomNumberGenerator.name).toBe('constantMax');
-                    expect(responseBody.expressionResult.value).toBe(22);
-                });
-            });
-
-            describe('when an unknown random number generator is specified', () => {
-                it('should respond with bad request error', () => {
-                    modifyRequestBody(() => {
-                        request.body.randomNumberGenerator.content.name = '<<UNKNOWN>>';
-                    });
-
-                    controller.evaluateExpression(request, response);
-
-                    expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
-                    expect(responseBody.error).toBeDefined();
-                });
-            });
-
-            describe('when random number generator specification has an invalid signature', () => {
-                it('should respond with bad request error', () => {
-                    const otherPrivateKey = controllerTest.getOtherPrivateKey();
-                    const otherPublicKey = controllerTest.getOtherPublicKey();
-
-                    request.body.randomNumberGenerator.signature = security.createSignature(
-                        request.body.randomNumberGenerator.content,
-                        otherPrivateKey, // Sign using unauthorized key
-                        otherPublicKey
-                    );
-
-                    controller.evaluateExpression(request, response);
-
-                    expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
-                    expect(responseBody.error).toBeDefined();
-                });
-            });
+          expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
+          expect(responseBody.randomNumberGenerator.name).toBe('constantMax');
+          expect(responseBody.expressionResult.value).toBe(22);
         });
+      });
 
-        describe('evaluating an expression whose result value is not a finite number', () => {
-            describe('when result value is not a number', () => {
-                it('should respond with bad request error', () => {
-                    modifyRequestBody(() => {
-                        request.body.expression.text = 'd6';
-                    });
+      describe('when an unknown random number generator is specified', () => {
+        it('should respond with bad request error', () => {
+          modifyRequestBody(() => {
+            request.body.randomNumberGenerator.content.name = '<<UNKNOWN>>';
+          });
 
-                    controller.evaluateExpression(request, response);
+          controller.evaluateExpression(request, response);
 
-                    expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
-                    expect(responseBody.error).toBeDefined();
-                });
-            });
-
-            describe('when result value is NaN', () => {
-                it('should respond with bad request error', () => {
-                    modifyRequestBody(() => {
-                        request.body.expression.text = 'round(d6)';
-                    });
-
-                    controller.evaluateExpression(request, response);
-
-                    expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
-                    expect(responseBody.error).toBeDefined();
-                });
-            });
+          expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+          expect(responseBody.error).toBeDefined();
         });
+      });
+
+      describe('when random number generator specification has an invalid signature', () => {
+        it('should respond with bad request error', () => {
+          const otherPrivateKey = controllerTest.getOtherPrivateKey();
+          const otherPublicKey = controllerTest.getOtherPublicKey();
+
+          request.body.randomNumberGenerator.signature = security.createSignature(
+            request.body.randomNumberGenerator.content,
+            otherPrivateKey, // Sign using unauthorized key
+            otherPublicKey
+          );
+
+          controller.evaluateExpression(request, response);
+
+          expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+          expect(responseBody.error).toBeDefined();
+        });
+      });
     });
+
+    describe('evaluating an expression whose result value is not a finite number', () => {
+      describe('when result value is not a number', () => {
+        it('should respond with bad request error', () => {
+          modifyRequestBody(() => {
+            request.body.expression.text = 'd6';
+          });
+
+          controller.evaluateExpression(request, response);
+
+          expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+          expect(responseBody.error).toBeDefined();
+        });
+      });
+
+      describe('when result value is NaN', () => {
+        it('should respond with bad request error', () => {
+          modifyRequestBody(() => {
+            request.body.expression.text = 'round(d6)';
+          });
+
+          controller.evaluateExpression(request, response);
+
+          expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+          expect(responseBody.error).toBeDefined();
+        });
+      });
+    });
+  });
 });

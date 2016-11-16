@@ -1,5 +1,4 @@
 {
   "preset": "node-style-guide",
-  "maximumLineLength": 999,
-  "validateIndentation": 4
+  "maximumLineLength": 999
 }

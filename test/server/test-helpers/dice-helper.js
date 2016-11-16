@@ -11,20 +11,20 @@
 const security = require('../../../src/server/util/security');
 
 function hasValidSignature(obj) {
-    return security.verifySignature(obj.content, obj.signature);
+  return security.verifySignature(obj.content, obj.signature);
 }
 
 beforeEach(() => {
-    jasmine.addMatchers({
-        toBeSigned() {
-            return {
-                compare(obj) {
-                    return {
-                        message: 'Expected object to have a valid signature.',
-                        pass: hasValidSignature(obj),
-                    };
-                },
-            };
+  jasmine.addMatchers({
+    toBeSigned() {
+      return {
+        compare(obj) {
+          return {
+            message: 'Expected object to have a valid signature.',
+            pass: hasValidSignature(obj),
+          };
         },
-    });
+      };
+    },
+  });
 });

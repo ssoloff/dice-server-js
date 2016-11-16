@@ -44,77 +44,77 @@ formatters[diceExpressionTypeIds.SUBTRACTION] = formatSubtractionExpression;
  *      available for the specified expression.
  */
 function format(expression) {
-    const formatter = formatters[expression.typeId];
-    if (formatter) {
-        return formatter(expression);
-    }
+  const formatter = formatters[expression.typeId];
+  if (formatter) {
+    return formatter(expression);
+  }
 
-    throw new Error(`unknown expression type: "${expression.typeId}"`);
+  throw new Error(`unknown expression type: "${expression.typeId}"`);
 }
 
 function formatAdditionExpression(expression) {
-    return format(expression.augendExpression) +
-        ' + ' +
-        format(expression.addendExpression);
+  return format(expression.augendExpression) +
+    ' + ' +
+    format(expression.addendExpression);
 }
 
 function formatArrayExpression(expression) {
-    return '[' +
-        expression.expressions.map(format).join(', ') +
-        ']';
+  return '[' +
+    expression.expressions.map(format).join(', ') +
+    ']';
 }
 
 function formatConstantExpression(expression) {
-    return `${expression.constant}`;
+  return `${expression.constant}`;
 }
 
 function formatDieExpression(expression) {
-    return `d${expression.die.sides}`;
+  return `d${expression.die.sides}`;
 }
 
 function formatDivisionExpression(expression) {
-    return format(expression.dividendExpression) +
-        ' / ' +
-        format(expression.divisorExpression);
+  return format(expression.dividendExpression) +
+    ' / ' +
+    format(expression.divisorExpression);
 }
 
 function formatFunctionCallExpression(expression) {
-    return expression.name +
-        '(' +
-        expression.argumentListExpressions.map(format).join(', ') +
-        ')';
+  return expression.name +
+    '(' +
+    expression.argumentListExpressions.map(format).join(', ') +
+    ')';
 }
 
 function formatGroupExpression(expression) {
-    return '(' +
-        format(expression.childExpression) +
-        ')';
+  return '(' +
+    format(expression.childExpression) +
+    ')';
 }
 
 function formatModuloExpression(expression) {
-    return format(expression.dividendExpression) +
-        ' % ' +
-        format(expression.divisorExpression);
+  return format(expression.dividendExpression) +
+    ' % ' +
+    format(expression.divisorExpression);
 }
 
 function formatMultiplicationExpression(expression) {
-    return format(expression.multiplicandExpression) +
-        ' * ' +
-        format(expression.multiplierExpression);
+  return format(expression.multiplicandExpression) +
+    ' * ' +
+    format(expression.multiplierExpression);
 }
 
 function formatNegativeExpression(expression) {
-    return `-${format(expression.childExpression)}`;
+  return `-${format(expression.childExpression)}`;
 }
 
 function formatPositiveExpression(expression) {
-    return `+${format(expression.childExpression)}`;
+  return `+${format(expression.childExpression)}`;
 }
 
 function formatSubtractionExpression(expression) {
-    return format(expression.minuendExpression) +
-        ' - ' +
-        format(expression.subtrahendExpression);
+  return format(expression.minuendExpression) +
+    ' - ' +
+    format(expression.subtrahendExpression);
 }
 
 module.exports.format = format;

@@ -12,22 +12,22 @@ const _ = require('underscore');
 const Random = require('random-js');
 
 module.exports = {
-    constantMax() {
-        return (sides) => sides;
-    },
+  constantMax() {
+    return (sides) => sides;
+  },
 
-    uniform(options) {
-        let engine = Random.engines.mt19937();
-        if (options && options.seed) {
-            if (_.isArray(options.seed)) {
-                engine = engine.seedWithArray(options.seed);
-            } else {
-                engine = engine.seed(options.seed);
-            }
-        } else {
-            engine = engine.autoSeed();
-        }
+  uniform(options) {
+    let engine = Random.engines.mt19937();
+    if (options && options.seed) {
+      if (_.isArray(options.seed)) {
+        engine = engine.seedWithArray(options.seed);
+      } else {
+        engine = engine.seed(options.seed);
+      }
+    } else {
+      engine = engine.autoSeed();
+    }
 
-        return (sides) => Random.die(sides)(engine);
-    },
+    return (sides) => Random.die(sides)(engine);
+  },
 };

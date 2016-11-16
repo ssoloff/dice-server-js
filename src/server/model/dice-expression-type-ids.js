@@ -9,16 +9,16 @@
 'use strict';
 
 module.exports = {
-    ADDITION: 'addition',
-    ARRAY: 'array',
-    CONSTANT: 'constant',
-    DIE: 'die',
-    DIVISION: 'division',
-    FUNCTION_CALL: 'functionCall',
-    GROUP: 'group',
-    MODULO: 'modulo',
-    MULTIPLICATION: 'multiplication',
-    NEGATIVE: 'negative',
-    POSITIVE: 'positive',
-    SUBTRACTION: 'subtraction',
+  ADDITION: 'addition',
+  ARRAY: 'array',
+  CONSTANT: 'constant',
+  DIE: 'die',
+  DIVISION: 'division',
+  FUNCTION_CALL: 'functionCall',
+  GROUP: 'group',
+  MODULO: 'modulo',
+  MULTIPLICATION: 'multiplication',
+  NEGATIVE: 'negative',
+  POSITIVE: 'positive',
+  SUBTRACTION: 'subtraction',
 };
