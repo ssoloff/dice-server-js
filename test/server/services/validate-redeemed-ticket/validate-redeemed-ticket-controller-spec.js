@@ -19,9 +19,10 @@ describe('validateRedeemedTicketController', () => {
   let responseBody;
 
   function createValidateRedeemedTicketController() {
-    return require('../../../../src/server/services/validate-redeemed-ticket/validate-redeemed-ticket-controller').create({
-      publicKey: controllerTest.getPublicKey(),
-    });
+    return require('../../../../src/server/services/validate-redeemed-ticket/validate-redeemed-ticket-controller')
+      .create({
+        publicKey: controllerTest.getPublicKey(),
+      });
   }
 
   function modifyRequestBody(callback) {

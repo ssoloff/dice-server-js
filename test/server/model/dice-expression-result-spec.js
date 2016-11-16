@@ -197,15 +197,18 @@ describe('diceExpressionResult', () => {
     });
 
     describe('.accept', () => {
-      it('should visit the expression result, the dividend expression result, and the divisor expression result', () => {
-        const expressionResult = dice.expressionResult.forDivision(three, four);
+      it(
+        'should visit the expression result, the dividend expression result, and the divisor expression result',
+        () => {
+          const expressionResult = dice.expressionResult.forDivision(three, four);
 
-        expressionResult.accept(visitor.visit);
+          expressionResult.accept(visitor.visit);
 
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult);
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult.dividendExpressionResult);
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult.divisorExpressionResult);
-      });
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult);
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult.dividendExpressionResult);
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult.divisorExpressionResult);
+        }
+      );
     });
 
     describe('.value', () => {
@@ -323,15 +326,18 @@ describe('diceExpressionResult', () => {
     });
 
     describe('.accept', () => {
-      it('should visit the expression result, the dividend expression result, and the divisor expression result', () => {
-        const expressionResult = dice.expressionResult.forModulo(four, three);
+      it(
+        'should visit the expression result, the dividend expression result, and the divisor expression result',
+        () => {
+          const expressionResult = dice.expressionResult.forModulo(four, three);
 
-        expressionResult.accept(visitor.visit);
+          expressionResult.accept(visitor.visit);
 
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult);
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult.dividendExpressionResult);
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult.divisorExpressionResult);
-      });
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult);
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult.dividendExpressionResult);
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult.divisorExpressionResult);
+        }
+      );
     });
 
     describe('.value', () => {
@@ -375,15 +381,18 @@ describe('diceExpressionResult', () => {
     });
 
     describe('.accept', () => {
-      it('should visit the expression result, the multiplicand expression result, and the multiplier expression result', () => {
-        const expressionResult = dice.expressionResult.forMultiplication(four, three);
+      it(
+        'should visit the expression result, the multiplicand expression result, and the multiplier expression result',
+        () => {
+          const expressionResult = dice.expressionResult.forMultiplication(four, three);
 
-        expressionResult.accept(visitor.visit);
+          expressionResult.accept(visitor.visit);
 
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult);
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult.multiplicandExpressionResult);
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult.multiplierExpressionResult);
-      });
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult);
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult.multiplicandExpressionResult);
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult.multiplierExpressionResult);
+        }
+      );
     });
 
     describe('.value', () => {
@@ -481,15 +490,18 @@ describe('diceExpressionResult', () => {
     });
 
     describe('.accept', () => {
-      it('should visit the expression result, the minuend expression result, and the subtrahend expression result', () => {
-        const expressionResult = dice.expressionResult.forSubtraction(four, three);
+      it(
+        'should visit the expression result, the minuend expression result, and the subtrahend expression result',
+        () => {
+          const expressionResult = dice.expressionResult.forSubtraction(four, three);
 
-        expressionResult.accept(visitor.visit);
+          expressionResult.accept(visitor.visit);
 
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult);
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult.minuendExpressionResult);
-        expect(visitor.visit).toHaveBeenCalledWith(expressionResult.subtrahendExpressionResult);
-      });
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult);
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult.minuendExpressionResult);
+          expect(visitor.visit).toHaveBeenCalledWith(expressionResult.subtrahendExpressionResult);
+        }
+      );
     });
 
     describe('.value', () => {

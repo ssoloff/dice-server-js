@@ -365,7 +365,9 @@ describe('diceExpressionParser', () => {
       });
 
       it('should parse the built-in ceil() function', () => {
-        expect(expressionParser.parse('ceil(1)')).toEqual(dice.expression.forFunctionCall('ceil', diceExpressionFunctions.ceil, [one]));
+        expect(expressionParser.parse('ceil(1)')).toEqual(
+          dice.expression.forFunctionCall('ceil', diceExpressionFunctions.ceil, [one])
+        );
       });
 
       it('should parse the built-in cloneHighestRolls() function', () => {
@@ -417,7 +419,9 @@ describe('diceExpressionParser', () => {
       });
 
       it('should parse the built-in floor() function', () => {
-        expect(expressionParser.parse('floor(1)')).toEqual(dice.expression.forFunctionCall('floor', diceExpressionFunctions.floor, [one]));
+        expect(expressionParser.parse('floor(1)')).toEqual(
+          dice.expression.forFunctionCall('floor', diceExpressionFunctions.floor, [one])
+        );
       });
 
       it('should parse the built-in roll() function', () => {
@@ -430,7 +434,9 @@ describe('diceExpressionParser', () => {
       });
 
       it('should parse the built-in round() function', () => {
-        expect(expressionParser.parse('round(1)')).toEqual(dice.expression.forFunctionCall('round', diceExpressionFunctions.round, [one]));
+        expect(expressionParser.parse('round(1)')).toEqual(
+          dice.expression.forFunctionCall('round', diceExpressionFunctions.round, [one])
+        );
       });
 
       it('should parse the built-in sum() function', () => {
@@ -445,7 +451,9 @@ describe('diceExpressionParser', () => {
       });
 
       it('should parse the built-in trunc() function', () => {
-        expect(expressionParser.parse('trunc(1)')).toEqual(dice.expression.forFunctionCall('trunc', diceExpressionFunctions.trunc, [one]));
+        expect(expressionParser.parse('trunc(1)')).toEqual(
+          dice.expression.forFunctionCall('trunc', diceExpressionFunctions.trunc, [one])
+        );
       });
     });
   });

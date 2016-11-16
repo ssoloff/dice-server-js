@@ -40,7 +40,11 @@ module.exports = {
     const jwsSignature = jws.sign({
       header: {
         alg: SIGNATURE_ALGORITHM,
-        jwk: rsaPemToJwk(publicKey, {alg: SIGNATURE_ALGORITHM, key_ops: 'verify', use: 'sig'}), // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+        jwk: rsaPemToJwk(publicKey, {
+          alg: SIGNATURE_ALGORITHM,
+          key_ops: 'verify', // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+          use: 'sig',
+        }),
       },
       payload: canonicalPayload,
       privateKey: privateKey,

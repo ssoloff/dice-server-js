@@ -16,24 +16,28 @@ module.exports = (app, privateKey, publicKey) => {
   const redeemTicketPath = '/ticket/redeem';
   const validateRedeemedTicketPath = '/ticket/validate-redeemed';
 
-  const evaluateExpressionController = require('./services/evaluate-expression/evaluate-expression-controller.js').create({
-    publicKey: publicKey,
-  });
-  const issueTicketController = require('./services/issue-ticket/issue-ticket-controller.js').create({
-    evaluateExpressionController: evaluateExpressionController,
-    privateKey: privateKey,
-    publicKey: publicKey,
-    redeemTicketPath: redeemTicketPath,
-  });
-  const redeemTicketController = require('./services/redeem-ticket/redeem-ticket-controller.js').create({
-    evaluateExpressionController: evaluateExpressionController,
-    privateKey: privateKey,
-    publicKey: publicKey,
-    validateRedeemedTicketPath: validateRedeemedTicketPath,
-  });
-  const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/validate-redeemed-ticket-controller.js').create({
-    publicKey: publicKey,
-  });
+  const evaluateExpressionController = require('./services/evaluate-expression/evaluate-expression-controller')
+    .create({
+      publicKey: publicKey,
+    });
+  const issueTicketController = require('./services/issue-ticket/issue-ticket-controller')
+    .create({
+      evaluateExpressionController: evaluateExpressionController,
+      privateKey: privateKey,
+      publicKey: publicKey,
+      redeemTicketPath: redeemTicketPath,
+    });
+  const redeemTicketController = require('./services/redeem-ticket/redeem-ticket-controller')
+    .create({
+      evaluateExpressionController: evaluateExpressionController,
+      privateKey: privateKey,
+      publicKey: publicKey,
+      validateRedeemedTicketPath: validateRedeemedTicketPath,
+    });
+  const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/validate-redeemed-ticket-controller') // jscs:ignore maximumLineLength
+    .create({
+      publicKey: publicKey,
+    });
 
   app.use(bodyParser.json());
 

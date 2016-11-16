@@ -103,11 +103,13 @@ module.exports = function() {
   });
 
   this.Then(/^the response should contain the expression result text "(.*)"$/, function(expressionResultText) {
-    expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.text).to.equal(expressionResultText);
+    expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.text)
+      .to.equal(expressionResultText);
   });
 
   this.Then(/^the response should contain the expression result value (.+)$/, function(expressionResultValue) {
-    expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.value).to.equal(parseFloat(expressionResultValue));
+    expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.value)
+      .to.equal(parseFloat(expressionResultValue));
   });
 
   this.Then(/^the response should contain the ticket description$/, function() {

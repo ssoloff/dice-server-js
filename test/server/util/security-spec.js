@@ -28,14 +28,18 @@ describe('security', () => {
   });
 
   describe('.createSignature', () => {
-    it('should return a signature object using flattened JWS JSON serialization syntax with no unprotected header and no payload', () => {
-      const signature = security.createSignature(payload, privateKey, publicKey);
+    it(
+      'should return a signature object using flattened JWS JSON serialization syntax with no unprotected header ' +
+        'and no payload',
+      () => {
+        const signature = security.createSignature(payload, privateKey, publicKey);
 
-      expect(signature.protected).toMatch(/^[-_0-9A-Za-z]+$/);
-      expect(signature.signature).toMatch(/^[-_0-9A-Za-z]+$/);
-      expect(signature.header).not.toBeDefined();
-      expect(signature.payload).not.toBeDefined();
-    });
+        expect(signature.protected).toMatch(/^[-_0-9A-Za-z]+$/);
+        expect(signature.signature).toMatch(/^[-_0-9A-Za-z]+$/);
+        expect(signature.header).not.toBeDefined();
+        expect(signature.payload).not.toBeDefined();
+      }
+    );
   });
 
   describe('.toCanonicalString', () => {

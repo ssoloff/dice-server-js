@@ -65,9 +65,13 @@ module.exports = function() {
     expect(this.response.body.ticket.content.evaluateExpressionRequestBody.expression.text).to.equal(expressionText);
   });
 
-  this.Then(/^the response should contain the random number generator named "(.*)"$/, function(randomNumberGeneratorName) {
-    expect(this.response.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content.name).to.equal(randomNumberGeneratorName);
-  });
+  this.Then(
+    /^the response should contain the random number generator named "(.*)"$/,
+    function(randomNumberGeneratorName) {
+      expect(this.response.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content.name)
+        .to.equal(randomNumberGeneratorName);
+    }
+  );
 
   this.Then(/^the response should indicate failure$/, function() {
     expect(this.response.status).to.not.equal(httpStatus.OK);
