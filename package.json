@@ -2,7 +2,9 @@
   "name": "dice-server-js",
   "version": "0.1.0",
   "description": "Server for parsing and executing dice notation.",
-  "keywords": ["dice"],
+  "keywords": [
+    "dice"
+  ],
   "dependencies": {
     "base64url": "~2.0.0",
     "body-parser": "~1.15.2",
@@ -33,7 +35,7 @@
     "selenium-webdriver": "~2.53.3"
   },
   "engines": {
-    "node": ">= 6.4.0"
+    "node": ">= 6.9.1"
   },
   "repository": {
     "type": "git",
