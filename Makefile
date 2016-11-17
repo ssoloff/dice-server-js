@@ -62,6 +62,7 @@ TEST_DIR = test
 
 DICE_EXPRESSION_JISON = $(MODEL_DIR)/dice-expression.jison
 DICE_EXPRESSION_PARSER_JS = $(COMPILE_OUTPUT_DIR)/$(MODEL_DIR)/dice-expression-parser.js
+GULPFILE_JS = gulpfile.js
 ISTANBUL_CONFIG = $(COMPILE_OUTPUT_DIR)/$(SERVER_TEST_DIR)/.istanbul.yml
 JASMINE_CONFIG = $(COMPILE_OUTPUT_DIR)/$(SERVER_TEST_DIR)/.jasmine.json
 JSCS_CLIENT_CONFIG = .jscs-client-conf.json
@@ -88,7 +89,7 @@ acceptance-test:
 check:
 	$(JSHINT) .
 	$(JSCS) $(CLIENT_SRC_DIR) --config=$(JSCS_CLIENT_CONFIG)
-	$(JSCS) $(FEATURES_DIR) $(SERVER_SRC_DIR) $(SERVER_TEST_DIR) --config=$(JSCS_SERVER_CONFIG)
+	$(JSCS) $(GULPFILE_JS) $(FEATURES_DIR) $(SERVER_SRC_DIR) $(SERVER_TEST_DIR) --config=$(JSCS_SERVER_CONFIG)
 	$(HTML_VALIDATOR) --file=$(CLIENT_SRC_DIR)/index.html --verbose
 	{ \
 		$(FIND) $(CLIENT_SRC_DIR)/*/ -name '*.html' \
