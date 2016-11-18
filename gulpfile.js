@@ -42,12 +42,12 @@ gulp.task('clean', () => {
   return del([BUILD_OUTPUT_DIR]);
 });
 
-gulp.task('docs:client', (callback) => {
-  execJsDoc('.jsdoc-client-conf.json', callback);
+gulp.task('docs:client', (done) => {
+  execJsDoc('.jsdoc-client-conf.json', done);
 });
 
-gulp.task('docs:server', (callback) => {
-  execJsDoc('.jsdoc-server-conf.json', callback);
+gulp.task('docs:server', (done) => {
+  execJsDoc('.jsdoc-server-conf.json', done);
 });
 
 gulp.task('docs', ['docs:client', 'docs:server']);
