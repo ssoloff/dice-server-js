@@ -23,7 +23,31 @@ const del = require('del');
 const gulp = require('gulp');
 
 const BUILD_OUTPUT_DIR = 'build';
+const NODE_MODULES_BIN_DIR = 'node_modules/.bin';
+
+function exec(command, callback) {
+  require('child_process').exec(command, (err) => {
+    if (err) {
+      return callback(err);
+    }
+    callback();
+  });
+}
+
+function execJsDoc(configPath, callback) {
+  exec(`${NODE_MODULES_BIN_DIR}/jsdoc -c ${configPath}`, callback);
+}
 
 gulp.task('clean', () => {
   return del([BUILD_OUTPUT_DIR]);
 });
+
+gulp.task('docs:client', (callback) => {
+  execJsDoc('.jsdoc-client-conf.json', callback);
+});
+
+gulp.task('docs:server', (callback) => {
+  execJsDoc('.jsdoc-server-conf.json', callback);
+});
+
+gulp.task('docs', ['docs:client', 'docs:server']);
