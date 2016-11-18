@@ -19,7 +19,6 @@
 
 'use strict';
 
-const del = require('del');
 const gulp = require('gulp');
 
 const BUILD_OUTPUT_DIR = 'build';
@@ -39,6 +38,7 @@ function execJsDoc(configPath, callback) {
 }
 
 gulp.task('clean', () => {
+  const del = require('del');
   return del([BUILD_OUTPUT_DIR]);
 });
 
