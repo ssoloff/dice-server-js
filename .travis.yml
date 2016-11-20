@@ -8,8 +8,7 @@ install:
   - npm install --global gulp-cli
   - make init
 script:
-  - gulp unit-test
-#  - make unit-test-with-coverage
+  - gulp unit-test-with-coverage
 #  - make dist
 #  - make start-server
 #  - make acceptance-test

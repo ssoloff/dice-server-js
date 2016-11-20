@@ -24,6 +24,7 @@ const gulp = require('gulp');
 const BUILD_OUTPUT_DIR = 'build';
 const NODE_MODULES_BIN_DIR = 'node_modules/.bin';
 const SRC_DIR = 'src';
+const SERVER_SRC_DIR = `${SRC_DIR}/server`;
 const TEST_DIR = 'test';
 const SERVER_TEST_DIR = `${TEST_DIR}/server`;
 const COMPILE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/compile`;
@@ -39,6 +40,14 @@ function exec(command, callback) {
 
 function execJsDoc(configPath, callback) {
   exec(`${NODE_MODULES_BIN_DIR}/jsdoc -c ${configPath}`, callback);
+}
+
+function runUnitTests() {
+  const jasmine = require('gulp-jasmine');
+  return gulp.src('') // Files to process are defined in Jasmine configuration below
+    .pipe(jasmine({
+      config: require(`./${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/.jasmine.json`),
+    }));
 }
 
 gulp.task('clean', () => {
@@ -76,10 +85,31 @@ gulp.task('docs:server', (done) => {
 
 gulp.task('docs', ['docs:client', 'docs:server']);
 
+gulp.task('instrument-for-coverage', ['compile'], () => {
+  const istanbul = require('gulp-istanbul');
+  return gulp.src([
+      `${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/**/*.js`,
+      `!${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/model/dice-expression-parser.js`,
+      `${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/**/*.js`,
+    ])
+    .pipe(istanbul())
+    .pipe(istanbul.hookRequire());
+});
+
 gulp.task('unit-test', ['compile'], () => {
-  const jasmine = require('gulp-jasmine');
-  return gulp.src('') // Files to process are defined in Jasmine configuration below
-    .pipe(jasmine({
-      config: require(`./${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/.jasmine.json`),
+  return runUnitTests();
+});
+
+gulp.task('unit-test-with-coverage', ['instrument-for-coverage'], () => {
+  const istanbul = require('gulp-istanbul');
+  return runUnitTests()
+    .pipe(istanbul.writeReports({
+      dir: `${BUILD_OUTPUT_DIR}/coverage`,
+      reporters: ['lcov', 'text-summary'],
+    }))
+    .pipe(istanbul.enforceThresholds({
+      thresholds: {
+        global: 90,
+      },
     }));
 });
