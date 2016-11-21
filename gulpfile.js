@@ -22,6 +22,7 @@
 const gulp = require('gulp');
 
 const BUILD_OUTPUT_DIR = 'build';
+const FEATURES_DIR = 'features';
 const NODE_MODULES_BIN_DIR = 'node_modules/.bin';
 const SRC_DIR = 'src';
 const SERVER_SRC_DIR = `${SRC_DIR}/server`;
@@ -50,6 +51,20 @@ function runUnitTests() {
       config: require(`./${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/.jasmine.json`),
     }));
 }
+
+gulp.task('check:jshint', () => {
+  const jshint = require('gulp-jshint');
+  return gulp.src([
+      'gulpfile.js',
+      `${FEATURES_DIR}/**/*.js`,
+      `${SRC_DIR}/**/*.js`,
+      `${TEST_DIR}/**/*.js`,
+    ])
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
+
+gulp.task('check', ['check:jshint']);
 
 gulp.task('clean', () => {
   const del = require('del');
