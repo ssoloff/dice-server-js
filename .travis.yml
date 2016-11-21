@@ -15,5 +15,5 @@ script:
 #  - make stop-server
 #  - make check
   - gulp docs
-#after_script:
-#  - make publish-coverage
+after_script:
+  - gulp publish-coverage

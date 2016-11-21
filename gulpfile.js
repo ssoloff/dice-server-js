@@ -28,6 +28,7 @@ const SERVER_SRC_DIR = `${SRC_DIR}/server`;
 const TEST_DIR = 'test';
 const SERVER_TEST_DIR = `${TEST_DIR}/server`;
 const COMPILE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/compile`;
+const COVERAGE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/coverage`;
 
 function exec(command, callback) {
   require('child_process').exec(command, (err) => {
@@ -96,6 +97,12 @@ gulp.task('instrument-for-coverage', ['compile'], () => {
     .pipe(istanbul.hookRequire());
 });
 
+gulp.task('publish-coverage', () => {
+  const coveralls = require('gulp-coveralls');
+  return gulp.src(`${COVERAGE_OUTPUT_DIR}/lcov.info`)
+    .pipe(coveralls());
+});
+
 gulp.task('unit-test', ['compile'], () => {
   return runUnitTests();
 });
@@ -104,7 +111,7 @@ gulp.task('unit-test-with-coverage', ['instrument-for-coverage'], () => {
   const istanbul = require('gulp-istanbul');
   return runUnitTests()
     .pipe(istanbul.writeReports({
-      dir: `${BUILD_OUTPUT_DIR}/coverage`,
+      dir: COVERAGE_OUTPUT_DIR,
       reporters: ['lcov', 'text-summary'],
     }))
     .pipe(istanbul.enforceThresholds({
