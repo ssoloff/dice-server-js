@@ -25,6 +25,7 @@ const BUILD_OUTPUT_DIR = 'build';
 const FEATURES_DIR = 'features';
 const NODE_MODULES_BIN_DIR = 'node_modules/.bin';
 const SRC_DIR = 'src';
+const CLIENT_SRC_DIR = `${SRC_DIR}/client`;
 const SERVER_SRC_DIR = `${SRC_DIR}/server`;
 const TEST_DIR = 'test';
 const SERVER_TEST_DIR = `${TEST_DIR}/server`;
@@ -44,6 +45,16 @@ function execJsDoc(configPath, callback) {
   exec(`${NODE_MODULES_BIN_DIR}/jsdoc -c ${configPath}`, callback);
 }
 
+function runJscs(globs, configPath) {
+  const jscs = require('gulp-jscs');
+  return gulp.src(globs)
+    .pipe(jscs({
+      configPath: configPath,
+    }))
+    .pipe(jscs.reporter())
+    .pipe(jscs.reporter('fail'));
+}
+
 function runUnitTests() {
   const jasmine = require('gulp-jasmine');
   return gulp.src('') // Files to process are defined in Jasmine configuration below
@@ -51,6 +62,24 @@ function runUnitTests() {
       config: require(`./${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/.jasmine.json`),
     }));
 }
+
+gulp.task('check:jscs:client', () => {
+  return runJscs(`${CLIENT_SRC_DIR}/**/*.js`, '.jscs-client-conf.json');
+});
+
+gulp.task('check:jscs:server', () => {
+  return runJscs(
+    [
+      'gulpfile.js',
+      `${FEATURES_DIR}/**/*.js`,
+      `${SERVER_SRC_DIR}/**/*.js`,
+      `${SERVER_TEST_DIR}/**/*.js`,
+    ],
+    '.jscs-server-conf.json'
+  );
+});
+
+gulp.task('check:jscs', ['check:jscs:client', 'check:jscs:server']);
 
 gulp.task('check:jshint', () => {
   const jshint = require('gulp-jshint');
@@ -64,7 +93,7 @@ gulp.task('check:jshint', () => {
     .pipe(jshint.reporter('default'));
 });
 
-gulp.task('check', ['check:jshint']);
+gulp.task('check', ['check:jshint', 'check:jscs']);
 
 gulp.task('clean', () => {
   const del = require('del');
