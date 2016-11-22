@@ -90,7 +90,8 @@ gulp.task('check:jshint', () => {
       `${TEST_DIR}/**/*.js`,
     ])
     .pipe(jshint())
-    .pipe(jshint.reporter('default'));
+    .pipe(jshint.reporter('default'))
+    .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('check', ['check:jshint', 'check:jscs']);
