@@ -41,6 +41,13 @@ function exec(command, callback) {
   });
 }
 
+function runHtmlHint(stream) {
+  const htmlhint = require('gulp-htmlhint');
+  return stream
+    .pipe(htmlhint())
+    .pipe(htmlhint.failReporter());
+}
+
 function execJsDoc(configPath, callback) {
   exec(`${NODE_MODULES_BIN_DIR}/jsdoc -c ${configPath}`, callback);
 }
@@ -63,6 +70,19 @@ function runUnitTests() {
     }));
 }
 
+function wrapHtmlFragment(content) {
+  return `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>FRAGMENT</title>
+    </head>
+    <body>
+    ${content}
+    </body>
+    </html>`;
+}
+
 gulp.task('check:csslint', () => {
   const csslint = require('gulp-csslint');
   return gulp.src(`${CLIENT_SRC_DIR}/**/*.css`)
@@ -70,6 +90,22 @@ gulp.task('check:csslint', () => {
     .pipe(csslint.formatter())
     .pipe(csslint.formatter('fail'));
 });
+
+gulp.task('check:htmlhint:fragment', () => {
+  const change = require('gulp-change');
+  return runHtmlHint(
+    gulp.src(`${CLIENT_SRC_DIR}/*/**/*.html`)
+      .pipe(change(wrapHtmlFragment))
+  );
+});
+
+gulp.task('check:htmlhint:full', () => {
+  return runHtmlHint(
+    gulp.src(`${CLIENT_SRC_DIR}/index.html`)
+  );
+});
+
+gulp.task('check:htmlhint', ['check:htmlhint:full', 'check:htmlhint:fragment']);
 
 gulp.task('check:jscs:client', () => {
   return runJscs(`${CLIENT_SRC_DIR}/**/*.js`, '.jscs-client-conf.json');
@@ -102,7 +138,7 @@ gulp.task('check:jshint', () => {
     .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('check', ['check:jshint', 'check:jscs', 'check:csslint']);
+gulp.task('check', ['check:jshint', 'check:jscs', 'check:htmlhint', 'check:csslint']);
 
 gulp.task('clean', () => {
   const del = require('del');
