@@ -63,6 +63,14 @@ function runUnitTests() {
     }));
 }
 
+gulp.task('check:csslint', () => {
+  const csslint = require('gulp-csslint');
+  return gulp.src(`${CLIENT_SRC_DIR}/**/*.css`)
+    .pipe(csslint())
+    .pipe(csslint.formatter())
+    .pipe(csslint.formatter('fail'));
+});
+
 gulp.task('check:jscs:client', () => {
   return runJscs(`${CLIENT_SRC_DIR}/**/*.js`, '.jscs-client-conf.json');
 });
@@ -94,7 +102,7 @@ gulp.task('check:jshint', () => {
     .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('check', ['check:jshint', 'check:jscs']);
+gulp.task('check', ['check:jshint', 'check:jscs', 'check:csslint']);
 
 gulp.task('clean', () => {
   const del = require('del');
