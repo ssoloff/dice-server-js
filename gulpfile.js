@@ -74,7 +74,7 @@ function runHtmlHint(stream) {
     .pipe(htmlhint.failReporter());
 }
 
-function execJsDoc(configPath, callback) {
+function runJsDoc(configPath, callback) {
   exec(`${NODE_MODULES_BIN_DIR}/jsdoc -c ${configPath}`, callback);
 }
 
@@ -244,11 +244,11 @@ gulp.task('dist:server', () => {
 gulp.task('dist', ['dist:client', 'dist:server']);
 
 gulp.task('docs:client', (done) => {
-  execJsDoc('.jsdoc-client-conf.json', done);
+  runJsDoc('.jsdoc-client-conf.json', done);
 });
 
 gulp.task('docs:server', (done) => {
-  execJsDoc('.jsdoc-server-conf.json', done);
+  runJsDoc('.jsdoc-server-conf.json', done);
 });
 
 gulp.task('docs', ['docs:client', 'docs:server']);
