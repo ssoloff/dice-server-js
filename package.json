@@ -60,5 +60,8 @@
   "bugs": {
     "url": "https://github.com/ssoloff/dice-server-js/issues"
   },
-  "homepage": "https://github.com/ssoloff/dice-server-js"
+  "homepage": "https://github.com/ssoloff/dice-server-js",
+  "scripts": {
+    "init": "bower install"
+  }
 }

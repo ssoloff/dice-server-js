@@ -6,7 +6,8 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 install:
   - npm install --global gulp-cli
-  - make init
+  - npm install
+  - npm run init
 script:
   - gulp unit-test-with-coverage
   - gulp dist
