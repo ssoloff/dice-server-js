@@ -1,0 +1,2 @@
+ENV_DISPLAY=:99.0
+ENV_LOCAL_BIN_DIR=$HOME/.local/bin

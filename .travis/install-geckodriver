@@ -1,0 +1,13 @@
+#!/bin/sh -x
+
+SCRIPT_DIR=`dirname "$0"`
+. $SCRIPT_DIR/env.sh
+
+GECKODRIVER_VERSION=0.11.1
+
+GECKODRIVER_ARCHIVE_URL=https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz
+GECKODRIVER_ARCHIVE_LOCAL=/tmp/geckodriver.tar.gz
+
+wget -O $GECKODRIVER_ARCHIVE_LOCAL $GECKODRIVER_ARCHIVE_URL
+tar xzf $GECKODRIVER_ARCHIVE_LOCAL -C $ENV_LOCAL_BIN_DIR
+rm $GECKODRIVER_ARCHIVE_LOCAL
