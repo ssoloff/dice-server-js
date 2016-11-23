@@ -9,7 +9,7 @@ install:
   - make init
 script:
   - gulp unit-test-with-coverage
-#  - make dist
+  - gulp dist
 #  - make start-server
 #  - make acceptance-test
 #  - make stop-server

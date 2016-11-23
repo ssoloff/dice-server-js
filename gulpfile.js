@@ -21,6 +21,7 @@
 
 const gulp = require('gulp');
 
+const BOWER_COMPONENTS_DIR = 'bower_components';
 const BUILD_OUTPUT_DIR = 'build';
 const FEATURES_DIR = 'features';
 const NODE_MODULES_BIN_DIR = 'node_modules/.bin';
@@ -31,6 +32,7 @@ const TEST_DIR = 'test';
 const SERVER_TEST_DIR = `${TEST_DIR}/server`;
 const COMPILE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/compile`;
 const COVERAGE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/coverage`;
+const DIST_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/dist`;
 
 function exec(command, callback) {
   require('child_process').exec(command, (err) => {
@@ -164,6 +166,46 @@ gulp.task('compile:js', () => {
 });
 
 gulp.task('compile', ['compile:jison', 'compile:js']);
+
+gulp.task('dist:client', () => {
+  const eventStream = require('event-stream');
+  const flatten = require('gulp-flatten');
+  const rename = require('gulp-rename');
+  const PUBLIC_DIR = 'public';
+  const HTML_DIR = PUBLIC_DIR;
+  const CSS_DIR = `${PUBLIC_DIR}/css`;
+  const JS_DIR = `${PUBLIC_DIR}/js`;
+  const JS_VENDOR_DIR = `${JS_DIR}/vendor`;
+
+  return eventStream.merge(
+    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.html`)
+      .pipe(flatten())
+      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${HTML_DIR}`)),
+    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.css`)
+      .pipe(flatten())
+      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${CSS_DIR}`)),
+    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.js`)
+      .pipe(flatten())
+      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_DIR}`)),
+    gulp.src(`${BOWER_COMPONENTS_DIR}/jcanvas/jcanvas.min.js`)
+      .pipe(rename('jcanvas.js'))
+      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_VENDOR_DIR}`)),
+    gulp.src(`${BOWER_COMPONENTS_DIR}/jquery/dist/jquery.min.js`)
+      .pipe(rename('jquery.js'))
+      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_VENDOR_DIR}`)),
+    gulp.src(`${BOWER_COMPONENTS_DIR}/jquery.event.gevent/jquery.event.gevent.js`)
+      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_VENDOR_DIR}`)),
+    gulp.src(`${BOWER_COMPONENTS_DIR}/normalize-css/normalize.css`)
+      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${CSS_DIR}`))
+  );
+});
+
+gulp.task('dist:server', () => {
+  return gulp.src(`${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/**/*.js`)
+    .pipe(gulp.dest(DIST_OUTPUT_DIR));
+});
+
+gulp.task('dist', ['dist:client', 'dist:server']);
 
 gulp.task('docs:client', (done) => {
   execJsDoc('.jsdoc-client-conf.json', done);
