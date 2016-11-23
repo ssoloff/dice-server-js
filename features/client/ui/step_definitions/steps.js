@@ -27,7 +27,7 @@ module.exports = function() {
   });
 
   this.When(/^the ENTER key is pressed$/, function() {
-    return this.homePage.typeExpressionText('\n');
+    return this.homePage.typeEnter();
   });
 
   this.When(/^the expression "(.*)" is entered$/, function(expression) {

@@ -12,6 +12,7 @@ const webdriver = require('selenium-webdriver');
 const security = require('../../common/support/security');
 
 const By = webdriver.By;
+const Key = webdriver.Key;
 const promise = webdriver.promise;
 const until = webdriver.until;
 
@@ -129,6 +130,10 @@ class HomePage {
 
   toggleHelp() {
     return this.driver.findElement(By.id('main-eval-toggleHelp')).click();
+  }
+
+  typeEnter() {
+    return this.typeExpressionText(Key.ENTER);
   }
 
   typeExpressionText(expressionText) {
