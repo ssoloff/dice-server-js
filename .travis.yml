@@ -11,7 +11,7 @@ script:
   - gulp unit-test-with-coverage
   - gulp dist
   - gulp start-server
-#  - make acceptance-test
+  - gulp acceptance-test
   - gulp stop-server
   - gulp check
   - gulp docs

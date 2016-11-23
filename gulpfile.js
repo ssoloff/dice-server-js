@@ -50,6 +50,23 @@ function exec(command, callback) {
   });
 }
 
+function runCucumber(path) {
+  const cucumber = require('gulp-cucumber');
+  const glob = require('glob');
+  const streamToPromise = require('stream-to-promise');
+
+  let promise = Promise.resolve();
+
+  const featureDirs = glob.sync(`${path}/*`, {
+    ignore: `${path}/support`,
+  });
+  featureDirs.forEach((featureDir) => {
+    promise = promise.then(() => streamToPromise(gulp.src([`${featureDir}/*.feature`]).pipe(cucumber({}))));
+  });
+
+  return promise;
+}
+
 function runHtmlHint(stream) {
   const htmlhint = require('gulp-htmlhint');
   return stream
@@ -91,6 +108,19 @@ function wrapHtmlFragment(content) {
     </body>
     </html>`;
 }
+
+gulp.task('acceptance-test:client', () => {
+  return runCucumber(`${FEATURES_DIR}/client`);
+});
+
+gulp.task('acceptance-test:server', () => {
+  return runCucumber(`${FEATURES_DIR}/server`);
+});
+
+gulp.task('acceptance-test', (done) => {
+  const runSequence = require('run-sequence');
+  runSequence('acceptance-test:client', 'acceptance-test:server', done);
+});
 
 gulp.task('check:csslint', () => {
   const csslint = require('gulp-csslint');
