@@ -10,9 +10,9 @@ install:
 script:
   - gulp unit-test-with-coverage
   - gulp dist
-#  - make start-server
+  - gulp start-server
 #  - make acceptance-test
-#  - make stop-server
+  - gulp stop-server
   - gulp check
   - gulp docs
 after_script:

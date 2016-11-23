@@ -19,6 +19,10 @@
 
 'use strict';
 
+const _ = require('underscore');
+const childProcess = require('child_process');
+const del = require('del');
+const fs = require('fs');
 const gulp = require('gulp');
 
 const BOWER_COMPONENTS_DIR = 'bower_components';
@@ -34,8 +38,11 @@ const COMPILE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/compile`;
 const COVERAGE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/coverage`;
 const DIST_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/dist`;
 
+const SERVER_PID = 'server.pid';
+const SERVER_PID_ENCODING = 'utf8';
+
 function exec(command, callback) {
-  require('child_process').exec(command, (err) => {
+  childProcess.exec(command, (err) => {
     if (err) {
       return callback(err);
     }
@@ -143,7 +150,6 @@ gulp.task('check:jshint', () => {
 gulp.task('check', ['check:jshint', 'check:jscs', 'check:htmlhint', 'check:csslint']);
 
 gulp.task('clean', () => {
-  const del = require('del');
   return del([BUILD_OUTPUT_DIR]);
 });
 
@@ -232,6 +238,39 @@ gulp.task('publish-coverage', () => {
   const coveralls = require('gulp-coveralls');
   return gulp.src(`${COVERAGE_OUTPUT_DIR}/lcov.info`)
     .pipe(coveralls());
+});
+
+gulp.task('start-server', (done) => {
+  const child = childProcess.spawn(
+      process.argv[0],
+      [
+        `${DIST_OUTPUT_DIR}/server.js`,
+        `${SERVER_TEST_DIR}/test-keys/private-key.pem`,
+        `${SERVER_TEST_DIR}/test-keys/public-key.pem`,
+      ],
+      {
+        detached: true,
+        stdio: 'ignore',
+      }
+    )
+    .on('error', done);
+  child.unref();
+
+  if (!_.isUndefined(child.pid)) {
+    fs.writeFileSync(SERVER_PID, child.pid, {
+      encoding: SERVER_PID_ENCODING,
+    });
+  }
+
+  done();
+});
+
+gulp.task('stop-server', () => {
+  const pid = fs.readFileSync(SERVER_PID, {
+    encoding: SERVER_PID_ENCODING,
+  });
+  process.kill(pid);
+  return del([SERVER_PID]);
 });
 
 gulp.task('unit-test', ['compile'], () => {
