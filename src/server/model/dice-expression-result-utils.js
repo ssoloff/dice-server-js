@@ -52,12 +52,12 @@ module.exports = {
       if (expressionResult.typeId === diceExpressionTypeIds.FUNCTION_CALL && expressionResult.name === 'roll') {
         const dieRollValues = expressionResult.value;
         const dieSides = expressionResult.argumentListExpressionResults[1].value.sides;
-        dieRollValues.forEach((dieRollValue) => {
+        for (const dieRollValue of dieRollValues) {
           dieRollResults.push({
             sides: dieSides,
             value: dieRollValue,
           });
-        });
+        }
       }
     });
     return dieRollResults;
