@@ -16,7 +16,7 @@ const Key = webdriver.Key;
 const promise = webdriver.promise;
 const until = webdriver.until;
 
-const ExpressionResultsColumns = {
+const ResultsTableColumns = {
   EXPRESSION_TEXT: 1,
   EXPRESSION_CANONICAL_TEXT: 2,
   EXPRESSION_RESULT_TEXT: 3,
@@ -78,11 +78,8 @@ class HomePage {
     return this.driver.findElement(Locators.errorMessage()).getText();
   }
 
-  getExpressionCanonicalTextAtIndex(index) {
-    return this.driver.findElement(Locators.expressionResultCell(
-        index,
-        ExpressionResultsColumns.EXPRESSION_CANONICAL_TEXT
-      ))
+  getExpressionCanonicalTextAtRow(row) {
+    return this.driver.findElement(Locators.expressionResultCell(row, ResultsTableColumns.EXPRESSION_CANONICAL_TEXT))
       .getText();
   }
 
@@ -91,24 +88,18 @@ class HomePage {
       .then((elements) => elements.length);
   }
 
-  getExpressionResultTextAtIndex(index) {
-    return this.driver.findElement(Locators.expressionResultCell(
-        index,
-        ExpressionResultsColumns.EXPRESSION_RESULT_TEXT
-      ))
+  getExpressionResultTextAtRow(row) {
+    return this.driver.findElement(Locators.expressionResultCell(row, ResultsTableColumns.EXPRESSION_RESULT_TEXT))
       .getText();
   }
 
-  getExpressionResultValueAtIndex(index) {
-    return this.driver.findElement(Locators.expressionResultCell(
-        index,
-        ExpressionResultsColumns.EXPRESSION_RESULT_VALUE
-      ))
+  getExpressionResultValueAtRow(row) {
+    return this.driver.findElement(Locators.expressionResultCell(row, ResultsTableColumns.EXPRESSION_RESULT_VALUE))
       .getText();
   }
 
-  getExpressionTextAtIndex(index) {
-    return this.driver.findElement(Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_TEXT))
+  getExpressionTextAtRow(row) {
+    return this.driver.findElement(Locators.expressionResultCell(row, ResultsTableColumns.EXPRESSION_TEXT))
       .getText();
   }
 
@@ -137,8 +128,8 @@ class HomePage {
       });
   }
 
-  reevaluateResultAtIndex(index) {
-    return this._wait(until.elementsLocated(Locators.expressionResultCell(index, ExpressionResultsColumns.ACTIONS)))
+  reevaluateResultAtRow(row) {
+    return this._wait(until.elementsLocated(Locators.expressionResultCell(row, ResultsTableColumns.ACTIONS)))
       .then((elements) => elements[0].findElement(Locators.reevaluateExpressionResult()).click());
   }
 
@@ -146,8 +137,8 @@ class HomePage {
     return this.driver.findElement(Locators.removeAllResults()).click();
   }
 
-  removeResultAtIndex(index) {
-    return this._wait(until.elementsLocated(Locators.expressionResultCell(index, ExpressionResultsColumns.ACTIONS)))
+  removeResultAtRow(row) {
+    return this._wait(until.elementsLocated(Locators.expressionResultCell(row, ResultsTableColumns.ACTIONS)))
       .then((elements) => elements[0].findElement(Locators.removeExpressionResult()).click());
   }
 
@@ -182,13 +173,13 @@ class HomePage {
     return this.driver.findElement(Locators.expressionText()).sendKeys(expressionText);
   }
 
-  waitUntilResultCountIs(resultCount) {
+  waitUntilResultRowCountIs(rowCount) {
     const locator = Locators.allExpressionResultRows();
-    const untilResultCountIs = new webdriver.Condition(`until result count is '${resultCount}'`, () =>
+    const untilResultRowCountIs = new webdriver.Condition(`until result row count is '${rowCount}'`, () =>
       this.driver.findElements(locator)
-        .then((elements) => elements.length === resultCount ? elements : null)
+        .then((elements) => elements.length === rowCount ? elements : null)
     );
-    return this._wait(untilResultCountIs);
+    return this._wait(untilResultRowCountIs);
   }
 
   _wait(condition, timeoutInMilliseconds = 5000) {

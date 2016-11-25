@@ -44,20 +44,20 @@ module.exports = function() {
     return this.homePage.toggleHelp();
   });
 
-  this.When(/^the reevaluate button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function(index) {
-    return this.homePage.reevaluateResultAtIndex(index);
+  this.When(/^the reevaluate button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function(row) {
+    return this.homePage.reevaluateResultAtRow(row);
   });
 
   this.When(/^the remove all button is clicked$/, function() {
     return this.homePage.removeAllResults();
   });
 
-  this.When(/^the remove button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function(index) {
-    return this.homePage.removeResultAtIndex(index);
+  this.When(/^the remove button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function(row) {
+    return this.homePage.removeResultAtRow(row);
   });
 
   this.When(/^the results table contains (\d+) rows$/, function(rowCount) {
-    return this.homePage.waitUntilResultCountIs(Number(rowCount));
+    return this.homePage.waitUntilResultRowCountIs(Number(rowCount));
   });
 
   this.When(/^the rounding mode is "(.*)"$/, function(roundingMode) {
@@ -90,26 +90,26 @@ module.exports = function() {
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "(.*)"$/,
-    function(index, expressionCanonicalText) {
+    function(row, expressionCanonicalText) {
       return this.homePage.awaitUntil(() =>
-        this.homePage.getExpressionCanonicalTextAtIndex(Number(index || '1'))
+        this.homePage.getExpressionCanonicalTextAtRow(Number(row || '1'))
           .then((text) => expect(text).to.equal(expressionCanonicalText))
       );
     }
   );
 
-  this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "(.*)"$/, function(index, expressionText) {
+  this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "(.*)"$/, function(row, expressionText) {
     return this.homePage.awaitUntil(() =>
-      this.homePage.getExpressionTextAtIndex(Number(index || '1'))
+      this.homePage.getExpressionTextAtRow(Number(row || '1'))
         .then((text) => expect(text).to.equal(expressionText))
     );
   });
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression result text should be "(.*)"$/,
-    function(index, expressionResultText) {
+    function(row, expressionResultText) {
       return this.homePage.awaitUntil(() =>
-        this.homePage.getExpressionResultTextAtIndex(Number(index || '1'))
+        this.homePage.getExpressionResultTextAtRow(Number(row || '1'))
           .then((text) => expect(text).to.equal(expressionResultText))
       );
     }
@@ -117,9 +117,9 @@ module.exports = function() {
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression result value should be "(.*)"$/,
-    function(index, expressionResultValue) {
+    function(row, expressionResultValue) {
       return this.homePage.awaitUntil(() =>
-        this.homePage.getExpressionResultValueAtIndex(Number(index || '1'))
+        this.homePage.getExpressionResultValueAtRow(Number(row || '1'))
           .then((text) => expect(text).to.equal(expressionResultValue))
       );
     }
