@@ -16,65 +16,103 @@ const Key = webdriver.Key;
 const promise = webdriver.promise;
 const until = webdriver.until;
 
+const ExpressionResultsColumns = {
+  EXPRESSION_TEXT: 1,
+  EXPRESSION_CANONICAL_TEXT: 2,
+  EXPRESSION_RESULT_TEXT: 3,
+  EXPRESSION_RESULT_VALUE: 4,
+  ACTIONS: 5,
+};
+
+const Locators = {
+  allExpressionResultRows: () => By.css('#main-history-expressionResults tr'),
+
+  dieRollResults: () => By.id('main-sim-dieRollResults'),
+
+  errorMessage: () => By.id('main-eval-errorMessage'),
+
+  evaluate: () => By.id('main-eval-evaluate'),
+
+  expressionForm: () => By.id('main-eval-expressionForm'),
+
+  expressionResultCell: (row, column) => {
+    return By.css(`#main-history-expressionResults tr:nth-child(${row}) td:nth-child(${column})`);
+  },
+
+  expressionText: () => By.id('main-eval-expressionText'),
+
+  help: () => By.id('main-eval-help'),
+
+  reevaluateExpressionResult: () => By.name('reevaluate'),
+
+  removeAllResults: () => By.id('main-history-removeAllResults'),
+
+  removeExpressionResult: () => By.name('remove'),
+
+  roundingMode: (roundingMode) => By.id(`main-eval-roundingMode${roundingMode}`),
+
+  toggleHelp: () => By.id('main-eval-toggleHelp'),
+};
+
 class HomePage {
   constructor(driver) {
     this.driver = driver;
   }
 
   awaitErrorMessageDisplayed(displayed) {
-    return this._awaitStaticElementDisplayed(By.id('main-eval-errorMessage'), displayed);
+    return this._awaitStaticElementDisplayed(Locators.errorMessage(), displayed);
   }
 
   awaitErrorMessageLengthAbove(minLength) {
-    return this._awaitStaticElementTextLengthAbove(By.id('main-eval-errorMessage'), minLength);
+    return this._awaitStaticElementTextLengthAbove(Locators.errorMessage(), minLength);
   }
 
   awaitExpressionCanonicalTextAtIndex(index, expressionCanonicalText) {
     return this._awaitDynamicElementText(
-      By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(2)`),
+      Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_CANONICAL_TEXT),
       expressionCanonicalText
     );
   }
 
   awaitExpressionResultCount(expressionResultCount) {
-    return this._awaitDynamicElementCount(By.css('#main-history-expressionResults tr'), expressionResultCount);
+    return this._awaitDynamicElementCount(Locators.allExpressionResultRows(), expressionResultCount);
   }
 
   awaitExpressionResultTextAtIndex(index, expressionResultText) {
     return this._awaitDynamicElementText(
-      By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(3)`),
+      Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_RESULT_TEXT),
       expressionResultText
     );
   }
 
   awaitExpressionResultValueAtIndex(index, expressionResultValue) {
     return this._awaitDynamicElementText(
-      By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(4)`),
+      Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_RESULT_VALUE),
       expressionResultValue
     );
   }
 
   awaitExpressionTextAtIndex(index, expressionText) {
     return this._awaitDynamicElementText(
-      By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(1)`),
+      Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_TEXT),
       expressionText
     );
   }
 
   awaitHelpDisplayed(displayed) {
-    return this._awaitStaticElementDisplayed(By.id('main-eval-help'), displayed);
+    return this._awaitStaticElementDisplayed(Locators.help(), displayed);
   }
 
   awaitHelpLinkText(helpLinkText) {
-    return this._awaitDynamicElementText(By.id('main-eval-toggleHelp'), helpLinkText);
+    return this._awaitDynamicElementText(Locators.toggleHelp(), helpLinkText);
   }
 
   clearExpressionText() {
-    return this.driver.findElement(By.id('main-eval-expressionText')).clear();
+    return this.driver.findElement(Locators.expressionText()).clear();
   }
 
   evaluate() {
-    return this.driver.findElement(By.id('main-eval-evaluate')).click();
+    return this.driver.findElement(Locators.evaluate()).click();
   }
 
   open() {
@@ -82,29 +120,25 @@ class HomePage {
       // Wait for async load of all feature fragments to complete
       const timeoutInMilliseconds = 60000;
       return promise.all([
-        this.driver.wait(until.elementLocated(By.id('main-eval-expressionForm')), timeoutInMilliseconds),
-        this.driver.wait(until.elementLocated(By.id('main-history-removeAllResults')), timeoutInMilliseconds),
-        this.driver.wait(until.elementLocated(By.id('main-sim-dieRollResults')), timeoutInMilliseconds),
+        this.driver.wait(until.elementLocated(Locators.expressionForm()), timeoutInMilliseconds),
+        this.driver.wait(until.elementLocated(Locators.removeAllResults()), timeoutInMilliseconds),
+        this.driver.wait(until.elementLocated(Locators.dieRollResults()), timeoutInMilliseconds),
       ]);
     });
   }
 
   reevaluateResultAtIndex(index) {
-    return this._wait(until.elementsLocated(
-        By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(5)`)
-      ))
-      .then((elements) => elements[0].findElement(By.name('reevaluate')).click());
+    return this._wait(until.elementsLocated(Locators.expressionResultCell(index, ExpressionResultsColumns.ACTIONS)))
+      .then((elements) => elements[0].findElement(Locators.reevaluateExpressionResult()).click());
   }
 
   removeAllResults() {
-    return this.driver.findElement(By.id('main-history-removeAllResults')).click();
+    return this.driver.findElement(Locators.removeAllResults()).click();
   }
 
   removeResultAtIndex(index) {
-    return this._wait(until.elementsLocated(
-        By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(5)`)
-      ))
-      .then((elements) => elements[0].findElement(By.name('remove')).click());
+    return this._wait(until.elementsLocated(Locators.expressionResultCell(index, ExpressionResultsColumns.ACTIONS)))
+      .then((elements) => elements[0].findElement(Locators.removeExpressionResult()).click());
   }
 
   setRandomNumberGenerator(randomNumberGeneratorName) {
@@ -123,11 +157,11 @@ class HomePage {
   }
 
   setRoundingMode(roundingMode) {
-    return this.driver.findElement(By.id(`main-eval-roundingMode${roundingMode}`)).click();
+    return this.driver.findElement(Locators.roundingMode(roundingMode)).click();
   }
 
   toggleHelp() {
-    return this.driver.findElement(By.id('main-eval-toggleHelp')).click();
+    return this.driver.findElement(Locators.toggleHelp()).click();
   }
 
   typeEnter() {
@@ -135,11 +169,11 @@ class HomePage {
   }
 
   typeExpressionText(expressionText) {
-    return this.driver.findElement(By.id('main-eval-expressionText')).sendKeys(expressionText);
+    return this.driver.findElement(Locators.expressionText()).sendKeys(expressionText);
   }
 
   waitUntilResultCountIs(resultCount) {
-    const locator = By.css('#main-history-expressionResults tr');
+    const locator = Locators.allExpressionResultRows();
     const untilElementCountIs = new webdriver.Condition(`until element count is '${resultCount}'`, () => {
       return this.driver.findElements(locator)
         .then((elements) => elements.length === resultCount ? elements : null);
