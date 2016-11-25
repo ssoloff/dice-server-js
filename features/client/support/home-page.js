@@ -59,52 +59,11 @@ class HomePage {
     this.driver = driver;
   }
 
-  awaitErrorMessageDisplayed(displayed) {
-    return this._awaitStaticElementDisplayed(Locators.errorMessage(), displayed);
-  }
-
-  awaitErrorMessageLengthAbove(minLength) {
-    return this._awaitStaticElementTextLengthAbove(Locators.errorMessage(), minLength);
-  }
-
-  awaitExpressionCanonicalTextAtIndex(index, expressionCanonicalText) {
-    return this._awaitDynamicElementText(
-      Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_CANONICAL_TEXT),
-      expressionCanonicalText
-    );
-  }
-
-  awaitExpressionResultCount(expressionResultCount) {
-    return this._awaitDynamicElementCount(Locators.allExpressionResultRows(), expressionResultCount);
-  }
-
-  awaitExpressionResultTextAtIndex(index, expressionResultText) {
-    return this._awaitDynamicElementText(
-      Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_RESULT_TEXT),
-      expressionResultText
-    );
-  }
-
-  awaitExpressionResultValueAtIndex(index, expressionResultValue) {
-    return this._awaitDynamicElementText(
-      Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_RESULT_VALUE),
-      expressionResultValue
-    );
-  }
-
-  awaitExpressionTextAtIndex(index, expressionText) {
-    return this._awaitDynamicElementText(
-      Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_TEXT),
-      expressionText
-    );
-  }
-
-  awaitHelpDisplayed(displayed) {
-    return this._awaitStaticElementDisplayed(Locators.help(), displayed);
-  }
-
-  awaitHelpLinkText(helpLinkText) {
-    return this._awaitDynamicElementText(Locators.toggleHelp(), helpLinkText);
+  awaitUntil(promiseSupplier) {
+    const untilPromiseIsResolved = new webdriver.Condition('until promise is resolved', () => {
+      return promiseSupplier().catch(() => null);
+    });
+    return this._wait(untilPromiseIsResolved).catch(() => promiseSupplier());
   }
 
   clearExpressionText() {
@@ -115,16 +74,67 @@ class HomePage {
     return this.driver.findElement(Locators.evaluate()).click();
   }
 
+  getErrorMessage() {
+    return this.driver.findElement(Locators.errorMessage()).getText();
+  }
+
+  getExpressionCanonicalTextAtIndex(index) {
+    return this.driver.findElement(Locators.expressionResultCell(
+        index,
+        ExpressionResultsColumns.EXPRESSION_CANONICAL_TEXT
+      ))
+      .getText();
+  }
+
+  getExpressionResultCount() {
+    return this.driver.findElements(Locators.allExpressionResultRows())
+      .then((elements) => elements.length);
+  }
+
+  getExpressionResultTextAtIndex(index) {
+    return this.driver.findElement(Locators.expressionResultCell(
+        index,
+        ExpressionResultsColumns.EXPRESSION_RESULT_TEXT
+      ))
+      .getText();
+  }
+
+  getExpressionResultValueAtIndex(index) {
+    return this.driver.findElement(Locators.expressionResultCell(
+        index,
+        ExpressionResultsColumns.EXPRESSION_RESULT_VALUE
+      ))
+      .getText();
+  }
+
+  getExpressionTextAtIndex(index) {
+    return this.driver.findElement(Locators.expressionResultCell(index, ExpressionResultsColumns.EXPRESSION_TEXT))
+      .getText();
+  }
+
+  getHelpLinkText() {
+    return this.driver.findElement(Locators.toggleHelp()).getText();
+  }
+
+  isErrorMessageDisplayed() {
+    return this.driver.findElement(Locators.errorMessage()).isDisplayed();
+  }
+
+  isHelpDisplayed() {
+    return this.driver.findElement(Locators.help()).isDisplayed();
+  }
+
   open() {
-    return this.driver.get('http://localhost:3000/').then(() => {
-      // Wait for async load of all feature fragments to complete
-      const timeoutInMilliseconds = 60000;
-      return promise.all([
-        this.driver.wait(until.elementLocated(Locators.expressionForm()), timeoutInMilliseconds),
-        this.driver.wait(until.elementLocated(Locators.removeAllResults()), timeoutInMilliseconds),
-        this.driver.wait(until.elementLocated(Locators.dieRollResults()), timeoutInMilliseconds),
-      ]);
-    });
+    return this.driver.get('http://localhost:3000/')
+      .then(() => {
+        // Wait for async load of all feature fragments to complete
+        const timeoutInMilliseconds = 60000;
+        return promise.all([
+          this._wait(until.elementLocated(Locators.expressionForm()), timeoutInMilliseconds),
+          this._wait(until.elementLocated(Locators.removeAllResults()), timeoutInMilliseconds),
+          this._wait(until.elementLocated(Locators.dieRollResults()), timeoutInMilliseconds),
+        ]);
+      });
   }
 
   reevaluateResultAtIndex(index) {
@@ -174,54 +184,14 @@ class HomePage {
 
   waitUntilResultCountIs(resultCount) {
     const locator = Locators.allExpressionResultRows();
-    const untilElementCountIs = new webdriver.Condition(`until element count is '${resultCount}'`, () => {
-      return this.driver.findElements(locator)
-        .then((elements) => elements.length === resultCount ? elements : null);
-    });
-    return this._wait(untilElementCountIs);
+    const untilResultCountIs = new webdriver.Condition(`until result count is '${resultCount}'`, () =>
+      this.driver.findElements(locator)
+        .then((elements) => elements.length === resultCount ? elements : null)
+    );
+    return this._wait(untilResultCountIs);
   }
 
-  _awaitDynamicElementCount(locator, count) {
-    const untilElementCountIs = new webdriver.Condition(`until element count is '${count}'`, () => {
-      return this.driver.findElements(locator)
-        .then((elements) => elements.length === count ? elements : null);
-    });
-    return this._wait(untilElementCountIs)
-      .then((elements) => elements.length)
-      .catch(() => this.driver.findElements(locator).then((elements) => elements.length));
-  }
-
-  _awaitDynamicElementText(locator, text) {
-    const untilElementTextIs = new webdriver.WebElementCondition(`until element text is '${text}'`, () => {
-      return this.driver.findElements(locator)
-        .then((elements) => {
-          if (elements.length === 0) {
-            return null;
-          }
-          const element = elements[0];
-          return element.getText().then((t) => t === text ? element : null);
-        });
-    });
-    return this._wait(untilElementTextIs)
-      .then((element) => element.getText())
-      .catch(() => this.driver.findElement(locator).getText());
-  }
-
-  _awaitStaticElementDisplayed(locator, displayed) {
-    const untilElementDisplayed = displayed ? until.elementIsVisible : until.elementIsNotVisible;
-    return this._wait(untilElementDisplayed(this.driver.findElement(locator)))
-      .then((element) => element.isDisplayed())
-      .catch(() => this.driver.findElement(locator).isDisplayed());
-  }
-
-  _awaitStaticElementTextLengthAbove(locator, minLength) {
-    return this._wait(until.elementTextMatches(this.driver.findElement(locator), new RegExp(`^.{${minLength + 1},}$`)))
-      .then((element) => element.getText())
-      .catch(() => this.driver.findElement(locator).getText());
-  }
-
-  _wait(condition) {
-    const timeoutInMilliseconds = 5000;
+  _wait(condition, timeoutInMilliseconds = 5000) {
     return this.driver.wait(condition, timeoutInMilliseconds);
   }
 }

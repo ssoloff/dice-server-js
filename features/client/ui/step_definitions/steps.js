@@ -69,59 +69,77 @@ module.exports = function() {
   });
 
   this.Then(/^an error message should be displayed$/, function() {
-    return this.homePage.awaitErrorMessageDisplayed(true)
-      .then((displayed) => expect(displayed).to.be.true)
-      .then(() => this.homePage.awaitErrorMessageLengthAbove(1))
-      .then((text) => expect(text).to.have.length.above(1));
+    return this.homePage.awaitUntil(() =>
+      this.homePage.isErrorMessageDisplayed()
+        .then((displayed) => expect(displayed).to.be.true)
+        .then(() => this.homePage.getErrorMessage())
+        .then((text) => expect(text).to.have.length.above(1))
+    );
   });
 
   this.Then(/^an error message should not be displayed$/, function() {
-    return this.homePage.awaitErrorMessageDisplayed(false)
-      .then((displayed) => expect(displayed).to.be.false);
+    return this.homePage.awaitUntil(() =>
+      this.homePage.isErrorMessageDisplayed()
+        .then((displayed) => expect(displayed).to.be.false)
+    );
   });
 
   this.Then(/^help should( not)? be displayed$/, function(shouldNotBeDisplayed) {
     const shouldBeDisplayed = !shouldNotBeDisplayed;
-    return this.homePage.awaitHelpDisplayed(shouldBeDisplayed)
-      .then((displayed) => expect(displayed).to.be[shouldBeDisplayed ? 'true' : 'false']);
+    return this.homePage.awaitUntil(() =>
+      this.homePage.isHelpDisplayed()
+        .then((displayed) => expect(displayed).to.be[shouldBeDisplayed ? 'true' : 'false'])
+    );
   });
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "(.*)"$/,
     function(index, expressionCanonicalText) {
-      return this.homePage.awaitExpressionCanonicalTextAtIndex(toDomIndex(index), expressionCanonicalText)
-        .then((text) => expect(text).to.equal(expressionCanonicalText));
+      return this.homePage.awaitUntil(() =>
+        this.homePage.getExpressionCanonicalTextAtIndex(toDomIndex(index))
+          .then((text) => expect(text).to.equal(expressionCanonicalText))
+      );
     }
   );
 
   this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "(.*)"$/, function(index, expressionText) {
-    return this.homePage.awaitExpressionTextAtIndex(toDomIndex(index), expressionText)
-      .then((text) => expect(text).to.equal(expressionText));
+    return this.homePage.awaitUntil(() =>
+      this.homePage.getExpressionTextAtIndex(toDomIndex(index))
+        .then((text) => expect(text).to.equal(expressionText))
+    );
   });
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression result text should be "(.*)"$/,
     function(index, expressionResultText) {
-      return this.homePage.awaitExpressionResultTextAtIndex(toDomIndex(index), expressionResultText)
-        .then((text) => expect(text).to.equal(expressionResultText));
+      return this.homePage.awaitUntil(() =>
+        this.homePage.getExpressionResultTextAtIndex(toDomIndex(index))
+          .then((text) => expect(text).to.equal(expressionResultText))
+      );
     }
   );
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression result value should be "(.*)"$/,
     function(index, expressionResultValue) {
-      return this.homePage.awaitExpressionResultValueAtIndex(toDomIndex(index), expressionResultValue)
-        .then((text) => expect(text).to.equal(expressionResultValue));
+      return this.homePage.awaitUntil(() =>
+        this.homePage.getExpressionResultValueAtIndex(toDomIndex(index))
+          .then((text) => expect(text).to.equal(expressionResultValue))
+      );
     }
   );
 
   this.Then(/^the help link text should be "(.*)"$/, function(helpLinkText) {
-    return this.homePage.awaitHelpLinkText(helpLinkText)
-      .then((text) => expect(text).to.equal(helpLinkText));
+    return this.homePage.awaitUntil(() =>
+      this.homePage.getHelpLinkText()
+        .then((text) => expect(text).to.equal(helpLinkText))
+    );
   });
 
   this.Then(/^the results table should be empty$/, function() {
-    return this.homePage.awaitExpressionResultCount(0)
-      .then((expressionResultCount) => expect(expressionResultCount).to.equal(0));
+    return this.homePage.awaitUntil(() =>
+      this.homePage.getExpressionResultCount()
+        .then((expressionResultCount) => expect(expressionResultCount).to.equal(0))
+    );
   });
 };
