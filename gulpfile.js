@@ -150,18 +150,14 @@ gulp.task('check:jscs:client', () => {
 });
 
 gulp.task('check:jscs:server', () => {
-  return runJscs(
-    [
-      'gulpfile.js',
-      `${FEATURES_DIR}/**/*.js`,
-      `${SERVER_SRC_DIR}/**/*.js`,
-      `${SERVER_TEST_DIR}/**/*.js`,
-    ],
-    '.jscs-server-conf.json'
-  );
+  return runJscs([`${SERVER_SRC_DIR}/**/*.js`, `${SERVER_TEST_DIR}/**/*.js`], '.jscs-server-conf.json');
 });
 
-gulp.task('check:jscs', ['check:jscs:client', 'check:jscs:server']);
+gulp.task('check:jscs:support', () => {
+  return runJscs(['gulpfile.js', `${FEATURES_DIR}/**/*.js`], '.jscs-support-conf.json');
+});
+
+gulp.task('check:jscs', ['check:jscs:client', 'check:jscs:server', 'check:jscs:support']);
 
 gulp.task('check:jshint', () => {
   const jshint = require('gulp-jshint');
