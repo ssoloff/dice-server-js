@@ -13,10 +13,6 @@ const chai = require('chai');
 const expect = chai.expect;
 
 module.exports = function() {
-  function toDomIndex(index) {
-    return Number(index ? index : '1');
-  }
-
   this.Before(function(scenario, callback) {
     this.homePage = this.createHomePage();
     callback();
@@ -96,7 +92,7 @@ module.exports = function() {
     /^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "(.*)"$/,
     function(index, expressionCanonicalText) {
       return this.homePage.awaitUntil(() =>
-        this.homePage.getExpressionCanonicalTextAtIndex(toDomIndex(index))
+        this.homePage.getExpressionCanonicalTextAtIndex(Number(index || '1'))
           .then((text) => expect(text).to.equal(expressionCanonicalText))
       );
     }
@@ -104,7 +100,7 @@ module.exports = function() {
 
   this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "(.*)"$/, function(index, expressionText) {
     return this.homePage.awaitUntil(() =>
-      this.homePage.getExpressionTextAtIndex(toDomIndex(index))
+      this.homePage.getExpressionTextAtIndex(Number(index || '1'))
         .then((text) => expect(text).to.equal(expressionText))
     );
   });
@@ -113,7 +109,7 @@ module.exports = function() {
     /^the(?: (\d+)(?:st|nd|rd|th))? expression result text should be "(.*)"$/,
     function(index, expressionResultText) {
       return this.homePage.awaitUntil(() =>
-        this.homePage.getExpressionResultTextAtIndex(toDomIndex(index))
+        this.homePage.getExpressionResultTextAtIndex(Number(index || '1'))
           .then((text) => expect(text).to.equal(expressionResultText))
       );
     }
@@ -123,7 +119,7 @@ module.exports = function() {
     /^the(?: (\d+)(?:st|nd|rd|th))? expression result value should be "(.*)"$/,
     function(index, expressionResultValue) {
       return this.homePage.awaitUntil(() =>
-        this.homePage.getExpressionResultValueAtIndex(toDomIndex(index))
+        this.homePage.getExpressionResultValueAtIndex(Number(index || '1'))
           .then((text) => expect(text).to.equal(expressionResultValue))
       );
     }
