@@ -8,8 +8,8 @@
 
 'use strict';
 
-const webdriver = require('selenium-webdriver');
 const security = require('../../common/support/security');
+const webdriver = require('selenium-webdriver');
 
 const By = webdriver.By;
 const Key = webdriver.Key;
@@ -21,6 +21,54 @@ class HomePage {
     this.driver = driver;
   }
 
+  awaitErrorMessageDisplayed(displayed) {
+    return this._awaitStaticElementDisplayed(By.id('main-eval-errorMessage'), displayed);
+  }
+
+  awaitErrorMessageLengthAbove(minLength) {
+    return this._awaitStaticElementTextLengthAbove(By.id('main-eval-errorMessage'), minLength);
+  }
+
+  awaitExpressionCanonicalTextAtIndex(index, expressionCanonicalText) {
+    return this._awaitDynamicElementText(
+      By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(2)`),
+      expressionCanonicalText
+    );
+  }
+
+  awaitExpressionResultCount(expressionResultCount) {
+    return this._awaitDynamicElementCount(By.css('#main-history-expressionResults tr'), expressionResultCount);
+  }
+
+  awaitExpressionResultTextAtIndex(index, expressionResultText) {
+    return this._awaitDynamicElementText(
+      By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(3)`),
+      expressionResultText
+    );
+  }
+
+  awaitExpressionResultValueAtIndex(index, expressionResultValue) {
+    return this._awaitDynamicElementText(
+      By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(4)`),
+      expressionResultValue
+    );
+  }
+
+  awaitExpressionTextAtIndex(index, expressionText) {
+    return this._awaitDynamicElementText(
+      By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(1)`),
+      expressionText
+    );
+  }
+
+  awaitHelpDisplayed(displayed) {
+    return this._awaitStaticElementDisplayed(By.id('main-eval-help'), displayed);
+  }
+
+  awaitHelpLinkText(helpLinkText) {
+    return this._awaitDynamicElementText(By.id('main-eval-toggleHelp'), helpLinkText);
+  }
+
   clearExpressionText() {
     return this.driver.findElement(By.id('main-eval-expressionText')).clear();
   }
@@ -29,72 +77,23 @@ class HomePage {
     return this.driver.findElement(By.id('main-eval-evaluate')).click();
   }
 
-  getErrorMessage() {
-    return this.driver.findElement(By.id('main-eval-errorMessage')).getText();
-  }
-
-  getExpressionCanonicalTextAtIndex(index) {
-    return this.driver
-      .findElement(By.id('main-history-expressionResults'))
-      .findElement(By.css(`tr:nth-child(${index}) td:nth-child(2)`))
-      .getText();
-  }
-
-  getExpressionResultCount() {
-    return this.driver
-      .findElement(By.id('main-history-expressionResults'))
-      .findElements(By.css('tr'))
-      .then((elements) => elements.length);
-  }
-
-  getExpressionResultTextAtIndex(index) {
-    return this.driver
-      .findElement(By.id('main-history-expressionResults'))
-      .findElement(By.css(`tr:nth-child(${index}) td:nth-child(3)`))
-      .getText();
-  }
-
-  getExpressionResultValueAtIndex(index) {
-    return this.driver
-      .findElement(By.id('main-history-expressionResults'))
-      .findElement(By.css(`tr:nth-child(${index}) td:nth-child(4)`))
-      .getText();
-  }
-
-  getExpressionTextAtIndex(index) {
-    return this.driver
-      .findElement(By.id('main-history-expressionResults'))
-      .findElement(By.css(`tr:nth-child(${index}) td:nth-child(1)`))
-      .getText();
-  }
-
-  getHelpLinkText() {
-    return this.driver.findElement(By.id('main-eval-toggleHelp')).getText();
-  }
-
-  isErrorMessageDisplayed() {
-    return this.driver.findElement(By.id('main-eval-errorMessage')).isDisplayed();
-  }
-
   open() {
-    const driver = this.driver;
-    return driver.get('http://localhost:3000/').then(() => {
+    return this.driver.get('http://localhost:3000/').then(() => {
       // Wait for async load of all feature fragments to complete
       const timeoutInMilliseconds = 60000;
       return promise.all([
-        driver.wait(until.elementLocated(By.id('main-eval-expressionForm')), timeoutInMilliseconds),
-        driver.wait(until.elementLocated(By.id('main-history-removeAllResults')), timeoutInMilliseconds),
-        driver.wait(until.elementLocated(By.id('main-sim-dieRollResults')), timeoutInMilliseconds),
+        this.driver.wait(until.elementLocated(By.id('main-eval-expressionForm')), timeoutInMilliseconds),
+        this.driver.wait(until.elementLocated(By.id('main-history-removeAllResults')), timeoutInMilliseconds),
+        this.driver.wait(until.elementLocated(By.id('main-sim-dieRollResults')), timeoutInMilliseconds),
       ]);
     });
   }
 
   reevaluateResultAtIndex(index) {
-    return this.driver
-      .findElement(By.id('main-history-expressionResults'))
-      .findElement(By.css(`tr:nth-child(${index}) td:nth-child(5)`))
-      .findElement(By.name('reevaluate'))
-      .click();
+    return this._wait(until.elementsLocated(
+        By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(5)`)
+      ))
+      .then((elements) => elements[0].findElement(By.name('reevaluate')).click());
   }
 
   removeAllResults() {
@@ -102,11 +101,10 @@ class HomePage {
   }
 
   removeResultAtIndex(index) {
-    return this.driver
-      .findElement(By.id('main-history-expressionResults'))
-      .findElement(By.css(`tr:nth-child(${index}) td:nth-child(5)`))
-      .findElement(By.name('remove'))
-      .click();
+    return this._wait(until.elementsLocated(
+        By.css(`#main-history-expressionResults tr:nth-child(${index}) td:nth-child(5)`)
+      ))
+      .then((elements) => elements[0].findElement(By.name('remove')).click());
   }
 
   setRandomNumberGenerator(randomNumberGeneratorName) {
@@ -140,16 +138,57 @@ class HomePage {
     return this.driver.findElement(By.id('main-eval-expressionText')).sendKeys(expressionText);
   }
 
-  waitUntilHelpIsDisplayed() {
-    return this.driver
-      .wait(until.elementIsVisible(this.driver.findElement(By.id('main-eval-help'))), 5000)
-      .then((element) => element.isDisplayed());
+  waitUntilResultCountIs(resultCount) {
+    const locator = By.css('#main-history-expressionResults tr');
+    const untilElementCountIs = new webdriver.Condition(`until element count is '${resultCount}'`, () => {
+      return this.driver.findElements(locator)
+        .then((elements) => elements.length === resultCount ? elements : null);
+    });
+    return this._wait(untilElementCountIs);
   }
 
-  waitUntilHelpIsNotDisplayed() {
-    return this.driver
-      .wait(until.elementIsNotVisible(this.driver.findElement(By.id('main-eval-help'))), 5000)
-      .then((element) => element.isDisplayed());
+  _awaitDynamicElementCount(locator, count) {
+    const untilElementCountIs = new webdriver.Condition(`until element count is '${count}'`, () => {
+      return this.driver.findElements(locator)
+        .then((elements) => elements.length === count ? elements : null);
+    });
+    return this._wait(untilElementCountIs)
+      .then((elements) => elements.length)
+      .catch(() => this.driver.findElements(locator).then((elements) => elements.length));
+  }
+
+  _awaitDynamicElementText(locator, text) {
+    const untilElementTextIs = new webdriver.WebElementCondition(`until element text is '${text}'`, () => {
+      return this.driver.findElements(locator)
+        .then((elements) => {
+          if (elements.length === 0) {
+            return null;
+          }
+          const element = elements[0];
+          return element.getText().then((t) => t === text ? element : null);
+        });
+    });
+    return this._wait(untilElementTextIs)
+      .then((element) => element.getText())
+      .catch(() => this.driver.findElement(locator).getText());
+  }
+
+  _awaitStaticElementDisplayed(locator, displayed) {
+    const untilElementDisplayed = displayed ? until.elementIsVisible : until.elementIsNotVisible;
+    return this._wait(untilElementDisplayed(this.driver.findElement(locator)))
+      .then((element) => element.isDisplayed())
+      .catch(() => this.driver.findElement(locator).isDisplayed());
+  }
+
+  _awaitStaticElementTextLengthAbove(locator, minLength) {
+    return this._wait(until.elementTextMatches(this.driver.findElement(locator), new RegExp(`^.{${minLength + 1},}$`)))
+      .then((element) => element.getText())
+      .catch(() => this.driver.findElement(locator).getText());
+  }
+
+  _wait(condition) {
+    const timeoutInMilliseconds = 5000;
+    return this.driver.wait(condition, timeoutInMilliseconds);
   }
 }
 

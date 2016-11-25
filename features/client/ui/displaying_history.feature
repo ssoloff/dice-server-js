@@ -48,6 +48,7 @@ Scenario: Reevaluating a result in the results table
 Scenario: Removing a result from the results table
   When the expression "5" is evaluated
     And the expression "6" is evaluated
+    And the results table contains 2 rows
     And the remove button on the 1st row is clicked
   Then the 1st expression text should be "5"
     And the 1st expression canonical text should be "5"

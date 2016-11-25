@@ -13,6 +13,10 @@ const chai = require('chai');
 const expect = chai.expect;
 
 module.exports = function() {
+  function toDomIndex(index) {
+    return Number(index ? index : '1');
+  }
+
   this.Before(function(scenario, callback) {
     this.homePage = this.createHomePage();
     callback();
@@ -35,9 +39,9 @@ module.exports = function() {
   });
 
   this.When(/^the expression "(.*)" is evaluated$/, function(expression) {
-    this.homePage.clearExpressionText();
-    this.homePage.typeExpressionText(expression);
-    return this.homePage.evaluate();
+    return this.homePage.clearExpressionText()
+      .then(() => this.homePage.typeExpressionText(expression))
+      .then(() => this.homePage.evaluate());
   });
 
   this.When(/^the(?: hide)? help link is clicked$/, function() {
@@ -56,83 +60,68 @@ module.exports = function() {
     return this.homePage.removeResultAtIndex(index);
   });
 
+  this.When(/^the results table contains (\d+) rows$/, function(rowCount) {
+    return this.homePage.waitUntilResultCountIs(Number(rowCount));
+  });
+
   this.When(/^the rounding mode is "(.*)"$/, function(roundingMode) {
     return this.homePage.setRoundingMode(roundingMode);
   });
 
   this.Then(/^an error message should be displayed$/, function() {
-    this.homePage.isErrorMessageDisplayed().then((isDisplayed) => {
-      // jshint expr: true
-      expect(isDisplayed).to.be.true;
-    });
-    return this.homePage.getErrorMessage().then(function(text) {
-      expect(text).to.have.length.above(0);
-    });
+    return this.homePage.awaitErrorMessageDisplayed(true)
+      .then((displayed) => expect(displayed).to.be.true)
+      .then(() => this.homePage.awaitErrorMessageLengthAbove(1))
+      .then((text) => expect(text).to.have.length.above(1));
   });
 
   this.Then(/^an error message should not be displayed$/, function() {
-    return this.homePage.isErrorMessageDisplayed().then((isDisplayed) => {
-      // jshint expr: true
-      expect(isDisplayed).to.be.false;
-    });
+    return this.homePage.awaitErrorMessageDisplayed(false)
+      .then((displayed) => expect(displayed).to.be.false);
   });
 
-  this.Then(/^help should( not)? be displayed$/, function(negate) {
-    if (negate) {
-      return this.homePage.waitUntilHelpIsNotDisplayed().then((isDisplayed) => {
-        // jshint expr: true
-        expect(isDisplayed).to.be.false;
-      });
-    }
-
-    return this.homePage.waitUntilHelpIsDisplayed().then((isDisplayed) => {
-      // jshint expr: true
-      expect(isDisplayed).to.be.true;
-    });
+  this.Then(/^help should( not)? be displayed$/, function(shouldNotBeDisplayed) {
+    const shouldBeDisplayed = !shouldNotBeDisplayed;
+    return this.homePage.awaitHelpDisplayed(shouldBeDisplayed)
+      .then((displayed) => expect(displayed).to.be[shouldBeDisplayed ? 'true' : 'false']);
   });
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "(.*)"$/,
     function(index, expressionCanonicalText) {
-      return this.homePage.getExpressionCanonicalTextAtIndex(Number(index ? index : '1')).then((text) => {
-        expect(text).to.equal(expressionCanonicalText);
-      });
+      return this.homePage.awaitExpressionCanonicalTextAtIndex(toDomIndex(index), expressionCanonicalText)
+        .then((text) => expect(text).to.equal(expressionCanonicalText));
     }
   );
 
   this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "(.*)"$/, function(index, expressionText) {
-    return this.homePage.getExpressionTextAtIndex(Number(index ? index : '1')).then((text) => {
-      expect(text).to.equal(expressionText);
-    });
+    return this.homePage.awaitExpressionTextAtIndex(toDomIndex(index), expressionText)
+      .then((text) => expect(text).to.equal(expressionText));
   });
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression result text should be "(.*)"$/,
     function(index, expressionResultText) {
-      return this.homePage.getExpressionResultTextAtIndex(Number(index ? index : '1')).then((text) => {
-        expect(text).to.equal(expressionResultText);
-      });
+      return this.homePage.awaitExpressionResultTextAtIndex(toDomIndex(index), expressionResultText)
+        .then((text) => expect(text).to.equal(expressionResultText));
     }
   );
 
   this.Then(
     /^the(?: (\d+)(?:st|nd|rd|th))? expression result value should be "(.*)"$/,
     function(index, expressionResultValue) {
-      return this.homePage.getExpressionResultValueAtIndex(Number(index ? index : '1')).then((text) => {
-        expect(text).to.equal(expressionResultValue);
-      });
+      return this.homePage.awaitExpressionResultValueAtIndex(toDomIndex(index), expressionResultValue)
+        .then((text) => expect(text).to.equal(expressionResultValue));
     }
   );
 
   this.Then(/^the help link text should be "(.*)"$/, function(helpLinkText) {
-    return this.homePage.getHelpLinkText().then((text) => {
-      expect(text).to.equal(helpLinkText);
-    });
+    return this.homePage.awaitHelpLinkText(helpLinkText)
+      .then((text) => expect(text).to.equal(helpLinkText));
   });
 
   this.Then(/^the results table should be empty$/, function() {
-    return this.homePage.getExpressionResultCount().then((expressionResultCount) => {
-      expect(expressionResultCount).to.equal(0);
-    });
+    return this.homePage.awaitExpressionResultCount(0)
+      .then((expressionResultCount) => expect(expressionResultCount).to.equal(0));
   });
 };
