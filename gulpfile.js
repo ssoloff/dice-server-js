@@ -219,7 +219,18 @@ gulp.task('lint:js:gulpfile', () => {
 
 gulp.task('lint:js', ['lint:js:default', 'lint:js:gulpfile']);
 
-gulp.task('lint', ['lint:js', 'lint:html', 'lint:css']);
+gulp.task('lint:json', () => {
+  const jsonlint = require('gulp-jsonlint');
+  return gulp.src(
+    ['./*.json', `${FEATURES_DIR}/**/*.json`, `${SRC_DIR}/**/*.json`, `${TEST_DIR}/**/*.json`],
+    {dot: true}
+    )
+    .pipe(jsonlint())
+    .pipe(jsonlint.reporter())
+    .pipe(jsonlint.failAfterError());
+});
+
+gulp.task('lint', ['lint:js', 'lint:json', 'lint:html', 'lint:css']);
 
 gulp.task('publish-coverage', () => {
   const coveralls = require('gulp-coveralls');
