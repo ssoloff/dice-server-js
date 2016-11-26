@@ -102,42 +102,6 @@ gulp.task('acceptance-test', (done) => {
   runSequence('acceptance-test:client', 'acceptance-test:server', done);
 });
 
-gulp.task('check:csslint', () => {
-  const csslint = require('gulp-csslint');
-  return gulp.src(`${CLIENT_SRC_DIR}/**/*.css`)
-    .pipe(csslint())
-    .pipe(csslint.formatter())
-    .pipe(csslint.formatter('fail'));
-});
-
-gulp.task('check:htmlhint:fragment', () => {
-  const change = require('gulp-change');
-  return runHtmlHint(
-    gulp.src(`${CLIENT_SRC_DIR}/*/**/*.html`)
-      .pipe(change(wrapHtmlFragment))
-  );
-});
-
-gulp.task('check:htmlhint:full', () => {
-  return runHtmlHint(
-    gulp.src(`${CLIENT_SRC_DIR}/index.html`)
-  );
-});
-
-gulp.task('check:htmlhint', ['check:htmlhint:full', 'check:htmlhint:fragment']);
-
-gulp.task('check:jslint:default', () => {
-  return runEsLint([`${FEATURES_DIR}/**/*.js`, `${SRC_DIR}/**/*.js`, `${TEST_DIR}/**/*.js`]);
-});
-
-gulp.task('check:jslint:gulpfile', () => {
-  return runEsLint('gulpfile.js', '.eslintrc-gulpfile.json');
-});
-
-gulp.task('check:jslint', ['check:jslint:default', 'check:jslint:gulpfile']);
-
-gulp.task('check', ['check:jslint', 'check:htmlhint', 'check:csslint']);
-
 gulp.task('clean', () => {
   return del([BUILD_OUTPUT_DIR]);
 });
@@ -212,6 +176,42 @@ gulp.task('instrument-for-coverage', ['compile'], () => {
     .pipe(istanbul())
     .pipe(istanbul.hookRequire());
 });
+
+gulp.task('lint:css', () => {
+  const csslint = require('gulp-csslint');
+  return gulp.src(`${CLIENT_SRC_DIR}/**/*.css`)
+    .pipe(csslint())
+    .pipe(csslint.formatter())
+    .pipe(csslint.formatter('fail'));
+});
+
+gulp.task('lint:html:fragment', () => {
+  const change = require('gulp-change');
+  return runHtmlHint(
+    gulp.src(`${CLIENT_SRC_DIR}/*/**/*.html`)
+      .pipe(change(wrapHtmlFragment))
+  );
+});
+
+gulp.task('lint:html:full', () => {
+  return runHtmlHint(
+    gulp.src(`${CLIENT_SRC_DIR}/index.html`)
+  );
+});
+
+gulp.task('lint:html', ['lint:html:full', 'lint:html:fragment']);
+
+gulp.task('lint:js:default', () => {
+  return runEsLint([`${FEATURES_DIR}/**/*.js`, `${SRC_DIR}/**/*.js`, `${TEST_DIR}/**/*.js`]);
+});
+
+gulp.task('lint:js:gulpfile', () => {
+  return runEsLint('gulpfile.js', '.eslintrc-gulpfile.json');
+});
+
+gulp.task('lint:js', ['lint:js:default', 'lint:js:gulpfile']);
+
+gulp.task('lint', ['lint:js', 'lint:html', 'lint:css']);
 
 gulp.task('publish-coverage', () => {
   const coveralls = require('gulp-coveralls');

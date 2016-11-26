@@ -19,7 +19,7 @@ script:
   - gulp start-server
   - gulp acceptance-test
   - gulp stop-server
-  - gulp check
+  - gulp lint
   - gulp docs
 after_script:
   - gulp publish-coverage
