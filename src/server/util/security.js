@@ -42,7 +42,7 @@ module.exports = {
         alg: SIGNATURE_ALGORITHM,
         jwk: rsaPemToJwk(publicKey, {
           alg: SIGNATURE_ALGORITHM,
-          key_ops: 'verify', // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+          key_ops: 'verify', // eslint-disable-line camelcase
           use: 'sig',
         }),
       },

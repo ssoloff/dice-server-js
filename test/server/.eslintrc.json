@@ -1,0 +1,37 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "node-style-guide"
+  ],
+  "env": {
+    "es6": true,
+    "jasmine": true
+  },
+  "rules": {
+    "comma-dangle": ["error", "always-multiline"],
+    "guard-for-in": "error",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "key-spacing": ["error"],
+    "keyword-spacing": ["error", { "before": true, "after": true }],
+    "linebreak-style": ["error", "unix"],
+    "max-len": ["error", { "code": 120 }],
+    "no-bitwise": "error",
+    "no-caller": "error",
+    "no-else-return": "error",
+    "no-extra-parens": "error",
+    "no-new": "error",
+    "no-plusplus": "error",
+    "no-sequences": "error",
+    "no-with": "error",
+    "one-var": ["error", { "initialized": "never", "uninitialized": "always" }],
+    "quote-props": ["error", "as-needed"],
+    "space-after-keywords": "off",
+    "space-before-blocks": ["error", "always"],
+    "space-before-function-paren": ["error", "never"],
+    "space-in-parens": ["error", "never"],
+    "space-infix-ops": "error",
+    "spaced-comment": ["error", "always"],
+    "strict": "error"
+  }
+}

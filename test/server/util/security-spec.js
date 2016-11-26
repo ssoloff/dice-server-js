@@ -12,9 +12,9 @@ const security = require('../../../src/server/util/security');
 const securityTest = require('../test-support/security-test');
 
 describe('security', () => {
-  let payload;
-  let privateKey;
-  let publicKey;
+  let payload,
+    privateKey,
+    publicKey;
 
   beforeEach(() => {
     payload = {

@@ -14,11 +14,11 @@ const diceTest = require('./test-support/dice-test');
 
 describe('diceExpressionParser', () => {
   const f = Math.max;
-  let expressionParser;
-  let expressionParserContext;
-  let one;
-  let two;
-  let three;
+  let expressionParser,
+    expressionParserContext,
+    one,
+    two,
+    three;
 
   beforeEach(() => {
     jasmine.addCustomEqualityTester(diceTest.isDiceExpressionEqual);

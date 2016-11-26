@@ -34,7 +34,7 @@ module.exports = (app, privateKey, publicKey) => {
       publicKey: publicKey,
       validateRedeemedTicketPath: validateRedeemedTicketPath,
     });
-  const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/validate-redeemed-ticket-controller') // jscs:ignore maximumLineLength
+  const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/validate-redeemed-ticket-controller') // eslint-disable-line max-len
     .create({
       publicKey: publicKey,
     });

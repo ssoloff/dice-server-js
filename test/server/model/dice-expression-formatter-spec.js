@@ -11,8 +11,8 @@
 const dice = require('../../../src/server/model/dice');
 
 describe('diceExpressionFormatter', () => {
-  let three;
-  let four;
+  let three,
+    four;
 
   beforeEach(() => {
     three = dice.expression.forConstant(3);

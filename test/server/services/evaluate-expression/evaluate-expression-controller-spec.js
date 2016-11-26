@@ -14,10 +14,10 @@ const ja = require('json-assert');
 const security = require('../../../../src/server/util/security');
 
 describe('evaluateExpressionController', () => {
-  let controller;
-  let request;
-  let response;
-  let responseBody;
+  let controller,
+    request,
+    response,
+    responseBody;
 
   function createEvaluateExpressionController() {
     return require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({

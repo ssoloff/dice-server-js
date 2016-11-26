@@ -11,10 +11,10 @@
 const dice = require('../../../src/server/model/dice');
 
 describe('diceExpressionResult', () => {
-  let three;
-  let four;
-  let d3;
-  let visitor;
+  let three,
+    four,
+    d3,
+    visitor;
 
   beforeEach(() => {
     three = dice.expressionResult.forConstant(3);

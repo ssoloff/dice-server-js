@@ -13,8 +13,8 @@ const dice = require('../../../src/server/model/dice');
 const diceTest = require('./test-support/dice-test');
 
 describe('diceExpression', () => {
-  let three;
-  let four;
+  let three,
+    four;
 
   beforeEach(() => {
     jasmine.addCustomEqualityTester(diceTest.isDiceExpressionResultEqual);

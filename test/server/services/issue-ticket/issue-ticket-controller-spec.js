@@ -13,10 +13,10 @@ const httpStatus = require('http-status-codes');
 const ja = require('json-assert');
 
 describe('issueTicketController', () => {
-  let controller;
-  let request;
-  let response;
-  let responseBody;
+  let controller,
+    request,
+    response,
+    responseBody;
 
   function createIssueTicketController(evaluateExpressionController) {
     evaluateExpressionController = evaluateExpressionController ||

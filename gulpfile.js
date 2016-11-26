@@ -1,22 +1,3 @@
-/* jshint bitwise: true,
-          curly: true,
-          eqeqeq: true,
-          esversion: 6,
-          forin: true,
-          freeze: true,
-          latedef: nofunc,
-          noarg: true,
-          nocomma: true,
-          node: true,
-          nonbsp: true,
-          nonew: true,
-          plusplus: true,
-          singleGroups: true,
-          strict: true,
-          undef: true,
-          unused: true
-*/
-
 'use strict';
 
 const _ = require('underscore');
@@ -66,6 +47,16 @@ function runCucumber(path) {
   return promise;
 }
 
+function runEsLint(globs, configPath) {
+  const eslint = require('gulp-eslint');
+  return gulp.src(globs)
+    .pipe(eslint({
+      configFile: configPath,
+    }))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+}
+
 function runHtmlHint(stream) {
   const htmlhint = require('gulp-htmlhint');
   return stream
@@ -75,16 +66,6 @@ function runHtmlHint(stream) {
 
 function runJsDoc(configPath, callback) {
   exec(`${NODE_MODULES_BIN_DIR}/jsdoc -c ${configPath}`, callback);
-}
-
-function runJscs(globs, configPath) {
-  const jscs = require('gulp-jscs');
-  return gulp.src(globs)
-    .pipe(jscs({
-      configPath: configPath,
-    }))
-    .pipe(jscs.reporter())
-    .pipe(jscs.reporter('fail'));
 }
 
 function runUnitTests() {
@@ -145,34 +126,17 @@ gulp.task('check:htmlhint:full', () => {
 
 gulp.task('check:htmlhint', ['check:htmlhint:full', 'check:htmlhint:fragment']);
 
-gulp.task('check:jscs:client', () => {
-  return runJscs(`${CLIENT_SRC_DIR}/**/*.js`, '.jscs-client-conf.json');
+gulp.task('check:jslint:default', () => {
+  return runEsLint([`${FEATURES_DIR}/**/*.js`, `${SRC_DIR}/**/*.js`, `${TEST_DIR}/**/*.js`]);
 });
 
-gulp.task('check:jscs:server', () => {
-  return runJscs([`${SERVER_SRC_DIR}/**/*.js`, `${SERVER_TEST_DIR}/**/*.js`], '.jscs-server-conf.json');
+gulp.task('check:jslint:gulpfile', () => {
+  return runEsLint('gulpfile.js', '.eslintrc-gulpfile.json');
 });
 
-gulp.task('check:jscs:support', () => {
-  return runJscs(['gulpfile.js', `${FEATURES_DIR}/**/*.js`], '.jscs-support-conf.json');
-});
+gulp.task('check:jslint', ['check:jslint:default', 'check:jslint:gulpfile']);
 
-gulp.task('check:jscs', ['check:jscs:client', 'check:jscs:server', 'check:jscs:support']);
-
-gulp.task('check:jshint', () => {
-  const jshint = require('gulp-jshint');
-  return gulp.src([
-      'gulpfile.js',
-      `${FEATURES_DIR}/**/*.js`,
-      `${SRC_DIR}/**/*.js`,
-      `${TEST_DIR}/**/*.js`,
-    ])
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'))
-    .pipe(jshint.reporter('fail'));
-});
-
-gulp.task('check', ['check:jshint', 'check:jscs', 'check:htmlhint', 'check:csslint']);
+gulp.task('check', ['check:jslint', 'check:htmlhint', 'check:csslint']);
 
 gulp.task('clean', () => {
   return del([BUILD_OUTPUT_DIR]);
@@ -186,13 +150,7 @@ gulp.task('compile:jison', () => {
 });
 
 gulp.task('compile:js', () => {
-  return gulp.src([
-      `${SRC_DIR}/**/*`,
-      `${TEST_DIR}/**/*`,
-    ], {
-      base: '.',
-      dot: true,
-    })
+  return gulp.src([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], {base: '.', dot: true})
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR));
 });
 
@@ -244,11 +202,13 @@ gulp.task('docs', ['docs:client', 'docs:server']);
 
 gulp.task('instrument-for-coverage', ['compile'], () => {
   const istanbul = require('gulp-istanbul');
-  return gulp.src([
+  return gulp.src(
+    [
       `${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/**/*.js`,
       `!${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/model/dice-expression-parser.js`,
       `${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/**/*.js`,
-    ])
+    ]
+    )
     .pipe(istanbul())
     .pipe(istanbul.hookRequire());
 });
@@ -261,16 +221,16 @@ gulp.task('publish-coverage', () => {
 
 gulp.task('start-server', (done) => {
   const child = childProcess.spawn(
-      process.argv[0],
-      [
-        `${DIST_OUTPUT_DIR}/server.js`,
-        `${SERVER_TEST_DIR}/test-keys/private-key.pem`,
-        `${SERVER_TEST_DIR}/test-keys/public-key.pem`,
-      ],
-      {
-        detached: true,
-        stdio: 'ignore',
-      }
+    process.argv[0],
+    [
+      `${DIST_OUTPUT_DIR}/server.js`,
+      `${SERVER_TEST_DIR}/test-keys/private-key.pem`,
+      `${SERVER_TEST_DIR}/test-keys/public-key.pem`,
+    ],
+    {
+      detached: true,
+      stdio: 'ignore',
+    }
     )
     .on('error', done);
   child.unref();

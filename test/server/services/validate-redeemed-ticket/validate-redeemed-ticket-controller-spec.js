@@ -13,10 +13,10 @@ const httpStatus = require('http-status-codes');
 const ja = require('json-assert');
 
 describe('validateRedeemedTicketController', () => {
-  let controller;
-  let request;
-  let response;
-  let responseBody;
+  let controller,
+    request,
+    response,
+    responseBody;
 
   function createValidateRedeemedTicketController() {
     return require('../../../../src/server/services/validate-redeemed-ticket/validate-redeemed-ticket-controller')

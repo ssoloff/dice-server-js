@@ -12,7 +12,7 @@ const chai = require('chai');
 
 const expect = chai.expect;
 
-module.exports = function() {
+module.exports = function() { // eslint-disable-line max-statements
   this.Before(function(scenario, callback) {
     this.homePage = this.createHomePage();
     callback();

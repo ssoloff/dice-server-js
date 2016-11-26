@@ -30,8 +30,8 @@ module.exports = {
   },
 
   postJson(callback, requestBody) {
-    let responseBody;
-    let responseStatus;
+    let responseBody,
+      responseStatus;
     const request = {
       body: requestBody,
     };

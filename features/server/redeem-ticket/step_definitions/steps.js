@@ -13,7 +13,7 @@ const httpStatus = require('http-status-codes');
 
 const expect = chai.expect;
 
-module.exports = function() {
+module.exports = function() { // eslint-disable-line max-statements
   this.Before(function(scenario, callback) {
     this.issueTicketService = this.createIssueTicketService();
     this.redeemTicketService = this.createRedeemTicketService();
