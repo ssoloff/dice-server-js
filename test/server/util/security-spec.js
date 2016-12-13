@@ -57,7 +57,7 @@ describe('security', () => {
 
     describe('when object is a buffer', () => {
       it('should return the object as a string using UTF-8 encoding', () => {
-        expect(security.toCanonicalString(new Buffer('test'))).toBe('test');
+        expect(security.toCanonicalString(Buffer.from('test'))).toBe('test');
       });
     });
 

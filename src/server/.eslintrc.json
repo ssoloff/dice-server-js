@@ -1,7 +1,11 @@
 {
   "root": true,
+  "plugins": [
+    "node"
+  ],
   "extends": [
     "eslint:recommended",
+    "plugin:node/recommended",
     "node-style-guide"
   ],
   "env": {
