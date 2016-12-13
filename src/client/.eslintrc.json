@@ -1,6 +1,9 @@
 {
   "root": true,
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "crockford"
+  ],
   "env": {
     "browser": true,
     "jquery": true
@@ -9,39 +12,14 @@
     "main": true
   },
   "rules": {
-    "array-bracket-spacing": ["error", "never"],
-    "brace-style": ["error", "1tbs", {"allowSingleLine": true}],
-    "comma-dangle": ["error", "never"],
-    "comma-style": ["error", "last"],
-    "curly": ["error", "all"],
-    "dot-notation": "error",
-    "eol-last": "error",
-    "eqeqeq": "error",
     "guard-for-in": "error",
-    "indent": ["error", 4],
-    "key-spacing": ["error"],
-    "keyword-spacing": ["error", {"before": true, "after": true}],
     "max-len": ["error", {"code": 120}],
     "no-bitwise": "error",
     "no-caller": "error",
     "no-extend-native": "error",
     "no-extra-parens": "error",
-    "no-multi-str": "error",
     "no-new": "error",
-    "no-plusplus": "error",
-    "no-sequences": "error",
-    "no-trailing-spaces": "error",
-    "no-underscore-dangle": "error",
     "no-use-before-define": ["error", "nofunc"],
-    "no-with": "error",
-    "one-var": ["error", "always"],
-    "space-before-blocks": ["error", "always"],
-    "space-before-function-paren": ["error", {"anonymous": "always", "named": "never"}],
-    "space-in-parens": ["error", "never"],
-    "space-infix-ops": "error",
-    "space-unary-ops": ["error", {"nonwords": false, "words": true}],
-    "strict": ["error", "function"],
-    "vars-on-top": "error",
-    "wrap-iife": ["error", "any"]
+    "strict": ["error", "function"]
   }
 }
