@@ -20,6 +20,7 @@ const NODE_MODULES_BIN_DIR = 'node_modules/.bin';
 const SRC_DIR = 'src';
 const CLIENT_SRC_DIR = `${SRC_DIR}/client`;
 const SERVER_SRC_DIR = `${SRC_DIR}/server`;
+const SUPPORT_DIR = 'support';
 const TEST_DIR = 'test';
 const SERVER_TEST_DIR = `${TEST_DIR}/server`;
 const COMPILE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/compile`;
@@ -122,7 +123,7 @@ gulp.task('compile:jison', () => {
 });
 
 gulp.task('compile:js', () => {
-  return gulp.src([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], {base: '.', dot: true})
+  return gulp.src([`${SRC_DIR}/**/*`, `${SUPPORT_DIR}/**/*`, `${TEST_DIR}/**/*`], {base: '.', dot: true})
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR));
 });
 
