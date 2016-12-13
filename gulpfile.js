@@ -236,7 +236,7 @@ gulp.task('lint:json', () => {
     .pipe(jsonlint.failAfterError());
 });
 
-gulp.task('lint:package', (done) => {
+gulp.task('lint:package', () => {
   const gutil = require('gulp-util');
   const through = require('through2');
   const validate = require('gulp-nice-package');
@@ -254,7 +254,7 @@ gulp.task('lint:package', (done) => {
       }
       return cb(error, file);
     });
-  };
+  }
 
   return gulp.src('package.json')
     .pipe(validate())
