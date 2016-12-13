@@ -236,7 +236,32 @@ gulp.task('lint:json', () => {
     .pipe(jsonlint.failAfterError());
 });
 
-gulp.task('lint', ['lint:js', 'lint:json', 'lint:html', 'lint:css']);
+gulp.task('lint:package', (done) => {
+  const gutil = require('gulp-util');
+  const through = require('through2');
+  const validate = require('gulp-nice-package');
+
+  function failOnError() {
+    return through.obj((file, enc, cb) => {
+      let error = null;
+      if (file.nicePackage.valid === false) {
+        error = new gutil.PluginError(
+          'gulp-nice-package',
+          `Failed with ${_.size(file.nicePackage.errors)} error(s), ` +
+              `${_.size(file.nicePackage.warnings)} warning(s), ` +
+              `${_.size(file.nicePackage.recommendations)} recommendation(s)`
+        );
+      }
+      return cb(error, file);
+    });
+  };
+
+  return gulp.src('package.json')
+    .pipe(validate())
+    .pipe(failOnError());
+});
+
+gulp.task('lint', ['lint:js', 'lint:json', 'lint:package', 'lint:html', 'lint:css']);
 
 gulp.task('publish-coverage', () => {
   const coveralls = require('gulp-coveralls');
