@@ -61,6 +61,8 @@ function runEsLint(globs, configPath) {
   return gulp.src(globs)
     .pipe(eslint({
       configFile: configPath,
+      dotfiles: true,
+      warnFileIgnored: true,
     }))
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
