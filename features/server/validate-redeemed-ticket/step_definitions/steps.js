@@ -71,7 +71,6 @@ module.exports = function() {
 
   this.Then(/^the response should indicate failure$/, function() {
     expect(this.response.status).to.not.equal(httpStatus.OK);
-    // jshint expr: true
     expect(this.response.body.error).to.exist;
   });
 

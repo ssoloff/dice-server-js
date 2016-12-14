@@ -44,12 +44,10 @@ module.exports = function() {
   });
 
   this.Then(/^the response should contain a link to the redeem ticket service$/, function() {
-    // jshint expr: true
     expect(this.response.body.ticket.content.redeemUrl).to.exist;
   });
 
   this.Then(/^the response should contain a signed ticket$/, function() {
-    // jshint expr: true
     expect(this.response.body.ticket.signature).to.exist;
   });
 
@@ -75,7 +73,6 @@ module.exports = function() {
 
   this.Then(/^the response should indicate failure$/, function() {
     expect(this.response.status).to.not.equal(httpStatus.OK);
-    // jshint expr: true
     expect(this.response.body.error).to.exist;
   });
 

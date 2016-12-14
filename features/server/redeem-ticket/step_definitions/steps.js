@@ -93,12 +93,10 @@ module.exports = function() { // eslint-disable-line max-statements
   });
 
   this.Then(/^the response should contain a link to the validate redeemed ticket service$/, function() {
-    // jshint expr: true
     expect(this.response.body.redeemedTicket.content.validateUrl).to.exist;
   });
 
   this.Then(/^the response should contain a signed redeemed ticket$/, function() {
-    // jshint expr: true
     expect(this.response.body.redeemedTicket.signature).to.exist;
   });
 
@@ -126,7 +124,6 @@ module.exports = function() { // eslint-disable-line max-statements
 
   this.Then(/^the response should indicate failure$/, function() {
     expect(this.response.status).to.not.equal(httpStatus.OK);
-    // jshint expr: true
     expect(this.response.body.error).to.exist;
   });
 

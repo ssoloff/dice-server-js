@@ -39,9 +39,7 @@ module.exports = {
    * @returns {module:dice-bag~Bag!} The new dice bag.
    */
   create(randomNumberGenerator) {
-    // jshint -W126
     randomNumberGenerator = randomNumberGenerator || ((sides) => Random.die(sides)(Random.engines.nativeMath));
-    // jshint +W126
 
     /**
      * A dice bag.
