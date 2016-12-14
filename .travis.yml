@@ -12,7 +12,7 @@ before_install:
   - export PATH=$PATH:$ENV_LOCAL_BIN_DIR
 install:
   - npm install --global gulp-cli
-  - npm run init
+  - npm run bootstrap
 script:
   - gulp unit-test-with-coverage
   - gulp dist

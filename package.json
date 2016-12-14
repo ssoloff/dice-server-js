@@ -71,6 +71,6 @@
   },
   "homepage": "https://github.com/ssoloff/dice-server-js",
   "scripts": {
-    "init": "npm install && bower install"
+    "bootstrap": "npm install && bower install"
   }
 }
