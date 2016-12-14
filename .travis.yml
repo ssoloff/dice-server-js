@@ -4,10 +4,10 @@ node_js:
 addons:
   firefox: "latest"
 before_install:
-  - ./.travis/init-env
-  - ./.travis/install-geckodriver
-  - ./.travis/start-xvfb
-  - . ./.travis/env.sh
+  - ./build/travis/init-env
+  - ./build/travis/install-geckodriver
+  - ./build/travis/start-xvfb
+  - . ./build/travis/env.sh
   - export DISPLAY=$ENV_DISPLAY
   - export PATH=$PATH:$ENV_LOCAL_BIN_DIR
 install:
