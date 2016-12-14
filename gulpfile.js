@@ -175,13 +175,12 @@ gulp.task('docs', ['docs:client', 'docs:server']);
 
 gulp.task('instrument-for-coverage', ['compile'], () => {
   const istanbul = require('gulp-istanbul');
-  return gulp.src(
-    [
+  return gulp
+    .src([
       `${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/**/*.js`,
       `!${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/model/dice-expression-parser.js`,
       `${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/**/*.js`,
-    ]
-    )
+    ])
     .pipe(istanbul())
     .pipe(istanbul.hookRequire());
 });
@@ -227,9 +226,10 @@ gulp.task('lint:js', ['lint:js:default', 'lint:js:gulpfile']);
 
 gulp.task('lint:json', () => {
   const jsonlint = require('gulp-jsonlint');
-  return gulp.src(
-    ['./*.json', `${FEATURES_DIR}/**/*.json`, `${SRC_DIR}/**/*.json`, `${TEST_DIR}/**/*.json`],
-    {dot: true}
+  return gulp
+    .src(
+      ['./*.json', `${FEATURES_DIR}/**/*.json`, `${SRC_DIR}/**/*.json`, `${TEST_DIR}/**/*.json`],
+      {dot: true}
     )
     .pipe(jsonlint())
     .pipe(jsonlint.reporter())
@@ -270,17 +270,16 @@ gulp.task('publish-coverage', () => {
 });
 
 gulp.task('start-server', (done) => {
-  const child = childProcess.spawn(
-    process.argv[0],
-    [
-      `${DIST_OUTPUT_DIR}/server.js`,
-      `${SERVER_TEST_DIR}/test-keys/private-key.pem`,
-      `${SERVER_TEST_DIR}/test-keys/public-key.pem`,
-    ],
-    {
-      detached: true,
-      stdio: 'ignore',
-    }
+  const child = childProcess
+    .spawn(
+      process.argv[0], [
+        `${DIST_OUTPUT_DIR}/server.js`,
+        `${SERVER_TEST_DIR}/test-keys/private-key.pem`,
+        `${SERVER_TEST_DIR}/test-keys/public-key.pem`,
+      ], {
+        detached: true,
+        stdio: 'ignore',
+      }
     )
     .on('error', done);
   child.unref();
