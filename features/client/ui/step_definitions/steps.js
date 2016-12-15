@@ -56,7 +56,7 @@ module.exports = function () {
     return this.homePage.removeResultAtRow(row)
   })
 
-  this.When(/^the results table contains (\d+) rows$/, function (rowCount) {
+  this.When(/^the results table contains (\d+) rows?$/, function (rowCount) {
     return this.homePage.waitUntilResultRowCountIs(Number(rowCount))
   })
 

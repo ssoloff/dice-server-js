@@ -17,6 +17,7 @@ Background: The home page is open and produces deterministic results
 
 Scenario: Results table keeps a history of past evaluations
   When the expression "5" is evaluated
+    And the results table contains 1 row
     And the expression "6" is evaluated
     And the results table contains 2 rows
   Then the 1st expression text should be "6"
@@ -30,6 +31,7 @@ Scenario: Results table keeps a history of past evaluations
 
 Scenario: Removing all results from the results table
   When the expression "5" is evaluated
+    And the results table contains 1 row
     And the expression "6" is evaluated
     And the results table contains 2 rows
     And the remove all button is clicked
@@ -49,6 +51,7 @@ Scenario: Reevaluating a result in the results table
 
 Scenario: Removing a result from the results table
   When the expression "5" is evaluated
+    And the results table contains 1 row
     And the expression "6" is evaluated
     And the results table contains 2 rows
     And the remove button on the 1st row is clicked
