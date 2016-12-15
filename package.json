@@ -55,8 +55,8 @@
     "node": ">= 6.9.2"
   },
   "files": [
-    ".build/compile/src/server",
-    ".build/compile/support"
+    "build/compile/src/server",
+    "build/compile/support"
   ],
   "repository": {
     "type": "git",

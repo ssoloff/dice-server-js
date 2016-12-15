@@ -14,7 +14,7 @@ const del = require('del')
 const fs = require('fs')
 const gulp = require('gulp')
 
-const BUILD_OUTPUT_DIR = '.build'
+const BUILD_OUTPUT_DIR = 'build'
 const FEATURES_DIR = 'features'
 const NODE_MODULES_BIN_DIR = 'node_modules/.bin'
 const SRC_DIR = 'src'
@@ -61,7 +61,6 @@ function runEsLint (globs, configPath) {
   return gulp.src(globs)
     .pipe(eslint({
       configFile: configPath,
-      dotfiles: true,
       warnFileIgnored: true
     }))
     .pipe(eslint.format())
