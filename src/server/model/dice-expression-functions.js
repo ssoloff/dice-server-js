@@ -21,7 +21,7 @@ function cloneRolls (rolls, count, findIndexOfRoll) {
 
   const newRolls = rolls.slice(0)
   const oldRolls = rolls.slice(0)
-  for (let pass = 0; pass < count; pass += 1) {
+  for (let pass = 0; pass < count; ++pass) {
     if (oldRolls.length === 0) {
       break
     }
@@ -42,7 +42,7 @@ function dropRolls (rolls, count, findIndexOfRoll) {
   }
 
   const newRolls = rolls.slice(0)
-  for (let pass = 0; pass < count; pass += 1) {
+  for (let pass = 0; pass < count; ++pass) {
     if (newRolls.length === 0) {
       break
     }
