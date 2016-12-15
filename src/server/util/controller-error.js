@@ -6,17 +6,17 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const httpStatus = require('http-status-codes');
+const httpStatus = require('http-status-codes')
 
 class ControllerError extends Error {
-  constructor(status, message) {
-    super(message || '');
+  constructor (status, message) {
+    super(message || '')
 
-    this.name = 'ControllerError';
-    this.status = status || httpStatus.INTERNAL_SERVER_ERROR;
+    this.name = 'ControllerError'
+    this.status = status || httpStatus.INTERNAL_SERVER_ERROR
   }
 }
 
-module.exports = ControllerError;
+module.exports = ControllerError

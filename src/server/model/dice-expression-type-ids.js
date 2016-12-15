@@ -6,7 +6,7 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
 module.exports = {
   ADDITION: 'addition',
@@ -20,5 +20,5 @@ module.exports = {
   MULTIPLICATION: 'multiplication',
   NEGATIVE: 'negative',
   POSITIVE: 'positive',
-  SUBTRACTION: 'subtraction',
-};
+  SUBTRACTION: 'subtraction'
+}

@@ -6,9 +6,9 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const diceExpressionTypeIds = require('./dice-expression-type-ids');
+const diceExpressionTypeIds = require('./dice-expression-type-ids')
 
 /**
  * Provides utility methods for working with dice expression results.
@@ -43,23 +43,23 @@ module.exports = {
    * // ]
    * //
    * // (values may differ)
-   * diceExpressionResultUtils.enumerateDieRollResults(diceExpressionParser.parse('2d6+1d4+1'));
+   * diceExpressionResultUtils.enumerateDieRollResults(diceExpressionParser.parse('2d6+1d4+1'))
    */
-  enumerateDieRollResults(expressionResult) {
-    const dieRollResults = [];
+  enumerateDieRollResults (expressionResult) {
+    const dieRollResults = []
 
     expressionResult.accept((expressionResult) => {
       if (expressionResult.typeId === diceExpressionTypeIds.FUNCTION_CALL && expressionResult.name === 'roll') {
-        const dieRollValues = expressionResult.value;
-        const dieSides = expressionResult.argumentListExpressionResults[1].value.sides;
+        const dieRollValues = expressionResult.value
+        const dieSides = expressionResult.argumentListExpressionResults[1].value.sides
         for (const dieRollValue of dieRollValues) {
           dieRollResults.push({
             sides: dieSides,
-            value: dieRollValue,
-          });
+            value: dieRollValue
+          })
         }
       }
-    });
-    return dieRollResults;
-  },
-};
+    })
+    return dieRollResults
+  }
+}

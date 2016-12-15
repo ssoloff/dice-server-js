@@ -6,28 +6,28 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const ControllerError = require('../../../src/server/util/controller-error');
+const ControllerError = require('../../../src/server/util/controller-error')
 
 describe('ControllerError', () => {
   describe('.constructor', () => {
     it('should use a default message if one is not provided', () => {
-      const error = new ControllerError(200, null);
+      const error = new ControllerError(200, null)
 
-      expect(error.message).not.toBeNull();
-    });
+      expect(error.message).not.toBeNull()
+    })
 
     it('should use a default status if one is not provided', () => {
-      const error = new ControllerError(null, 'message');
+      const error = new ControllerError(null, 'message')
 
-      expect(error.status).not.toBeNull();
-    });
+      expect(error.status).not.toBeNull()
+    })
 
     it('should provide a stack trace', () => {
-      const error = new ControllerError(200, 'message');
+      const error = new ControllerError(200, 'message')
 
-      expect(error.stack).not.toBeUndefined();
-    });
-  });
-});
+      expect(error.stack).not.toBeUndefined()
+    })
+  })
+})

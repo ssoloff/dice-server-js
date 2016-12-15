@@ -6,23 +6,23 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const security = require('../../common/support/security');
-const webdriver = require('selenium-webdriver');
+const security = require('../../common/support/security')
+const webdriver = require('selenium-webdriver')
 
-const By = webdriver.By;
-const Key = webdriver.Key;
-const promise = webdriver.promise;
-const until = webdriver.until;
+const By = webdriver.By
+const Key = webdriver.Key
+const promise = webdriver.promise
+const until = webdriver.until
 
 const ResultsTableColumns = {
   EXPRESSION_TEXT: 1,
   EXPRESSION_CANONICAL_TEXT: 2,
   EXPRESSION_RESULT_TEXT: 3,
   EXPRESSION_RESULT_VALUE: 4,
-  ACTIONS: 5,
-};
+  ACTIONS: 5
+}
 
 const Locators = {
   allExpressionResultRows: () => By.css('#main-history-expressionResults tr'),
@@ -36,7 +36,7 @@ const Locators = {
   expressionForm: () => By.id('main-eval-expressionForm'),
 
   expressionResultCell: (row, column) => {
-    return By.css(`#main-history-expressionResults tr:nth-child(${row}) td:nth-child(${column})`);
+    return By.css(`#main-history-expressionResults tr:nth-child(${row}) td:nth-child(${column})`)
   },
 
   expressionText: () => By.id('main-eval-expressionText'),
@@ -51,140 +51,140 @@ const Locators = {
 
   roundingMode: (roundingMode) => By.id(`main-eval-roundingMode${roundingMode}`),
 
-  toggleHelp: () => By.id('main-eval-toggleHelp'),
-};
+  toggleHelp: () => By.id('main-eval-toggleHelp')
+}
 
 class HomePage {
-  constructor(driver) {
-    this.driver = driver;
+  constructor (driver) {
+    this.driver = driver
   }
 
-  awaitUntil(promiseSupplier) {
+  awaitUntil (promiseSupplier) {
     const untilPromiseIsResolved = new webdriver.Condition('until promise is resolved', () => {
-      return promiseSupplier().catch(() => null);
-    });
-    return this._wait(untilPromiseIsResolved).catch(() => promiseSupplier());
+      return promiseSupplier().catch(() => null)
+    })
+    return this._wait(untilPromiseIsResolved).catch(() => promiseSupplier())
   }
 
-  clearExpressionText() {
-    return this.driver.findElement(Locators.expressionText()).clear();
+  clearExpressionText () {
+    return this.driver.findElement(Locators.expressionText()).clear()
   }
 
-  evaluate() {
-    return this.driver.findElement(Locators.evaluate()).click();
+  evaluate () {
+    return this.driver.findElement(Locators.evaluate()).click()
   }
 
-  getErrorMessage() {
-    return this.driver.findElement(Locators.errorMessage()).getText();
+  getErrorMessage () {
+    return this.driver.findElement(Locators.errorMessage()).getText()
   }
 
-  getExpressionCanonicalTextAtRow(row) {
+  getExpressionCanonicalTextAtRow (row) {
     return this.driver.findElement(Locators.expressionResultCell(row, ResultsTableColumns.EXPRESSION_CANONICAL_TEXT))
-      .getText();
+      .getText()
   }
 
-  getExpressionResultCount() {
+  getExpressionResultCount () {
     return this.driver.findElements(Locators.allExpressionResultRows())
-      .then((elements) => elements.length);
+      .then((elements) => elements.length)
   }
 
-  getExpressionResultTextAtRow(row) {
+  getExpressionResultTextAtRow (row) {
     return this.driver.findElement(Locators.expressionResultCell(row, ResultsTableColumns.EXPRESSION_RESULT_TEXT))
-      .getText();
+      .getText()
   }
 
-  getExpressionResultValueAtRow(row) {
+  getExpressionResultValueAtRow (row) {
     return this.driver.findElement(Locators.expressionResultCell(row, ResultsTableColumns.EXPRESSION_RESULT_VALUE))
-      .getText();
+      .getText()
   }
 
-  getExpressionTextAtRow(row) {
+  getExpressionTextAtRow (row) {
     return this.driver.findElement(Locators.expressionResultCell(row, ResultsTableColumns.EXPRESSION_TEXT))
-      .getText();
+      .getText()
   }
 
-  getHelpLinkText() {
-    return this.driver.findElement(Locators.toggleHelp()).getText();
+  getHelpLinkText () {
+    return this.driver.findElement(Locators.toggleHelp()).getText()
   }
 
-  isErrorMessageDisplayed() {
-    return this.driver.findElement(Locators.errorMessage()).isDisplayed();
+  isErrorMessageDisplayed () {
+    return this.driver.findElement(Locators.errorMessage()).isDisplayed()
   }
 
-  isHelpDisplayed() {
-    return this.driver.findElement(Locators.help()).isDisplayed();
+  isHelpDisplayed () {
+    return this.driver.findElement(Locators.help()).isDisplayed()
   }
 
-  open() {
+  open () {
     return this.driver.get('http://localhost:3000/')
       .then(() => {
         // Wait for async load of all feature fragments to complete
-        const timeoutInMilliseconds = 60000;
+        const timeoutInMilliseconds = 60000
         return promise.all([
           this._wait(until.elementLocated(Locators.expressionForm()), timeoutInMilliseconds),
           this._wait(until.elementLocated(Locators.removeAllResults()), timeoutInMilliseconds),
-          this._wait(until.elementLocated(Locators.dieRollResults()), timeoutInMilliseconds),
-        ]);
-      });
+          this._wait(until.elementLocated(Locators.dieRollResults()), timeoutInMilliseconds)
+        ])
+      })
   }
 
-  reevaluateResultAtRow(row) {
+  reevaluateResultAtRow (row) {
     return this._wait(until.elementsLocated(Locators.expressionResultCell(row, ResultsTableColumns.ACTIONS)))
-      .then((elements) => elements[0].findElement(Locators.reevaluateExpressionResult()).click());
+      .then((elements) => elements[0].findElement(Locators.reevaluateExpressionResult()).click())
   }
 
-  removeAllResults() {
-    return this.driver.findElement(Locators.removeAllResults()).click();
+  removeAllResults () {
+    return this.driver.findElement(Locators.removeAllResults()).click()
   }
 
-  removeResultAtRow(row) {
+  removeResultAtRow (row) {
     return this._wait(until.elementsLocated(Locators.expressionResultCell(row, ResultsTableColumns.ACTIONS)))
-      .then((elements) => elements[0].findElement(Locators.removeExpressionResult()).click());
+      .then((elements) => elements[0].findElement(Locators.removeExpressionResult()).click())
   }
 
-  setRandomNumberGenerator(randomNumberGeneratorName) {
+  setRandomNumberGenerator (randomNumberGeneratorName) {
     const randomNumberGenerator = {
       content: {
-        name: randomNumberGeneratorName,
+        name: randomNumberGeneratorName
       },
-      signature: null,
-    };
-    randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
+      signature: null
+    }
+    randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content)
     return this.driver.executeScript(
       '$(\'#main-eval-randomNumberGeneratorJson\').val(\'' +
       JSON.stringify(randomNumberGenerator) +
-      '\');'
-    );
+      '\')'
+    )
   }
 
-  setRoundingMode(roundingMode) {
-    return this.driver.findElement(Locators.roundingMode(roundingMode)).click();
+  setRoundingMode (roundingMode) {
+    return this.driver.findElement(Locators.roundingMode(roundingMode)).click()
   }
 
-  toggleHelp() {
-    return this.driver.findElement(Locators.toggleHelp()).click();
+  toggleHelp () {
+    return this.driver.findElement(Locators.toggleHelp()).click()
   }
 
-  typeEnter() {
-    return this.typeExpressionText(Key.ENTER);
+  typeEnter () {
+    return this.typeExpressionText(Key.ENTER)
   }
 
-  typeExpressionText(expressionText) {
-    return this.driver.findElement(Locators.expressionText()).sendKeys(expressionText);
+  typeExpressionText (expressionText) {
+    return this.driver.findElement(Locators.expressionText()).sendKeys(expressionText)
   }
 
-  waitUntilResultRowCountIs(rowCount) {
-    const locator = Locators.allExpressionResultRows();
+  waitUntilResultRowCountIs (rowCount) {
+    const locator = Locators.allExpressionResultRows()
     const untilResultRowCountIs = new webdriver.Condition(`until result row count is '${rowCount}'`, () =>
       this.driver.findElements(locator)
         .then((elements) => elements.length === rowCount ? elements : null)
-    );
-    return this._wait(untilResultRowCountIs);
+    )
+    return this._wait(untilResultRowCountIs)
   }
 
-  _wait(condition, timeoutInMilliseconds = 5000) {
-    return this.driver.wait(condition, timeoutInMilliseconds);
+  _wait (condition, timeoutInMilliseconds = 5000) {
+    return this.driver.wait(condition, timeoutInMilliseconds)
   }
 }
 
-module.exports = HomePage;
+module.exports = HomePage

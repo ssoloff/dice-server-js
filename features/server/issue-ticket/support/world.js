@@ -6,14 +6,14 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const IssueTicketService = require('../../support/issue-ticket-service');
+const IssueTicketService = require('../../support/issue-ticket-service')
 
-function World() {
-  this.createIssueTicketService = () => new IssueTicketService();
+function World () {
+  this.createIssueTicketService = () => new IssueTicketService()
 }
 
-module.exports = function() {
-  this.World = World;
-};
+module.exports = function () {
+  this.World = World
+}

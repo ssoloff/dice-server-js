@@ -6,40 +6,40 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const controllerTest = require('../../test-support/controller-test');
-const httpStatus = require('http-status-codes');
-const ja = require('json-assert');
+const controllerTest = require('../../test-support/controller-test')
+const httpStatus = require('http-status-codes')
+const ja = require('json-assert')
 
 describe('validateRedeemedTicketController', () => {
   let controller,
     request,
     response,
-    responseBody;
+    responseBody
 
-  function createValidateRedeemedTicketController() {
+  function createValidateRedeemedTicketController () {
     return require('../../../../src/server/services/validate-redeemed-ticket/validate-redeemed-ticket-controller')
       .create({
-        publicKey: controllerTest.getPublicKey(),
-      });
+        publicKey: controllerTest.getPublicKey()
+      })
   }
 
-  function modifyRequestBody(callback) {
-    modifyRequestBodyWithoutSignatureUpdate(callback);
+  function modifyRequestBody (callback) {
+    modifyRequestBodyWithoutSignatureUpdate(callback)
 
-    const redeemedTicket = request.body.redeemedTicket;
-    redeemedTicket.signature = controllerTest.createSignature(redeemedTicket.content);
+    const redeemedTicket = request.body.redeemedTicket
+    redeemedTicket.signature = controllerTest.createSignature(redeemedTicket.content)
   }
 
-  function modifyRequestBodyWithoutSignatureUpdate(callback) {
-    callback();
+  function modifyRequestBodyWithoutSignatureUpdate (callback) {
+    callback()
   }
 
   beforeEach(() => {
-    jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual);
+    jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual)
 
-    request = controllerTest.createRequest();
+    request = controllerTest.createRequest()
     modifyRequestBody(() => {
       request.body = {
         redeemedTicket: {
@@ -48,57 +48,57 @@ describe('validateRedeemedTicketController', () => {
             evaluateExpressionResponseBody: {
               expression: {
                 canonicalText: 'sum(roll(3, d6)) + 4',
-                text: '3d6+4',
+                text: '3d6+4'
               },
               expressionResult: {
                 text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                value: 22,
+                value: 22
               },
               randomNumberGenerator: {
-                name: 'constantMax',
-              },
+                name: 'constantMax'
+              }
             },
             id: '00112233445566778899aabbccddeeff00112233',
-            validateUrl: 'http://host:1234/validateRedeemedTicketPath',
+            validateUrl: 'http://host:1234/validateRedeemedTicketPath'
           },
-          signature: null,
-        },
-      };
-    });
+          signature: null
+        }
+      }
+    })
 
     response = controllerTest.createResponse((json) => {
-      responseBody = json;
-    });
-    responseBody = null;
+      responseBody = json
+    })
+    responseBody = null
 
-    controller = createValidateRedeemedTicketController();
-  });
+    controller = createValidateRedeemedTicketController()
+  })
 
   describe('.validateRedeemedTicket', () => {
     describe('when redeemed ticket is valid', () => {
       it('should respond with OK', () => {
-        controller.validateRedeemedTicket(request, response);
+        controller.validateRedeemedTicket(request, response)
 
-        expect(response.status).toHaveBeenCalledWith(httpStatus.OK);
-        expect(responseBody).toEqual({});
-      });
-    });
+        expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
+        expect(responseBody).toEqual({})
+      })
+    })
 
     describe('when redeemed ticket has an invalid signature', () => {
       it('should respond with bad request error', () => {
         modifyRequestBodyWithoutSignatureUpdate(() => {
-          request.body.redeemedTicket.content.description += '...'; // Simulate forged content
-        });
+          request.body.redeemedTicket.content.description += '...' // Simulate forged content
+        })
 
-        controller.validateRedeemedTicket(request, response);
+        controller.validateRedeemedTicket(request, response)
 
-        expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST);
+        expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
         expect(responseBody).toEqual({
           error: {
-            message: ja.matchType('string'),
-          },
-        });
-      });
-    });
-  });
-});
+            message: ja.matchType('string')
+          }
+        })
+      })
+    })
+  })
+})

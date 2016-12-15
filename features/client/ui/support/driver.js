@@ -6,12 +6,12 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const webdriver = require('selenium-webdriver');
+const webdriver = require('selenium-webdriver')
 
 const driver = new webdriver.Builder()
   .withCapabilities(webdriver.Capabilities.firefox())
-  .build();
+  .build()
 
-module.exports = driver;
+module.exports = driver

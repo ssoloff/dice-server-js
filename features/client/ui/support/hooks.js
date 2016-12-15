@@ -6,12 +6,12 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const driver = require('./driver');
+const driver = require('./driver')
 
-module.exports = function() {
+module.exports = function () {
   this.registerHandler('AfterFeatures', (event, callback) => {
-    driver.quit().then(() => callback());
-  });
-};
+    driver.quit().then(() => callback())
+  })
+}

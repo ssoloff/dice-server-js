@@ -6,62 +6,62 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const diceTest = require('./dice-test');
+const diceTest = require('./dice-test')
 
 describe('diceTest', () => {
   describe('.createBagThatProvidesDiceThatAlwaysRollOne', () => {
-    let bag;
+    let bag
 
     beforeEach(() => {
-      bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne();
-    });
+      bag = diceTest.createBagThatProvidesDiceThatAlwaysRollOne()
+    })
 
     describe('when die has 3 sides', () => {
       it('should always roll 1', () => {
-        const d3 = bag.d(3);
-        expect(d3.roll()).toBe(1);
-        expect(d3.roll()).toBe(1);
-        expect(d3.roll()).toBe(1);
-      });
-    });
+        const d3 = bag.d(3)
+        expect(d3.roll()).toBe(1)
+        expect(d3.roll()).toBe(1)
+        expect(d3.roll()).toBe(1)
+      })
+    })
 
     describe('when die has 6 sides', () => {
       it('should always roll 1', () => {
-        const d6 = bag.d(6);
-        expect(d6.roll()).toBe(1);
-        expect(d6.roll()).toBe(1);
-        expect(d6.roll()).toBe(1);
-        expect(d6.roll()).toBe(1);
-        expect(d6.roll()).toBe(1);
-        expect(d6.roll()).toBe(1);
-      });
-    });
-  });
+        const d6 = bag.d(6)
+        expect(d6.roll()).toBe(1)
+        expect(d6.roll()).toBe(1)
+        expect(d6.roll()).toBe(1)
+        expect(d6.roll()).toBe(1)
+        expect(d6.roll()).toBe(1)
+        expect(d6.roll()).toBe(1)
+      })
+    })
+  })
 
   describe('.createDieThatRollsEachSideSuccessively', () => {
     describe('when die has 3 sides', () => {
       it('should roll each side successively and rollover to 1', () => {
-        const d3 = diceTest.createDieThatRollsEachSideSuccessively(3);
-        expect(d3.roll()).toBe(1);
-        expect(d3.roll()).toBe(2);
-        expect(d3.roll()).toBe(3);
-        expect(d3.roll()).toBe(1);
-      });
-    });
+        const d3 = diceTest.createDieThatRollsEachSideSuccessively(3)
+        expect(d3.roll()).toBe(1)
+        expect(d3.roll()).toBe(2)
+        expect(d3.roll()).toBe(3)
+        expect(d3.roll()).toBe(1)
+      })
+    })
 
     describe('when die has 6 sides', () => {
       it('should roll each side successively and rollover to 1', () => {
-        const d6 = diceTest.createDieThatRollsEachSideSuccessively(6);
-        expect(d6.roll()).toBe(1);
-        expect(d6.roll()).toBe(2);
-        expect(d6.roll()).toBe(3);
-        expect(d6.roll()).toBe(4);
-        expect(d6.roll()).toBe(5);
-        expect(d6.roll()).toBe(6);
-        expect(d6.roll()).toBe(1);
-      });
-    });
-  });
-});
+        const d6 = diceTest.createDieThatRollsEachSideSuccessively(6)
+        expect(d6.roll()).toBe(1)
+        expect(d6.roll()).toBe(2)
+        expect(d6.roll()).toBe(3)
+        expect(d6.roll()).toBe(4)
+        expect(d6.roll()).toBe(5)
+        expect(d6.roll()).toBe(6)
+        expect(d6.roll()).toBe(1)
+      })
+    })
+  })
+})

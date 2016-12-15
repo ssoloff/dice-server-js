@@ -6,8 +6,8 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-module.exports = function() {
-  this.setDefaultTimeout(60 * 1000);
-};
+module.exports = function () {
+  this.setDefaultTimeout(60 * 1000)
+}

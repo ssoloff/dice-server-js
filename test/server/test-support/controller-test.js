@@ -6,11 +6,11 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const ja = require('json-assert');
-const security = require('../../../src/server/util/security');
-const securityTest = require('./security-test');
+const ja = require('json-assert')
+const security = require('../../../src/server/util/security')
+const securityTest = require('./security-test')
 
 /**
  * Provides useful methods for testing a dice server controller.
@@ -23,15 +23,15 @@ module.exports = {
    *
    * @returns {Object!} A new request.
    */
-  createRequest() {
+  createRequest () {
     return {
       body: null,
       protocol: 'http',
 
-      get() {
-        return 'host:1234';
-      },
-    };
+      get () {
+        return 'host:1234'
+      }
+    }
   },
 
   /**
@@ -43,20 +43,20 @@ module.exports = {
    *
    * @returns {Object!} A new response.
    */
-  createResponse(jsonCallback) {
+  createResponse (jsonCallback) {
     const response = {
-      json(json) {
-        jsonCallback(json);
-        return this;
+      json (json) {
+        jsonCallback(json)
+        return this
       },
 
-      status() {
-        return this;
-      },
-    };
-    spyOn(response, 'json').and.callThrough();
-    spyOn(response, 'status').and.callThrough();
-    return response;
+      status () {
+        return this
+      }
+    }
+    spyOn(response, 'json').and.callThrough()
+    spyOn(response, 'status').and.callThrough()
+    return response
   },
 
   /**
@@ -73,8 +73,8 @@ module.exports = {
    *
    * @returns {Object!} The detached JSON web signature.
    */
-  createSignature(content) {
-    return security.createSignature(content, this.getPrivateKey(), this.getPublicKey());
+  createSignature (content) {
+    return security.createSignature(content, this.getPrivateKey(), this.getPublicKey())
   },
 
   /**
@@ -83,8 +83,8 @@ module.exports = {
    * @returns {Object!} The alternate private key to be used by secure
    *      controllers.
    */
-  getOtherPrivateKey() {
-    return securityTest.getOtherPrivateKey();
+  getOtherPrivateKey () {
+    return securityTest.getOtherPrivateKey()
   },
 
   /**
@@ -93,8 +93,8 @@ module.exports = {
    * @returns {Object!} The alternate public key to be used by secure
    *      controllers.
    */
-  getOtherPublicKey() {
-    return securityTest.getOtherPublicKey();
+  getOtherPublicKey () {
+    return securityTest.getOtherPublicKey()
   },
 
   /**
@@ -102,8 +102,8 @@ module.exports = {
    *
    * @returns {Object!} The private key to be used by secure controllers.
    */
-  getPrivateKey() {
-    return securityTest.getPrivateKey();
+  getPrivateKey () {
+    return securityTest.getPrivateKey()
   },
 
   /**
@@ -111,8 +111,8 @@ module.exports = {
    *
    * @returns {Object!} The public key to be used by secure controllers.
    */
-  getPublicKey() {
-    return securityTest.getPublicKey();
+  getPublicKey () {
+    return securityTest.getPublicKey()
   },
 
   /**
@@ -126,14 +126,14 @@ module.exports = {
    * @param {Object} actual - The actual response body.
    * @param {Object} expected - The expected response body.
    *
-   * @returns {Boolean} `true` if `actual` equals `expected`; `false` if
-   *      `actual` does not equal `expected`; or `undefined` if both `actual`
+   * @returns {Boolean} `true` if `actual` equals `expected` `false` if
+   *      `actual` does not equal `expected` or `undefined` if both `actual`
    *      and `expected` are not response body objects.
    */
-  isResponseBodyEqual(actual, expected) {
+  isResponseBodyEqual (actual, expected) {
     // istanbul ignore else
     if (ja.isEqual(expected, actual, true)) {
-      return true;
+      return true
     }
-  },
-};
+  }
+}

@@ -6,11 +6,11 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const _ = require('underscore');
-const assert = require('assert');
-const Random = require('random-js');
+const _ = require('underscore')
+const assert = require('assert')
+const Random = require('random-js')
 
 /**
  * Provides methods for creating a dice bag.
@@ -38,8 +38,8 @@ module.exports = {
    *
    * @returns {module:dice-bag~Bag!} The new dice bag.
    */
-  create(randomNumberGenerator) {
-    randomNumberGenerator = randomNumberGenerator || ((sides) => Random.die(sides)(Random.engines.nativeMath));
+  create (randomNumberGenerator) {
+    randomNumberGenerator = randomNumberGenerator || ((sides) => Random.die(sides)(Random.engines.nativeMath))
 
     /**
      * A dice bag.
@@ -58,11 +58,11 @@ module.exports = {
        *
        * @throws {RangeError} If `sides` is not positive.
        */
-      d(sides) {
+      d (sides) {
         if (!_.isNumber(sides)) {
-          throw new Error('sides is not a number');
+          throw new Error('sides is not a number')
         } else if (sides < 1) {
-          throw new RangeError('sides is not positive');
+          throw new RangeError('sides is not positive')
         }
 
         /**
@@ -79,10 +79,10 @@ module.exports = {
            * @returns {Number!} The result of rolling the die: a value
            *      in the range [1,{@link module:dice-bag~Die.sides}].
            */
-          roll() {
-            const roll = randomNumberGenerator(sides);
-            assert.ok(roll >= 1 && roll <= sides, 'random number generator value out of range');
-            return roll;
+          roll () {
+            const roll = randomNumberGenerator(sides)
+            assert.ok(roll >= 1 && roll <= sides, 'random number generator value out of range')
+            return roll
           },
 
           /**
@@ -92,8 +92,8 @@ module.exports = {
            *
            * @type {Number!}
            */
-          sides: sides,
-        };
+          sides: sides
+        }
       },
 
       /**
@@ -104,7 +104,7 @@ module.exports = {
        *
        * @type {module:dice-bag~randomNumberGenerator!}
        */
-      randomNumberGenerator: randomNumberGenerator,
-    };
-  },
-};
+      randomNumberGenerator: randomNumberGenerator
+    }
+  }
+}

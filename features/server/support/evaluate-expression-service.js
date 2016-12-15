@@ -6,47 +6,47 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const req = require('request');
-const security = require('../../common/support/security');
+const req = require('request')
+const security = require('../../common/support/security')
 
 class EvaluateExpressionService {
-  constructor() {
-    this.requestBody = {};
+  constructor () {
+    this.requestBody = {}
   }
 
-  call(callback) {
+  call (callback) {
     const requestData = {
       body: this.requestBody,
       json: true,
-      uri: 'http://localhost:3000/expression/evaluate',
-    };
+      uri: 'http://localhost:3000/expression/evaluate'
+    }
     req.post(requestData, (error, response, body) => {
       if (!error) {
-        callback(response.statusCode, body);
+        callback(response.statusCode, body)
       } else {
-        throw new Error(error);
+        throw new Error(error)
       }
-    });
+    })
   }
 
-  setExpression(expressionText) {
+  setExpression (expressionText) {
     this.requestBody.expression = {
-      text: expressionText,
-    };
+      text: expressionText
+    }
   }
 
-  setRandomNumberGenerator(randomNumberGeneratorName) {
+  setRandomNumberGenerator (randomNumberGeneratorName) {
     const randomNumberGenerator = {
       content: {
-        name: randomNumberGeneratorName,
+        name: randomNumberGeneratorName
       },
-      signature: null,
-    };
-    randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
-    this.requestBody.randomNumberGenerator = randomNumberGenerator;
+      signature: null
+    }
+    randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content)
+    this.requestBody.randomNumberGenerator = randomNumberGenerator
   }
 }
 
-module.exports = EvaluateExpressionService;
+module.exports = EvaluateExpressionService

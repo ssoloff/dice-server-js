@@ -6,35 +6,35 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const req = require('request');
+const req = require('request')
 
 class RedeemTicketService {
-  constructor() {
-    this.requestBody = {};
-    this.requestUrl = null;
+  constructor () {
+    this.requestBody = {}
+    this.requestUrl = null
   }
 
-  call(callback) {
+  call (callback) {
     const requestData = {
       body: this.requestBody,
       json: true,
-      uri: this.requestUrl,
-    };
+      uri: this.requestUrl
+    }
     req.post(requestData, (error, response, body) => {
       if (!error) {
-        callback(response.statusCode, body);
+        callback(response.statusCode, body)
       } else {
-        throw new Error(error);
+        throw new Error(error)
       }
-    });
+    })
   }
 
-  setRequestFromIssueTicketResponseBody(issueTicketResponseBody) {
-    this.requestBody.ticket = issueTicketResponseBody.ticket;
-    this.requestUrl = issueTicketResponseBody.ticket.content.redeemUrl;
+  setRequestFromIssueTicketResponseBody (issueTicketResponseBody) {
+    this.requestBody.ticket = issueTicketResponseBody.ticket
+    this.requestUrl = issueTicketResponseBody.ticket.content.redeemUrl
   }
 }
 
-module.exports = RedeemTicketService;
+module.exports = RedeemTicketService

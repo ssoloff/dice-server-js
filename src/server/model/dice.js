@@ -6,7 +6,7 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
 /**
  * Facade for accessing the submodules in the library.
@@ -54,5 +54,5 @@ module.exports = {
    *
    * @type {module:dice-expression-result-formatter}
    */
-  expressionResultFormatter: require('./dice-expression-result-formatter'),
-};
+  expressionResultFormatter: require('./dice-expression-result-formatter')
+}

@@ -6,42 +6,42 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const controllerUtils = require('../../util/controller-utils');
-const httpStatus = require('http-status-codes');
-const security = require('../../util/security');
+const controllerUtils = require('../../util/controller-utils')
+const httpStatus = require('http-status-codes')
+const security = require('../../util/security')
 
 module.exports = {
-  create(controllerData) {
-    function createResponseBody(request) {
-      validateRequest(request);
+  create (controllerData) {
+    function createResponseBody (request) {
+      validateRequest(request)
 
-      return {};
+      return {}
     }
 
-    function isSignatureValid(content, signature) {
-      return security.verifySignature(content, signature, controllerData.publicKey);
+    function isSignatureValid (content, signature) {
+      return security.verifySignature(content, signature, controllerData.publicKey)
     }
 
-    function validateRequest(request) {
-      const redeemedTicket = request.body.redeemedTicket;
+    function validateRequest (request) {
+      const redeemedTicket = request.body.redeemedTicket
       if (!isSignatureValid(redeemedTicket.content, redeemedTicket.signature)) {
         throw controllerUtils.createControllerError(
           httpStatus.BAD_REQUEST,
           'redeemed ticket signature is invalid'
-        );
+        )
       }
     }
 
     return {
-      validateRedeemedTicket(request, response) {
+      validateRedeemedTicket (request, response) {
         try {
-          controllerUtils.setSuccessResponse(response, createResponseBody(request));
+          controllerUtils.setSuccessResponse(response, createResponseBody(request))
         } catch (e) {
-          controllerUtils.setFailureResponse(response, e);
+          controllerUtils.setFailureResponse(response, e)
         }
-      },
-    };
-  },
-};
+      }
+    }
+  }
+}

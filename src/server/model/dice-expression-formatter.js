@@ -6,9 +6,9 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const diceExpressionTypeIds = require('./dice-expression-type-ids');
+const diceExpressionTypeIds = require('./dice-expression-type-ids')
 
 /**
  * Provides methods for formatting dice expressions.
@@ -16,19 +16,19 @@ const diceExpressionTypeIds = require('./dice-expression-type-ids');
  * @module dice-expression-formatter
  */
 
-const formatters = {};
-formatters[diceExpressionTypeIds.ADDITION] = formatAdditionExpression;
-formatters[diceExpressionTypeIds.ARRAY] = formatArrayExpression;
-formatters[diceExpressionTypeIds.CONSTANT] = formatConstantExpression;
-formatters[diceExpressionTypeIds.DIE] = formatDieExpression;
-formatters[diceExpressionTypeIds.DIVISION] = formatDivisionExpression;
-formatters[diceExpressionTypeIds.FUNCTION_CALL] = formatFunctionCallExpression;
-formatters[diceExpressionTypeIds.GROUP] = formatGroupExpression;
-formatters[diceExpressionTypeIds.MODULO] = formatModuloExpression;
-formatters[diceExpressionTypeIds.MULTIPLICATION] = formatMultiplicationExpression;
-formatters[diceExpressionTypeIds.NEGATIVE] = formatNegativeExpression;
-formatters[diceExpressionTypeIds.POSITIVE] = formatPositiveExpression;
-formatters[diceExpressionTypeIds.SUBTRACTION] = formatSubtractionExpression;
+const formatters = {}
+formatters[diceExpressionTypeIds.ADDITION] = formatAdditionExpression
+formatters[diceExpressionTypeIds.ARRAY] = formatArrayExpression
+formatters[diceExpressionTypeIds.CONSTANT] = formatConstantExpression
+formatters[diceExpressionTypeIds.DIE] = formatDieExpression
+formatters[diceExpressionTypeIds.DIVISION] = formatDivisionExpression
+formatters[diceExpressionTypeIds.FUNCTION_CALL] = formatFunctionCallExpression
+formatters[diceExpressionTypeIds.GROUP] = formatGroupExpression
+formatters[diceExpressionTypeIds.MODULO] = formatModuloExpression
+formatters[diceExpressionTypeIds.MULTIPLICATION] = formatMultiplicationExpression
+formatters[diceExpressionTypeIds.NEGATIVE] = formatNegativeExpression
+formatters[diceExpressionTypeIds.POSITIVE] = formatPositiveExpression
+formatters[diceExpressionTypeIds.SUBTRACTION] = formatSubtractionExpression
 
 /**
  * Formats the specified dice expression.
@@ -43,78 +43,78 @@ formatters[diceExpressionTypeIds.SUBTRACTION] = formatSubtractionExpression;
  * @throws {Error} If `expression` is not defined or if a formatter is not
  *      available for the specified expression.
  */
-function format(expression) {
-  const formatter = formatters[expression.typeId];
+function format (expression) {
+  const formatter = formatters[expression.typeId]
   if (formatter) {
-    return formatter(expression);
+    return formatter(expression)
   }
 
-  throw new Error(`unknown expression type: "${expression.typeId}"`);
+  throw new Error(`unknown expression type: "${expression.typeId}"`)
 }
 
-function formatAdditionExpression(expression) {
+function formatAdditionExpression (expression) {
   return format(expression.augendExpression) +
     ' + ' +
-    format(expression.addendExpression);
+    format(expression.addendExpression)
 }
 
-function formatArrayExpression(expression) {
+function formatArrayExpression (expression) {
   return '[' +
     expression.expressions.map(format).join(', ') +
-    ']';
+    ']'
 }
 
-function formatConstantExpression(expression) {
-  return `${expression.constant}`;
+function formatConstantExpression (expression) {
+  return `${expression.constant}`
 }
 
-function formatDieExpression(expression) {
-  return `d${expression.die.sides}`;
+function formatDieExpression (expression) {
+  return `d${expression.die.sides}`
 }
 
-function formatDivisionExpression(expression) {
+function formatDivisionExpression (expression) {
   return format(expression.dividendExpression) +
     ' / ' +
-    format(expression.divisorExpression);
+    format(expression.divisorExpression)
 }
 
-function formatFunctionCallExpression(expression) {
+function formatFunctionCallExpression (expression) {
   return expression.name +
     '(' +
     expression.argumentListExpressions.map(format).join(', ') +
-    ')';
+    ')'
 }
 
-function formatGroupExpression(expression) {
+function formatGroupExpression (expression) {
   return '(' +
     format(expression.childExpression) +
-    ')';
+    ')'
 }
 
-function formatModuloExpression(expression) {
+function formatModuloExpression (expression) {
   return format(expression.dividendExpression) +
     ' % ' +
-    format(expression.divisorExpression);
+    format(expression.divisorExpression)
 }
 
-function formatMultiplicationExpression(expression) {
+function formatMultiplicationExpression (expression) {
   return format(expression.multiplicandExpression) +
     ' * ' +
-    format(expression.multiplierExpression);
+    format(expression.multiplierExpression)
 }
 
-function formatNegativeExpression(expression) {
-  return `-${format(expression.childExpression)}`;
+function formatNegativeExpression (expression) {
+  return `-${format(expression.childExpression)}`
 }
 
-function formatPositiveExpression(expression) {
-  return `+${format(expression.childExpression)}`;
+function formatPositiveExpression (expression) {
+  return `+${format(expression.childExpression)}`
 }
 
-function formatSubtractionExpression(expression) {
+function formatSubtractionExpression (expression) {
   return format(expression.minuendExpression) +
     ' - ' +
-    format(expression.subtrahendExpression);
+    format(expression.subtrahendExpression)
 }
 
-module.exports.format = format;
+module.exports.format = format

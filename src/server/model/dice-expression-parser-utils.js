@@ -6,79 +6,79 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const diceBag = require('./dice-bag');
-const diceExpression = require('./dice-expression');
-const diceExpressionFunctions = require('./dice-expression-functions');
+const diceBag = require('./dice-bag')
+const diceExpression = require('./dice-expression')
+const diceExpressionFunctions = require('./dice-expression-functions')
 
-function createDefaultContext() {
+function createDefaultContext () {
   return {
     bag: diceBag.create(),
-    functions: {},
-  };
+    functions: {}
+  }
 }
 
-function createDiceRollExpression(context, literal) {
-  const components = literal.match(/^(\d+)(d[\d%]+)(([-+])(\d*)([HL]))?$/);
+function createDiceRollExpression (context, literal) {
+  const components = literal.match(/^(\d+)(d[\d%]+)(([-+])(\d*)([HL]))?$/)
 
-  let rollExpression = createRollFunctionCallExpression(context, components);
+  let rollExpression = createRollFunctionCallExpression(context, components)
 
-  const isRollModifierPresent = components[3] !== undefined;
+  const isRollModifierPresent = components[3] !== undefined
   if (isRollModifierPresent) {
-    rollExpression = createRollModifierFunctionCallExpression(context, rollExpression, components);
+    rollExpression = createRollModifierFunctionCallExpression(context, rollExpression, components)
   }
 
-  return createSumFunctionCallExpression(context, rollExpression);
+  return createSumFunctionCallExpression(context, rollExpression)
 }
 
-function createDieExpression(context, literal) {
-  const formattedSides = literal.slice(1);
-  const sides = formattedSides === '%' ? 100 : Number(formattedSides);
-  return diceExpression.forDie(context.bag.d(sides));
+function createDieExpression (context, literal) {
+  const formattedSides = literal.slice(1)
+  const sides = formattedSides === '%' ? 100 : Number(formattedSides)
+  return diceExpression.forDie(context.bag.d(sides))
 }
 
-function createFunctionCallExpression(context, name, argumentListExpressions) {
-  const func = context.functions[name] || diceExpressionFunctions[name];
-  return diceExpression.forFunctionCall(name, func, argumentListExpressions);
+function createFunctionCallExpression (context, name, argumentListExpressions) {
+  const func = context.functions[name] || diceExpressionFunctions[name]
+  return diceExpression.forFunctionCall(name, func, argumentListExpressions)
 }
 
-function createRollFunctionCallExpression(context, components) {
-  const rollCount = Number(components[1]);
-  const dieLiteral = components[2];
+function createRollFunctionCallExpression (context, components) {
+  const rollCount = Number(components[1])
+  const dieLiteral = components[2]
   return createFunctionCallExpression(context, 'roll', [
     diceExpression.forConstant(rollCount),
-    createDieExpression(context, dieLiteral),
-  ]);
+    createDieExpression(context, dieLiteral)
+  ])
 }
 
-function createRollModifierFunctionCallExpression(context, rollExpression, components) {
-  const rollModifierOperation = components[4];
-  const rollModifierCount = components[5] ? Number(components[5]) : 1;
-  const rollModifierDieType = components[6];
-  const rollModifierFunctionName = getRollModifierFunctionName(rollModifierOperation, rollModifierDieType);
+function createRollModifierFunctionCallExpression (context, rollExpression, components) {
+  const rollModifierOperation = components[4]
+  const rollModifierCount = components[5] ? Number(components[5]) : 1
+  const rollModifierDieType = components[6]
+  const rollModifierFunctionName = getRollModifierFunctionName(rollModifierOperation, rollModifierDieType)
   return createFunctionCallExpression(context, rollModifierFunctionName, [
     rollExpression,
-    diceExpression.forConstant(rollModifierCount),
-  ]);
+    diceExpression.forConstant(rollModifierCount)
+  ])
 }
 
-function createSumFunctionCallExpression(context, rollExpression) {
-  return createFunctionCallExpression(context, 'sum', [rollExpression]);
+function createSumFunctionCallExpression (context, rollExpression) {
+  return createFunctionCallExpression(context, 'sum', [rollExpression])
 }
 
-function getRollModifierFunctionName(rollModifierOperation, rollModifierDieType) {
+function getRollModifierFunctionName (rollModifierOperation, rollModifierDieType) {
   const rollModifierFunctionNames = {
     '+': {
       H: 'cloneHighestRolls',
-      L: 'cloneLowestRolls',
+      L: 'cloneLowestRolls'
     },
     '-': {
       H: 'dropHighestRolls',
-      L: 'dropLowestRolls',
-    },
-  };
-  return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType];
+      L: 'dropLowestRolls'
+    }
+  }
+  return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType]
 }
 
 /**
@@ -140,5 +140,5 @@ module.exports = {
    * @returns {module:dice-expression~FunctionCallExpression!} A new
    *      function call expression.
    */
-  createFunctionCallExpression: createFunctionCallExpression,
-};
+  createFunctionCallExpression: createFunctionCallExpression
+}

@@ -6,10 +6,10 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const _ = require('underscore');
-const dice = require('../../../../src/server/model/dice');
+const _ = require('underscore')
+const dice = require('../../../../src/server/model/dice')
 
 /**
  * Provides useful methods for testing the dice server.
@@ -23,11 +23,11 @@ module.exports = {
    *
    * @returns {module:dice-bag~Bag!} The new dice bag.
    */
-  createBagThatProvidesDiceThatAlwaysRollOne() {
-    function randomNumberGenerator() {
-      return 1;
+  createBagThatProvidesDiceThatAlwaysRollOne () {
+    function randomNumberGenerator () {
+      return 1
     }
-    return dice.bag.create(randomNumberGenerator);
+    return dice.bag.create(randomNumberGenerator)
   },
 
   /**
@@ -41,15 +41,15 @@ module.exports = {
    *
    * @throws {RangeError} If `sides` is not positive.
    */
-  createDieThatRollsEachSideSuccessively(sides) {
-    let rollCount = 0;
-    function randomNumberGenerator() {
-      const roll = rollCount % sides + 1;
-      rollCount += 1;
-      return roll;
+  createDieThatRollsEachSideSuccessively (sides) {
+    let rollCount = 0
+    function randomNumberGenerator () {
+      const roll = rollCount % sides + 1
+      rollCount += 1
+      return roll
     }
-    const bag = dice.bag.create(randomNumberGenerator);
-    return bag.d(sides);
+    const bag = dice.bag.create(randomNumberGenerator)
+    return bag.d(sides)
   },
 
   /**
@@ -58,17 +58,17 @@ module.exports = {
    * @param {Object} first - The first dice expression to compare.
    * @param {Object} second - The second dice expression to compare.
    *
-   * @returns {Boolean!} `true` if the specified dice expressions are equal;
+   * @returns {Boolean!} `true` if the specified dice expressions are equal
    *      otherwise `false`.
    */
-  isDiceExpressionEqual(first, second) {
+  isDiceExpressionEqual (first, second) {
     // istanbul ignore else
     if (_.has(first, 'typeId') &&
         _.has(first, 'evaluate') &&
         _.has(second, 'typeId') &&
         _.has(second, 'evaluate')) {
       // Do not consider function members when testing for equality
-      return JSON.stringify(first) === JSON.stringify(second);
+      return JSON.stringify(first) === JSON.stringify(second)
     }
   },
 
@@ -79,16 +79,16 @@ module.exports = {
    * @param {Object} second - The second dice expression result to compare.
    *
    * @returns {Boolean!} `true` if the specified dice expression results are
-   *      equal; otherwise `false`.
+   *      equal otherwise `false`.
    */
-  isDiceExpressionResultEqual(first, second) {
+  isDiceExpressionResultEqual (first, second) {
     // istanbul ignore else
     if (_.has(first, 'typeId') &&
         _.has(first, 'value') &&
         _.has(second, 'typeId') &&
         _.has(second, 'value')) {
       // Do not consider function members when testing for equality
-      return JSON.stringify(first) === JSON.stringify(second);
+      return JSON.stringify(first) === JSON.stringify(second)
     }
-  },
-};
+  }
+}

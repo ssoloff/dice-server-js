@@ -6,16 +6,16 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const express = require('express')
+const fs = require('fs')
+const path = require('path')
 
-const app = express();
-app.use(express.static(path.join(__dirname, 'public')));
-const privateKey = fs.readFileSync(process.argv[2]);
-const publicKey = fs.readFileSync(process.argv[3]);
-require('./routes')(app, privateKey, publicKey);
+const app = express()
+app.use(express.static(path.join(__dirname, 'public')))
+const privateKey = fs.readFileSync(process.argv[2])
+const publicKey = fs.readFileSync(process.argv[3])
+require('./routes')(app, privateKey, publicKey)
 
-app.listen(3000);
+app.listen(3000)

@@ -6,58 +6,58 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const _ = require('underscore');
+const _ = require('underscore')
 
-function cloneRolls(rolls, count, findIndexOfRoll) {
+function cloneRolls (rolls, count, findIndexOfRoll) {
   if (!rolls) {
-    throw new Error('rolls is not defined');
+    throw new Error('rolls is not defined')
   } else if (!_.isNumber(count)) {
-    throw new Error('count is not a number');
+    throw new Error('count is not a number')
   } else if (count < 0) {
-    throw new Error('count is negative');
+    throw new Error('count is negative')
   }
 
-  const newRolls = rolls.slice(0);
-  const oldRolls = rolls.slice(0);
+  const newRolls = rolls.slice(0)
+  const oldRolls = rolls.slice(0)
   for (let pass = 0; pass < count; pass += 1) {
     if (oldRolls.length === 0) {
-      break;
+      break
     }
-    const index = oldRolls.reduce(findIndexOfRoll, 0);
-    newRolls.push(oldRolls[index]);
-    oldRolls.splice(index, 1);
+    const index = oldRolls.reduce(findIndexOfRoll, 0)
+    newRolls.push(oldRolls[index])
+    oldRolls.splice(index, 1)
   }
-  return newRolls;
+  return newRolls
 }
 
-function dropRolls(rolls, count, findIndexOfRoll) {
+function dropRolls (rolls, count, findIndexOfRoll) {
   if (!rolls) {
-    throw new Error('rolls is not defined');
+    throw new Error('rolls is not defined')
   } else if (!_.isNumber(count)) {
-    throw new Error('count is not a number');
+    throw new Error('count is not a number')
   } else if (count < 0) {
-    throw new Error('count is negative');
+    throw new Error('count is negative')
   }
 
-  const newRolls = rolls.slice(0);
+  const newRolls = rolls.slice(0)
   for (let pass = 0; pass < count; pass += 1) {
     if (newRolls.length === 0) {
-      break;
+      break
     }
-    const index = newRolls.reduce(findIndexOfRoll, 0);
-    newRolls.splice(index, 1);
+    const index = newRolls.reduce(findIndexOfRoll, 0)
+    newRolls.splice(index, 1)
   }
-  return newRolls;
+  return newRolls
 }
 
-function findIndexOfHighestRoll(indexOfHighestRoll, value, index, array) {
-  return value > array[indexOfHighestRoll] ? index : indexOfHighestRoll;
+function findIndexOfHighestRoll (indexOfHighestRoll, value, index, array) {
+  return value > array[indexOfHighestRoll] ? index : indexOfHighestRoll
 }
 
-function findIndexOfLowestRoll(indexOfLowestRoll, value, index, array) {
-  return value < array[indexOfLowestRoll] ? index : indexOfLowestRoll;
+function findIndexOfLowestRoll (indexOfLowestRoll, value, index, array) {
+  return value < array[indexOfLowestRoll] ? index : indexOfLowestRoll
 }
 
 /**
@@ -76,8 +76,8 @@ module.exports = {
    *      specified number, or `NaN` if `x` is not defined, or `0` if `x` is
    *      `null`.
    */
-  ceil(x) {
-    return Math.ceil(x);
+  ceil (x) {
+    return Math.ceil(x)
   },
 
   /**
@@ -94,8 +94,8 @@ module.exports = {
    * @throws {Error} If `rolls` is not defined or if `count` is not a
    *      positive number.
    */
-  cloneHighestRolls(rolls, count) {
-    return cloneRolls(rolls, count, findIndexOfHighestRoll);
+  cloneHighestRolls (rolls, count) {
+    return cloneRolls(rolls, count, findIndexOfHighestRoll)
   },
 
   /**
@@ -112,8 +112,8 @@ module.exports = {
    * @throws {Error} If `rolls` is not defined or if `count` is not a
    *      positive number.
    */
-  cloneLowestRolls(rolls, count) {
-    return cloneRolls(rolls, count, findIndexOfLowestRoll);
+  cloneLowestRolls (rolls, count) {
+    return cloneRolls(rolls, count, findIndexOfLowestRoll)
   },
 
   /**
@@ -129,8 +129,8 @@ module.exports = {
    * @throws {Error} If `rolls` is not defined or if `count` is not a
    *      positive number.
    */
-  dropHighestRolls(rolls, count) {
-    return dropRolls(rolls, count, findIndexOfHighestRoll);
+  dropHighestRolls (rolls, count) {
+    return dropRolls(rolls, count, findIndexOfHighestRoll)
   },
 
   /**
@@ -146,8 +146,8 @@ module.exports = {
    * @throws {Error} If `rolls` is not defined or if `count` is not a
    *      positive number.
    */
-  dropLowestRolls(rolls, count) {
-    return dropRolls(rolls, count, findIndexOfLowestRoll);
+  dropLowestRolls (rolls, count) {
+    return dropRolls(rolls, count, findIndexOfLowestRoll)
   },
 
   /**
@@ -159,8 +159,8 @@ module.exports = {
    *      specified number, or `NaN` if `x` is not defined, or `0` if `x` is
    *      `null`.
    */
-  floor(x) {
-    return Math.floor(x);
+  floor (x) {
+    return Math.floor(x)
   },
 
   /**
@@ -174,16 +174,16 @@ module.exports = {
    * @throws {Error} If `count` is not a positive number or if `die` is not
    *      defined.
    */
-  roll(count, die) {
+  roll (count, die) {
     if (!_.isNumber(count)) {
-      throw new Error('count is not a number');
+      throw new Error('count is not a number')
     } else if (count < 1) {
-      throw new RangeError('count is not positive');
+      throw new RangeError('count is not positive')
     } else if (!die) {
-      throw new Error('die is not defined');
+      throw new Error('die is not defined')
     }
 
-    return _(count).times(die.roll);
+    return _(count).times(die.roll)
   },
 
   /**
@@ -201,8 +201,8 @@ module.exports = {
    *      nearest integer, or `NaN` if `x` is not defined, or `0` if `x` is
    *      `null`.
    */
-  round(x) {
-    return Math.round(x);
+  round (x) {
+    return Math.round(x)
   },
 
   /**
@@ -215,12 +215,12 @@ module.exports = {
    * @throws {Error} If `rolls` is not defined or if `rolls` contains less
    *      than one element.
    */
-  sum(rolls) {
+  sum (rolls) {
     if (!rolls || rolls.length < 1) {
-      throw new Error('roll count is not positive');
+      throw new Error('roll count is not positive')
     }
 
-    return rolls.reduce((first, second) => first + second, 0);
+    return rolls.reduce((first, second) => first + second, 0)
   },
 
   /**
@@ -235,7 +235,7 @@ module.exports = {
    * @returns {Number!} The integral part of the specified number, or `NaN`
    *      if `x` is not defined, or `0` if `x` is `null`.
    */
-  trunc(x) {
-    return Math.trunc(x);
-  },
-};
+  trunc (x) {
+    return Math.trunc(x)
+  }
+}

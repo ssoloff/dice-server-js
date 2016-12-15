@@ -6,14 +6,14 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const EvaluateExpressionService = require('../../support/evaluate-expression-service');
+const EvaluateExpressionService = require('../../support/evaluate-expression-service')
 
-function World() {
-  this.createEvaluateExpressionService = () => new EvaluateExpressionService();
+function World () {
+  this.createEvaluateExpressionService = () => new EvaluateExpressionService()
 }
 
-module.exports = function() {
-  this.World = World;
-};
+module.exports = function () {
+  this.World = World
+}

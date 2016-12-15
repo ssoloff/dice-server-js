@@ -6,18 +6,18 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const IssueTicketService = require('../../support/issue-ticket-service');
-const RedeemTicketService = require('../../support/redeem-ticket-service');
-const ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service');
+const IssueTicketService = require('../../support/issue-ticket-service')
+const RedeemTicketService = require('../../support/redeem-ticket-service')
+const ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service')
 
-function World() {
-  this.createIssueTicketService = () => new IssueTicketService();
-  this.createRedeemTicketService = () => new RedeemTicketService();
-  this.createValidateRedeemedTicketService = () => new ValidateRedeemedTicketService();
+function World () {
+  this.createIssueTicketService = () => new IssueTicketService()
+  this.createRedeemTicketService = () => new RedeemTicketService()
+  this.createValidateRedeemedTicketService = () => new ValidateRedeemedTicketService()
 }
 
-module.exports = function() {
-  this.World = World;
-};
+module.exports = function () {
+  this.World = World
+}

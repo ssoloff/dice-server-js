@@ -6,10 +6,10 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 /**
  * Provides useful methods for testing aspects related to security.
@@ -23,8 +23,8 @@ module.exports = {
    * @returns {Object!} The alternate private key to use for security
    *      testing.
    */
-  getOtherPrivateKey() {
-    return fs.readFileSync(path.join(__dirname, '../test-keys/other-private-key.pem'));
+  getOtherPrivateKey () {
+    return fs.readFileSync(path.join(__dirname, '../test-keys/other-private-key.pem'))
   },
 
   /**
@@ -33,8 +33,8 @@ module.exports = {
    * @returns {Object!} The alternate public key to use for security
    *      testing.
    */
-  getOtherPublicKey() {
-    return fs.readFileSync(path.join(__dirname, '../test-keys/other-public-key.pem'));
+  getOtherPublicKey () {
+    return fs.readFileSync(path.join(__dirname, '../test-keys/other-public-key.pem'))
   },
 
   /**
@@ -42,8 +42,8 @@ module.exports = {
    *
    * @returns {Object!} The primary private key to use for security testing.
    */
-  getPrivateKey() {
-    return fs.readFileSync(path.join(__dirname, '../test-keys/private-key.pem'));
+  getPrivateKey () {
+    return fs.readFileSync(path.join(__dirname, '../test-keys/private-key.pem'))
   },
 
   /**
@@ -51,7 +51,7 @@ module.exports = {
    *
    * @returns {Object!} The primary public key to use for security testing.
    */
-  getPublicKey() {
-    return fs.readFileSync(path.join(__dirname, '../test-keys/public-key.pem'));
-  },
-};
+  getPublicKey () {
+    return fs.readFileSync(path.join(__dirname, '../test-keys/public-key.pem'))
+  }
+}

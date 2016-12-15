@@ -6,18 +6,18 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const fs = require('fs');
-const path = require('path');
-const security = require('../../../src/server/util/security');
+const fs = require('fs')
+const path = require('path')
+const security = require('../../../src/server/util/security')
 
 module.exports = {
-  createSignature(payload) {
+  createSignature (payload) {
     return security.createSignature(
       payload,
       fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/private-key.pem')),
       fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem'))
-    );
-  },
-};
+    )
+  }
+}

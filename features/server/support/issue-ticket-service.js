@@ -6,53 +6,53 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const req = require('request');
-const security = require('../../common/support/security');
+const req = require('request')
+const security = require('../../common/support/security')
 
 class IssueTicketService {
-  constructor() {
+  constructor () {
     this.requestBody = {
-      evaluateExpressionRequestBody: {},
-    };
+      evaluateExpressionRequestBody: {}
+    }
   }
 
-  call(callback) {
+  call (callback) {
     const requestData = {
       body: this.requestBody,
       json: true,
-      uri: 'http://localhost:3000/ticket/issue',
-    };
+      uri: 'http://localhost:3000/ticket/issue'
+    }
     req.post(requestData, (error, response, body) => {
       if (!error) {
-        callback(response.statusCode, body);
+        callback(response.statusCode, body)
       } else {
-        throw new Error(error);
+        throw new Error(error)
       }
-    });
+    })
   }
 
-  setDescription(description) {
-    this.requestBody.description = description;
+  setDescription (description) {
+    this.requestBody.description = description
   }
 
-  setExpression(expressionText) {
+  setExpression (expressionText) {
     this.requestBody.evaluateExpressionRequestBody.expression = {
-      text: expressionText,
-    };
+      text: expressionText
+    }
   }
 
-  setRandomNumberGenerator(randomNumberGeneratorName) {
+  setRandomNumberGenerator (randomNumberGeneratorName) {
     const randomNumberGenerator = {
       content: {
-        name: randomNumberGeneratorName,
+        name: randomNumberGeneratorName
       },
-      signature: null,
-    };
-    randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content);
-    this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator = randomNumberGenerator;
+      signature: null
+    }
+    randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content)
+    this.requestBody.evaluateExpressionRequestBody.randomNumberGenerator = randomNumberGenerator
   }
 }
 
-module.exports = IssueTicketService;
+module.exports = IssueTicketService

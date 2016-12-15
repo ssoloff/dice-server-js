@@ -6,15 +6,15 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const driver = require('./driver');
-const HomePage = require('../../support/home-page');
+const driver = require('./driver')
+const HomePage = require('../../support/home-page')
 
-function World() {
-  this.createHomePage = () => new HomePage(driver);
+function World () {
+  this.createHomePage = () => new HomePage(driver)
 }
 
-module.exports = function() {
-  this.World = World;
-};
+module.exports = function () {
+  this.World = World
+}

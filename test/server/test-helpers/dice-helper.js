@@ -6,25 +6,25 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-'use strict';
+'use strict'
 
-const security = require('../../../src/server/util/security');
+const security = require('../../../src/server/util/security')
 
-function hasValidSignature(obj) {
-  return security.verifySignature(obj.content, obj.signature);
+function hasValidSignature (obj) {
+  return security.verifySignature(obj.content, obj.signature)
 }
 
 beforeEach(() => {
   jasmine.addMatchers({
-    toBeSigned() {
+    toBeSigned () {
       return {
-        compare(obj) {
+        compare (obj) {
           return {
             message: 'Expected object to have a valid signature.',
-            pass: hasValidSignature(obj),
-          };
-        },
-      };
-    },
-  });
-});
+            pass: hasValidSignature(obj)
+          }
+        }
+      }
+    }
+  })
+})
