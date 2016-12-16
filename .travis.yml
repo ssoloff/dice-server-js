@@ -1,10 +1,17 @@
+sudo: false
 language: node_js
 node_js:
   - "6.9.2"
 addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
   firefox: "latest"
 before_install:
   - ./tools/travis/init-env
+  - ./tools/travis/install-chromedriver
   - ./tools/travis/install-geckodriver
   - ./tools/travis/start-xvfb
   - . ./tools/travis/env.sh
@@ -19,6 +26,7 @@ script:
   - gulp start-server
   - gulp acceptance-test:server
   - ENV_WEBDRIVER_BROWSER_NAME=phantomjs gulp acceptance-test:client
+  - ENV_WEBDRIVER_BROWSER_NAME=chrome gulp acceptance-test:client
   - ENV_WEBDRIVER_BROWSER_NAME=firefox gulp acceptance-test:client
   - gulp stop-server
   - gulp lint
