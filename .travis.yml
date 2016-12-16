@@ -11,7 +11,7 @@ before_install:
   - export DISPLAY=$ENV_DISPLAY
   - export PATH=$PATH:$ENV_LOCAL_BIN_DIR
 install:
-  - npm install --global gulp-cli phantomjs
+  - npm install --global gulp-cli
   - npm run bootstrap
 script:
   - gulp unit-test-with-coverage
