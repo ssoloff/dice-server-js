@@ -109,7 +109,7 @@ gulp.task('acceptance-test:server', () => {
 
 gulp.task('acceptance-test', (done) => {
   const runSequence = require('run-sequence')
-  runSequence('acceptance-test:client', 'acceptance-test:server', done)
+  runSequence('acceptance-test:server', 'acceptance-test:client', done)
 })
 
 gulp.task('clean', () => {
