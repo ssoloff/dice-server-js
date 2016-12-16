@@ -12,7 +12,7 @@
  *
  * @namespace main.sim
  */
-main.sim = (function () {
+(function (window, $) {
     'use strict';
 
     // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
@@ -22,7 +22,8 @@ main.sim = (function () {
             dieSize: 40,
             margin: 20
         },
-        jQueryMap = {};
+        jQueryMap = {},
+        main = window.main;
 
     // --- END MODULE SCOPE VARIABLES ----------------------------------------
 
@@ -326,10 +327,10 @@ main.sim = (function () {
         });
     }
 
-    return {
+    main.sim = {
         initModule: initModule
     };
 
     // --- END PUBLIC METHODS ------------------------------------------------
 
-}());
+}(window, jQuery)); // eslint-disable-line no-undef

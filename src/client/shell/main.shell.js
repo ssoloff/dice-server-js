@@ -11,8 +11,14 @@
  *
  * @namespace main.shell
  */
-main.shell = (function () {
+(function (window) {
     'use strict';
+
+    // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
+
+    var main = window.main;
+
+    // --- END MODULE SCOPE VARIABLES ----------------------------------------
 
     // --- BEGIN PUBLIC METHODS ----------------------------------------------
 
@@ -31,10 +37,10 @@ main.shell = (function () {
         });
     }
 
-    return {
+    main.shell = {
         initModule: initModule
     };
 
     // --- END PUBLIC METHODS ------------------------------------------------
 
-}());
+}(window)); // eslint-disable-line no-undef

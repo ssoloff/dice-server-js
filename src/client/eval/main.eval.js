@@ -12,12 +12,13 @@
  *
  * @namespace main.eval
  */
-main.eval = (function () {
+(function (window, $) {
     'use strict';
 
     // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
 
-    var jQueryMap = {};
+    var jQueryMap = {},
+        main = window.main;
 
     // --- END MODULE SCOPE VARIABLES ----------------------------------------
 
@@ -155,10 +156,10 @@ main.eval = (function () {
         });
     }
 
-    return {
+    main.eval = {
         initModule: initModule
     };
 
     // --- END PUBLIC METHODS ------------------------------------------------
 
-}());
+}(window, jQuery)); // eslint-disable-line no-undef

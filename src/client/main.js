@@ -11,21 +11,27 @@
  *
  * @namespace main
  */
-var main = (function () {
+(function (window, $) {
     'use strict';
+
+    // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
+
+    var main = {};
+
+    // --- END MODULE SCOPE VARIABLES ----------------------------------------
 
     // --- BEGIN UTILITY METHODS ---------------------------------------------
 
     function installJQueryPlugins() {
-        jQuery.fn.visible = function () {
+        $.fn.visible = function () {
             return this.css('visibility', 'visible');
         };
 
-        jQuery.fn.invisible = function () {
+        $.fn.invisible = function () {
             return this.css('visibility', 'hidden');
         };
 
-        jQuery.extend({
+        $.extend({
             postJSON: function (url, data, successCallback, errorCallback) {
                 return this.ajax({
                     contentType: 'application/json; charset=utf-8',
@@ -57,10 +63,10 @@ var main = (function () {
         main.shell.initModule($container);
     }
 
-    return {
+    window.main = main = {
         initModule: initModule
     };
 
     // --- END PUBLIC METHODS ------------------------------------------------
 
-}());
+}(window, jQuery)); // eslint-disable-line no-undef

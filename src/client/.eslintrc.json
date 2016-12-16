@@ -4,13 +4,6 @@
     "eslint:recommended",
     "crockford"
   ],
-  "env": {
-    "browser": true,
-    "jquery": true
-  },
-  "globals": {
-    "main": true
-  },
   "rules": {
     "guard-for-in": 2,
     "max-len": [2, {"code": 120}],
