@@ -15,6 +15,7 @@ const expect = chai.expect
 module.exports = function () {
   this.Before(function (scenario, callback) {
     this.homePage = this.createHomePage()
+    this.resultRowCount = 0
     callback()
   })
 
@@ -34,10 +35,17 @@ module.exports = function () {
     return this.homePage.typeExpressionText(expression)
   })
 
-  this.When(/^the expression "(.*)" is evaluated$/, function (expression) {
-    return this.homePage.clearExpressionText()
+  this.When(/^the expression "(.*)" is evaluated( successfully)?$/, function (expression, waitForSuccessfulEvaluation) {
+    let promise = this.homePage.clearExpressionText()
       .then(() => this.homePage.typeExpressionText(expression))
       .then(() => this.homePage.evaluate())
+
+    if (waitForSuccessfulEvaluation) {
+      this.resultRowCount += 1
+      promise = promise.then(this.homePage.waitUntilResultRowCountIs(this.resultRowCount))
+    }
+
+    return promise
   })
 
   this.When(/^the(?: hide)? help link is clicked$/, function () {
@@ -54,10 +62,6 @@ module.exports = function () {
 
   this.When(/^the remove button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (row) {
     return this.homePage.removeResultAtRow(row)
-  })
-
-  this.When(/^the results table contains (\d+) rows?$/, function (rowCount) {
-    return this.homePage.waitUntilResultRowCountIs(Number(rowCount))
   })
 
   this.When(/^the rounding mode is "(.*)"$/, function (roundingMode) {
