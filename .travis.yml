@@ -11,13 +11,15 @@ before_install:
   - export DISPLAY=$ENV_DISPLAY
   - export PATH=$PATH:$ENV_LOCAL_BIN_DIR
 install:
-  - npm install --global gulp-cli
+  - npm install --global gulp-cli phantomjs
   - npm run bootstrap
 script:
   - gulp unit-test-with-coverage
   - gulp dist
   - gulp start-server
-  - gulp acceptance-test
+  - gulp acceptance-test:server
+  - ENV_WEBDRIVER_BROWSER_NAME=phantomjs gulp acceptance-test:client
+  - ENV_WEBDRIVER_BROWSER_NAME=firefox gulp acceptance-test:client
   - gulp stop-server
   - gulp lint
   - gulp docs
