@@ -151,9 +151,9 @@ class HomePage {
     }
     randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content)
     return this.driver.executeScript(
-      '$(\'#main-eval-randomNumberGeneratorJson\').val(\'' +
+      'document.getElementById(\'main-eval-randomNumberGeneratorJson\').value = \'' +
       JSON.stringify(randomNumberGenerator) +
-      '\')'
+      '\';'
     )
   }
 

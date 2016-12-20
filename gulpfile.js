@@ -123,10 +123,34 @@ gulp.task('compile:jison', () => {
     .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${SRC_DIR}`))
 })
 
-gulp.task('compile:js', () => {
-  return gulp.src([`${SRC_DIR}/**/*`, `${SUPPORT_DIR}/**/*`, `${TEST_DIR}/**/*`], {base: '.', dot: true})
+gulp.task('compile:js:client:module', () => {
+  const browserify = require('browserify')
+  const glob = require('glob')
+  const source = require('vinyl-source-stream')
+  return browserify(glob.sync(`${CLIENT_SRC_DIR}/**/*.js`))
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))
+})
+
+gulp.task('compile:js:client:nonmodule', () => {
+  return gulp.src([`${CLIENT_SRC_DIR}/**/*`, `!${CLIENT_SRC_DIR}/**/*.js`], {base: '.', dot: true})
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
 })
+
+gulp.task('compile:js:client', ['compile:js:client:module', 'compile:js:client:nonmodule'])
+
+gulp.task('compile:js:server', () => {
+  return gulp.src([`${SERVER_SRC_DIR}/**/*`, `${SERVER_TEST_DIR}/**/*`], {base: '.', dot: true})
+    .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
+})
+
+gulp.task('compile:js:support', () => {
+  return gulp.src(`${SUPPORT_DIR}/**/*`, {base: '.', dot: true})
+    .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
+})
+
+gulp.task('compile:js', ['compile:js:client', 'compile:js:server', 'compile:js:support'])
 
 gulp.task('compile', ['compile:jison', 'compile:js'])
 
@@ -138,7 +162,6 @@ gulp.task('dist:client', () => {
   const HTML_DIR = PUBLIC_DIR
   const CSS_DIR = `${PUBLIC_DIR}/css`
   const JS_DIR = `${PUBLIC_DIR}/js`
-  const JS_VENDOR_DIR = `${JS_DIR}/vendor`
 
   return eventStream.merge(
     gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.html`)
@@ -150,8 +173,6 @@ gulp.task('dist:client', () => {
     gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.js`)
       .pipe(flatten())
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_DIR}`)),
-    gulp.src(mainBowerFiles('**/*.js'))
-      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_VENDOR_DIR}`)),
     gulp.src(mainBowerFiles('**/*.css'))
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${CSS_DIR}`))
   )

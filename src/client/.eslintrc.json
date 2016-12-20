@@ -4,6 +4,9 @@
     "eslint:recommended",
     "crockford"
   ],
+  "env": {
+    "commonjs": true
+  },
   "rules": {
     "guard-for-in": 2,
     "max-len": [2, {"code": 120}],
