@@ -213,9 +213,8 @@ gulp.task('lint:html', ['lint:html:full', 'lint:html:fragment'])
 gulp.task('lint:js:default', () => {
   return runEsLint([
     `${FEATURES_DIR}/**/*.js`,
-    `${COMPILE_OUTPUT_DIR}/${SRC_DIR}/**/*.js`,
-    `!${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/model/dice-expression-parser.js`,
-    `${COMPILE_OUTPUT_DIR}/${TEST_DIR}/**/*.js`
+    `${SRC_DIR}/**/*.js`,
+    `${TEST_DIR}/**/*.js`
   ])
 })
 

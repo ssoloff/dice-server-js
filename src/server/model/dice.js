@@ -40,7 +40,7 @@ module.exports = {
    *
    * @type {module:dice-expression-parser}
    */
-  expressionParser: require('./dice-expression-parser'),
+  expressionParser: require('./dice-expression-parser'), // eslint-disable-line node/no-missing-require
 
   /**
    * The expression result submodule.
