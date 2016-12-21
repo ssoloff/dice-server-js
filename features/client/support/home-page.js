@@ -44,6 +44,8 @@ const Locators = {
 
   removeExpressionResult: () => By.name('remove'),
 
+  randomNumberGeneratorJson: () => By.id('main-eval-randomNumberGeneratorJson'),
+
   roundingMode: (roundingMode) => By.id(`main-eval-roundingMode${roundingMode}`),
 
   toggleHelp: () => By.id('main-eval-toggleHelp')
@@ -136,11 +138,12 @@ class HomePage {
       signature: null
     }
     randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content)
-    return this.driver.executeScript(
-      'document.getElementById(\'main-eval-randomNumberGeneratorJson\').value = \'' +
-      JSON.stringify(randomNumberGenerator) +
-      '\';'
-    )
+    return this._wait(until.elementsLocated(Locators.randomNumberGeneratorJson()))
+      .then((element) => this.driver.executeScript(
+          'document.getElementById(\'main-eval-randomNumberGeneratorJson\').value = \'' +
+          JSON.stringify(randomNumberGenerator) +
+          '\';'
+      ))
   }
 
   setRoundingMode (roundingMode) {
@@ -148,7 +151,8 @@ class HomePage {
   }
 
   toggleHelp () {
-    return this.driver.findElement(Locators.toggleHelp()).click()
+    return this._wait(until.elementsLocated(Locators.toggleHelp()))
+      .then((elements) => elements[0].click())
   }
 
   typeEnter () {
