@@ -16,7 +16,8 @@ const gulp = require('gulp')
 
 const BUILD_OUTPUT_DIR = 'build'
 const FEATURES_DIR = 'features'
-const NODE_MODULES_BIN_DIR = 'node_modules/.bin'
+const NODE_MODULES_DIR = 'node_modules'
+const NODE_MODULES_BIN_DIR = `${NODE_MODULES_DIR}/.bin`
 const SRC_DIR = 'src'
 const CLIENT_SRC_DIR = `${SRC_DIR}/client`
 const SERVER_SRC_DIR = `${SRC_DIR}/server`
@@ -158,7 +159,6 @@ gulp.task('compile', ['compile:jison', 'compile:js'])
 gulp.task('dist:client', () => {
   const eventStream = require('event-stream')
   const flatten = require('gulp-flatten')
-  const mainBowerFiles = require('main-bower-files')
   const PUBLIC_DIR = 'public'
   const HTML_DIR = PUBLIC_DIR
   const CSS_DIR = `${PUBLIC_DIR}/css`
@@ -172,7 +172,7 @@ gulp.task('dist:client', () => {
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${CSS_DIR}`)),
     gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/bundle.js`)
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_DIR}`)),
-    gulp.src(mainBowerFiles('**/*.css'))
+    gulp.src(`${NODE_MODULES_DIR}/normalize.css/normalize.css`)
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${CSS_DIR}`))
   )
 })
