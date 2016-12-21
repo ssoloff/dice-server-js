@@ -47,6 +47,10 @@ function installLocalJQueryPlugins() {
     });
 }
 
+function installStylesheets() {
+    require('./index.css');
+}
+
 function installVendorJQueryPlugins() {
     // CommonJS-aware plugins
     require('jcanvas')($, global.window);
@@ -57,6 +61,7 @@ function installVendorJQueryPlugins() {
 }
 
 function initModule($container) {
+    installStylesheets();
     installVendorJQueryPlugins();
     installLocalJQueryPlugins();
 

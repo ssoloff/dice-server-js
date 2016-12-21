@@ -129,6 +129,7 @@ gulp.task('compile:js:client:module', () => {
   const glob = require('glob')
   const source = require('vinyl-source-stream')
   return browserify(glob.sync(`${CLIENT_SRC_DIR}/**/*.js`))
+    .transform('browserify-css')
     .transform('brfs')
     .bundle()
     .pipe(source('bundle.js'))
@@ -136,7 +137,7 @@ gulp.task('compile:js:client:module', () => {
 })
 
 gulp.task('compile:js:client:nonmodule', () => {
-  return gulp.src([`${CLIENT_SRC_DIR}/**/*`, `!${CLIENT_SRC_DIR}/**/*.js`], {base: '.', dot: true})
+  return gulp.src(`${CLIENT_SRC_DIR}/index.html`, {base: '.'})
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
 })
 
@@ -158,7 +159,6 @@ gulp.task('compile', ['compile:jison', 'compile:js'])
 
 gulp.task('dist:client', () => {
   const eventStream = require('event-stream')
-  const flatten = require('gulp-flatten')
   const PUBLIC_DIR = 'public'
   const HTML_DIR = PUBLIC_DIR
   const CSS_DIR = `${PUBLIC_DIR}/css`
@@ -167,9 +167,6 @@ gulp.task('dist:client', () => {
   return eventStream.merge(
     gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/index.html`)
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${HTML_DIR}`)),
-    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.css`)
-      .pipe(flatten())
-      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${CSS_DIR}`)),
     gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/bundle.js`)
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_DIR}`)),
     gulp.src(`${NODE_MODULES_DIR}/normalize.css/normalize.css`)
