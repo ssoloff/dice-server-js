@@ -96,7 +96,7 @@ function onExpressionEvaluated(event, response) {
  *      controls.
  */
 function initModule($container) {
-    $container.html(fs.readFileSync(__dirname + '/main.history.html', 'utf8'));
+    $container.html(fs.readFileSync(__dirname + '/index.html', 'utf8'));
 
     initJQueryMap($container);
     initController();

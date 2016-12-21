@@ -34,7 +34,7 @@ var fs = require('fs'),
  *      single DOM element to be used as the container for the shell.
  */
 function initModule($container) {
-    $container.html(fs.readFileSync(__dirname + '/main.shell.html', 'utf8'));
+    $container.html(fs.readFileSync(__dirname + '/index.html', 'utf8'));
 
     mainEval.initModule($container.find('#main-eval-container'));
     mainHistory.initModule($container.find('#main-history-container'));

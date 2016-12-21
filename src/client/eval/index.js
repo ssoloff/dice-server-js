@@ -149,7 +149,7 @@ function onEvaluateExpressionResponseSuccess(responseBody) {
  *      controls.
  */
 function initModule($container) {
-    $container.html(fs.readFileSync(__dirname + '/main.eval.html', 'utf8'));
+    $container.html(fs.readFileSync(__dirname + '/index.html', 'utf8'));
 
     initJQueryMap($container);
     initView();
