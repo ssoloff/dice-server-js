@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "bower": "~1.8.0",
+    "brfs": "~1.4.3",
     "browserify": "~13.1.1",
     "chai": "~3.5.0",
     "del": "~2.2.2",
@@ -79,5 +80,10 @@
   "homepage": "https://github.com/ssoloff/dice-server-js",
   "scripts": {
     "bootstrap": "npm install && bower install"
+  },
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
   }
 }

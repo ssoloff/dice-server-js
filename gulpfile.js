@@ -164,14 +164,12 @@ gulp.task('dist:client', () => {
   const JS_DIR = `${PUBLIC_DIR}/js`
 
   return eventStream.merge(
-    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.html`)
-      .pipe(flatten())
+    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/index.html`)
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${HTML_DIR}`)),
     gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.css`)
       .pipe(flatten())
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${CSS_DIR}`)),
-    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/**/*.js`)
-      .pipe(flatten())
+    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/bundle.js`)
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_DIR}`)),
     gulp.src(mainBowerFiles('**/*.css'))
       .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${CSS_DIR}`))

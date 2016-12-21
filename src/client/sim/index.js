@@ -23,6 +23,7 @@ var $ = require('jquery'),
         dieSize: 40,
         margin: 20
     },
+    fs = require('fs'),
     jQueryMap = {};
 
 // --- END MODULE SCOPE VARIABLES ----------------------------------------
@@ -316,16 +317,16 @@ function onExpressionEvaluated(event, response) {
  *      controls.
  */
 function initModule($container) {
-    $container.load('/main.sim.html', function () {
-        initJQueryMap($container);
+    $container.html(fs.readFileSync(__dirname + '/main.sim.html', 'utf8'));
 
-        configMap.dicePerRow = Math.floor(
-            (jQueryMap.$canvas.width() - 2 * configMap.margin) /
-            (configMap.dieSize + configMap.margin)
-        );
+    initJQueryMap($container);
 
-        $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
-    });
+    configMap.dicePerRow = Math.floor(
+        (jQueryMap.$canvas.width() - 2 * configMap.margin) /
+        (configMap.dieSize + configMap.margin)
+    );
+
+    $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
 }
 
 module.exports = {

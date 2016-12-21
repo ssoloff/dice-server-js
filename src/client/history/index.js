@@ -18,6 +18,7 @@
 // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
 
 var $ = require('jquery'),
+    fs = require('fs'),
     jQueryMap = {};
 
 // --- END MODULE SCOPE VARIABLES ----------------------------------------
@@ -95,12 +96,12 @@ function onExpressionEvaluated(event, response) {
  *      controls.
  */
 function initModule($container) {
-    $container.load('/main.history.html', function () {
-        initJQueryMap($container);
-        initController();
+    $container.html(fs.readFileSync(__dirname + '/main.history.html', 'utf8'));
 
-        $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
-    });
+    initJQueryMap($container);
+    initController();
+
+    $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
 }
 
 module.exports = {

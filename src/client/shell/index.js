@@ -16,7 +16,8 @@
 
 // --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
 
-var mainEval = require('../eval/index'),
+var fs = require('fs'),
+    mainEval = require('../eval/index'),
     mainHistory = require('../history/index'),
     mainSim = require('../sim/index');
 
@@ -33,11 +34,11 @@ var mainEval = require('../eval/index'),
  *      single DOM element to be used as the container for the shell.
  */
 function initModule($container) {
-    $container.load('/main.shell.html', function () {
-        mainEval.initModule($container.find('#main-eval-container'));
-        mainHistory.initModule($container.find('#main-history-container'));
-        mainSim.initModule($container.find('#main-sim-container'));
-    });
+    $container.html(fs.readFileSync(__dirname + '/main.shell.html', 'utf8'));
+
+    mainEval.initModule($container.find('#main-eval-container'));
+    mainHistory.initModule($container.find('#main-history-container'));
+    mainSim.initModule($container.find('#main-sim-container'));
 }
 
 module.exports = {
