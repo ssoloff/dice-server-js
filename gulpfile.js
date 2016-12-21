@@ -128,6 +128,7 @@ gulp.task('compile:js:client:module', () => {
   const glob = require('glob')
   const source = require('vinyl-source-stream')
   return browserify(glob.sync(`${CLIENT_SRC_DIR}/**/*.js`))
+    .transform('brfs')
     .bundle()
     .pipe(source('bundle.js'))
     .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))

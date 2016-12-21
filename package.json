@@ -80,10 +80,5 @@
   "homepage": "https://github.com/ssoloff/dice-server-js",
   "scripts": {
     "bootstrap": "npm install && bower install"
-  },
-  "browserify": {
-    "transform": [
-      "brfs"
-    ]
   }
 }
