@@ -13,7 +13,6 @@ const webdriver = require('selenium-webdriver')
 
 const By = webdriver.By
 const Key = webdriver.Key
-const promise = webdriver.promise
 const until = webdriver.until
 
 const ResultsTableColumns = {
@@ -27,13 +26,9 @@ const ResultsTableColumns = {
 const Locators = {
   allExpressionResultRows: () => By.css('#main-history-expressionResults tr'),
 
-  dieRollResults: () => By.id('main-sim-dieRollResults'),
-
   errorMessage: () => By.id('main-eval-errorMessage'),
 
   evaluate: () => By.id('main-eval-evaluate'),
-
-  expressionForm: () => By.id('main-eval-expressionForm'),
 
   expressionResultCell: (row, column) => {
     return By.css(`#main-history-expressionResults tr:nth-child(${row}) td:nth-child(${column})`)
@@ -117,15 +112,6 @@ class HomePage {
 
   open () {
     return this.driver.get('http://localhost:3000/')
-      .then(() => {
-        // Wait for async load of all feature fragments to complete
-        const timeoutInMilliseconds = 60000
-        return promise.all([
-          this._wait(until.elementLocated(Locators.expressionForm()), timeoutInMilliseconds),
-          this._wait(until.elementLocated(Locators.removeAllResults()), timeoutInMilliseconds),
-          this._wait(until.elementLocated(Locators.dieRollResults()), timeoutInMilliseconds)
-        ])
-      })
   }
 
   reevaluateResultAtRow (row) {
