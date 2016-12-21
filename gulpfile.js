@@ -82,7 +82,7 @@ function runUnitTests () {
   const jasmine = require('gulp-jasmine')
   return gulp.src('') // Files to process are defined in Jasmine configuration below
     .pipe(jasmine({
-      config: require(`./${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/.jasmine.json`)
+      config: require(`./${SERVER_TEST_DIR}/.jasmine.json`)
     }))
 }
 
@@ -116,14 +116,12 @@ gulp.task('clean', () => {
   return del([BUILD_OUTPUT_DIR])
 })
 
-gulp.task('compile:jison', () => {
-  const jison = require('gulp-jison')
-  return gulp.src(`${SRC_DIR}/**/*.jison`)
-    .pipe(jison())
-    .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${SRC_DIR}`))
+gulp.task('compile:client:html', () => {
+  return gulp.src(`${CLIENT_SRC_DIR}/index.html`, {base: '.'})
+    .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
 })
 
-gulp.task('compile:js:client:module', () => {
+gulp.task('compile:client:js', () => {
   const browserify = require('browserify')
   const glob = require('glob')
   const source = require('vinyl-source-stream')
@@ -135,21 +133,30 @@ gulp.task('compile:js:client:module', () => {
     .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))
 })
 
-gulp.task('compile:js:client:nonmodule', () => {
-  return gulp.src(`${CLIENT_SRC_DIR}/index.html`, {base: '.'})
+gulp.task('compile:client', ['compile:client:html', 'compile:client:js'])
+
+gulp.task('compile:server:jison', () => {
+  const jison = require('gulp-jison')
+  return gulp.src(`${SRC_DIR}/**/*.jison`)
+    .pipe(jison())
+    .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${SRC_DIR}`))
+})
+
+gulp.task('compile:server:js:prod', () => {
+  return gulp.src(`${SERVER_SRC_DIR}/**/*.js`, {base: '.'})
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
 })
 
-gulp.task('compile:js:client', ['compile:js:client:module', 'compile:js:client:nonmodule'])
-
-gulp.task('compile:js:server', () => {
-  return gulp.src([`${SERVER_SRC_DIR}/**/*`, `${SERVER_TEST_DIR}/**/*`], {base: '.', dot: true})
+gulp.task('compile:server:js:test', () => {
+  return gulp.src(`${SERVER_TEST_DIR}/**/*.{js,pem}`, {base: '.'})
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
 })
 
-gulp.task('compile:js', ['compile:js:client', 'compile:js:server'])
+gulp.task('compile:server:js', ['compile:server:js:prod', 'compile:server:js:test'])
 
-gulp.task('compile', ['compile:jison', 'compile:js'])
+gulp.task('compile:server', ['compile:server:jison', 'compile:server:js'])
+
+gulp.task('compile', ['compile:client', 'compile:server'])
 
 gulp.task('dist:client', () => {
   const eventStream = require('event-stream')
