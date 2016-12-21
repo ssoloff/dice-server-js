@@ -21,7 +21,6 @@ const NODE_MODULES_BIN_DIR = `${NODE_MODULES_DIR}/.bin`
 const SRC_DIR = 'src'
 const CLIENT_SRC_DIR = `${SRC_DIR}/client`
 const SERVER_SRC_DIR = `${SRC_DIR}/server`
-const SUPPORT_DIR = 'support'
 const TEST_DIR = 'test'
 const SERVER_TEST_DIR = `${TEST_DIR}/server`
 const COMPILE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/compile`
@@ -148,12 +147,7 @@ gulp.task('compile:js:server', () => {
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
 })
 
-gulp.task('compile:js:support', () => {
-  return gulp.src(`${SUPPORT_DIR}/**/*`, {base: '.', dot: true})
-    .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
-})
-
-gulp.task('compile:js', ['compile:js:client', 'compile:js:server', 'compile:js:support'])
+gulp.task('compile:js', ['compile:js:client', 'compile:js:server'])
 
 gulp.task('compile', ['compile:jison', 'compile:js'])
 
