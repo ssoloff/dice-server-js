@@ -15,15 +15,9 @@
 
 'use strict';
 
-// --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
-
 var $ = require('jquery'),
     fs = require('fs'),
     jQueryMap = {};
-
-// --- END MODULE SCOPE VARIABLES ----------------------------------------
-
-// --- BEGIN DOM METHODS -------------------------------------------------
 
 function addExpressionResult(response) {
     var $actionsCell,
@@ -70,22 +64,6 @@ function initJQueryMap($container) {
     };
 }
 
-function removeAllResults() {
-    jQueryMap.$expressionResults.empty();
-}
-
-// --- END DOM METHODS ---------------------------------------------------
-
-// --- BEGIN EVENT HANDLERS ----------------------------------------------
-
-function onExpressionEvaluated(event, response) {
-    addExpressionResult(response);
-}
-
-// --- END EVENT HANDLERS ------------------------------------------------
-
-// --- BEGIN PUBLIC METHODS ----------------------------------------------
-
 /**
  * Initializes the history module.
  *
@@ -104,8 +82,14 @@ function initModule($container) {
     $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
 }
 
+function onExpressionEvaluated(event, response) {
+    addExpressionResult(response);
+}
+
+function removeAllResults() {
+    jQueryMap.$expressionResults.empty();
+}
+
 module.exports = {
     initModule: initModule
 };
-
-// --- END PUBLIC METHODS ------------------------------------------------

@@ -14,14 +14,16 @@
  * @module index
  */
 
-// --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
-
 var $ = require('jquery'),
     mainShell = require('./shell/index');
 
-// --- END MODULE SCOPE VARIABLES ----------------------------------------
+function initModule($container) {
+    installStylesheets();
+    installVendorJQueryPlugins();
+    installLocalJQueryPlugins();
 
-// --- BEGIN UTILITY METHODS ---------------------------------------------
+    mainShell.initModule($container);
+}
 
 function installLocalJQueryPlugins() {
     $.fn.visible = function () {
@@ -60,22 +62,8 @@ function installVendorJQueryPlugins() {
     require('jquery.event.gevent');
 }
 
-function initModule($container) {
-    installStylesheets();
-    installVendorJQueryPlugins();
-    installLocalJQueryPlugins();
-
-    mainShell.initModule($container);
-}
-
-// --- END UTILITY METHODS -----------------------------------------------
-
-// --- BEGIN PUBLIC METHODS ----------------------------------------------
-
 module.exports = {};
 
 $(function () {
     initModule($('#main'));
 });
-
-// --- END PUBLIC METHODS ------------------------------------------------

@@ -14,16 +14,10 @@
 
 'use strict';
 
-// --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
-
 var fs = require('fs'),
     mainEval = require('../eval/index'),
     mainHistory = require('../history/index'),
     mainSim = require('../sim/index');
-
-// --- END MODULE SCOPE VARIABLES ----------------------------------------
-
-// --- BEGIN PUBLIC METHODS ----------------------------------------------
 
 /**
  * Initializes the shell module.
@@ -44,5 +38,3 @@ function initModule($container) {
 module.exports = {
     initModule: initModule
 };
-
-// --- END PUBLIC METHODS ------------------------------------------------

@@ -15,15 +15,9 @@
  * @module eval/index
  */
 
-// --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
-
 var $ = require('jquery'),
     fs = require('fs'),
     jQueryMap = {};
-
-// --- END MODULE SCOPE VARIABLES ----------------------------------------
-
-// --- BEGIN DOM METHODS -------------------------------------------------
 
 function clearExpressionText() {
     jQueryMap.$expressionText.val('');
@@ -92,29 +86,29 @@ function initJQueryMap($container) {
     };
 }
 
+/**
+ * Initializes the eval module.
+ *
+ * @memberOf module:eval/index
+ *
+ * @param {Object!} $container - A jQuery collection that represents a
+ *      single DOM element to be used as the container for the eval
+ *      controls.
+ */
+function initModule($container) {
+    $container.html(fs.readFileSync(__dirname + '/index.html', 'utf8'));
+
+    initJQueryMap($container);
+    initView();
+    initController();
+
+    $.gevent.subscribe(jQueryMap.$container, 'main-evaluateexpression', onEvaluateExpression);
+}
+
 function initView() {
     hideHelp();
     hideErrorMessage();
 }
-
-function showErrorMessage(message) {
-    jQueryMap.$errorMessage.text(message).visible();
-}
-
-function toggleHelp() {
-    var newHelpVisible,
-        oldHelpVisible;
-
-    oldHelpVisible = jQueryMap.$help.is(':visible');
-    jQueryMap.$help.toggle(400);
-
-    newHelpVisible = !oldHelpVisible;
-    jQueryMap.$toggleHelp.text(newHelpVisible ? 'hide help' : 'help');
-}
-
-// --- END DOM METHODS ---------------------------------------------------
-
-// --- BEGIN EVENT HANDLERS ----------------------------------------------
 
 function onEvaluateExpression(event, expressionText) {
     evaluateExpression(expressionText);
@@ -135,31 +129,21 @@ function onEvaluateExpressionResponseSuccess(responseBody) {
     $.gevent.publish('main-expressionevaluated', [responseBody]);
 }
 
-// --- END EVENT HANDLERS ------------------------------------------------
+function showErrorMessage(message) {
+    jQueryMap.$errorMessage.text(message).visible();
+}
 
-// --- BEGIN PUBLIC METHODS ----------------------------------------------
+function toggleHelp() {
+    var newHelpVisible,
+        oldHelpVisible;
 
-/**
- * Initializes the eval module.
- *
- * @memberOf module:eval/index
- *
- * @param {Object!} $container - A jQuery collection that represents a
- *      single DOM element to be used as the container for the eval
- *      controls.
- */
-function initModule($container) {
-    $container.html(fs.readFileSync(__dirname + '/index.html', 'utf8'));
+    oldHelpVisible = jQueryMap.$help.is(':visible');
+    jQueryMap.$help.toggle(400);
 
-    initJQueryMap($container);
-    initView();
-    initController();
-
-    $.gevent.subscribe(jQueryMap.$container, 'main-evaluateexpression', onEvaluateExpression);
+    newHelpVisible = !oldHelpVisible;
+    jQueryMap.$toggleHelp.text(newHelpVisible ? 'hide help' : 'help');
 }
 
 module.exports = {
     initModule: initModule
 };
-
-// --- END PUBLIC METHODS ------------------------------------------------

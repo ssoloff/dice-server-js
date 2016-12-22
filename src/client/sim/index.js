@@ -15,8 +15,6 @@
 
 'use strict';
 
-// --- BEGIN MODULE SCOPE VARIABLES --------------------------------------
-
 var $ = require('jquery'),
     configMap = {
         dicePerRow: null,
@@ -25,10 +23,6 @@ var $ = require('jquery'),
     },
     fs = require('fs'),
     jQueryMap = {};
-
-// --- END MODULE SCOPE VARIABLES ----------------------------------------
-
-// --- BEGIN UTILITY METHODS ---------------------------------------------
 
 function calculateCentroid(vertices, vertexIndexes) {
     var centroid = {
@@ -56,10 +50,6 @@ function calculateVertices(center, scale, baseVertices) {
     });
     return vertices;
 }
-
-// --- END UTILITY METHODS -----------------------------------------------
-
-// --- BEGIN DOM METHODS -------------------------------------------------
 
 function drawDice(dieRollResults) {
     var drawDieMapBySides = {
@@ -295,18 +285,6 @@ function initJQueryMap($container) {
     };
 }
 
-// --- END DOM METHODS ---------------------------------------------------
-
-// --- BEGIN EVENT HANDLERS ----------------------------------------------
-
-function onExpressionEvaluated(event, response) {
-    drawDice(response.dieRollResults);
-}
-
-// --- END EVENT HANDLERS ------------------------------------------------
-
-// --- BEGIN PUBLIC METHODS ----------------------------------------------
-
 /**
  * Initializes the sim module.
  *
@@ -329,8 +307,10 @@ function initModule($container) {
     $.gevent.subscribe(jQueryMap.$container, 'main-expressionevaluated', onExpressionEvaluated);
 }
 
+function onExpressionEvaluated(event, response) {
+    drawDice(response.dieRollResults);
+}
+
 module.exports = {
     initModule: initModule
 };
-
-// --- END PUBLIC METHODS ------------------------------------------------
