@@ -27,6 +27,10 @@ function evaluateExpression(expressionText) {
     var randomNumberGeneratorJson,
         requestBody;
 
+    if (!expressionText) {
+        return;
+    }
+
     requestBody = {
         expression: {
             text: expressionText
