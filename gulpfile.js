@@ -79,7 +79,7 @@ function runJsDoc (configPath, callback) {
 
 function runUnitTests () {
   const jasmine = require('gulp-jasmine')
-  return gulp.src('') // Files to process are defined in Jasmine configuration below
+  return gulp.src(`${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/**/*spec.js`)
     .pipe(jasmine({
       config: require(`./${SERVER_TEST_DIR}/.jasmine.json`)
     }))
@@ -156,6 +156,10 @@ gulp.task('compile:server:js', ['compile:server:js:prod', 'compile:server:js:tes
 gulp.task('compile:server', ['compile:server:jison', 'compile:server:js'])
 
 gulp.task('compile', ['compile:client', 'compile:server'])
+
+gulp.task('dev', ['lint', 'unit-test'], () => {
+  return gulp.watch([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['lint', 'unit-test'])
+})
 
 gulp.task('dist:client', () => {
   const eventStream = require('event-stream')
