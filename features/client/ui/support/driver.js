@@ -10,9 +10,8 @@
 
 const webdriver = require('selenium-webdriver')
 
-const BROWSER_NAME = process.env.ENV_WEBDRIVER_BROWSER_NAME || 'phantomjs'
 const driver = new webdriver.Builder()
-  .forBrowser(BROWSER_NAME)
+  .forBrowser('phantomjs')
   .build()
 
 module.exports = driver

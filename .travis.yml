@@ -26,9 +26,9 @@ script:
   - gulp dist
   - gulp start-server
   - gulp acceptance-test:server
-  - ENV_WEBDRIVER_BROWSER_NAME=phantomjs gulp acceptance-test:client
-  - ENV_WEBDRIVER_BROWSER_NAME=chrome gulp acceptance-test:client
-  - ENV_WEBDRIVER_BROWSER_NAME=firefox gulp acceptance-test:client
+  - SELENIUM_BROWSER=phantomjs gulp acceptance-test:client
+  - SELENIUM_BROWSER=chrome gulp acceptance-test:client
+  - SELENIUM_BROWSER=firefox gulp acceptance-test:client
   - gulp stop-server
   - gulp lint
   - gulp docs
