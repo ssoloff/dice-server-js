@@ -157,12 +157,16 @@ gulp.task('compile:server', ['compile:server:jison', 'compile:server:js'])
 
 gulp.task('compile', ['compile:client', 'compile:server'])
 
-gulp.task('dev:_rebuild', (done) => {
-  return runSequence('clean', 'unit-test', 'dist', done)
+gulp.task('dev:_rebuild:with-tests', (done) => {
+  runSequence('clean', 'unit-test', 'dist', done)
 })
 
-gulp.task('dev', ['dev:_rebuild', 'lint'], () => {
-  gulp.watch([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['dev:_rebuild'])
+gulp.task('dev:_rebuild:without-tests', (done) => {
+  runSequence('clean', 'compile', 'dist', done)
+})
+
+gulp.task('dev', ['dev:_rebuild:with-tests', 'lint'], () => {
+  gulp.watch([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['dev:_rebuild:with-tests'])
   gulp.watch(['gulpfile.js', `${FEATURES_DIR}/**/*`, `${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['lint'])
 })
 
@@ -290,6 +294,17 @@ gulp.task('publish-coverage', () => {
   const coveralls = require('gulp-coveralls')
   return gulp.src(`${COVERAGE_OUTPUT_DIR}/lcov.info`)
     .pipe(coveralls())
+})
+
+gulp.task('server:dev', ['dev:_rebuild:with-tests'], () => {
+  const nodemon = require('gulp-nodemon')
+  nodemon({
+    args: [`${SERVER_TEST_DIR}/test-keys/private-key.pem`, `${SERVER_TEST_DIR}/test-keys/public-key.pem`],
+    ext: 'jison js',
+    script: `${DIST_OUTPUT_DIR}/server.js`,
+    tasks: ['dev:_rebuild:without-tests'],
+    watch: [`${SERVER_SRC_DIR}/*`]
+  })
 })
 
 gulp.task('start-server', (done) => {
