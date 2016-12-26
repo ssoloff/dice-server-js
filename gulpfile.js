@@ -13,6 +13,7 @@ const childProcess = require('child_process')
 const del = require('del')
 const fs = require('fs')
 const gulp = require('gulp')
+const runSequence = require('run-sequence')
 
 const BUILD_OUTPUT_DIR = 'build'
 const FEATURES_DIR = 'features'
@@ -107,7 +108,6 @@ gulp.task('acceptance-test:server', () => {
 })
 
 gulp.task('acceptance-test', (done) => {
-  const runSequence = require('run-sequence')
   runSequence('acceptance-test:server', 'acceptance-test:client', done)
 })
 
@@ -157,8 +157,12 @@ gulp.task('compile:server', ['compile:server:jison', 'compile:server:js'])
 
 gulp.task('compile', ['compile:client', 'compile:server'])
 
-gulp.task('dev', ['lint', 'unit-test'], () => {
-  return gulp.watch([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['lint', 'unit-test'])
+gulp.task('dev:_rebuild', (done) => {
+  return runSequence('clean', ['lint', 'unit-test'], 'dist', done)
+})
+
+gulp.task('dev', ['dev:_rebuild'], () => {
+  return gulp.watch([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['dev:_rebuild'])
 })
 
 gulp.task('dist:client', () => {
