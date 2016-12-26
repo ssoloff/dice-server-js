@@ -307,7 +307,7 @@ gulp.task('server:dev', ['dev:_rebuild:with-tests'], () => {
   })
 })
 
-gulp.task('start-server', (done) => {
+gulp.task('server:start', (done) => {
   const child = childProcess
     .spawn(
       process.argv[0], [
@@ -331,7 +331,7 @@ gulp.task('start-server', (done) => {
   done()
 })
 
-gulp.task('stop-server', () => {
+gulp.task('server:stop', () => {
   const pid = fs.readFileSync(SERVER_PID, {
     encoding: SERVER_PID_ENCODING
   })

@@ -24,12 +24,12 @@ install:
 script:
   - gulp unit-test-with-coverage
   - gulp dist
-  - gulp start-server
+  - gulp server:start
   - gulp acceptance-test:server
   - SELENIUM_BROWSER=phantomjs gulp acceptance-test:client
   - SELENIUM_BROWSER=chrome gulp acceptance-test:client
   - SELENIUM_BROWSER=firefox gulp acceptance-test:client
-  - gulp stop-server
+  - gulp server:stop
   - gulp lint
   - gulp docs
 after_script:
