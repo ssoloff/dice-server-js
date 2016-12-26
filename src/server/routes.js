@@ -11,10 +11,10 @@
 const bodyParser = require('body-parser')
 
 module.exports = (app, privateKey, publicKey) => {
-  const evaluateExpressionPath = '/expression/evaluate'
-  const issueTicketPath = '/ticket/issue'
-  const redeemTicketPath = '/ticket/redeem'
-  const validateRedeemedTicketPath = '/ticket/validate-redeemed'
+  const evaluateExpressionPath = '/api/expression/evaluate'
+  const issueTicketPath = '/api/ticket/issue'
+  const redeemTicketPath = '/api/ticket/redeem'
+  const validateRedeemedTicketPath = '/api/ticket/validate-redeemed'
 
   const evaluateExpressionController = require('./services/evaluate-expression/evaluate-expression-controller')
     .create({

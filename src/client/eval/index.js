@@ -43,7 +43,7 @@ function evaluateExpression(expressionText) {
     }
 
     $.postJSON(
-        '/expression/evaluate',
+        '/api/expression/evaluate',
         requestBody,
         onEvaluateExpressionResponseSuccess,
         onEvaluateExpressionResponseError

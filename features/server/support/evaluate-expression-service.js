@@ -20,7 +20,7 @@ class EvaluateExpressionService {
     const requestData = {
       body: this.requestBody,
       json: true,
-      uri: 'http://localhost:3000/expression/evaluate'
+      uri: 'http://localhost:3000/api/expression/evaluate'
     }
     req.post(requestData, (error, response, body) => {
       if (!error) {

@@ -22,7 +22,7 @@ class IssueTicketService {
     const requestData = {
       body: this.requestBody,
       json: true,
-      uri: 'http://localhost:3000/ticket/issue'
+      uri: 'http://localhost:3000/api/ticket/issue'
     }
     req.post(requestData, (error, response, body) => {
       if (!error) {
