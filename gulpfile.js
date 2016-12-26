@@ -158,11 +158,12 @@ gulp.task('compile:server', ['compile:server:jison', 'compile:server:js'])
 gulp.task('compile', ['compile:client', 'compile:server'])
 
 gulp.task('dev:_rebuild', (done) => {
-  return runSequence('clean', ['lint', 'unit-test'], 'dist', done)
+  return runSequence('clean', 'unit-test', 'dist', done)
 })
 
-gulp.task('dev', ['dev:_rebuild'], () => {
-  return gulp.watch([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['dev:_rebuild'])
+gulp.task('dev', ['dev:_rebuild', 'lint'], () => {
+  gulp.watch([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['dev:_rebuild'])
+  gulp.watch(['gulpfile.js', `${FEATURES_DIR}/**/*`, `${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['lint'])
 })
 
 gulp.task('dist:client', () => {
