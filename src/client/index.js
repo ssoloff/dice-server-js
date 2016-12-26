@@ -15,7 +15,7 @@
  */
 
 var $ = require('jquery'),
-    mainShell = require('./shell/index');
+    mainShell = require('./shell');
 
 function initModule($container) {
     installStylesheets();

@@ -15,9 +15,9 @@
 'use strict';
 
 var fs = require('fs'),
-    mainEval = require('../eval/index'),
-    mainHistory = require('../history/index'),
-    mainSim = require('../sim/index');
+    mainEval = require('../eval'),
+    mainHistory = require('../history'),
+    mainSim = require('../sim');
 
 /**
  * Initializes the shell module.
