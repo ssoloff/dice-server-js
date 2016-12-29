@@ -9,9 +9,11 @@
 'use strict'
 
 const EvaluateExpressionService = require('../../support/evaluate-expression-service')
+const objectUtil = require('../../support/object-util')
 
 function World () {
   this.createEvaluateExpressionService = () => new EvaluateExpressionService()
+  this.objectUtil = objectUtil
 }
 
 module.exports = function () {

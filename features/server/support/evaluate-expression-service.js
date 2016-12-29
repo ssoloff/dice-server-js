@@ -14,6 +14,7 @@ const security = require('../../common/support/security')
 class EvaluateExpressionService {
   constructor () {
     this.requestBody = {}
+    this.requestId = null
   }
 
   call (callback) {
@@ -22,9 +23,15 @@ class EvaluateExpressionService {
       json: true,
       uri: 'http://localhost:3000/api/expression/evaluate'
     }
+    if (this.requestId) {
+      requestData.headers = {
+        'X-Request-ID': this.requestId
+      }
+    }
+
     req.post(requestData, (error, response, body) => {
       if (!error) {
-        callback(response.statusCode, body)
+        callback(response, body)
       } else {
         throw new Error(error)
       }
@@ -46,6 +53,10 @@ class EvaluateExpressionService {
     }
     randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content)
     this.requestBody.randomNumberGenerator = randomNumberGenerator
+  }
+
+  setRequestId (requestId) {
+    this.requestId = requestId
   }
 }
 
