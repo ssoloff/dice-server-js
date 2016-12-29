@@ -18,10 +18,7 @@ module.exports = function () {
     this.issueTicketService = this.createIssueTicketService()
     this.redeemTicketService = this.createRedeemTicketService()
     this.validateRedeemedTicketService = this.createValidateRedeemedTicketService()
-    this.response = {
-      body: null,
-      status: null
-    }
+    this.response = null
     this.redeemedTicket = {
       forceInvalidSignature: false
     }
@@ -40,18 +37,18 @@ module.exports = function () {
   })
 
   this.When(/^the validate redeemed ticket service is invoked$/, function (callback) {
-    this.issueTicketService.call((responseStatus, responseBody) => {
-      const issueTicketResponseBody = responseBody
+    this.issueTicketService.call((response) => {
+      const issueTicketResponseBody = response.body
 
-      if (responseStatus !== httpStatus.OK) {
+      if (response.statusCode !== httpStatus.OK) {
         throw new Error('failed to issue ticket')
       }
 
       this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody)
-      this.redeemTicketService.call((responseStatus, responseBody) => {
-        const redeemTicketResponseBody = responseBody
+      this.redeemTicketService.call((response) => {
+        const redeemTicketResponseBody = response.body
 
-        if (responseStatus !== httpStatus.OK) {
+        if (response.statusCode !== httpStatus.OK) {
           throw new Error('failed to redeem ticket')
         }
 
@@ -60,9 +57,8 @@ module.exports = function () {
           redeemTicketResponseBody.redeemedTicket.content.description += '...'
         }
         this.validateRedeemedTicketService.setRequestFromRedeemTicketResponseBody(redeemTicketResponseBody)
-        this.validateRedeemedTicketService.call((responseStatus, responseBody) => {
-          this.response.status = responseStatus
-          this.response.body = responseBody
+        this.validateRedeemedTicketService.call((response) => {
+          this.response = response
           callback()
         })
       })
@@ -70,11 +66,11 @@ module.exports = function () {
   })
 
   this.Then(/^the response should indicate failure$/, function () {
-    expect(this.response.status).to.not.equal(httpStatus.OK)
+    expect(this.response.statusCode).to.not.equal(httpStatus.OK)
     expect(this.response.body.error).to.exist
   })
 
   this.Then(/^the response should indicate success$/, function () {
-    expect(this.response.status).to.equal(httpStatus.OK)
+    expect(this.response.statusCode).to.equal(httpStatus.OK)
   })
 }

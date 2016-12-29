@@ -29,9 +29,9 @@ class EvaluateExpressionService {
       }
     }
 
-    req.post(requestData, (error, response, body) => {
+    req.post(requestData, (error, response) => {
       if (!error) {
-        callback(response, body)
+        callback(response)
       } else {
         throw new Error(error)
       }

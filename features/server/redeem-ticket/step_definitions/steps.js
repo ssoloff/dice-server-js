@@ -17,10 +17,7 @@ module.exports = function () {
   this.Before(function (scenario, callback) {
     this.issueTicketService = this.createIssueTicketService()
     this.redeemTicketService = this.createRedeemTicketService()
-    this.response = {
-      body: null,
-      status: null
-    }
+    this.response = null
     this.previousResponse = null
     this.ticket = {
       description: null,
@@ -61,10 +58,10 @@ module.exports = function () {
   })
 
   this.When(/^the redeem ticket service is invoked$/, function (callback) {
-    this.issueTicketService.call((responseStatus, responseBody) => {
-      const issueTicketResponseBody = responseBody
+    this.issueTicketService.call((response) => {
+      const issueTicketResponseBody = response.body
 
-      if (responseStatus !== httpStatus.OK) {
+      if (response.statusCode !== httpStatus.OK) {
         throw new Error('failed to issue ticket')
       }
 
@@ -76,14 +73,13 @@ module.exports = function () {
       }
       this.redeemTicketService.setRequestFromIssueTicketResponseBody(issueTicketResponseBody)
 
-      const redeemTicketServiceResponseHandler = (responseStatus, responseBody) => {
-        this.response.status = responseStatus
-        this.response.body = responseBody
+      const redeemTicketServiceResponseHandler = (response) => {
+        this.response = response
         callback()
       }
       if (this.ticket.forceRedeemed) {
-        this.redeemTicketService.call(() => {
-          this.previousResponse = this.response
+        this.redeemTicketService.call((response) => {
+          this.previousResponse = response
           this.redeemTicketService.call(redeemTicketServiceResponseHandler)
         })
       } else {
@@ -119,15 +115,15 @@ module.exports = function () {
   })
 
   this.Then(/^the response should equal the previous response$/, function () {
-    expect(this.response).to.equal(this.previousResponse)
+    expect(this.response.body).to.deep.equal(this.previousResponse.body)
   })
 
   this.Then(/^the response should indicate failure$/, function () {
-    expect(this.response.status).to.not.equal(httpStatus.OK)
+    expect(this.response.statusCode).to.not.equal(httpStatus.OK)
     expect(this.response.body.error).to.exist
   })
 
   this.Then(/^the response should indicate success$/, function () {
-    expect(this.response.status).to.equal(httpStatus.OK)
+    expect(this.response.statusCode).to.equal(httpStatus.OK)
   })
 }

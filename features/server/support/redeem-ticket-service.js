@@ -22,9 +22,9 @@ class RedeemTicketService {
       json: true,
       uri: this.requestUrl
     }
-    req.post(requestData, (error, response, body) => {
+    req.post(requestData, (error, response) => {
       if (!error) {
-        callback(response.statusCode, body)
+        callback(response)
       } else {
         throw new Error(error)
       }

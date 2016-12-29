@@ -17,7 +17,6 @@ module.exports = function () {
   this.Before(function (scenario, callback) {
     this.evaluateExpressionService = this.createEvaluateExpressionService()
     this.response = null
-    this.responseBody = null
     callback()
   })
 
@@ -34,15 +33,14 @@ module.exports = function () {
   })
 
   this.When(/^the evaluate expression service is invoked$/, function (callback) {
-    this.evaluateExpressionService.call((response, responseBody) => {
+    this.evaluateExpressionService.call((response) => {
       this.response = response
-      this.responseBody = responseBody
       callback()
     })
   })
 
   this.Then(/^the response should be$/, function (jsonResponse) {
-    expect(this.responseBody).to.deep.equal(JSON.parse(jsonResponse))
+    expect(this.response.body).to.deep.equal(JSON.parse(jsonResponse))
   })
 
   this.Then(/^the response should contain the correlation ID "([^"]+)"$/, function (correlationId) {
@@ -50,20 +48,20 @@ module.exports = function () {
   })
 
   this.Then(/^the response should contain the die roll results "(.*)"$/, function (jsonDieRollResults) {
-    expect(this.responseBody.dieRollResults).to.deep.equal(JSON.parse(jsonDieRollResults))
+    expect(this.response.body.dieRollResults).to.deep.equal(JSON.parse(jsonDieRollResults))
   })
 
   this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-    expect(this.responseBody.expressionResult.text).to.equal(expressionResultText)
+    expect(this.response.body.expressionResult.text).to.equal(expressionResultText)
   })
 
   this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
-    expect(this.responseBody.expressionResult.value).to.equal(parseFloat(expressionResultValue))
+    expect(this.response.body.expressionResult.value).to.equal(parseFloat(expressionResultValue))
   })
 
   this.Then(/^the response should indicate failure$/, function () {
     expect(this.response.statusCode).to.not.equal(httpStatus.OK)
-    expect(this.responseBody.error).to.exist
+    expect(this.response.body.error).to.exist
   })
 
   this.Then(/^the response should indicate success$/, function () {

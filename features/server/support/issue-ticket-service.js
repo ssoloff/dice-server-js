@@ -24,9 +24,9 @@ class IssueTicketService {
       json: true,
       uri: 'http://localhost:3000/api/ticket/issue'
     }
-    req.post(requestData, (error, response, body) => {
+    req.post(requestData, (error, response) => {
       if (!error) {
-        callback(response.statusCode, body)
+        callback(response)
       } else {
         throw new Error(error)
       }

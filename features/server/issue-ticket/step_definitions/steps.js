@@ -16,10 +16,7 @@ const expect = chai.expect
 module.exports = function () {
   this.Before(function (scenario, callback) {
     this.issueTicketService = this.createIssueTicketService()
-    this.response = {
-      body: null,
-      status: null
-    }
+    this.response = null
     callback()
   })
 
@@ -36,9 +33,8 @@ module.exports = function () {
   })
 
   this.When(/^the issue ticket service is invoked$/, function (callback) {
-    this.issueTicketService.call((responseStatus, responseBody) => {
-      this.response.status = responseStatus
-      this.response.body = responseBody
+    this.issueTicketService.call((response) => {
+      this.response = response
       callback()
     })
   })
@@ -72,11 +68,11 @@ module.exports = function () {
   )
 
   this.Then(/^the response should indicate failure$/, function () {
-    expect(this.response.status).to.not.equal(httpStatus.OK)
+    expect(this.response.statusCode).to.not.equal(httpStatus.OK)
     expect(this.response.body.error).to.exist
   })
 
   this.Then(/^the response should indicate success$/, function () {
-    expect(this.response.status).to.equal(httpStatus.OK)
+    expect(this.response.statusCode).to.equal(httpStatus.OK)
   })
 }
