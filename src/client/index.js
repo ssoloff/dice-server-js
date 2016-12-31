@@ -35,17 +35,14 @@ function installLocalJQueryPlugins() {
     };
 
     $.extend({
-        postJSON: function (url, data, successCallback, errorCallback, headers) {
-            return this.ajax({
+        postJSON: function (url, data, settings) {
+            return this.ajax($.extend({
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data),
                 dataType: 'json',
-                error: errorCallback,
-                headers: headers,
-                success: successCallback,
                 type: 'POST',
                 url: url
-            });
+            }, settings));
         }
     });
 }

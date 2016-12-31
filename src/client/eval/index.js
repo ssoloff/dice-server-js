@@ -44,15 +44,13 @@ function evaluateExpression(expressionText) {
         return;
     }
 
-    $.postJSON(
-        '/api/expression/evaluate',
-        createRequestBody(expressionText),
-        onEvaluateExpressionResponseSuccess,
-        onEvaluateExpressionResponseError,
-        {
+    $.postJSON('/api/expression/evaluate', createRequestBody(expressionText), {
+        success: onEvaluateExpressionResponseSuccess,
+        error: onEvaluateExpressionResponseError,
+        headers: {
             'X-Request-ID': newRequestId()
         }
-    );
+    });
 }
 
 function getExpressionText() {
