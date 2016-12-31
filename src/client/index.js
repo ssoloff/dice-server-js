@@ -26,13 +26,15 @@ function initModule($container) {
 }
 
 function installLocalJQueryPlugins() {
-    $.fn.visible = function () {
-        return this.css('visibility', 'visible');
-    };
+    $.fn.extend({
+        invisible: function () {
+            return this.css('visibility', 'hidden');
+        },
 
-    $.fn.invisible = function () {
-        return this.css('visibility', 'hidden');
-    };
+        visible: function () {
+            return this.css('visibility', 'visible');
+        }
+    });
 
     $.extend({
         postJSON: function (url, data, settings) {
