@@ -13,6 +13,7 @@ const webdriver = require('selenium-webdriver')
 
 const By = webdriver.By
 const Key = webdriver.Key
+const promise = webdriver.promise
 const until = webdriver.until
 
 const ResultsTableColumns = {
@@ -26,6 +27,8 @@ const ResultsTableColumns = {
 const Locators = {
   allExpressionResultRows: () => By.css('#main-history-expressionResults tr'),
 
+  correlationId: () => By.id('main-eval-correlationId'),
+
   errorMessage: () => By.id('main-eval-errorMessage'),
 
   evaluate: () => By.id('main-eval-evaluate'),
@@ -38,13 +41,15 @@ const Locators = {
 
   help: () => By.id('main-eval-help'),
 
+  randomNumberGeneratorJson: () => By.id('main-eval-randomNumberGeneratorJson'),
+
   reevaluateExpressionResult: () => By.name('reevaluate'),
 
   removeAllResults: () => By.id('main-history-removeAllResults'),
 
   removeExpressionResult: () => By.name('remove'),
 
-  randomNumberGeneratorJson: () => By.id('main-eval-randomNumberGeneratorJson'),
+  requestId: () => By.id('main-eval-requestId'),
 
   roundingMode: (roundingMode) => By.id(`main-eval-roundingMode${roundingMode}`),
 
@@ -161,6 +166,21 @@ class HomePage {
 
   typeExpressionText (expressionText) {
     return this.driver.findElement(Locators.expressionText()).sendKeys(expressionText)
+  }
+
+  waitUntilResponseReceived () {
+    const untilResponseReceived = new webdriver.Condition('until response received', () =>
+      promise.all([
+        this.driver.findElement(Locators.requestId()).getText(),
+        this.driver.findElement(Locators.correlationId()).getText()
+      ])
+      .then((results) => {
+        const requestId = results[0]
+        const correlationId = results[1]
+        return requestId === correlationId ? true : null
+      })
+    )
+    return this._wait(untilResponseReceived)
   }
 
   waitUntilResultRowCountIs (rowCount) {

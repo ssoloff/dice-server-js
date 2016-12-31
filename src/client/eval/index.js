@@ -23,30 +23,35 @@ function clearExpressionText() {
     jQueryMap.$expressionText.val('');
 }
 
-function evaluateExpression(expressionText) {
+function createRequestBody(expressionText) {
     var randomNumberGeneratorJson,
-        requestBody;
-
-    if (!expressionText) {
-        return;
-    }
-
-    requestBody = {
-        expression: {
-            text: expressionText
-        }
-    };
+        requestBody = {
+            expression: {
+                text: expressionText
+            }
+        };
 
     randomNumberGeneratorJson = jQueryMap.$randomNumberGeneratorJson.val();
     if (randomNumberGeneratorJson) {
         requestBody.randomNumberGenerator = JSON.parse(randomNumberGeneratorJson);
     }
 
+    return requestBody;
+}
+
+function evaluateExpression(expressionText) {
+    if (!expressionText) {
+        return;
+    }
+
     $.postJSON(
         '/api/expression/evaluate',
-        requestBody,
+        createRequestBody(expressionText),
         onEvaluateExpressionResponseSuccess,
-        onEvaluateExpressionResponseError
+        onEvaluateExpressionResponseError,
+        {
+            'X-Request-ID': newRequestId()
+        }
     );
 }
 
@@ -81,11 +86,13 @@ function initController() {
 function initJQueryMap($container) {
     jQueryMap = {
         $container: $container,
+        $correlationId: $container.find('#main-eval-correlationId'),
         $errorMessage: $container.find('#main-eval-errorMessage'),
         $expressionForm: $container.find('#main-eval-expressionForm'),
         $expressionText: $container.find('#main-eval-expressionText'),
         $help: $container.find('#main-eval-help'),
         $randomNumberGeneratorJson: $container.find('#main-eval-randomNumberGeneratorJson'),
+        $requestId: $container.find('#main-eval-requestId'),
         $toggleHelp: $container.find('#main-eval-toggleHelp')
     };
 }
@@ -114,6 +121,21 @@ function initView() {
     hideErrorMessage();
 }
 
+function newRequestId() {
+    var requestId;
+
+    function idFragment() {
+        return Math.random().toString(36).substring(2, 15);
+    }
+
+    requestId = idFragment() + idFragment();
+
+    jQueryMap.$requestId.val(requestId);
+    jQueryMap.$correlationId.val('');
+
+    return requestId;
+}
+
 function onEvaluateExpression(event, expressionText) {
     evaluateExpression(expressionText);
 }
@@ -124,13 +146,24 @@ function onEvaluateExpressionResponseError(jqxhr) {
     if (responseBody && responseBody.error) {
         showErrorMessage(responseBody.error.message);
     }
+
+    setCorrelationId(jqxhr);
 }
 
-function onEvaluateExpressionResponseSuccess(responseBody) {
+function onEvaluateExpressionResponseSuccess(responseBody, textStatus, jqxhr) {
     clearExpressionText();
     hideErrorMessage();
+    setCorrelationId(jqxhr);
 
     $.gevent.publish('main-expressionevaluated', [responseBody]);
+}
+
+function setCorrelationId(jqxhr) {
+    var correlationId = jqxhr.getResponseHeader('X-Correlation-ID');
+
+    if (correlationId) {
+        jQueryMap.$correlationId.val(correlationId);
+    }
 }
 
 function showErrorMessage(message) {

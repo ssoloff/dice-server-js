@@ -15,7 +15,6 @@ const expect = chai.expect
 module.exports = function () {
   this.Before(function (scenario, callback) {
     this.homePage = this.createHomePage()
-    this.resultRowCount = 0
     callback()
   })
 
@@ -32,20 +31,15 @@ module.exports = function () {
   })
 
   this.When(/^the expression "(.*)" is entered$/, function (expression) {
-    return this.homePage.typeExpressionText(expression)
+    return this.homePage.clearExpressionText()
+      .then(() => this.homePage.typeExpressionText(expression))
   })
 
-  this.When(/^the expression "(.*)" is evaluated( successfully)?$/, function (expression, waitForSuccessfulEvaluation) {
-    let promise = this.homePage.clearExpressionText()
+  this.When(/^the expression "(.*)" is evaluated$/, function (expression) {
+    return this.homePage.clearExpressionText()
       .then(() => this.homePage.typeExpressionText(expression))
       .then(() => this.homePage.evaluate())
-
-    if (waitForSuccessfulEvaluation) {
-      this.resultRowCount += 1
-      promise = promise.then(this.homePage.waitUntilResultRowCountIs(this.resultRowCount))
-    }
-
-    return promise
+      .then(() => this.homePage.waitUntilResponseReceived())
   })
 
   this.When(/^the(?: hide)? help link is clicked$/, function () {
@@ -134,6 +128,10 @@ module.exports = function () {
       this.homePage.getHelpLinkText()
         .then((text) => expect(text).to.equal(helpLinkText))
     )
+  })
+
+  this.When(/^the results table contains (\d+) rows?$/, function (rowCount) {
+    return this.homePage.waitUntilResultRowCountIs(Number(rowCount))
   })
 
   this.Then(/^the results table should be empty$/, function () {
