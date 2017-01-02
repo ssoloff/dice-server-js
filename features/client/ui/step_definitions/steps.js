@@ -15,6 +15,7 @@ const expect = chai.expect
 module.exports = function () {
   this.Before(function (scenario, callback) {
     this.homePage = this.createHomePage()
+    this.resultRowCount = 0
     callback()
   })
 
@@ -35,19 +36,32 @@ module.exports = function () {
       .then(() => this.homePage.typeExpressionText(expression))
   })
 
-  this.When(/^the expression "(.*)" is evaluated$/, function (expression) {
-    return this.homePage.clearExpressionText()
-      .then(() => this.homePage.typeExpressionText(expression))
-      .then(() => this.homePage.evaluate())
-      .then(() => this.homePage.waitUntilResponseReceived())
-  })
+  this.When(
+    /^the expression "(.*)" is evaluated( and added to the results table)?$/,
+    function (expression, waitForResultRow) {
+      let promise = this.homePage.clearExpressionText()
+        .then(() => this.homePage.typeExpressionText(expression))
+        .then(() => this.homePage.evaluate())
+        .then(() => this.homePage.waitUntilResponseReceived())
+
+      if (waitForResultRow) {
+        this.resultRowCount += 1
+        promise = promise.then(() => this.homePage.waitUntilResultRowCountIs(this.resultRowCount))
+      }
+
+      return promise
+    }
+  )
 
   this.When(/^the(?: hide)? help link is clicked$/, function () {
     return this.homePage.toggleHelp()
   })
 
   this.When(/^the reevaluate button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (row) {
+    this.resultRowCount += 1
     return this.homePage.reevaluateResultAtRow(row)
+      .then(() => this.homePage.waitUntilResponseReceived())
+      .then(() => this.homePage.waitUntilResultRowCountIs(this.resultRowCount))
   })
 
   this.When(/^the remove all button is clicked$/, function () {
@@ -128,10 +142,6 @@ module.exports = function () {
       this.homePage.getHelpLinkText()
         .then((text) => expect(text).to.equal(helpLinkText))
     )
-  })
-
-  this.When(/^the results table contains (\d+) rows?$/, function (rowCount) {
-    return this.homePage.waitUntilResultRowCountIs(Number(rowCount))
   })
 
   this.Then(/^the results table should be empty$/, function () {

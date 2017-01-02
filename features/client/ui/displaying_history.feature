@@ -16,9 +16,8 @@ Background: The home page is open and produces deterministic results
     And the random number generator name is "constantMax"
 
 Scenario: Results table keeps a history of past evaluations
-  When the expression "5" is evaluated
-    And the expression "6" is evaluated
-    And the results table contains 2 rows
+  When the expression "5" is evaluated and added to the results table
+    And the expression "6" is evaluated and added to the results table
   Then the 1st expression text should be "6"
     And the 1st expression canonical text should be "6"
     And the 1st expression result text should be "6"
@@ -29,16 +28,14 @@ Scenario: Results table keeps a history of past evaluations
     And the 2nd expression result value should be "5"
 
 Scenario: Removing all results from the results table
-  When the expression "5" is evaluated
-    And the expression "6" is evaluated
-    And the results table contains 2 rows
+  When the expression "5" is evaluated and added to the results table
+    And the expression "6" is evaluated and added to the results table
     And the remove all button is clicked
   Then the results table should be empty
 
 Scenario: Reevaluating a result in the results table
-  When the expression "5" is evaluated
+  When the expression "5" is evaluated and added to the results table
     And the reevaluate button on the 1st row is clicked
-    And the results table contains 2 rows
   Then the 1st expression text should be "5"
     And the 1st expression canonical text should be "5"
     And the 1st expression result text should be "5"
@@ -49,9 +46,8 @@ Scenario: Reevaluating a result in the results table
     And the 2nd expression result value should be "5"
 
 Scenario: Removing a result from the results table
-  When the expression "5" is evaluated
-    And the expression "6" is evaluated
-    And the results table contains 2 rows
+  When the expression "5" is evaluated and added to the results table
+    And the expression "6" is evaluated and added to the results table
     And the remove button on the 1st row is clicked
   Then the 1st expression text should be "5"
     And the 1st expression canonical text should be "5"
