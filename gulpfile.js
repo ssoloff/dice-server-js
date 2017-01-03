@@ -302,7 +302,7 @@ gulp.task('server:dev:_browser-sync', ['server:dev:_nodemon'], () => {
     notify: true,
     port: 5000,
     proxy: 'localhost:3000'
-  });
+  })
 })
 
 gulp.task('server:dev:_nodemon', ['dev:_rebuild:with-tests'], (done) => {
