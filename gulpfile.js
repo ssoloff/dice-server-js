@@ -9,6 +9,7 @@
 'use strict'
 
 const _ = require('underscore')
+const browserSync = require('browser-sync')
 const childProcess = require('child_process')
 const del = require('del')
 const fs = require('fs')
@@ -296,16 +297,40 @@ gulp.task('publish-coverage', () => {
     .pipe(coveralls())
 })
 
-gulp.task('server:dev', ['dev:_rebuild:with-tests'], () => {
+gulp.task('server:dev:_browser-sync', ['server:dev:_nodemon'], () => {
+  browserSync({
+    notify: true,
+    port: 5000,
+    proxy: 'localhost:3000'
+  });
+})
+
+gulp.task('server:dev:_nodemon', ['dev:_rebuild:with-tests'], (done) => {
   const nodemon = require('gulp-nodemon')
-  nodemon({
+  let called = false
+  return nodemon({
     args: [`${SERVER_TEST_DIR}/test-keys/private-key.pem`, `${SERVER_TEST_DIR}/test-keys/public-key.pem`],
-    ext: 'jison js',
+    ext: 'css html jison js',
     script: `${DIST_OUTPUT_DIR}/server.js`,
     tasks: ['dev:_rebuild:without-tests'],
-    watch: [`${SERVER_SRC_DIR}/*`]
+    watch: [`${SRC_DIR}/*`]
+  })
+  .on('start', () => {
+    if (!called) {
+      called = true
+      done()
+    }
+  })
+  .on('restart', () => {
+    setTimeout(() => {
+      browserSync.reload({
+        stream: false
+      })
+    }, 1000)
   })
 })
+
+gulp.task('server:dev', ['server:dev:_browser-sync'])
 
 gulp.task('server:start', (done) => {
   const child = childProcess
