@@ -123,9 +123,8 @@ gulp.task('compile:client:html', () => {
 
 gulp.task('compile:client:js', () => {
   const browserify = require('browserify')
-  const glob = require('glob')
   const source = require('vinyl-source-stream')
-  return browserify(glob.sync(`${CLIENT_SRC_DIR}/**/*.js`))
+  return browserify([`${CLIENT_SRC_DIR}/index.js`])
     .transform('browserify-css')
     .transform('brfs')
     .bundle()
