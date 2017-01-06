@@ -64,6 +64,4 @@ function installVendorJQueryPlugins() {
 
 module.exports = {};
 
-$(function () {
-    initModule($('#main'));
-});
+initModule($('#main'));
