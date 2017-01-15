@@ -21,4 +21,4 @@ const privateKey = fs.readFileSync(process.argv[2])
 const publicKey = fs.readFileSync(process.argv[3])
 require('./routes')(app, privateKey, publicKey)
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
