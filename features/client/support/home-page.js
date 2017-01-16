@@ -8,6 +8,7 @@
 
 'use strict'
 
+const config = require('../../common/support/config')
 const security = require('../../common/support/security')
 const webdriver = require('selenium-webdriver')
 
@@ -118,7 +119,7 @@ class HomePage {
   }
 
   open () {
-    return this.driver.get('http://localhost:3000/')
+    return this.driver.get(`${config.baseUri}/`)
   }
 
   reevaluateResultAtRow (row) {

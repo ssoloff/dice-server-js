@@ -8,6 +8,7 @@
 
 'use strict'
 
+const config = require('../../common/support/config')
 const req = require('request')
 const security = require('../../common/support/security')
 
@@ -22,7 +23,7 @@ class IssueTicketService {
     const requestData = {
       body: this.requestBody,
       json: true,
-      uri: 'http://localhost:3000/api/ticket/issue'
+      uri: `${config.baseUri}/api/ticket/issue`
     }
     req.post(requestData, (error, response) => {
       if (!error) {

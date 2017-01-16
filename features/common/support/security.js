@@ -8,16 +8,11 @@
 
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
+const config = require('./config')
 const security = require('../../../src/server/util/security')
 
 module.exports = {
   createSignature (payload) {
-    return security.createSignature(
-      payload,
-      fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/private-key.pem')),
-      fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem'))
-    )
+    return security.createSignature(payload, config.privateKey, config.publicKey)
   }
 }

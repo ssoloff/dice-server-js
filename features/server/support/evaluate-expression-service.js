@@ -8,6 +8,7 @@
 
 'use strict'
 
+const config = require('../../common/support/config')
 const req = require('request')
 const security = require('../../common/support/security')
 
@@ -21,7 +22,7 @@ class EvaluateExpressionService {
     const requestData = {
       body: this.requestBody,
       json: true,
-      uri: 'http://localhost:3000/api/expression/evaluate'
+      uri: `${config.baseUri}/api/expression/evaluate`
     }
     if (this.requestId) {
       requestData.headers = {
