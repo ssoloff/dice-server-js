@@ -5,6 +5,27 @@
   "keywords": [
     "dice"
   ],
+  "license": "MIT",
+  "homepage": "https://github.com/ssoloff/dice-server-js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ssoloff/dice-server-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ssoloff/dice-server-js/issues"
+  },
+  "author": {
+    "name": "Steven Soloff",
+    "email": "steven.soloff@gmail.com"
+  },
+  "contributors": [],
+  "engines": {
+    "node": ">= 6.9.2"
+  },
+  "files": [
+    "build/compile/src/server",
+    "build/compile/support"
+  ],
   "dependencies": {
     "base64url": "~2.0.0",
     "body-parser": "~1.15.2",
@@ -57,26 +78,5 @@
     "stream-to-promise": "~2.2.0",
     "through2": "~2.0.3",
     "vinyl-source-stream": "~1.1.0"
-  },
-  "engines": {
-    "node": ">= 6.9.2"
-  },
-  "files": [
-    "build/compile/src/server",
-    "build/compile/support"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ssoloff/dice-server-js.git"
-  },
-  "author": {
-    "name": "Steven Soloff",
-    "email": "steven.soloff@gmail.com"
-  },
-  "contributors": [],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ssoloff/dice-server-js/issues"
-  },
-  "homepage": "https://github.com/ssoloff/dice-server-js"
+  }
 }
