@@ -8,6 +8,7 @@
 
 'use strict'
 
+const config = require('../../../common/support/config')
 const EvaluateExpressionService = require('../../support/evaluate-expression-service')
 const objectUtil = require('../../support/object-util')
 
@@ -18,4 +19,5 @@ function World () {
 
 module.exports = function () {
   this.World = World
+  config.initCucumberDefaultTimeout(this)
 }

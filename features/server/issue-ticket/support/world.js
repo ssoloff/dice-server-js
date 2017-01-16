@@ -8,6 +8,7 @@
 
 'use strict'
 
+const config = require('../../../common/support/config')
 const IssueTicketService = require('../../support/issue-ticket-service')
 
 function World () {
@@ -16,4 +17,5 @@ function World () {
 
 module.exports = function () {
   this.World = World
+  config.initCucumberDefaultTimeout(this)
 }

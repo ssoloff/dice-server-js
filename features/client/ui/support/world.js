@@ -8,6 +8,7 @@
 
 'use strict'
 
+const config = require('../../../common/support/config')
 const driver = require('./driver')
 const HomePage = require('../../support/home-page')
 
@@ -17,4 +18,5 @@ function World () {
 
 module.exports = function () {
   this.World = World
+  config.initCucumberDefaultTimeout(this)
 }

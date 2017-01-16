@@ -8,6 +8,7 @@
 
 'use strict'
 
+const config = require('../../../common/support/config')
 const IssueTicketService = require('../../support/issue-ticket-service')
 const RedeemTicketService = require('../../support/redeem-ticket-service')
 const ValidateRedeemedTicketService = require('../../support/validate-redeemed-ticket-service')
@@ -20,4 +21,5 @@ function World () {
 
 module.exports = function () {
   this.World = World
+  config.initCucumberDefaultTimeout(this)
 }

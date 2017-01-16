@@ -16,5 +16,11 @@ module.exports = {
   privateKey: process.env.DSJS_PRIVATE_KEY ||
       fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/private-key.pem')),
   publicKey: process.env.DSJS_PUBLIC_KEY ||
-      fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem'))
+      fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem')),
+
+  initCucumberDefaultTimeout (cucumber) {
+    if (process.env.DSJS_CUCUMBER_DEFAULT_TIMEOUT) {
+      cucumber.setDefaultTimeout(parseInt(process.env.DSJS_CUCUMBER_DEFAULT_TIMEOUT, 10))
+    }
+  }
 }
