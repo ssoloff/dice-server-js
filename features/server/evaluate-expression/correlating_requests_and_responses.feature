@@ -12,7 +12,7 @@ Feature: Correlating requests and responses
   I want the response to specify the originating request ID as its correlation ID
 
 Scenario: Correlating requests and responses
-  Given a request with the ID "aaaa-bbbb-cccc"
+  Given a request with the ID "aaaaabbbbbcccccddddd"
     And a request with the expression "5"
   When the evaluate expression service is invoked
-  Then the response should contain the correlation ID "aaaa-bbbb-cccc"
+  Then the response should contain the correlation ID "aaaaabbbbbcccccddddd"
