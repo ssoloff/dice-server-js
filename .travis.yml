@@ -42,3 +42,5 @@ deploy:
   on:
     repo: ssoloff/dice-server-js
     branch: deploy-to-heroku
+after_deploy:
+- DSJS_CUCUMBER_DEFAULT_TIMEOUT=30000 DSJS_BASE_URI=https://dice-server-js.herokuapp.com gulp acceptance-test
