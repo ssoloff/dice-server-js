@@ -41,6 +41,6 @@ deploy:
   skip_cleanup: true
   on:
     repo: ssoloff/dice-server-js
-    branch: deploy-to-heroku
+    branch: master
 after_deploy:
 - DSJS_CUCUMBER_DEFAULT_TIMEOUT=30000 DSJS_BASE_URI=https://dice-server-js.herokuapp.com DSJS_PRIVATE_KEY=$DSJS_HEROKU_PRIVATE_KEY DSJS_PUBLIC_KEY=$DSJS_HEROKU_PUBLIC_KEY gulp acceptance-test
