@@ -39,9 +39,10 @@ deploy:
   api_key:
     secure: tCEcG1Q9gnoWKE9dl6qfeeAZFgzz0N3VsJD/f0XyStYv4WGIoScSrKoYk9gO+Y+plGe0nACNGafibMK2FyePDPdUgiQXCv9N7uQ29G863X0tCwS9LK9H2qSYeRxV+36T3sEbn9FLDoyTi+emv2njwgqElcqRKYj/Rhmx+5TmQfBJ0h8heRfTeH7a/wRfxAsD4xvoNQKxZ2IG3JVAKZGycW4PCBw03LGEYI/Pe1fpEwCLCKGvoCMDj6PHCBeDM3BbqeoxHpKM8+WQggyhV67T+i0N086aZnoDvz/aQortkhRHqW4IWyYB2utAOFTtrKkq3GaMJZ+eZqVWAZfJ8BwxAjpSaseW2l3Zuhj8SLsCTPUVO8HHFMq/l+NRaxkpVy4TZjBBJz1e4Yq5YYe8L9nWPtlWz7uBdkk/AvN9OMOVoAg5m1Xz9ro99r2Pd/RV6caSPLOChq4vgHeHymDuG3/rJhCM7yoDp+5JB2/njKH8ESjDd9lYC0jcvI58GjbQn/uLdqzWspjTNmwKi8BC189K4zRp6ErI5TG7hXfAsPP9EkEqmCz0yoKIkAefxTrsWr4iMxPD0AdRG/LGRUm3PsoINXsnT4PMieb6O/RsP5O9QwEHAncW0uItsGsGoz1qwXPzJLVhPk0YhXN4ATJfElUUHJy2VAU9YFZ6/SNAR6xvJs0=
   skip_cleanup: true
-  app: dice-server-js-staging
+  app:
+    master: dice-server-js
+    develop: dice-server-js-staging
   on:
     repo: ssoloff/dice-server-js
-    branch: develop
 after_deploy:
-- DSJS_CUCUMBER_DEFAULT_TIMEOUT=30000 DSJS_BASE_URI=https://dice-server-js-staging.herokuapp.com DSJS_PRIVATE_KEY=$DSJS_HEROKU_PRIVATE_KEY DSJS_PUBLIC_KEY=$DSJS_HEROKU_PUBLIC_KEY gulp acceptance-test
+- "./tools/travis/test-deployment"

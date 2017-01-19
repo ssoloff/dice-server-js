@@ -1,0 +1,16 @@
+#!/bin/sh -x
+
+if [ x$TRAVIS_BRANCH = xmaster ]; then
+  DSJS_HEROKU_BASE_URI=https://dice-server-js.herokuapp.com
+elif [ x$TRAVIS_BRANCH = xdevelop ]; then
+  DSJS_HEROKU_BASE_URI=https://dice-server-js-staging.herokuapp.com
+else
+  echo "Cannot test deployment from branch '$TRAVIS_BRANCH'"
+  exit 1
+fi
+
+DSJS_CUCUMBER_DEFAULT_TIMEOUT=30000 \
+  DSJS_BASE_URI=$DSJS_HEROKU_BASE_URI \
+  DSJS_PRIVATE_KEY=$DSJS_HEROKU_PRIVATE_KEY \
+  DSJS_PUBLIC_KEY=$DSJS_HEROKU_PUBLIC_KEY \
+  gulp acceptance-test
