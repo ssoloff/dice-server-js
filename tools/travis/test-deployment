@@ -1,8 +1,8 @@
 #!/bin/sh -x
 
-if [ x$TRAVIS_BRANCH = xmaster ]; then
+if [ "$TRAVIS_BRANCH" = master ]; then
   DSJS_HEROKU_BASE_URI=https://dice-server-js.herokuapp.com
-elif [ x$TRAVIS_BRANCH = xdevelop ]; then
+elif [ "$TRAVIS_BRANCH" = develop ]; then
   DSJS_HEROKU_BASE_URI=https://dice-server-js-staging.herokuapp.com
 else
   echo "Cannot test deployment from branch '$TRAVIS_BRANCH'"
