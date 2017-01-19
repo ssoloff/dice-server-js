@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 if [ "$TRAVIS_BRANCH" = master ]; then
   DSJS_HEROKU_BASE_URI=https://dice-server-js.herokuapp.com
