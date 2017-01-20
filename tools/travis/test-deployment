@@ -12,6 +12,7 @@ else
   echo "Cannot test deployment from branch '$TRAVIS_BRANCH'"
   exit 1
 fi
+echo "Testing deployment at '$DSJS_HEROKU_BASE_URI'"
 
 DSJS_CUCUMBER_DEFAULT_TIMEOUT=30000 \
   DSJS_BASE_URI=$DSJS_HEROKU_BASE_URI \
