@@ -40,6 +40,12 @@ function exec (command, callback) {
   })
 }
 
+function injectVersion () {
+  const packageJson = require('./package.json')
+  const replace = require('gulp-replace')
+  return replace('{{VERSION}}', packageJson.version)
+}
+
 function runCucumber (path) {
   const cucumber = require('gulp-cucumber')
   const glob = require('glob')
@@ -129,6 +135,7 @@ gulp.task('compile:client:js', () => {
     .transform('brfs')
     .bundle()
     .pipe(source('bundle.js'))
+    .pipe(injectVersion())
     .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))
 })
 
