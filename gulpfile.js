@@ -40,7 +40,7 @@ function exec (command, callback) {
   })
 }
 
-function injectVersion() {
+function injectVersion () {
   const packageJson = require('./package.json')
   const replace = require('gulp-replace')
   return replace('{{VERSION}}', packageJson.version)
