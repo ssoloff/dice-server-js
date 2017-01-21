@@ -361,6 +361,12 @@
       "resolved": "https://registry.npmjs.org/binary-extensions/-/binary-extensions-1.8.0.tgz",
       "dev": true
     },
+    "binaryextensions": {
+      "version": "1.0.1",
+      "from": "binaryextensions@>=1.0.0 <1.1.0",
+      "resolved": "https://registry.npmjs.org/binaryextensions/-/binaryextensions-1.0.1.tgz",
+      "dev": true
+    },
     "bl": {
       "version": "1.1.2",
       "from": "bl@>=1.1.2 <1.2.0",
@@ -2487,6 +2493,12 @@
       "resolved": "https://registry.npmjs.org/gulp-nodemon/-/gulp-nodemon-2.2.1.tgz",
       "dev": true
     },
+    "gulp-replace": {
+      "version": "0.5.4",
+      "from": "gulp-replace@latest",
+      "resolved": "https://registry.npmjs.org/gulp-replace/-/gulp-replace-0.5.4.tgz",
+      "dev": true
+    },
     "gulp-util": {
       "version": "3.0.8",
       "from": "gulp-util@>=3.0.8 <3.1.0",
@@ -3250,6 +3262,12 @@
           "dev": true
         }
       }
+    },
+    "istextorbinary": {
+      "version": "1.0.2",
+      "from": "istextorbinary@1.0.2",
+      "resolved": "https://registry.npmjs.org/istextorbinary/-/istextorbinary-1.0.2.tgz",
+      "dev": true
     },
     "jasmine": {
       "version": "2.5.3",
@@ -4684,6 +4702,20 @@
       "resolved": "https://registry.npmjs.org/replace-ext/-/replace-ext-0.0.1.tgz",
       "dev": true
     },
+    "replacestream": {
+      "version": "4.0.2",
+      "from": "replacestream@>=4.0.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/replacestream/-/replacestream-4.0.2.tgz",
+      "dev": true,
+      "dependencies": {
+        "object-assign": {
+          "version": "4.1.1",
+          "from": "object-assign@>=4.0.1 <5.0.0",
+          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz",
+          "dev": true
+        }
+      }
+    },
     "request": {
       "version": "2.79.0",
       "from": "request@>=2.79.0 <2.80.0",
@@ -5474,6 +5506,12 @@
       "version": "0.2.0",
       "from": "text-table@>=0.2.0 <0.3.0",
       "resolved": "https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz",
+      "dev": true
+    },
+    "textextensions": {
+      "version": "1.0.2",
+      "from": "textextensions@>=1.0.0 <1.1.0",
+      "resolved": "https://registry.npmjs.org/textextensions/-/textextensions-1.0.2.tgz",
       "dev": true
     },
     "tfunk": {
