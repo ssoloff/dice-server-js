@@ -23,3 +23,4 @@ Scenario Outline: Enumerating die rolls
     | 1+1        | []                                                                             |
     | 1d6+1      | [{"sides": 6, "value": 6}]                                                     |
     | 2d6+1d4    | [{"sides": 6, "value": 6}, {"sides": 6, "value": 6}, {"sides": 4, "value": 4}] |
+    | d%         | [{"sides": 10, "value": 10}, {"sides": 10, "value": 10}]                       |
