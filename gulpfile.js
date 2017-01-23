@@ -40,10 +40,27 @@ function exec (command, callback) {
   })
 }
 
-function injectVersion () {
-  const packageJson = require('./package.json')
+function getLocalVersionQualifier (gitInfo) {
+  return `local-${gitInfo.branch}-${gitInfo.commit}`
+}
+
+function getTravisVersionQualifier () {
+  return `travis-${process.env.TRAVIS_BRANCH}-${process.env.TRAVIS_BUILD}`
+}
+
+function getVersionQualifier (gitInfo) {
+  if (process.env.TRAVIS === 'true') {
+    return getTravisVersionQualifier()
+  }
+
+  return getLocalVersionQualifier(gitInfo)
+}
+
+function injectVersion (gitInfo) {
+  const packageInfo = require('./package.json')
   const replace = require('gulp-replace')
-  return replace('{{VERSION}}', packageJson.version)
+  const versionQualifier = getVersionQualifier(gitInfo)
+  return replace('{{VERSION}}', `${packageInfo.version}-${versionQualifier}`)
 }
 
 function runCucumber (path) {
@@ -127,16 +144,26 @@ gulp.task('compile:client:html', () => {
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
 })
 
-gulp.task('compile:client:js', () => {
+gulp.task('compile:client:js', (done) => {
   const browserify = require('browserify')
+  const git = require('git-rev')
   const source = require('vinyl-source-stream')
-  return browserify([`${CLIENT_SRC_DIR}/index.js`])
-    .transform('browserify-css')
-    .transform('brfs')
-    .bundle()
-    .pipe(source('bundle.js'))
-    .pipe(injectVersion())
-    .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))
+
+  const gitInfo = {}
+  git.branch((branch) => {
+    gitInfo.branch = branch
+    git.short((commit) => {
+      gitInfo.commit = commit
+      browserify([`${CLIENT_SRC_DIR}/index.js`])
+        .transform('browserify-css')
+        .transform('brfs')
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(injectVersion(gitInfo))
+        .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))
+      done()
+    })
+  })
 })
 
 gulp.task('compile:client', ['compile:client:html', 'compile:client:js'])

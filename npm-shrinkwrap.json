@@ -2135,6 +2135,12 @@
       "resolved": "https://registry.npmjs.org/gherkin/-/gherkin-4.0.0.tgz",
       "dev": true
     },
+    "git-rev": {
+      "version": "0.2.1",
+      "from": "git-rev@latest",
+      "resolved": "https://registry.npmjs.org/git-rev/-/git-rev-0.2.1.tgz",
+      "dev": true
+    },
     "glob": {
       "version": "7.1.1",
       "from": "glob@>=7.1.1 <7.2.0",
