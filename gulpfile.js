@@ -45,7 +45,7 @@ function getLocalVersionQualifier (gitInfo) {
 }
 
 function getTravisVersionQualifier () {
-  return `travis-${process.env.TRAVIS_BRANCH}-${process.env.TRAVIS_BUILD}`
+  return `travis-${process.env.TRAVIS_BRANCH}-${process.env.TRAVIS_BUILD_NUMBER}`
 }
 
 function getVersionQualifier (gitInfo) {
