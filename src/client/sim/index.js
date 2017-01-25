@@ -166,7 +166,7 @@ function drawDie10(dieRollResult, center) {
     ]);
     drawDieValue(
         $.extend({}, dieRollResult, {
-            value: dieRollResult.value === 10 ? 0 : dieRollResult.value
+            value: dieRollResult.value % 10
         }),
         $.extend({}, center, {
             fontSize: configMap.dieSize / 3
