@@ -18,7 +18,7 @@ POSITIVE_INTEGER    [1-9][0-9]*
 \s+                                                                               /* skip whitespace */
 ","                                                                               return 'COMMA'
 {POSITIVE_INTEGER}d{POSITIVE_INTEGER}([-+]{POSITIVE_INTEGER}?[HL])?               return 'DICE_ROLL_LITERAL'
-d{PERCENT}                                                                        return 'PERCENTILE_DICE_ROLL_LITERAL'
+d{PERCENT}0*                                                                      return 'DECIMAL_DICE_ROLL_LITERAL'
 d{POSITIVE_INTEGER}                                                               return 'DIE_LITERAL'
 {IDENTIFIER}                                                                      return 'IDENTIFIER'
 {DIGIT}+                                                                          return 'INTEGER_LITERAL'
@@ -100,9 +100,9 @@ Literal
     {
       $$ = diceExpressionParserUtils.createDiceRollExpression(yy.__context, $1);
     }
-  | PERCENTILE_DICE_ROLL_LITERAL
+  | DECIMAL_DICE_ROLL_LITERAL
     {
-      $$ = diceExpressionParserUtils.createPercentileDiceRollExpression(yy.__context);
+      $$ = diceExpressionParserUtils.createDecimalDiceRollExpression(yy.__context, $1);
     }
   | INTEGER_LITERAL
     {
