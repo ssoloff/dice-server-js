@@ -14,6 +14,7 @@ const childProcess = require('child_process')
 const del = require('del')
 const fs = require('fs')
 const gulp = require('gulp')
+const replace = require('gulp-replace')
 const runSequence = require('run-sequence')
 const streamToPromise = require('stream-to-promise')
 
@@ -71,9 +72,13 @@ function getVersionQualifier (gitInfo) {
   return getLocalVersionQualifier(gitInfo)
 }
 
+function injectCopyright () {
+  const buildDate = new Date()
+  return replace('{{COPYRIGHT_YEAR}}', buildDate.getUTCFullYear())
+}
+
 function injectVersion (gitInfo) {
   const packageInfo = require('./package.json')
-  const replace = require('gulp-replace')
   const versionQualifier = getVersionQualifier(gitInfo)
   return replace('{{VERSION}}', `${packageInfo.version}-${versionQualifier}`)
 }
@@ -177,6 +182,7 @@ gulp.task('compile:client:js', () => {
         .bundle()
         .pipe(source('bundle.js'))
         .pipe(injectVersion(gitInfo))
+        .pipe(injectCopyright())
         .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))
     ))
 })
