@@ -9,3 +9,18 @@
 .main-eval-error {
     color: red;
 }
+
+.main-eval-help {
+    border: black 1px solid;
+}
+
+.main-eval-help td, .main-eval-help th {
+    border: black 1px solid;
+    padding: 5px;
+}
+
+.main-eval-help th {
+    background: brown;
+    color: white;
+    font-weight: bold;
+}
