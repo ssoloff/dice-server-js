@@ -20,7 +20,7 @@
   },
   "contributors": [],
   "engines": {
-    "node": ">= 6.9.2"
+    "node": ">= 6.9.4"
   },
   "files": [
     "build/compile/src/server",

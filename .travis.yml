@@ -2,7 +2,7 @@ dist: trusty
 sudo: false
 language: node_js
 node_js:
-- 6.9.2
+- 6.9.4
 addons:
   apt:
     sources:
