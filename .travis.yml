@@ -2,7 +2,7 @@ dist: trusty
 sudo: false
 language: node_js
 node_js:
-- 6.9.2
+- 6.9.4
 addons:
   apt:
     sources:
@@ -16,8 +16,8 @@ before_install:
 - "./tools/travis/install-geckodriver"
 - "./tools/travis/start-xvfb"
 - ". ./tools/travis/env.sh"
-- export DISPLAY=$ENV_DISPLAY
-- export PATH=$PATH:$ENV_LOCAL_BIN_DIR
+- export DISPLAY=$DSJS_DISPLAY
+- export PATH=$PATH:$DSJS_LOCAL_BIN_DIR
 install:
 - npm install --global gulp-cli
 - npm install

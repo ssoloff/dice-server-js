@@ -152,6 +152,49 @@ describe('diceExpressionFunctions', () => {
     })
   })
 
+  describe('.decimal', () => {
+    describe('when rolls has less than one element', () => {
+      it('should throw exception', () => {
+        expect(() => {
+          diceExpressionFunctions.decimal(undefined)
+        }).toThrow()
+        expect(() => {
+          diceExpressionFunctions.decimal([])
+        }).toThrow()
+      })
+    })
+
+    describe('when rolls has one element', () => {
+      it('should return decimal value ', () => {
+        expect(diceExpressionFunctions.decimal([1])).toBe(1)
+        expect(diceExpressionFunctions.decimal([9])).toBe(9)
+        expect(diceExpressionFunctions.decimal([10])).toBe(10)
+      })
+    })
+
+    describe('when rolls has two elements', () => {
+      it('should return decimal value ', () => {
+        expect(diceExpressionFunctions.decimal([10, 1])).toBe(1)
+        expect(diceExpressionFunctions.decimal([10, 9])).toBe(9)
+        expect(diceExpressionFunctions.decimal([1, 10])).toBe(10)
+        expect(diceExpressionFunctions.decimal([9, 9])).toBe(99)
+        expect(diceExpressionFunctions.decimal([10, 10])).toBe(100)
+      })
+    })
+
+    describe('when rolls has three elements', () => {
+      it('should return decimal value ', () => {
+        expect(diceExpressionFunctions.decimal([10, 10, 1])).toBe(1)
+        expect(diceExpressionFunctions.decimal([10, 10, 9])).toBe(9)
+        expect(diceExpressionFunctions.decimal([10, 1, 10])).toBe(10)
+        expect(diceExpressionFunctions.decimal([10, 9, 9])).toBe(99)
+        expect(diceExpressionFunctions.decimal([1, 10, 10])).toBe(100)
+        expect(diceExpressionFunctions.decimal([9, 9, 9])).toBe(999)
+        expect(diceExpressionFunctions.decimal([10, 10, 10])).toBe(1000)
+      })
+    })
+  })
+
   describe('.dropHighestRolls', () => {
     describe('when rolls is falsy', () => {
       it('should throw exception', () => {

@@ -117,6 +117,39 @@ module.exports = {
   },
 
   /**
+   * @summary Returns the decimal value of the specified collection of rolls.
+   *
+   * @description Each die roll is mapped to a value in the range [0,9] and
+   *      scaled by a power of 10 based on its position. The subsequent values
+   *      are then summed. If the resulting sum is 0, it is converted to the
+   *      maximum decimal value for the number of rolls (e.g. for 2 rolls, the
+   *      return value will be 100).
+   *
+   * @param {Number[]!} rolls - The collection of rolls whose decimal value is
+   *      to be calculated. The rolls are assumed to be ordered from highest
+   *      magnitude to lowest magnitude.
+   *
+   * @returns {Number!} The decimal value of the specified collection of
+   *      rolls.
+   *
+   * @throws {Error} If `rolls` is not defined or if `rolls` contains less
+   *      than one element.
+   */
+  decimal (rolls) {
+    if (!rolls || rolls.length < 1) {
+      throw new Error('roll count is not positive')
+    }
+
+    let value = 0
+    let scale = 1
+    rolls.slice().reverse().forEach((roll) => {
+      value += (roll % 10) * scale
+      scale *= 10
+    })
+    return value === 0 ? scale : value
+  },
+
+  /**
    * Returns a new collection of rolls with one or more of the highest rolls
    * in the specified collection dropped.
    *

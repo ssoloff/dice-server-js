@@ -14,7 +14,9 @@ const childProcess = require('child_process')
 const del = require('del')
 const fs = require('fs')
 const gulp = require('gulp')
+const replace = require('gulp-replace')
 const runSequence = require('run-sequence')
+const streamToPromise = require('stream-to-promise')
 
 const BUILD_OUTPUT_DIR = 'build'
 const FEATURES_DIR = 'features'
@@ -40,6 +42,20 @@ function exec (command, callback) {
   })
 }
 
+function getGitInfo () {
+  const git = require('git-rev')
+  return Promise.all([
+    promisifyWithoutError(git.branch),
+    promisifyWithoutError(git.short)
+  ])
+  .then((results) => {
+    return {
+      branch: results[0],
+      commit: results[1]
+    }
+  })
+}
+
 function getLocalVersionQualifier (gitInfo) {
   return `local-${gitInfo.branch}-${gitInfo.commit}`
 }
@@ -56,17 +72,28 @@ function getVersionQualifier (gitInfo) {
   return getLocalVersionQualifier(gitInfo)
 }
 
+function injectCopyright () {
+  const buildDate = new Date()
+  return replace('{{COPYRIGHT_YEAR}}', buildDate.getUTCFullYear())
+}
+
 function injectVersion (gitInfo) {
   const packageInfo = require('./package.json')
-  const replace = require('gulp-replace')
   const versionQualifier = getVersionQualifier(gitInfo)
   return replace('{{VERSION}}', `${packageInfo.version}-${versionQualifier}`)
+}
+
+function promisifyWithoutError (func) {
+  return new Promise((resolve, reject) => {
+    func((result) => {
+      resolve(result)
+    })
+  })
 }
 
 function runCucumber (path) {
   const cucumber = require('gulp-cucumber')
   const glob = require('glob')
-  const streamToPromise = require('stream-to-promise')
 
   let promise = Promise.resolve()
 
@@ -144,26 +171,20 @@ gulp.task('compile:client:html', () => {
     .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
 })
 
-gulp.task('compile:client:js', (done) => {
+gulp.task('compile:client:js', () => {
   const browserify = require('browserify')
-  const git = require('git-rev')
   const source = require('vinyl-source-stream')
-
-  const gitInfo = {}
-  git.branch((branch) => {
-    gitInfo.branch = branch
-    git.short((commit) => {
-      gitInfo.commit = commit
+  return getGitInfo()
+    .then((gitInfo) => streamToPromise(
       browserify([`${CLIENT_SRC_DIR}/index.js`])
         .transform('browserify-css')
         .transform('brfs')
         .bundle()
         .pipe(source('bundle.js'))
         .pipe(injectVersion(gitInfo))
+        .pipe(injectCopyright())
         .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))
-      done()
-    })
-  })
+    ))
 })
 
 gulp.task('compile:client', ['compile:client:html', 'compile:client:js'])

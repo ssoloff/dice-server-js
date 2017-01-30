@@ -12,6 +12,19 @@ const diceBag = require('./dice-bag')
 const diceExpression = require('./dice-expression')
 const diceExpressionFunctions = require('./dice-expression-functions')
 
+function createDecimalDiceRollExpression (context, literal) {
+  const dieCountForDPercent = 2
+  const dieCountForTrailingZeros = literal.slice(2).length
+  const dieCount = dieCountForDPercent + dieCountForTrailingZeros
+  const components = matchDiceRollLiteral(`${dieCount}d10`)
+  const rollExpression = createRollFunctionCallExpression(context, components)
+  return createDecimalFunctionCallExpression(context, rollExpression)
+}
+
+function createDecimalFunctionCallExpression (context, rollExpression) {
+  return createFunctionCallExpression(context, 'decimal', [rollExpression])
+}
+
 function createDefaultContext () {
   return {
     bag: diceBag.create(),
@@ -20,7 +33,7 @@ function createDefaultContext () {
 }
 
 function createDiceRollExpression (context, literal) {
-  const components = literal.match(/^(\d+)(d[\d%]+)(([-+])(\d*)([HL]))?$/)
+  const components = matchDiceRollLiteral(literal)
 
   let rollExpression = createRollFunctionCallExpression(context, components)
 
@@ -33,8 +46,7 @@ function createDiceRollExpression (context, literal) {
 }
 
 function createDieExpression (context, literal) {
-  const formattedSides = literal.slice(1)
-  const sides = formattedSides === '%' ? 100 : Number(formattedSides)
+  const sides = Number(literal.slice(1))
   return diceExpression.forDie(context.bag.d(sides))
 }
 
@@ -81,6 +93,10 @@ function getRollModifierFunctionName (rollModifierOperation, rollModifierDieType
   return rollModifierFunctionNames[rollModifierOperation][rollModifierDieType]
 }
 
+function matchDiceRollLiteral (literal) {
+  return literal.match(/^(\d+)(d\d+)(([-+])(\d*)([HL]))?$/)
+}
+
 /**
  * Provides utility methods for the dice notation parser.
  *
@@ -90,6 +106,20 @@ function getRollModifierFunctionName (rollModifierOperation, rollModifierDieType
  * @module dice-expression-parser-utils
  */
 module.exports = {
+  /**
+   * @function createDecimalDiceRollExpression
+   * @summary Creates a new decimal dice roll expression.
+   *
+   * @param {module:dice-expression-parser~Context!} context - The dice
+   *      expression parser context.
+   * @param {String!} literal - The decimal dice roll literal, e.g. `d%0`.
+   *
+   * @returns {module:dice-expression~FunctionCallExpression!} A new
+   *      function call expression representing the decimal dice roll, e.g.
+   *      `decimal(roll(3, d10))`.
+   */
+  createDecimalDiceRollExpression: createDecimalDiceRollExpression,
+
   /**
    * @function createDefaultContext
    * @summary Creates a new default dice expression parser context.

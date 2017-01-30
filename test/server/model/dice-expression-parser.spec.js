@@ -66,10 +66,6 @@ describe('diceExpressionParser', () => {
         expect(expressionParser.parse('d6')).toEqual(dice.expression.forDie(expressionParserContext.bag.d(6)))
       })
 
-      it('should parse a percentile die literal', () => {
-        expect(expressionParser.parse('d%')).toEqual(dice.expression.forDie(expressionParserContext.bag.d(100)))
-      })
-
       it('should parse a dice roll literal', () => {
         expect(expressionParser.parse('3d6')).toEqual(
           dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
@@ -81,12 +77,28 @@ describe('diceExpressionParser', () => {
         )
       })
 
-      it('should parse a percentile dice roll literal', () => {
-        expect(expressionParser.parse('2d%')).toEqual(
-          dice.expression.forFunctionCall('sum', diceExpressionFunctions.sum, [
+      it('should parse a decimal dice roll literal', () => {
+        expect(expressionParser.parse('d%')).toEqual(
+          dice.expression.forFunctionCall('decimal', diceExpressionFunctions.decimal, [
             dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
               dice.expression.forConstant(2),
-              dice.expression.forDie(expressionParserContext.bag.d(100))
+              dice.expression.forDie(expressionParserContext.bag.d(10))
+            ])
+          ])
+        )
+        expect(expressionParser.parse('d%0')).toEqual(
+          dice.expression.forFunctionCall('decimal', diceExpressionFunctions.decimal, [
+            dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
+              dice.expression.forConstant(3),
+              dice.expression.forDie(expressionParserContext.bag.d(10))
+            ])
+          ])
+        )
+        expect(expressionParser.parse('d%00')).toEqual(
+          dice.expression.forFunctionCall('decimal', diceExpressionFunctions.decimal, [
+            dice.expression.forFunctionCall('roll', diceExpressionFunctions.roll, [
+              dice.expression.forConstant(4),
+              dice.expression.forDie(expressionParserContext.bag.d(10))
             ])
           ])
         )
