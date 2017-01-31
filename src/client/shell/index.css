@@ -5,3 +5,7 @@
  * terms of the MIT License (https://opensource.org/licenses/MIT).
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
+
+.row-gutter {
+    margin-bottom: 1em;
+}

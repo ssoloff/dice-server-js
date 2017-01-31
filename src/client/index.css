@@ -7,15 +7,10 @@
  */
 
 /* csslint ignore:start */
-@import url('../../node_modules/normalize.css/normalize.css');
+@import url('../../node_modules/bootstrap/dist/css/bootstrap.min.css');
 
 @import url("shell/index.css");
 @import url("eval/index.css");
 @import url("history/index.css");
 @import url("sim/index.css");
 /* csslint ignore:end */
-
-body {
-    background: beige;
-    font-family: sans-serif;
-}

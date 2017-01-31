@@ -34,13 +34,25 @@ function addExpressionResult(response) {
     $expressionResultTextCell = $('<td>').text(response.expressionResult.text);
     $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
 
-    $reevaluateButton = $('<button>').attr('name', 'reevaluate').text('Reevaluate').click(function () {
-        $.gevent.publish('main-evaluateexpression', [$expressionTextCell.text()]);
-    });
-    $removeButton = $('<button>').attr('name', 'remove').text('Remove').click(function (event) {
-        $(event.target).closest('tr').remove();
-    });
-    $actionsCell = $('<td>').append($reevaluateButton, $removeButton);
+    $reevaluateButton = $('<button>')
+        .addClass('btn btn-default')
+        .attr('name', 'reevaluate')
+        .attr('title', 'Reevaluate')
+        .text('↻')
+        .click(function () {
+            $.gevent.publish('main-evaluateexpression', [$expressionTextCell.text()]);
+        });
+    $removeButton = $('<button>')
+        .addClass('btn btn-default')
+        .attr('name', 'remove')
+        .attr('title', 'Remove')
+        .text('✘')
+        .click(function (event) {
+            $(event.target).closest('tr').remove();
+        });
+    $actionsCell = $('<td>')
+        .addClass('text-center')
+        .append($reevaluateButton, $removeButton);
 
     $expressionResultRow = $('<tr>').append(
         $expressionTextCell,
