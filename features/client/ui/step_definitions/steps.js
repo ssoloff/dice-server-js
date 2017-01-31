@@ -27,6 +27,10 @@ module.exports = function () {
     return this.homePage.setRandomNumberGenerator(randomNumberGeneratorName)
   })
 
+  this.When(/^help is displayed$/, function () {
+    return this.homePage.waitUntilHelpDisplayed()
+  })
+
   this.When(/^the ENTER key is pressed$/, function () {
     return this.homePage.typeEnter()
   })

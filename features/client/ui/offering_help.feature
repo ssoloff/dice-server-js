@@ -21,6 +21,7 @@ Scenario: Showing help text
 
 Scenario: Hiding help text
   When the help link is clicked
+    And help is displayed
     And the hide help link is clicked
   Then help should not be displayed
     And the help link text should be "help"

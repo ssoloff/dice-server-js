@@ -115,7 +115,9 @@ class HomePage {
   }
 
   isHelpDisplayed () {
-    return this.driver.findElement(Locators.help()).isDisplayed()
+    const isHelpAnimated = this.driver.executeScript('return jQuery(\'#main-eval-help\').is(\':animated\');')
+    return isHelpAnimated
+      .then((animated) => animated ? null : this.driver.findElement(Locators.help()).isDisplayed())
   }
 
   open () {
@@ -167,6 +169,11 @@ class HomePage {
 
   typeExpressionText (expressionText) {
     return this.driver.findElement(Locators.expressionText()).sendKeys(expressionText)
+  }
+
+  waitUntilHelpDisplayed () {
+    const untilHelpDisplayed = new webdriver.Condition('until help is displayed', () => this.isHelpDisplayed())
+    return this._wait(untilHelpDisplayed)
   }
 
   waitUntilResponseReceived () {
