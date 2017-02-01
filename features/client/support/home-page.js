@@ -40,8 +40,6 @@ const Locators = {
 
   expressionText: () => By.id('main-eval-expressionText'),
 
-  help: () => By.id('main-eval-help'),
-
   randomNumberGeneratorJson: () => By.id('main-eval-randomNumberGeneratorJson'),
 
   reevaluateExpressionResult: () => By.name('reevaluate'),
@@ -52,9 +50,7 @@ const Locators = {
 
   requestId: () => By.id('main-eval-requestId'),
 
-  roundingMode: (roundingMode) => By.id(`main-eval-roundingMode${roundingMode}`),
-
-  toggleHelp: () => By.id('main-eval-toggleHelp')
+  roundingMode: (roundingMode) => By.id(`main-eval-roundingMode${roundingMode}`)
 }
 
 class HomePage {
@@ -106,18 +102,8 @@ class HomePage {
       .getText()
   }
 
-  getHelpLinkText () {
-    return this.driver.findElement(Locators.toggleHelp()).getText()
-  }
-
   isErrorMessageDisplayed () {
     return this.driver.findElement(Locators.errorMessage()).isDisplayed()
-  }
-
-  isHelpDisplayed () {
-    const isHelpAnimated = this.driver.executeScript('return jQuery(\'#main-eval-help\').is(\':animated\');')
-    return isHelpAnimated
-      .then((animated) => animated ? null : this.driver.findElement(Locators.help()).isDisplayed())
   }
 
   open () {
@@ -158,22 +144,12 @@ class HomePage {
     return this.driver.findElement(Locators.roundingMode(roundingMode)).click()
   }
 
-  toggleHelp () {
-    return this._wait(until.elementsLocated(Locators.toggleHelp()))
-      .then((elements) => elements[0].click())
-  }
-
   typeEnter () {
     return this.typeExpressionText(Key.ENTER)
   }
 
   typeExpressionText (expressionText) {
     return this.driver.findElement(Locators.expressionText()).sendKeys(expressionText)
-  }
-
-  waitUntilHelpDisplayed () {
-    const untilHelpDisplayed = new webdriver.Condition('until help is displayed', () => this.isHelpDisplayed())
-    return this._wait(untilHelpDisplayed)
   }
 
   waitUntilResponseReceived () {
