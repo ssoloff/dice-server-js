@@ -3,7 +3,7 @@
 SCRIPT_DIR=`dirname "$0"`
 . $SCRIPT_DIR/env.sh
 
-CHROMEDRIVER_VERSION=2.26
+CHROMEDRIVER_VERSION=2.27
 
 CHROMEDRIVER_ARCHIVE_URL=https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
 CHROMEDRIVER_ARCHIVE_LOCAL=/tmp/chromedriver.zip
