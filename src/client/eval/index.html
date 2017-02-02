@@ -6,12 +6,12 @@ terms of the MIT License (https://opensource.org/licenses/MIT).
 This software comes with ABSOLUTELY NO WARRANTY.
 -->
 <form id="main-eval-expressionForm">
-    <div>
+    <fieldset>
         <label for="main-eval-expressionText">Expression:</label>
         <input id="main-eval-expressionText" required type="text">
         <button class="btn btn-default" id="main-eval-evaluate" type="submit">Evaluate</button>
-    </div>
-    <div>
+    </fieldset>
+    <fieldset>
         <label>Rounding mode:</label>
         <label class="radio-inline">
             <input checked id="main-eval-roundingModeNone" name="roundingMode" type="radio" value="">No rounding
@@ -28,7 +28,7 @@ This software comes with ABSOLUTELY NO WARRANTY.
         <label class="radio-inline">
             <input id="main-eval-roundingModeNearest" name="roundingMode" type="radio" value="round">Round to nearest
         </label>
-    </div>
+    </fieldset>
     <input id="main-eval-randomNumberGeneratorJson" type="hidden" value="">
     <input id="main-eval-requestId" type="hidden" value="pending">
     <input id="main-eval-correlationId" type="hidden" value="unknown">
