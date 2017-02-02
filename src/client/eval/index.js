@@ -130,13 +130,21 @@ function onEvaluateExpression(event, expressionText) {
     evaluateExpression(expressionText);
 }
 
-function onEvaluateExpressionResponseError(jqxhr) {
-    var responseBody = jqxhr.responseJSON;
+function onEvaluateExpressionResponseError(jqxhr, textStatus, errorThrown) {
+    var errorMessage,
+        responseBody = jqxhr.responseJSON;
 
     if (responseBody && responseBody.error) {
-        showErrorMessage(responseBody.error.message);
+        errorMessage = responseBody.error.message;
+    } else {
+        errorMessage = 'unexpected error (status: ';
+        errorMessage += textStatus || 'unknown';
+        errorMessage += '; error: ';
+        errorMessage += errorThrown || 'unknown';
+        errorMessage += ')';
     }
 
+    showErrorMessage(errorMessage);
     setCorrelationId(jqxhr);
 }
 
