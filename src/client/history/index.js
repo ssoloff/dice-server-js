@@ -35,21 +35,15 @@ function addExpressionResult(response) {
     $expressionResultValueCell = $('<td>').text(response.expressionResult.value.toString());
 
     $reevaluateButton = $('<button>')
-        .addClass('btn btn-default')
+        .addClass('btn btn-default main-history-reevaluateResult')
         .attr('name', 'reevaluate')
         .attr('title', 'Reevaluate')
-        .text('↻')
-        .click(function () {
-            $.gevent.publish('main-evaluateexpression', [$expressionTextCell.text()]);
-        });
+        .text('↻');
     $removeButton = $('<button>')
-        .addClass('btn btn-default')
+        .addClass('btn btn-default main-history-removeResult')
         .attr('name', 'remove')
         .attr('title', 'Remove')
-        .text('✘')
-        .click(function (event) {
-            $(event.target).closest('tr').remove();
-        });
+        .text('✘');
     $actionsCell = $('<td>')
         .addClass('text-center')
         .append($reevaluateButton, $removeButton);
@@ -66,6 +60,13 @@ function addExpressionResult(response) {
 
 function initController() {
     jQueryMap.$removeAllResults.click(removeAllResults);
+    jQueryMap.$expressionResults.on('click', '.main-history-reevaluateResult', function (event) {
+        var expressionText = $(event.target).closest('tr').find('td:eq(0)').text();
+        $.gevent.publish('main-evaluateexpression', [expressionText]);
+    });
+    jQueryMap.$expressionResults.on('click', '.main-history-removeResult', function (event) {
+        $(event.target).closest('tr').remove();
+    });
 }
 
 function initJQueryMap($container) {
