@@ -22,7 +22,8 @@ module.exports = {
   },
 
   getRequestRootUrl (request) {
-    return `${request.protocol}://${request.get('host')}`
+    const protocol = request.get('X-Forwarded-Proto') || request.protocol
+    return `${protocol}://${request.get('Host')}`
   },
 
   isSuccessResponse (responseStatus) {
