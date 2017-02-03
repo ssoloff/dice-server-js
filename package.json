@@ -31,7 +31,7 @@
     "body-parser": "~1.16.0",
     "bootstrap": "~3.3.7",
     "canonical-json": "0.0.4",
-    "express": "~4.14.0",
+    "express": "~4.14.1",
     "http-status-codes": "~1.1.6",
     "jcanvas": "~16.7.3",
     "jquery": "~3.1.1",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "brfs": "~1.4.3",
-    "browser-sync": "~2.18.6",
+    "browser-sync": "~2.18.7",
     "browserify": "~14.0.0",
     "browserify-css": "~0.10.0",
     "chai": "~3.5.0",
