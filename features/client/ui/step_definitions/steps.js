@@ -53,10 +53,6 @@ module.exports = function () {
     }
   )
 
-  this.When(/^the(?: hide)? help link is clicked$/, function () {
-    return this.homePage.toggleHelp()
-  })
-
   this.When(/^the reevaluate button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (row) {
     this.resultRowCount += 1
     return this.homePage.reevaluateResultAtRow(row)
@@ -89,14 +85,6 @@ module.exports = function () {
     return this.homePage.awaitUntil(() =>
       this.homePage.isErrorMessageDisplayed()
         .then((displayed) => expect(displayed).to.be.false)
-    )
-  })
-
-  this.Then(/^help should( not)? be displayed$/, function (shouldNotBeDisplayed) {
-    const shouldBeDisplayed = !shouldNotBeDisplayed
-    return this.homePage.awaitUntil(() =>
-      this.homePage.isHelpDisplayed()
-        .then((displayed) => expect(displayed).to.be[shouldBeDisplayed ? 'true' : 'false'])
     )
   })
 
@@ -136,13 +124,6 @@ module.exports = function () {
       )
     }
   )
-
-  this.Then(/^the help link text should be "(.*)"$/, function (helpLinkText) {
-    return this.homePage.awaitUntil(() =>
-      this.homePage.getHelpLinkText()
-        .then((text) => expect(text).to.equal(helpLinkText))
-    )
-  })
 
   this.Then(/^the results table should be empty$/, function () {
     return this.homePage.awaitUntil(() =>

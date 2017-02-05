@@ -23,6 +23,34 @@ describe('controllerUtils', () => {
     })
   })
 
+  describe('.getRequestRootUrl', () => {
+    const requestHeaders = {
+      host: 'hostname:1234'
+    }
+    let request
+
+    beforeEach(() => {
+      request = {
+        get: jasmine.createSpy('get').and.callFake((field) => requestHeaders[field.toLowerCase()]),
+        protocol: 'http'
+      }
+    })
+
+    describe('when the request has not been forwarded', () => {
+      it('should use the request protocol', () => {
+        expect(controllerUtils.getRequestRootUrl(request)).toBe('http://hostname:1234')
+      })
+    })
+
+    describe('when the request has been forwarded', () => {
+      it('should use the forwarded protocol', () => {
+        requestHeaders['x-forwarded-proto'] = 'https'
+
+        expect(controllerUtils.getRequestRootUrl(request)).toBe('https://hostname:1234')
+      })
+    })
+  })
+
   describe('.setFailureResponse', () => {
     describe('when error is not an instance of ControllerError', () => {
       it('should set response status to internal server error', () => {

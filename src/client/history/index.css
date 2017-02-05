@@ -18,21 +18,6 @@
     width: 10%;
 }
 
-.main-history-expressionResults {
-    width: 100%;
-}
-
-.main-history-expressionResults td, .main-history-expressionResults th {
-    border: black 1px solid;
-    padding: 5px;
-}
-
-.main-history-expressionResults th {
-    background: brown;
-    color: white;
-    font-weight: bold;
-}
-
 .main-history-expressionResultsActions {
     width: 5%;
 }

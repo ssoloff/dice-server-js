@@ -8,16 +8,18 @@ This software comes with ABSOLUTELY NO WARRANTY.
 <header>
     <h1>Dice Server</h1>
 </header>
-<main>
-    <div id="main-eval-container"></div>
-    <div id="main-sim-container"></div>
-    <div id="main-history-container"></div>
+<main class="container-fluid">
+    <div class="row row-gutter" id="main-eval-container"></div>
+    <div class="row" id="main-sim-container"></div>
+    <div class="row" id="main-history-container"></div>
 </main>
-<footer>
+<footer class="text-center">
     <div>
+        <a href="https://github.com/ssoloff/dice-server-js/wiki/Client-help" target="_blank">Help</a>
+        •
         <a href="https://github.com/ssoloff/dice-server-js/wiki/API" target="_blank">API</a>
         •
-        {{VERSION}}
+        <a href="https://github.com/ssoloff/dice-server-js/issues" target="_blank">Report an issue</a>
     </div>
     <div>
         © {{COPYRIGHT_YEAR}} Steven Soloff
@@ -25,5 +27,8 @@ This software comes with ABSOLUTELY NO WARRANTY.
         All rights reserved
         •
         Licensed under the terms of the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>
+    </div>
+    <div>
+        {{VERSION}}
     </div>
 </footer>

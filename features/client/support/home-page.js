@@ -40,8 +40,6 @@ const Locators = {
 
   expressionText: () => By.id('main-eval-expressionText'),
 
-  help: () => By.id('main-eval-help'),
-
   randomNumberGeneratorJson: () => By.id('main-eval-randomNumberGeneratorJson'),
 
   reevaluateExpressionResult: () => By.name('reevaluate'),
@@ -52,9 +50,7 @@ const Locators = {
 
   requestId: () => By.id('main-eval-requestId'),
 
-  roundingMode: (roundingMode) => By.id(`main-eval-roundingMode${roundingMode}`),
-
-  toggleHelp: () => By.id('main-eval-toggleHelp')
+  roundingMode: (roundingMode) => By.id(`main-eval-roundingMode${roundingMode}`)
 }
 
 class HomePage {
@@ -106,16 +102,8 @@ class HomePage {
       .getText()
   }
 
-  getHelpLinkText () {
-    return this.driver.findElement(Locators.toggleHelp()).getText()
-  }
-
   isErrorMessageDisplayed () {
     return this.driver.findElement(Locators.errorMessage()).isDisplayed()
-  }
-
-  isHelpDisplayed () {
-    return this.driver.findElement(Locators.help()).isDisplayed()
   }
 
   open () {
@@ -154,11 +142,6 @@ class HomePage {
 
   setRoundingMode (roundingMode) {
     return this.driver.findElement(Locators.roundingMode(roundingMode)).click()
-  }
-
-  toggleHelp () {
-    return this._wait(until.elementsLocated(Locators.toggleHelp()))
-      .then((elements) => elements[0].click())
   }
 
   typeEnter () {

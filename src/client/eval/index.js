@@ -69,16 +69,11 @@ function hideErrorMessage() {
     jQueryMap.$errorMessage.invisible();
 }
 
-function hideHelp() {
-    jQueryMap.$help.hide();
-}
-
 function initController() {
     jQueryMap.$expressionForm.submit(function (event) {
         evaluateExpression(getExpressionText());
         event.preventDefault();
     });
-    jQueryMap.$toggleHelp.click(toggleHelp);
 }
 
 function initJQueryMap($container) {
@@ -88,10 +83,8 @@ function initJQueryMap($container) {
         $errorMessage: $container.find('#main-eval-errorMessage'),
         $expressionForm: $container.find('#main-eval-expressionForm'),
         $expressionText: $container.find('#main-eval-expressionText'),
-        $help: $container.find('#main-eval-help'),
         $randomNumberGeneratorJson: $container.find('#main-eval-randomNumberGeneratorJson'),
-        $requestId: $container.find('#main-eval-requestId'),
-        $toggleHelp: $container.find('#main-eval-toggleHelp')
+        $requestId: $container.find('#main-eval-requestId')
     };
 }
 
@@ -115,7 +108,6 @@ function initModule($container) {
 }
 
 function initView() {
-    hideHelp();
     hideErrorMessage();
 }
 
@@ -138,13 +130,21 @@ function onEvaluateExpression(event, expressionText) {
     evaluateExpression(expressionText);
 }
 
-function onEvaluateExpressionResponseError(jqxhr) {
-    var responseBody = jqxhr.responseJSON;
+function onEvaluateExpressionResponseError(jqxhr, textStatus, errorThrown) {
+    var errorMessage,
+        responseBody = jqxhr.responseJSON;
 
     if (responseBody && responseBody.error) {
-        showErrorMessage(responseBody.error.message);
+        errorMessage = responseBody.error.message;
+    } else {
+        errorMessage = 'unexpected error (status: ';
+        errorMessage += textStatus || 'unknown';
+        errorMessage += '; error: ';
+        errorMessage += errorThrown || 'unknown';
+        errorMessage += ')';
     }
 
+    showErrorMessage(errorMessage);
     setCorrelationId(jqxhr);
 }
 
@@ -166,17 +166,6 @@ function setCorrelationId(jqxhr) {
 
 function showErrorMessage(message) {
     jQueryMap.$errorMessage.text(message).visible();
-}
-
-function toggleHelp() {
-    var newHelpVisible,
-        oldHelpVisible;
-
-    oldHelpVisible = jQueryMap.$help.is(':visible');
-    jQueryMap.$help.toggle(400);
-
-    newHelpVisible = !oldHelpVisible;
-    jQueryMap.$toggleHelp.text(newHelpVisible ? 'hide help' : 'help');
 }
 
 module.exports = {
