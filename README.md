@@ -22,10 +22,10 @@ Licensed under the terms of the [MIT License][license-link].
 
 [coveralls-image]: https://coveralls.io/repos/ssoloff/dice-server-js/badge.svg?branch=master&service=github
 [coveralls-link]: https://coveralls.io/github/ssoloff/dice-server-js?branch=master
-[david-image]: https://david-dm.org/ssoloff/dice-server-js.svg
+[david-image]: https://david-dm.org/ssoloff/dice-server-js/status.svg
 [david-link]: https://david-dm.org/ssoloff/dice-server-js
 [david-dev-image]: https://david-dm.org/ssoloff/dice-server-js/dev-status.svg
-[david-dev-link]: https://david-dm.org/ssoloff/dice-server-js#info=devDependencies
+[david-dev-link]: https://david-dm.org/ssoloff/dice-server-js?type=dev
 [license-link]: https://opensource.org/licenses/MIT
 [travis-image]: https://travis-ci.org/ssoloff/dice-server-js.svg?branch=master
 [travis-link]: https://travis-ci.org/ssoloff/dice-server-js
