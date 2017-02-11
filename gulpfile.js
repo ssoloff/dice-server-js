@@ -14,24 +14,143 @@ const childProcess = require('child_process')
 const del = require('del')
 const fs = require('fs')
 const gulp = require('gulp')
+const path = require('path')
 const replace = require('gulp-replace')
 const runSequence = require('run-sequence')
 const streamToPromise = require('stream-to-promise')
 
-const BUILD_OUTPUT_DIR = 'build'
-const FEATURES_DIR = 'features'
-const NODE_MODULES_BIN_DIR = 'node_modules/.bin'
-const SRC_DIR = 'src'
-const CLIENT_SRC_DIR = `${SRC_DIR}/client`
-const SERVER_SRC_DIR = `${SRC_DIR}/server`
-const TEST_DIR = 'test'
-const SERVER_TEST_DIR = `${TEST_DIR}/server`
-const COMPILE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/compile`
-const COVERAGE_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/coverage`
-const DIST_OUTPUT_DIR = `${BUILD_OUTPUT_DIR}/dist`
-
-const SERVER_PID = 'server.pid'
 const SERVER_PID_ENCODING = 'utf8'
+
+const dirs = (() => {
+  const FEATURES_DIR = 'features'
+  const SRC_DIR = 'src'
+  const TEST_DIR = 'test'
+
+  const BUILD_DIR = 'build'
+
+  const DIST_DIR = `${BUILD_DIR}/dist`
+  const PUBLIC_DIST_DIR = `${DIST_DIR}/public`
+
+  return {
+    build: BUILD_DIR,
+    clientFeatures: `${FEATURES_DIR}/client`,
+    clientSrc: `${SRC_DIR}/client`,
+    compile: `${BUILD_DIR}/compile`,
+    coverage: `${BUILD_DIR}/coverage`,
+    dist: DIST_DIR,
+    features: FEATURES_DIR,
+    htmlDist: PUBLIC_DIST_DIR,
+    jsDist: `${PUBLIC_DIST_DIR}/js`,
+    nodeModulesBin: 'node_modules/.bin',
+    serverFeatures: `${FEATURES_DIR}/server`,
+    serverSrc: `${SRC_DIR}/server`,
+    serverTest: `${TEST_DIR}/server`,
+    src: SRC_DIR,
+    test: TEST_DIR
+  }
+})()
+
+const paths = {
+  all: {
+    features: {
+      all: `${dirs.features}/**/*`
+    },
+    main: {
+      all: `${dirs.src}/**/*`
+    },
+    test: {
+      all: `${dirs.test}/**/*`
+    }
+  },
+  css: {
+    main: {
+      client: `${dirs.clientSrc}/**/*.css`
+    }
+  },
+  eslint: {
+    config: {
+      gulpfile: '.eslintrc-gulpfile.json'
+    }
+  },
+  gulpfile: 'gulpfile.js',
+  html: {
+    main: {
+      client: {
+        fragment: `${dirs.clientSrc}/*/**/*.html`,
+        main: `${dirs.clientSrc}/index.html`
+      }
+    }
+  },
+  jasmine: {
+    config: `${dirs.serverTest}/.jasmine.json`
+  },
+  jison: {
+    main: {
+      server: `${dirs.serverSrc}/**/*.jison`
+    }
+  },
+  js: {
+    features: {
+      all: `${dirs.features}/**/*.js`
+    },
+    main: {
+      all: `${dirs.src}/**/*.js`,
+      client: {
+        bundle: `${dirs.clientSrc}/bundle.js`,
+        main: `${dirs.clientSrc}/index.js`
+      },
+      server: `${dirs.serverSrc}/**/*.js`
+    },
+    test: {
+      all: `${dirs.test}/**/*.js`,
+      server: {
+        all: `${dirs.serverTest}/**/*.js`,
+        spec: `${dirs.serverTest}/**/*.spec.js`
+      }
+    }
+  },
+  jsdoc: {
+    config: {
+      client: '.jsdoc-client-conf.json',
+      server: '.jsdoc-server-conf.json'
+    }
+  },
+  json: {
+    features: {
+      all: `${dirs.features}/**/*.json`
+    },
+    main: {
+      all: `${dirs.src}/**/*.json`
+    },
+    root: './*.json',
+    test: {
+      all: `${dirs.test}/**/*.json`
+    }
+  },
+  lcov: {
+    info: `${dirs.coverage}/lcov.info`
+  },
+  packageInfo: 'package.json',
+  pem: {
+    test: {
+      server: {
+        all: `${dirs.serverTest}/**/*.pem`,
+        private: `${dirs.serverTest}/test-keys/private-key.pem`,
+        public: `${dirs.serverTest}/test-keys/public-key.pem`
+      }
+    }
+  },
+  serverMain: `${dirs.dist}/server.js`,
+  serverPid: 'server.pid'
+}
+
+function compilePath (path) {
+  let compilePath = dirs.compile
+  if (path) {
+    compilePath += `/${path}`
+  }
+  return compilePath
+}
 
 function exec (command, callback) {
   childProcess.exec(command, (err) => {
@@ -78,7 +197,7 @@ function injectCopyright () {
 }
 
 function injectVersion (gitInfo) {
-  const packageInfo = require('./package.json')
+  const packageInfo = require(`./${paths.packageInfo}`)
   const versionQualifier = getVersionQualifier(gitInfo)
   return replace('{{VERSION}}', `${packageInfo.version}-${versionQualifier}`)
 }
@@ -126,14 +245,14 @@ function runHtmlHint (stream) {
 }
 
 function runJsDoc (configPath, callback) {
-  exec(`${NODE_MODULES_BIN_DIR}/jsdoc -c ${configPath}`, callback)
+  exec(`${dirs.nodeModulesBin}/jsdoc -c ${configPath}`, callback)
 }
 
 function runUnitTests () {
   const jasmine = require('gulp-jasmine')
-  return gulp.src(`${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/**/*spec.js`)
+  return gulp.src(compilePath(paths.js.test.server.spec))
     .pipe(jasmine({
-      config: require(`./${SERVER_TEST_DIR}/.jasmine.json`)
+      config: require(`./${paths.jasmine.config}`)
     }))
 }
 
@@ -151,11 +270,11 @@ function wrapHtmlFragment (content) {
 }
 
 gulp.task('acceptance-test:client', () => {
-  return runCucumber(`${FEATURES_DIR}/client`)
+  return runCucumber(dirs.clientFeatures)
 })
 
 gulp.task('acceptance-test:server', () => {
-  return runCucumber(`${FEATURES_DIR}/server`)
+  return runCucumber(dirs.serverFeatures)
 })
 
 gulp.task('acceptance-test', (done) => {
@@ -163,12 +282,12 @@ gulp.task('acceptance-test', (done) => {
 })
 
 gulp.task('clean', () => {
-  return del([BUILD_OUTPUT_DIR])
+  return del(dirs.build)
 })
 
 gulp.task('compile:client:html', () => {
-  return gulp.src(`${CLIENT_SRC_DIR}/index.html`, {base: '.'})
-    .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
+  return gulp.src(paths.html.main.client.main, {base: '.'})
+    .pipe(gulp.dest(compilePath()))
 })
 
 gulp.task('compile:client:js', () => {
@@ -176,14 +295,14 @@ gulp.task('compile:client:js', () => {
   const source = require('vinyl-source-stream')
   return getGitInfo()
     .then((gitInfo) => streamToPromise(
-      browserify([`${CLIENT_SRC_DIR}/index.js`])
+      browserify([paths.js.main.client.main])
         .transform('browserify-css')
         .transform('brfs')
         .bundle()
-        .pipe(source('bundle.js'))
+        .pipe(source(path.basename(paths.js.main.client.bundle)))
         .pipe(injectVersion(gitInfo))
         .pipe(injectCopyright())
-        .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}`))
+        .pipe(gulp.dest(compilePath(dirs.clientSrc)))
     ))
 })
 
@@ -191,19 +310,19 @@ gulp.task('compile:client', ['compile:client:html', 'compile:client:js'])
 
 gulp.task('compile:server:jison', () => {
   const jison = require('gulp-jison')
-  return gulp.src(`${SRC_DIR}/**/*.jison`)
+  return gulp.src(paths.jison.main.server)
     .pipe(jison())
-    .pipe(gulp.dest(`${COMPILE_OUTPUT_DIR}/${SRC_DIR}`))
+    .pipe(gulp.dest(compilePath(dirs.serverSrc)))
 })
 
 gulp.task('compile:server:js:prod', () => {
-  return gulp.src(`${SERVER_SRC_DIR}/**/*.js`, {base: '.'})
-    .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
+  return gulp.src(paths.js.main.server, {base: '.'})
+    .pipe(gulp.dest(compilePath()))
 })
 
 gulp.task('compile:server:js:test', () => {
-  return gulp.src(`${SERVER_TEST_DIR}/**/*.{js,pem}`, {base: '.'})
-    .pipe(gulp.dest(COMPILE_OUTPUT_DIR))
+  return gulp.src([paths.js.test.server.all, paths.pem.test.server.all], {base: '.'})
+    .pipe(gulp.dest(compilePath()))
 })
 
 gulp.task('compile:server:js', ['compile:server:js:prod', 'compile:server:js:test'])
@@ -221,37 +340,33 @@ gulp.task('dev:_rebuild:without-tests', (done) => {
 })
 
 gulp.task('dev', ['dev:_rebuild:with-tests', 'lint'], () => {
-  gulp.watch([`${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['dev:_rebuild:with-tests'])
-  gulp.watch(['gulpfile.js', `${FEATURES_DIR}/**/*`, `${SRC_DIR}/**/*`, `${TEST_DIR}/**/*`], ['lint'])
+  gulp.watch([paths.all.main.all, paths.all.test.all], ['dev:_rebuild:with-tests'])
+  gulp.watch([paths.gulpfile, paths.all.features.all, paths.all.main.all, paths.all.test.all], ['lint'])
 })
 
 gulp.task('dist:client', () => {
   const eventStream = require('event-stream')
-  const PUBLIC_DIR = 'public'
-  const HTML_DIR = PUBLIC_DIR
-  const JS_DIR = `${PUBLIC_DIR}/js`
-
   return eventStream.merge(
-    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/index.html`)
-      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${HTML_DIR}`)),
-    gulp.src(`${COMPILE_OUTPUT_DIR}/${CLIENT_SRC_DIR}/bundle.js`)
-      .pipe(gulp.dest(`${DIST_OUTPUT_DIR}/${JS_DIR}`))
+    gulp.src(compilePath(paths.html.main.client.main))
+      .pipe(gulp.dest(dirs.htmlDist)),
+    gulp.src(compilePath(paths.js.main.client.bundle))
+      .pipe(gulp.dest(dirs.jsDist))
   )
 })
 
 gulp.task('dist:server', () => {
-  return gulp.src(`${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/**/*.js`)
-    .pipe(gulp.dest(DIST_OUTPUT_DIR))
+  return gulp.src(compilePath(paths.js.main.server))
+    .pipe(gulp.dest(dirs.dist))
 })
 
 gulp.task('dist', ['dist:client', 'dist:server'])
 
 gulp.task('docs:client', (done) => {
-  runJsDoc('.jsdoc-client-conf.json', done)
+  runJsDoc(paths.jsdoc.config.client, done)
 })
 
 gulp.task('docs:server', (done) => {
-  runJsDoc('.jsdoc-server-conf.json', done)
+  runJsDoc(paths.jsdoc.config.server, done)
 })
 
 gulp.task('docs', ['docs:client', 'docs:server'])
@@ -260,9 +375,9 @@ gulp.task('instrument-for-coverage', ['compile'], () => {
   const istanbul = require('gulp-istanbul')
   return gulp
     .src([
-      `${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/**/*.js`,
-      `!${COMPILE_OUTPUT_DIR}/${SERVER_SRC_DIR}/model/dice-expression-parser.js`,
-      `${COMPILE_OUTPUT_DIR}/${SERVER_TEST_DIR}/**/*.js`
+      compilePath(paths.js.main.server),
+      `!${compilePath(dirs.serverSrc)}/model/dice-expression-parser.js`,
+      compilePath(paths.js.test.server.all)
     ])
     .pipe(istanbul())
     .pipe(istanbul.hookRequire())
@@ -270,7 +385,7 @@ gulp.task('instrument-for-coverage', ['compile'], () => {
 
 gulp.task('lint:css', () => {
   const csslint = require('gulp-csslint')
-  return gulp.src(`${CLIENT_SRC_DIR}/**/*.css`)
+  return gulp.src(paths.css.main.client)
     .pipe(csslint())
     .pipe(csslint.formatter())
     .pipe(csslint.formatter('fail'))
@@ -279,14 +394,14 @@ gulp.task('lint:css', () => {
 gulp.task('lint:html:fragment', () => {
   const change = require('gulp-change')
   return runHtmlHint(
-    gulp.src(`${CLIENT_SRC_DIR}/*/**/*.html`)
+    gulp.src(paths.html.main.client.fragment)
       .pipe(change(wrapHtmlFragment))
   )
 })
 
 gulp.task('lint:html:full', () => {
   return runHtmlHint(
-    gulp.src(`${CLIENT_SRC_DIR}/index.html`)
+    gulp.src(paths.html.main.client.main)
   )
 })
 
@@ -294,14 +409,14 @@ gulp.task('lint:html', ['lint:html:full', 'lint:html:fragment'])
 
 gulp.task('lint:js:default', () => {
   return runEsLint([
-    `${FEATURES_DIR}/**/*.js`,
-    `${SRC_DIR}/**/*.js`,
-    `${TEST_DIR}/**/*.js`
+    paths.js.features.all,
+    paths.js.main.all,
+    paths.js.test.all
   ])
 })
 
 gulp.task('lint:js:gulpfile', () => {
-  return runEsLint('gulpfile.js', '.eslintrc-gulpfile.json')
+  return runEsLint(paths.gulpfile, paths.eslint.config.gulpfile)
 })
 
 gulp.task('lint:js', ['lint:js:default', 'lint:js:gulpfile'])
@@ -309,10 +424,14 @@ gulp.task('lint:js', ['lint:js:default', 'lint:js:gulpfile'])
 gulp.task('lint:json', () => {
   const jsonlint = require('gulp-jsonlint')
   return gulp
-    .src(
-      ['./*.json', `${FEATURES_DIR}/**/*.json`, `${SRC_DIR}/**/*.json`, `${TEST_DIR}/**/*.json`],
-      {dot: true}
-    )
+    .src([
+      paths.json.root,
+      paths.json.features.all,
+      paths.json.main.all,
+      paths.json.test.all
+    ], {
+      dot: true
+    })
     .pipe(jsonlint())
     .pipe(jsonlint.reporter())
     .pipe(jsonlint.failAfterError())
@@ -338,7 +457,7 @@ gulp.task('lint:package', () => {
     })
   }
 
-  return gulp.src('package.json')
+  return gulp.src(paths.packageInfo)
     .pipe(validate())
     .pipe(failOnError())
 })
@@ -347,7 +466,7 @@ gulp.task('lint', ['lint:js', 'lint:json', 'lint:package', 'lint:html', 'lint:cs
 
 gulp.task('publish-coverage', () => {
   const coveralls = require('gulp-coveralls')
-  return gulp.src(`${COVERAGE_OUTPUT_DIR}/lcov.info`)
+  return gulp.src(paths.lcov.info)
     .pipe(coveralls())
 })
 
@@ -363,11 +482,11 @@ gulp.task('server:dev:_nodemon', ['dev:_rebuild:with-tests'], (done) => {
   const nodemon = require('gulp-nodemon')
   let called = false
   return nodemon({
-    args: [`${SERVER_TEST_DIR}/test-keys/private-key.pem`, `${SERVER_TEST_DIR}/test-keys/public-key.pem`],
+    args: [paths.pem.test.server.private, paths.pem.test.server.public],
     ext: 'css html jison js',
-    script: `${DIST_OUTPUT_DIR}/server.js`,
+    script: paths.serverMain,
     tasks: ['dev:_rebuild:without-tests'],
-    watch: [`${SRC_DIR}/*`]
+    watch: [`${dirs.src}/*`]
   })
   .on('start', () => {
     if (!called) {
@@ -390,9 +509,9 @@ gulp.task('server:start', (done) => {
   const child = childProcess
     .spawn(
       process.argv[0], [
-        `${DIST_OUTPUT_DIR}/server.js`,
-        `${SERVER_TEST_DIR}/test-keys/private-key.pem`,
-        `${SERVER_TEST_DIR}/test-keys/public-key.pem`
+        paths.serverMain,
+        paths.pem.test.server.private,
+        paths.pem.test.server.public
       ], {
         detached: true,
         stdio: 'ignore'
@@ -402,7 +521,7 @@ gulp.task('server:start', (done) => {
   child.unref()
 
   if (!_.isUndefined(child.pid)) {
-    fs.writeFileSync(SERVER_PID, child.pid, {
+    fs.writeFileSync(paths.serverPid, child.pid, {
       encoding: SERVER_PID_ENCODING
     })
   }
@@ -411,11 +530,11 @@ gulp.task('server:start', (done) => {
 })
 
 gulp.task('server:stop', () => {
-  const pid = fs.readFileSync(SERVER_PID, {
+  const pid = fs.readFileSync(paths.serverPid, {
     encoding: SERVER_PID_ENCODING
   })
   process.kill(pid)
-  return del([SERVER_PID])
+  return del(paths.serverPid)
 })
 
 gulp.task('unit-test', ['compile'], () => {
@@ -426,7 +545,7 @@ gulp.task('unit-test-with-coverage', ['instrument-for-coverage'], () => {
   const istanbul = require('gulp-istanbul')
   return runUnitTests()
     .pipe(istanbul.writeReports({
-      dir: COVERAGE_OUTPUT_DIR,
+      dir: dirs.coverage,
       reporters: ['lcov', 'text-summary']
     }))
     .pipe(istanbul.enforceThresholds({
