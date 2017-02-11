@@ -22,7 +22,7 @@ install:
 - npm install --global gulp-cli
 - npm install
 script:
-- gulp unit-test-with-coverage
+- gulp unit-test
 - gulp dist
 - gulp server:start
 - gulp acceptance-test:server

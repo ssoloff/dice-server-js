@@ -261,13 +261,6 @@ function runJsDoc (configPath, callback) {
   exec(`${dirs.nodeModulesBin}/jsdoc -c ${configPath}`, callback)
 }
 
-function runUnitTests () {
-  return gulp.src(compilePath(paths.js.test.server.spec))
-    .pipe(jasmine({
-      config: require(`./${paths.jasmine.config}`)
-    }))
-}
-
 function wrapHtmlFragment (content) {
   return `<!DOCTYPE html>
     <html lang="en">
@@ -378,17 +371,6 @@ gulp.task('docs:server', (done) => {
 })
 
 gulp.task('docs', ['docs:client', 'docs:server'])
-
-gulp.task('instrument-for-coverage', ['compile'], () => {
-  return gulp
-    .src([
-      compilePath(paths.js.main.server),
-      `!${compilePath(dirs.serverSrc)}/model/dice-expression-parser.js`,
-      compilePath(paths.js.test.server.all)
-    ])
-    .pipe(istanbul())
-    .pipe(istanbul.hookRequire())
-})
 
 gulp.task('lint:css', () => {
   return gulp.src(paths.css.main.client)
@@ -536,18 +518,28 @@ gulp.task('server:stop', () => {
 })
 
 gulp.task('unit-test', ['compile'], () => {
-  return runUnitTests()
-})
-
-gulp.task('unit-test-with-coverage', ['instrument-for-coverage'], () => {
-  return runUnitTests()
-    .pipe(istanbul.writeReports({
-      dir: dirs.coverage,
-      reporters: ['lcov', 'text-summary']
-    }))
-    .pipe(istanbul.enforceThresholds({
-      thresholds: {
-        global: 90
-      }
-    }))
+  return streamToPromise(
+    gulp.src([
+      compilePath(paths.js.main.server),
+      `!${compilePath(dirs.serverSrc)}/model/dice-expression-parser.js`,
+      compilePath(paths.js.test.server.all)
+    ])
+    .pipe(istanbul())
+    .pipe(istanbul.hookRequire())
+  )
+  .then(() => streamToPromise(
+    gulp.src(compilePath(paths.js.test.server.spec))
+      .pipe(jasmine({
+        config: require(`./${paths.jasmine.config}`)
+      }))
+      .pipe(istanbul.writeReports({
+        dir: dirs.coverage,
+        reporters: ['lcov', 'text-summary']
+      }))
+      .pipe(istanbul.enforceThresholds({
+        thresholds: {
+          global: 90
+        }
+      }))
+  ))
 })
