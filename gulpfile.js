@@ -274,18 +274,6 @@ function wrapHtmlFragment (content) {
     </html>`
 }
 
-gulp.task('acceptance-test:client', () => {
-  return runCucumber(dirs.clientFeatures)
-})
-
-gulp.task('acceptance-test:server', () => {
-  return runCucumber(dirs.serverFeatures)
-})
-
-gulp.task('acceptance-test', (done) => {
-  runSequence('acceptance-test:server', 'acceptance-test:client', done)
-})
-
 gulp.task('clean', () => {
   return del(dirs.build)
 })
@@ -334,7 +322,7 @@ gulp.task('compile:server', ['compile:server:jison', 'compile:server:js'])
 gulp.task('compile', ['compile:client', 'compile:server'])
 
 gulp.task('dev:_rebuild:with-tests', (done) => {
-  runSequence('clean', 'unit-test', 'dist', done)
+  runSequence('clean', 'test:unit', 'dist', done)
 })
 
 gulp.task('dev:_rebuild:without-tests', (done) => {
@@ -517,7 +505,19 @@ gulp.task('server:stop', () => {
   return del(paths.serverPid)
 })
 
-gulp.task('unit-test', ['compile'], () => {
+gulp.task('test:acceptance:client', () => {
+  return runCucumber(dirs.clientFeatures)
+})
+
+gulp.task('test:acceptance:server', () => {
+  return runCucumber(dirs.serverFeatures)
+})
+
+gulp.task('test:acceptance', (done) => {
+  runSequence('test:acceptance:server', 'test:acceptance:client', done)
+})
+
+gulp.task('test:unit', ['compile'], () => {
   return streamToPromise(
     gulp.src([
       compilePath(paths.js.main.server),
