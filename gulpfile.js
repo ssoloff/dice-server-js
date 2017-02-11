@@ -10,14 +10,33 @@
 
 const _ = require('underscore')
 const browserSync = require('browser-sync')
+const browserify = require('browserify')
+const change = require('gulp-change')
 const childProcess = require('child_process')
+const coveralls = require('gulp-coveralls')
+const csslint = require('gulp-csslint')
+const cucumber = require('gulp-cucumber')
 const del = require('del')
+const eslint = require('gulp-eslint')
+const eventStream = require('event-stream')
 const fs = require('fs')
+const git = require('git-rev')
+const glob = require('glob')
 const gulp = require('gulp')
+const gutil = require('gulp-util')
+const htmlhint = require('gulp-htmlhint')
+const istanbul = require('gulp-istanbul')
+const jasmine = require('gulp-jasmine')
+const jison = require('gulp-jison')
+const jsonlint = require('gulp-jsonlint')
+const nodemon = require('gulp-nodemon')
 const path = require('path')
 const replace = require('gulp-replace')
 const runSequence = require('run-sequence')
+const source = require('vinyl-source-stream')
 const streamToPromise = require('stream-to-promise')
+const through = require('through2')
+const validatePackage = require('gulp-nice-package')
 
 const SERVER_PID_ENCODING = 'utf8'
 
@@ -162,7 +181,6 @@ function exec (command, callback) {
 }
 
 function getGitInfo () {
-  const git = require('git-rev')
   return Promise.all([
     promisifyWithoutError(git.branch),
     promisifyWithoutError(git.short)
@@ -211,9 +229,6 @@ function promisifyWithoutError (func) {
 }
 
 function runCucumber (path) {
-  const cucumber = require('gulp-cucumber')
-  const glob = require('glob')
-
   let promise = Promise.resolve()
 
   const featureDirs = glob.sync(`${path}/*`, {
@@ -227,7 +242,6 @@ function runCucumber (path) {
 }
 
 function runEsLint (globs, configPath) {
-  const eslint = require('gulp-eslint')
   return gulp.src(globs)
     .pipe(eslint({
       configFile: configPath,
@@ -238,7 +252,6 @@ function runEsLint (globs, configPath) {
 }
 
 function runHtmlHint (stream) {
-  const htmlhint = require('gulp-htmlhint')
   return stream
     .pipe(htmlhint())
     .pipe(htmlhint.failReporter())
@@ -249,7 +262,6 @@ function runJsDoc (configPath, callback) {
 }
 
 function runUnitTests () {
-  const jasmine = require('gulp-jasmine')
   return gulp.src(compilePath(paths.js.test.server.spec))
     .pipe(jasmine({
       config: require(`./${paths.jasmine.config}`)
@@ -291,8 +303,6 @@ gulp.task('compile:client:html', () => {
 })
 
 gulp.task('compile:client:js', () => {
-  const browserify = require('browserify')
-  const source = require('vinyl-source-stream')
   return getGitInfo()
     .then((gitInfo) => streamToPromise(
       browserify([paths.js.main.client.main])
@@ -309,7 +319,6 @@ gulp.task('compile:client:js', () => {
 gulp.task('compile:client', ['compile:client:html', 'compile:client:js'])
 
 gulp.task('compile:server:jison', () => {
-  const jison = require('gulp-jison')
   return gulp.src(paths.jison.main.server)
     .pipe(jison())
     .pipe(gulp.dest(compilePath(dirs.serverSrc)))
@@ -345,7 +354,6 @@ gulp.task('dev', ['dev:_rebuild:with-tests', 'lint'], () => {
 })
 
 gulp.task('dist:client', () => {
-  const eventStream = require('event-stream')
   return eventStream.merge(
     gulp.src(compilePath(paths.html.main.client.main))
       .pipe(gulp.dest(dirs.htmlDist)),
@@ -372,7 +380,6 @@ gulp.task('docs:server', (done) => {
 gulp.task('docs', ['docs:client', 'docs:server'])
 
 gulp.task('instrument-for-coverage', ['compile'], () => {
-  const istanbul = require('gulp-istanbul')
   return gulp
     .src([
       compilePath(paths.js.main.server),
@@ -384,7 +391,6 @@ gulp.task('instrument-for-coverage', ['compile'], () => {
 })
 
 gulp.task('lint:css', () => {
-  const csslint = require('gulp-csslint')
   return gulp.src(paths.css.main.client)
     .pipe(csslint())
     .pipe(csslint.formatter())
@@ -392,7 +398,6 @@ gulp.task('lint:css', () => {
 })
 
 gulp.task('lint:html:fragment', () => {
-  const change = require('gulp-change')
   return runHtmlHint(
     gulp.src(paths.html.main.client.fragment)
       .pipe(change(wrapHtmlFragment))
@@ -422,7 +427,6 @@ gulp.task('lint:js:gulpfile', () => {
 gulp.task('lint:js', ['lint:js:default', 'lint:js:gulpfile'])
 
 gulp.task('lint:json', () => {
-  const jsonlint = require('gulp-jsonlint')
   return gulp
     .src([
       paths.json.root,
@@ -438,10 +442,6 @@ gulp.task('lint:json', () => {
 })
 
 gulp.task('lint:package', () => {
-  const gutil = require('gulp-util')
-  const through = require('through2')
-  const validate = require('gulp-nice-package')
-
   function failOnError () {
     return through.obj((file, enc, cb) => {
       let error = null
@@ -458,14 +458,13 @@ gulp.task('lint:package', () => {
   }
 
   return gulp.src(paths.packageInfo)
-    .pipe(validate())
+    .pipe(validatePackage())
     .pipe(failOnError())
 })
 
 gulp.task('lint', ['lint:js', 'lint:json', 'lint:package', 'lint:html', 'lint:css'])
 
 gulp.task('publish-coverage', () => {
-  const coveralls = require('gulp-coveralls')
   return gulp.src(paths.lcov.info)
     .pipe(coveralls())
 })
@@ -479,7 +478,6 @@ gulp.task('server:dev:_browser-sync', ['server:dev:_nodemon'], () => {
 })
 
 gulp.task('server:dev:_nodemon', ['dev:_rebuild:with-tests'], (done) => {
-  const nodemon = require('gulp-nodemon')
   let called = false
   return nodemon({
     args: [paths.pem.test.server.private, paths.pem.test.server.public],
@@ -542,7 +540,6 @@ gulp.task('unit-test', ['compile'], () => {
 })
 
 gulp.task('unit-test-with-coverage', ['instrument-for-coverage'], () => {
-  const istanbul = require('gulp-istanbul')
   return runUnitTests()
     .pipe(istanbul.writeReports({
       dir: dirs.coverage,
