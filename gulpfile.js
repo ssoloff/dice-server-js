@@ -530,7 +530,8 @@ gulp.task('test:unit', ['compile'], () => {
   .then(() => streamToPromise(
     gulp.src(compilePath(paths.js.test.server.spec))
       .pipe(jasmine({
-        config: require(`./${paths.jasmine.config}`)
+        config: require(`./${paths.jasmine.config}`),
+        verbose: true
       }))
       .pipe(istanbul.writeReports({
         dir: dirs.coverage,
