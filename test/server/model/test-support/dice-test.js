@@ -62,7 +62,6 @@ module.exports = {
    *      otherwise `false`.
    */
   isDiceExpressionEqual (first, second) {
-    // istanbul ignore else
     if (_.has(first, 'typeId') &&
         _.has(first, 'evaluate') &&
         _.has(second, 'typeId') &&
@@ -82,7 +81,6 @@ module.exports = {
    *      equal otherwise `false`.
    */
   isDiceExpressionResultEqual (first, second) {
-    // istanbul ignore else
     if (_.has(first, 'typeId') &&
         _.has(first, 'value') &&
         _.has(second, 'typeId') &&

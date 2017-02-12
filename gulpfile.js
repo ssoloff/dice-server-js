@@ -521,8 +521,7 @@ gulp.task('test:unit', ['compile'], () => {
   return streamToPromise(
     gulp.src([
       compilePath(paths.js.main.server),
-      `!${compilePath(dirs.serverSrc)}/model/dice-expression-parser.js`,
-      compilePath(paths.js.test.server.all)
+      `!${compilePath(dirs.serverSrc)}/model/dice-expression-parser.js`
     ])
     .pipe(istanbul())
     .pipe(istanbul.hookRequire())
