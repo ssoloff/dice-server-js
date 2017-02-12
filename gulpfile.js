@@ -523,7 +523,9 @@ gulp.task('test:unit', ['compile'], () => {
       compilePath(paths.js.main.server),
       `!${compilePath(dirs.serverSrc)}/model/dice-expression-parser.js`
     ])
-    .pipe(istanbul())
+    .pipe(istanbul({
+      includeUntested: true
+    }))
     .pipe(istanbul.hookRequire())
   )
   .then(() => streamToPromise(
