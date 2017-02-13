@@ -2,38 +2,38 @@ dist: trusty
 sudo: false
 language: node_js
 node_js:
-- 6.9.5
+  - 6.9.5
 addons:
   apt:
     sources:
-    - google-chrome
+      - google-chrome
     packages:
-    - google-chrome-stable
+      - google-chrome-stable
   firefox: latest
 before_install:
-- "./tools/travis/init-env"
-- "./tools/travis/install-chromedriver"
-- "./tools/travis/install-geckodriver"
-- "./tools/travis/start-xvfb"
-- ". ./tools/travis/env.sh"
-- export DISPLAY=$DSJS_DISPLAY
-- export PATH=$PATH:$DSJS_LOCAL_BIN_DIR
+  - "./tools/travis/init-env"
+  - "./tools/travis/install-chromedriver"
+  - "./tools/travis/install-geckodriver"
+  - "./tools/travis/start-xvfb"
+  - ". ./tools/travis/env.sh"
+  - export DISPLAY=$DSJS_DISPLAY
+  - export PATH=$PATH:$DSJS_LOCAL_BIN_DIR
 install:
-- npm install --global gulp-cli
-- npm install
+  - npm install --global gulp-cli
+  - npm install
 script:
-- gulp test:unit
-- gulp dist
-- gulp server:start
-- gulp test:acceptance:server
-- SELENIUM_BROWSER=phantomjs gulp test:acceptance:client
-- SELENIUM_BROWSER=chrome gulp test:acceptance:client
-- SELENIUM_BROWSER=firefox gulp test:acceptance:client
-- gulp server:stop
-- gulp lint
-- gulp docs
+  - gulp test:unit
+  - gulp dist
+  - gulp server:start
+  - gulp test:acceptance:server
+  - SELENIUM_BROWSER=phantomjs gulp test:acceptance:client
+  - SELENIUM_BROWSER=chrome gulp test:acceptance:client
+  - SELENIUM_BROWSER=firefox gulp test:acceptance:client
+  - gulp server:stop
+  - gulp lint
+  - gulp docs
 after_script:
-- gulp publish-coverage
+  - gulp publish-coverage
 deploy:
   provider: heroku
   api_key:
@@ -45,4 +45,4 @@ deploy:
   on:
     repo: ssoloff/dice-server-js
 after_deploy:
-- "./tools/travis/test-deployment"
+  - "./tools/travis/test-deployment"
