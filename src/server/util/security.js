@@ -10,12 +10,18 @@
 
 const base64url = require('base64url')
 const canonicalJsonStringify = require('canonical-json')
+const fs = require('fs')
 const jwkToPem = require('jwk-to-pem')
 const jws = require('jws')
 const rsaPemToJwk = require('rsa-pem-to-jwk')
 
 const SIGNATURE_ALGORITHM = 'RS256'
 
+/**
+ * Provides useful methods for application security.
+ *
+ * @module security
+ */
 module.exports = {
   /**
    * Creates a detached JSON web signature for the specified payload.
@@ -54,6 +60,37 @@ module.exports = {
       protected: base64url.encode(JSON.stringify(decodedJwsSignature.header)),
       signature: decodedJwsSignature.signature
     }
+  },
+
+  /**
+   * Gets an encryption key from either a named file or an environment
+   * variable value.
+   *
+   * <p>
+   * If the key is specified via both a named file and an environment variable
+   * value, the content of the named file will take precedence.
+   * </p>
+   *
+   * @param {String!} keyType - A short description of the type of key
+   *      requested (e.g. "public" or "private").
+   * @param {String} fileName - The name of the file from which to read the
+   *      key.
+   * @param {String} envValue - The key value as read from the environment
+   *      (e.g. `process.env.DSJS_PUBLIC_KEY`).
+   *
+   * @returns {String!} The encryption key.
+   *
+   * @throws {Error} If the encryption key was not specified via a named file
+   *      or an environment variable.
+   */
+  getKey (keyType, fileName, envValue) {
+    if (fileName) {
+      return fs.readFileSync(fileName)
+    } else if (envValue) {
+      return envValue
+    }
+
+    throw new Error(`${keyType} key not specified`)
   },
 
   /**

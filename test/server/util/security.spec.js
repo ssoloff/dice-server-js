@@ -8,6 +8,7 @@
 
 'use strict'
 
+const fs = require('fs')
 const security = require('../../../src/server/util/security')
 const securityTest = require('../test-support/security-test')
 
@@ -40,6 +41,43 @@ describe('security', () => {
         expect(signature.payload).not.toBeDefined()
       }
     )
+  })
+
+  describe('.getKey', () => {
+    const KEY_ENV_CONTENT = 'keyThatCameFromEnv'
+    const KEY_FILE_CONTENT = 'keyThatCameFromFile'
+    const KEY_FILE_NAME = 'keyFileName'
+    const KEY_TYPE = 'keyType'
+
+    beforeEach(() => {
+      spyOn(fs, 'readFileSync').and.returnValue(KEY_FILE_CONTENT)
+    })
+
+    describe('when key specified via file', () => {
+      it('should read the key from the file', () => {
+        expect(security.getKey(KEY_TYPE, KEY_FILE_NAME, undefined)).toBe(KEY_FILE_CONTENT)
+      })
+    })
+
+    describe('when key specified via environment', () => {
+      it('should read the key from the environment', () => {
+        expect(security.getKey(KEY_TYPE, undefined, KEY_ENV_CONTENT)).toBe(KEY_ENV_CONTENT)
+      })
+    })
+
+    describe('when key specified via both file and environment', () => {
+      it('should read the key from the file', () => {
+        expect(security.getKey(KEY_TYPE, KEY_FILE_NAME, KEY_ENV_CONTENT)).toBe(KEY_FILE_CONTENT)
+      })
+    })
+
+    describe('when key not specified', () => {
+      it('should throw exception', () => {
+        expect(() => {
+          security.getKey(KEY_TYPE, undefined, undefined)
+        }).toThrowError(`${KEY_TYPE} key not specified`)
+      })
+    })
   })
 
   describe('.toCanonicalString', () => {
