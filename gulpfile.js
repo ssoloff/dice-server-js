@@ -19,6 +19,7 @@ const cucumber = require('gulp-cucumber')
 const del = require('del')
 const eslint = require('gulp-eslint')
 const eventStream = require('event-stream')
+const excludeGitignore = require('gulp-exclude-gitignore')
 const fs = require('fs')
 const git = require('git-rev')
 const glob = require('glob')
@@ -50,6 +51,8 @@ const dirs = (() => {
   const DIST_DIR = `${BUILD_DIR}/dist`
   const PUBLIC_DIST_DIR = `${DIST_DIR}/public`
 
+  const NODE_MODULES_DIR = 'node_modules'
+
   return {
     build: BUILD_DIR,
     clientFeatures: `${FEATURES_DIR}/client`,
@@ -60,7 +63,8 @@ const dirs = (() => {
     features: FEATURES_DIR,
     htmlDist: PUBLIC_DIST_DIR,
     jsDist: `${PUBLIC_DIST_DIR}/js`,
-    nodeModulesBin: 'node_modules/.bin',
+    nodeModules: NODE_MODULES_DIR,
+    nodeModulesBin: `${NODE_MODULES_DIR}/.bin`,
     serverFeatures: `${FEATURES_DIR}/server`,
     serverSrc: `${SRC_DIR}/server`,
     serverTest: `${TEST_DIR}/server`,
@@ -71,15 +75,10 @@ const dirs = (() => {
 
 const paths = {
   all: {
-    features: {
-      all: `${dirs.features}/**/*`
-    },
-    main: {
-      all: `${dirs.src}/**/*`
-    },
-    test: {
-      all: `${dirs.test}/**/*`
-    }
+    all: '**/*'
+  },
+  build: {
+    all: `${dirs.build}/**`
   },
   css: {
     main: {
@@ -109,11 +108,8 @@ const paths = {
     }
   },
   js: {
-    features: {
-      all: `${dirs.features}/**/*.js`
-    },
+    all: '**/*.js',
     main: {
-      all: `${dirs.src}/**/*.js`,
       client: {
         bundle: `${dirs.clientSrc}/bundle.js`,
         main: `${dirs.clientSrc}/index.js`
@@ -121,7 +117,6 @@ const paths = {
       server: `${dirs.serverSrc}/**/*.js`
     },
     test: {
-      all: `${dirs.test}/**/*.js`,
       server: {
         all: `${dirs.serverTest}/**/*.js`,
         spec: `${dirs.serverTest}/**/*.spec.js`
@@ -135,19 +130,13 @@ const paths = {
     }
   },
   json: {
-    features: {
-      all: `${dirs.features}/**/*.json`
-    },
-    main: {
-      all: `${dirs.src}/**/*.json`
-    },
-    root: './*.json',
-    test: {
-      all: `${dirs.test}/**/*.json`
-    }
+    all: '**/*.json'
   },
   lcov: {
     info: `${dirs.coverage}/lcov.info`
+  },
+  nodeModules: {
+    all: `${dirs.nodeModules}/**`
   },
   packageInfo: 'package.json',
   pem: {
@@ -243,6 +232,7 @@ function runCucumber (path) {
 
 function runEsLint (globs, configPath) {
   return gulp.src(globs)
+    .pipe(excludeGitignore())
     .pipe(eslint({
       configFile: configPath,
       warnFileIgnored: true
@@ -325,13 +315,19 @@ gulp.task('dev:_rebuild:with-tests', (done) => {
   runSequence('clean', 'test:unit', 'dist', done)
 })
 
+gulp.task('dev:_rebuild:with-tests-and-lint', ['dev:_rebuild:with-tests'], (done) => {
+  runSequence('lint', done)
+})
+
 gulp.task('dev:_rebuild:without-tests', (done) => {
   runSequence('clean', 'compile', 'dist', done)
 })
 
-gulp.task('dev', ['dev:_rebuild:with-tests', 'lint'], () => {
-  gulp.watch([paths.all.main.all, paths.all.test.all], ['dev:_rebuild:with-tests'])
-  gulp.watch([paths.gulpfile, paths.all.features.all, paths.all.main.all, paths.all.test.all], ['lint'])
+gulp.task('dev', ['dev:_rebuild:with-tests-and-lint'], () => {
+  gulp.watch(
+    [paths.all.all, `!${paths.build.all}`, `!${paths.nodeModules.all}`],
+    ['dev:_rebuild:with-tests-and-lint']
+  )
 })
 
 gulp.task('dist:client', () => {
@@ -383,11 +379,7 @@ gulp.task('lint:html:full', () => {
 gulp.task('lint:html', ['lint:html:full', 'lint:html:fragment'])
 
 gulp.task('lint:js:default', () => {
-  return runEsLint([
-    paths.js.features.all,
-    paths.js.main.all,
-    paths.js.test.all
-  ])
+  return runEsLint([paths.js.all, `!${paths.gulpfile}`])
 })
 
 gulp.task('lint:js:gulpfile', () => {
@@ -397,15 +389,8 @@ gulp.task('lint:js:gulpfile', () => {
 gulp.task('lint:js', ['lint:js:default', 'lint:js:gulpfile'])
 
 gulp.task('lint:json', () => {
-  return gulp
-    .src([
-      paths.json.root,
-      paths.json.features.all,
-      paths.json.main.all,
-      paths.json.test.all
-    ], {
-      dot: true
-    })
+  return gulp.src(paths.json.all, {dot: true})
+    .pipe(excludeGitignore())
     .pipe(jsonlint())
     .pipe(jsonlint.reporter())
     .pipe(jsonlint.failAfterError())

@@ -63,6 +63,7 @@
     "gulp-csslint": "~1.0.0",
     "gulp-cucumber": "~0.0.22",
     "gulp-eslint": "~3.0.1",
+    "gulp-exclude-gitignore": "github:sboudrias/gulp-exclude-gitignore#v1.2.0",
     "gulp-htmlhint": "~0.3.1",
     "gulp-istanbul": "~1.1.1",
     "gulp-jasmine": "~2.4.2",

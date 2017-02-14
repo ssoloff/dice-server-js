@@ -2410,10 +2410,22 @@
       "resolved": "https://registry.npmjs.org/gulp-eslint/-/gulp-eslint-3.0.1.tgz",
       "dev": true
     },
+    "gulp-exclude-gitignore": {
+      "version": "1.2.0",
+      "from": "sboudrias/gulp-exclude-gitignore#v1.2.0",
+      "resolved": "git://github.com/sboudrias/gulp-exclude-gitignore.git#7844c5083492fb8a7179e417b69dca05684a3691",
+      "dev": true
+    },
     "gulp-htmlhint": {
       "version": "0.3.1",
       "from": "gulp-htmlhint@>=0.3.1 <0.4.0",
       "resolved": "https://registry.npmjs.org/gulp-htmlhint/-/gulp-htmlhint-0.3.1.tgz",
+      "dev": true
+    },
+    "gulp-ignore": {
+      "version": "2.0.2",
+      "from": "gulp-ignore@>=2.0.2 <3.0.0",
+      "resolved": "https://registry.npmjs.org/gulp-ignore/-/gulp-ignore-2.0.2.tgz",
       "dev": true
     },
     "gulp-istanbul": {
@@ -2493,6 +2505,12 @@
           "dev": true
         }
       }
+    },
+    "gulp-match": {
+      "version": "1.0.3",
+      "from": "gulp-match@>=1.0.3 <2.0.0",
+      "resolved": "https://registry.npmjs.org/gulp-match/-/gulp-match-1.0.3.tgz",
+      "dev": true
     },
     "gulp-nice-package": {
       "version": "1.1.0",
