@@ -534,6 +534,9 @@ gulp.task('test:unit', ['compile'], () => {
         config: require(`./${paths.jasmine.config}`),
         verbose: true
       }))
+  ))
+  .then(() => streamToPromise(
+    gulp.src([])
       .pipe(istanbul.writeReports({
         dir: dirs.coverage,
         reporters: ['lcov', 'text-summary']
