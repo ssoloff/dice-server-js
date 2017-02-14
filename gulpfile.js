@@ -247,6 +247,14 @@ function runHtmlHint (stream) {
     .pipe(htmlhint.failReporter())
 }
 
+function runJasmine () {
+  return gulp.src(compilePath(paths.js.test.server.spec))
+    .pipe(jasmine({
+      config: require(`./${paths.jasmine.config}`),
+      verbose: true
+    }))
+}
+
 function runJsDoc (configPath, callback) {
   exec(`${dirs.nodeModulesBin}/jsdoc -c ${configPath}`, callback)
 }
@@ -312,7 +320,7 @@ gulp.task('compile:server', ['compile:server:jison', 'compile:server:js'])
 gulp.task('compile', ['compile:client', 'compile:server'])
 
 gulp.task('dev:_rebuild:with-tests', (done) => {
-  runSequence('clean', 'test:unit', 'dist', done)
+  runSequence('clean', 'test:unit:_without-coverage', 'dist', done)
 })
 
 gulp.task('dev:_rebuild:with-tests-and-lint', ['dev:_rebuild:with-tests'], (done) => {
@@ -502,6 +510,10 @@ gulp.task('test:acceptance', (done) => {
   runSequence('test:acceptance:server', 'test:acceptance:client', done)
 })
 
+gulp.task('test:unit:_without-coverage', ['compile'], () => {
+  return runJasmine()
+})
+
 gulp.task('test:unit', ['compile'], () => {
   return streamToPromise(
     gulp.src([
@@ -513,13 +525,7 @@ gulp.task('test:unit', ['compile'], () => {
     }))
     .pipe(istanbul.hookRequire())
   )
-  .then(() => streamToPromise(
-    gulp.src(compilePath(paths.js.test.server.spec))
-      .pipe(jasmine({
-        config: require(`./${paths.jasmine.config}`),
-        verbose: true
-      }))
-  ))
+  .then(() => streamToPromise(runJasmine()))
   .then(() => streamToPromise(
     gulp.src([])
       .pipe(istanbul.writeReports({
