@@ -32,7 +32,7 @@ script:
   - gulp server:stop
   - gulp lint
   - gulp docs
-after_script:
+after_success:
   - gulp publish-coverage
 deploy:
   provider: heroku
