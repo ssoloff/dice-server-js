@@ -20,7 +20,7 @@ describe('evaluateExpressionController', () => {
     responseBody
 
   function createEvaluateExpressionController () {
-    return require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
+    return require('../../../../src/server/services/evaluate-expression/controller').create({
       publicKey: controllerTest.getPublicKey()
     })
   }

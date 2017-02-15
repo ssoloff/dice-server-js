@@ -16,25 +16,25 @@ module.exports = (app, privateKey, publicKey) => {
   const redeemTicketPath = '/api/ticket/redeem'
   const validateRedeemedTicketPath = '/api/ticket/validate-redeemed'
 
-  const evaluateExpressionController = require('./services/evaluate-expression/evaluate-expression-controller')
+  const evaluateExpressionController = require('./services/evaluate-expression/controller')
     .create({
       publicKey: publicKey
     })
-  const issueTicketController = require('./services/issue-ticket/issue-ticket-controller')
+  const issueTicketController = require('./services/issue-ticket/controller')
     .create({
       evaluateExpressionController: evaluateExpressionController,
       privateKey: privateKey,
       publicKey: publicKey,
       redeemTicketPath: redeemTicketPath
     })
-  const redeemTicketController = require('./services/redeem-ticket/redeem-ticket-controller')
+  const redeemTicketController = require('./services/redeem-ticket/controller')
     .create({
       evaluateExpressionController: evaluateExpressionController,
       privateKey: privateKey,
       publicKey: publicKey,
       validateRedeemedTicketPath: validateRedeemedTicketPath
     })
-  const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/validate-redeemed-ticket-controller') // eslint-disable-line max-len
+  const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/controller')
     .create({
       publicKey: publicKey
     })

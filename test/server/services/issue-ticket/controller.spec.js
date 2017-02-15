@@ -20,10 +20,10 @@ describe('issueTicketController', () => {
 
   function createIssueTicketController (evaluateExpressionController) {
     evaluateExpressionController = evaluateExpressionController ||
-      require('../../../../src/server/services/evaluate-expression/evaluate-expression-controller').create({
+      require('../../../../src/server/services/evaluate-expression/controller').create({
         publicKey: controllerTest.getPublicKey()
       })
-    return require('../../../../src/server/services/issue-ticket/issue-ticket-controller').create({
+    return require('../../../../src/server/services/issue-ticket/controller').create({
       evaluateExpressionController: evaluateExpressionController,
       privateKey: controllerTest.getPrivateKey(),
       publicKey: controllerTest.getPublicKey(),
