@@ -428,6 +428,10 @@ gulp.task('lint:package', () => {
 gulp.task('lint', ['lint:js', 'lint:json', 'lint:package', 'lint:html', 'lint:css'])
 
 gulp.task('publish-coverage', () => {
+  if (process.env.CI !== 'true') {
+    return
+  }
+
   return gulp.src(paths.lcov.info)
     .pipe(coveralls())
 })
