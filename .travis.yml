@@ -11,11 +11,9 @@ addons:
       - google-chrome-stable
   firefox: latest
 before_install:
-  - "./tools/travis/init-env"
   - "./tools/travis/start-xvfb"
   - ". ./tools/travis/env.sh"
   - export DISPLAY=$DSJS_DISPLAY
-  - export PATH=$PATH:$DSJS_LOCAL_BIN_DIR
 install:
   - npm install --global chromedriver geckodriver gulp-cli
   - npm install
