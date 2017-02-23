@@ -149,7 +149,7 @@ const paths = {
     }
   },
   serverMain: `${dirs.dist}/server.js`,
-  serverPid: 'server.pid'
+  serverPid: '.server.pid'
 }
 
 function compilePath (path) {
