@@ -8,7 +8,7 @@
 
 'use strict'
 
-const correlationId = require('../../../src/server/util/correlation-id')
+const correlationId = require('../../../src/server/middleware/correlation-id')
 
 describe('correlationId', () => {
   describe('correlator', () => {

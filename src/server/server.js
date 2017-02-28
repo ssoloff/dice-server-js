@@ -8,14 +8,14 @@
 
 'use strict'
 
-const correlator = require('./util/correlation-id')
 const express = require('express')
+const middleware = require('./middleware')
 const path = require('path')
 const security = require('./util/security')
 
 const app = express()
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(correlator())
+app.use(middleware.correlationId())
 
 const privateKey = security.getKey('private', process.argv[2], process.env.DSJS_PRIVATE_KEY)
 const publicKey = security.getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
