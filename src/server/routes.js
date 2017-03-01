@@ -9,6 +9,7 @@
 'use strict'
 
 const bodyParser = require('body-parser')
+const services = require('./services')
 
 module.exports = (app, privateKey, publicKey) => {
   const evaluateExpressionPath = '/api/expression/evaluate'
@@ -16,28 +17,24 @@ module.exports = (app, privateKey, publicKey) => {
   const redeemTicketPath = '/api/ticket/redeem'
   const validateRedeemedTicketPath = '/api/ticket/validate-redeemed'
 
-  const evaluateExpressionController = require('./services/evaluate-expression/controller')
-    .create({
-      publicKey: publicKey
-    })
-  const issueTicketController = require('./services/issue-ticket/controller')
-    .create({
-      evaluateExpressionController: evaluateExpressionController,
-      privateKey: privateKey,
-      publicKey: publicKey,
-      redeemTicketPath: redeemTicketPath
-    })
-  const redeemTicketController = require('./services/redeem-ticket/controller')
-    .create({
-      evaluateExpressionController: evaluateExpressionController,
-      privateKey: privateKey,
-      publicKey: publicKey,
-      validateRedeemedTicketPath: validateRedeemedTicketPath
-    })
-  const validateRedeemedTicketController = require('./services/validate-redeemed-ticket/controller')
-    .create({
-      publicKey: publicKey
-    })
+  const evaluateExpressionController = services.evaluateExpression.create({
+    publicKey: publicKey
+  })
+  const issueTicketController = services.issueTicket.create({
+    evaluateExpressionController: evaluateExpressionController,
+    privateKey: privateKey,
+    publicKey: publicKey,
+    redeemTicketPath: redeemTicketPath
+  })
+  const redeemTicketController = services.redeemTicket.create({
+    evaluateExpressionController: evaluateExpressionController,
+    privateKey: privateKey,
+    publicKey: publicKey,
+    validateRedeemedTicketPath: validateRedeemedTicketPath
+  })
+  const validateRedeemedTicketController = services.validateRedeemedTicket.create({
+    publicKey: publicKey
+  })
 
   app.use(bodyParser.json())
 
