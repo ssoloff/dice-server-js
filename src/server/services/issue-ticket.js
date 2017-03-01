@@ -9,9 +9,9 @@
 'use strict'
 
 const _ = require('underscore')
-const controllerUtils = require('../../util/controller-utils')
+const controllerUtils = require('../util/controller-utils')
 const crypto = require('crypto')
-const security = require('../../util/security')
+const security = require('../util/security')
 
 module.exports = {
   create (controllerData) {

@@ -8,7 +8,7 @@
 
 'use strict'
 
-const controllerTest = require('../../test-support/controller-test')
+const controllerTest = require('../test-support/controller-test')
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
 
@@ -19,7 +19,7 @@ describe('validateRedeemedTicketController', () => {
     responseBody
 
   function createValidateRedeemedTicketController () {
-    return require('../../../../src/server/services/validate-redeemed-ticket/controller')
+    return require('../../../src/server/services/validate-redeemed-ticket')
       .create({
         publicKey: controllerTest.getPublicKey()
       })

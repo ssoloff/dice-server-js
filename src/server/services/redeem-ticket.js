@@ -8,9 +8,9 @@
 
 'use strict'
 
-const controllerUtils = require('../../util/controller-utils')
+const controllerUtils = require('../util/controller-utils')
 const httpStatus = require('http-status-codes')
-const security = require('../../util/security')
+const security = require('../util/security')
 
 module.exports = {
   create (controllerData) {

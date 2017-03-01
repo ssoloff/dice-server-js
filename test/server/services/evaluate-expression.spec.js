@@ -8,10 +8,10 @@
 
 'use strict'
 
-const controllerTest = require('../../test-support/controller-test')
+const controllerTest = require('../test-support/controller-test')
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
-const security = require('../../../../src/server/util/security')
+const security = require('../../../src/server/util/security')
 
 describe('evaluateExpressionController', () => {
   let controller,
@@ -20,7 +20,7 @@ describe('evaluateExpressionController', () => {
     responseBody
 
   function createEvaluateExpressionController () {
-    return require('../../../../src/server/services/evaluate-expression/controller').create({
+    return require('../../../src/server/services/evaluate-expression').create({
       publicKey: controllerTest.getPublicKey()
     })
   }

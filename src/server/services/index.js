@@ -8,10 +8,10 @@
 
 'use strict'
 
-const evaluateExpression = require('./evaluate-expression/controller')
-const issueTicket = require('./issue-ticket/controller')
-const redeemTicket = require('./redeem-ticket/controller')
-const validateRedeemedTicket = require('./validate-redeemed-ticket/controller')
+const evaluateExpression = require('./evaluate-expression')
+const issueTicket = require('./issue-ticket')
+const redeemTicket = require('./redeem-ticket')
+const validateRedeemedTicket = require('./validate-redeemed-ticket')
 
 module.exports = {
   evaluateExpression: evaluateExpression,
