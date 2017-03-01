@@ -17,22 +17,22 @@ module.exports = (app, privateKey, publicKey) => {
   const redeemTicketPath = '/api/ticket/redeem'
   const validateRedeemedTicketPath = '/api/ticket/validate-redeemed'
 
-  const evaluateExpressionController = services.evaluateExpression.create({
+  const evaluateExpressionController = services.evaluateExpression({
     publicKey: publicKey
   })
-  const issueTicketController = services.issueTicket.create({
+  const issueTicketController = services.issueTicket({
     evaluateExpressionController: evaluateExpressionController,
     privateKey: privateKey,
     publicKey: publicKey,
     redeemTicketPath: redeemTicketPath
   })
-  const redeemTicketController = services.redeemTicket.create({
+  const redeemTicketController = services.redeemTicket({
     evaluateExpressionController: evaluateExpressionController,
     privateKey: privateKey,
     publicKey: publicKey,
     validateRedeemedTicketPath: validateRedeemedTicketPath
   })
-  const validateRedeemedTicketController = services.validateRedeemedTicket.create({
+  const validateRedeemedTicketController = services.validateRedeemedTicket({
     publicKey: publicKey
   })
 
