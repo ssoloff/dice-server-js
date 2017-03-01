@@ -73,30 +73,28 @@ describe('validateRedeemedTicketController', () => {
     controller = createValidateRedeemedTicketController()
   })
 
-  describe('.validateRedeemedTicket', () => {
-    describe('when redeemed ticket is valid', () => {
-      it('should respond with OK', () => {
-        controller.validateRedeemedTicket(request, response)
+  describe('when redeemed ticket is valid', () => {
+    it('should respond with OK', () => {
+      controller(request, response)
 
-        expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
-        expect(responseBody).toEqual({})
-      })
+      expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
+      expect(responseBody).toEqual({})
     })
+  })
 
-    describe('when redeemed ticket has an invalid signature', () => {
-      it('should respond with bad request error', () => {
-        modifyRequestBodyWithoutSignatureUpdate(() => {
-          request.body.redeemedTicket.content.description += '...' // Simulate forged content
-        })
+  describe('when redeemed ticket has an invalid signature', () => {
+    it('should respond with bad request error', () => {
+      modifyRequestBodyWithoutSignatureUpdate(() => {
+        request.body.redeemedTicket.content.description += '...' // Simulate forged content
+      })
 
-        controller.validateRedeemedTicket(request, response)
+      controller(request, response)
 
-        expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
-        expect(responseBody).toEqual({
-          error: {
-            message: ja.matchType('string')
-          }
-        })
+      expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
+      expect(responseBody).toEqual({
+        error: {
+          message: ja.matchType('string')
+        }
       })
     })
   })

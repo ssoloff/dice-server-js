@@ -55,7 +55,7 @@ module.exports = (controllerData) => {
   }
 
   function evaluateExpression (requestBody) {
-    return controllerUtils.postJson(controllerData.evaluateExpressionController.evaluateExpression, requestBody)
+    return controllerUtils.postJson(controllerData.evaluateExpressionController, requestBody)
   }
 
   function generateRandomNumberGeneratorSeed () {
@@ -100,13 +100,11 @@ module.exports = (controllerData) => {
     return controllerUtils.getRequestRootUrl(request) + controllerData.redeemTicketPath
   }
 
-  return {
-    issueTicket (request, response) {
-      try {
-        controllerUtils.setSuccessResponse(response, createResponseBody(request))
-      } catch (e) {
-        controllerUtils.setFailureResponse(response, e)
-      }
+  return (request, response) => {
+    try {
+      controllerUtils.setSuccessResponse(response, createResponseBody(request))
+    } catch (e) {
+      controllerUtils.setFailureResponse(response, e)
     }
   }
 }

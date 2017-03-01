@@ -38,8 +38,8 @@ module.exports = (app, privateKey, publicKey) => {
 
   app.use(bodyParser.json())
 
-  app.post(evaluateExpressionPath, evaluateExpressionController.evaluateExpression)
-  app.post(issueTicketPath, issueTicketController.issueTicket)
-  app.post(redeemTicketPath, redeemTicketController.redeemTicket)
-  app.post(validateRedeemedTicketPath, validateRedeemedTicketController.validateRedeemedTicket)
+  app.post(evaluateExpressionPath, evaluateExpressionController)
+  app.post(issueTicketPath, issueTicketController)
+  app.post(redeemTicketPath, redeemTicketController)
+  app.post(validateRedeemedTicketPath, validateRedeemedTicketController)
 }

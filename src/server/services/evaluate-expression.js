@@ -112,13 +112,11 @@ module.exports = (controllerData) => {
     }
   }
 
-  return {
-    evaluateExpression (request, response) {
-      try {
-        controllerUtils.setSuccessResponse(response, createResponseBody(request))
-      } catch (e) {
-        controllerUtils.setFailureResponse(response, e)
-      }
+  return (request, response) => {
+    try {
+      controllerUtils.setSuccessResponse(response, createResponseBody(request))
+    } catch (e) {
+      controllerUtils.setFailureResponse(response, e)
     }
   }
 }

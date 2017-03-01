@@ -81,139 +81,135 @@ describe('redeemTicketController', () => {
     controller = createRedeemTicketController()
   })
 
-  describe('.redeemTicket', () => {
-    describe('when evaluate expression controller responds with success', () => {
-      it('should respond with OK', () => {
-        controller.redeemTicket(request, response)
+  describe('when evaluate expression controller responds with success', () => {
+    it('should respond with OK', () => {
+      controller(request, response)
 
-        expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
-        expect(responseBody).toEqual({
-          redeemedTicket: {
-            content: {
-              description: 'description',
-              evaluateExpressionResponseBody: {
-                dieRollResults: [
-                  {
-                    sides: 6,
-                    value: 6
-                  },
-                  {
-                    sides: 6,
-                    value: 6
-                  },
-                  {
-                    sides: 6,
-                    value: 6
-                  }
-                ],
-                expression: {
-                  canonicalText: 'sum(roll(3, d6)) + 4',
-                  text: '3d6+4'
+      expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
+      expect(responseBody).toEqual({
+        redeemedTicket: {
+          content: {
+            description: 'description',
+            evaluateExpressionResponseBody: {
+              dieRollResults: [
+                {
+                  sides: 6,
+                  value: 6
                 },
-                expressionResult: {
-                  text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
-                  value: 22
+                {
+                  sides: 6,
+                  value: 6
                 },
-                randomNumberGenerator: {
-                  name: 'constantMax'
+                {
+                  sides: 6,
+                  value: 6
                 }
+              ],
+              expression: {
+                canonicalText: 'sum(roll(3, d6)) + 4',
+                text: '3d6+4'
               },
-              id: '00112233445566778899aabbccddeeff00112233',
-              validateUrl: ja.matchType('string')
+              expressionResult: {
+                text: '[sum([roll(3, d6) -> [6, 6, 6]]) -> 18] + 4',
+                value: 22
+              },
+              randomNumberGenerator: {
+                name: 'constantMax'
+              }
             },
-            signature: ja.matchType('object')
-          }
-        })
-      })
-
-      it('should respond with a signed redeemed ticket', () => {
-        controller.redeemTicket(request, response)
-
-        expect(responseBody.redeemedTicket).toBeSigned()
+            id: '00112233445566778899aabbccddeeff00112233',
+            validateUrl: ja.matchType('string')
+          },
+          signature: ja.matchType('object')
+        }
       })
     })
 
-    describe('when evaluate expression controller responds with error', () => {
-      it('should respond with same error', () => {
-        const expectedStatus = httpStatus.BAD_GATEWAY
-        const expectedErrorMessage = 'message'
-        const stubEvaluateExpressionController = {
-          evaluateExpression (request, response) {
-            response.status(expectedStatus).json({
-              error: {
-                message: expectedErrorMessage
-              }
-            })
-          }
-        }
+    it('should respond with a signed redeemed ticket', () => {
+      controller(request, response)
 
-        controller = createRedeemTicketController(stubEvaluateExpressionController)
+      expect(responseBody.redeemedTicket).toBeSigned()
+    })
+  })
 
-        controller.redeemTicket(request, response)
-
-        expect(response.status).toHaveBeenCalledWith(expectedStatus)
-        expect(responseBody).toEqual({
+  describe('when evaluate expression controller responds with error', () => {
+    it('should respond with same error', () => {
+      const expectedStatus = httpStatus.BAD_GATEWAY
+      const expectedErrorMessage = 'message'
+      const stubEvaluateExpressionController = (request, response) => {
+        response.status(expectedStatus).json({
           error: {
             message: expectedErrorMessage
           }
         })
+      }
+
+      controller = createRedeemTicketController(stubEvaluateExpressionController)
+
+      controller(request, response)
+
+      expect(response.status).toHaveBeenCalledWith(expectedStatus)
+      expect(responseBody).toEqual({
+        error: {
+          message: expectedErrorMessage
+        }
       })
     })
+  })
 
-    describe('when ticket has an invalid signature', () => {
-      it('should respond with bad request error', () => {
-        modifyRequestBodyWithoutSignatureUpdate(() => {
-          request.body.ticket.content.description += '...' // Simulate forged content
-        })
+  describe('when ticket has an invalid signature', () => {
+    it('should respond with bad request error', () => {
+      modifyRequestBodyWithoutSignatureUpdate(() => {
+        request.body.ticket.content.description += '...' // Simulate forged content
+      })
 
-        controller.redeemTicket(request, response)
+      controller(request, response)
 
-        expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
-        expect(responseBody).toEqual({
-          error: {
-            message: ja.matchType('string')
-          }
-        })
+      expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
+      expect(responseBody).toEqual({
+        error: {
+          message: ja.matchType('string')
+        }
       })
     })
+  })
 
-    describe('when ticket has already been redeemed', () => {
-      it('should respond with same result as previous redemption', () => {
-        modifyRequestBody(() => {
-          request.body = {
-            ticket: {
-              content: {
-                description: 'description',
-                evaluateExpressionRequestBody: {
-                  expression: {
-                    text: '3d6+4'
-                  },
-                  randomNumberGenerator: {
-                    content: {
-                      name: 'uniform',
-                      options: {
-                        seed: [1, 2, 3]
-                      }
-                    },
-                    signature: null
-                  }
+  describe('when ticket has already been redeemed', () => {
+    it('should respond with same result as previous redemption', () => {
+      modifyRequestBody(() => {
+        request.body = {
+          ticket: {
+            content: {
+              description: 'description',
+              evaluateExpressionRequestBody: {
+                expression: {
+                  text: '3d6+4'
                 },
-                id: '00112233445566778899aabbccddeeff00112233',
-                redeemUrl: 'http://host:1234/redeemTicketPath'
+                randomNumberGenerator: {
+                  content: {
+                    name: 'uniform',
+                    options: {
+                      seed: [1, 2, 3]
+                    }
+                  },
+                  signature: null
+                }
               },
-              signature: null
-            }
+              id: '00112233445566778899aabbccddeeff00112233',
+              redeemUrl: 'http://host:1234/redeemTicketPath'
+            },
+            signature: null
           }
-        })
-        controller.redeemTicket(request, response)
-        const firstResponseBody = responseBody
-        responseBody = null
-
-        controller.redeemTicket(request, response)
-
-        expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
-        expect(responseBody).toEqual(firstResponseBody)
+        }
       })
+      controller(request, response)
+      const firstResponseBody = responseBody
+      responseBody = null
+
+      controller(request, response)
+
+      expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
+      expect(responseBody).toEqual(firstResponseBody)
     })
   })
 })
