@@ -8,20 +8,20 @@
 
 'use strict'
 
-const controllerTest = require('../test-support/controller-test')
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
 const security = require('../../../src/server/util/security')
+const serviceTest = require('../test-support/service-test')
 
-describe('evaluateExpressionController', () => {
-  let controller,
-    request,
+describe('evaluateExpression', () => {
+  let request,
     response,
-    responseBody
+    responseBody,
+    service
 
-  function createEvaluateExpressionController () {
+  function createEvaluateExpressionService () {
     return require('../../../src/server/services/evaluate-expression')({
-      publicKey: controllerTest.getPublicKey()
+      publicKey: serviceTest.getPublicKey()
     })
   }
 
@@ -30,14 +30,14 @@ describe('evaluateExpressionController', () => {
 
     const randomNumberGenerator = request.body.randomNumberGenerator
     if (randomNumberGenerator) {
-      randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content)
+      randomNumberGenerator.signature = serviceTest.createSignature(randomNumberGenerator.content)
     }
   }
 
   beforeEach(() => {
-    jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual)
+    jasmine.addCustomEqualityTester(serviceTest.isResponseBodyEqual)
 
-    request = controllerTest.createRequest()
+    request = serviceTest.createRequest()
     modifyRequestBody(() => {
       request.body = {
         expression: {
@@ -52,17 +52,17 @@ describe('evaluateExpressionController', () => {
       }
     })
 
-    response = controllerTest.createResponse((json) => {
+    response = serviceTest.createResponse((json) => {
       responseBody = json
     })
     responseBody = null
 
-    controller = createEvaluateExpressionController()
+    service = createEvaluateExpressionService()
   })
 
   describe('when expression is well-formed', () => {
     it('should respond with OK', () => {
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
       expect(responseBody).toEqual({
@@ -103,7 +103,7 @@ describe('evaluateExpressionController', () => {
     })
 
     it('should respond with bad request error', () => {
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
       expect(responseBody).toEqual({
@@ -121,7 +121,7 @@ describe('evaluateExpressionController', () => {
           delete request.body.randomNumberGenerator
         })
 
-        controller(request, response)
+        service(request, response)
 
         expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
         expect(responseBody.randomNumberGenerator.name).toBe('uniform')
@@ -134,7 +134,7 @@ describe('evaluateExpressionController', () => {
           request.body.randomNumberGenerator.content.name = 'uniform'
         })
 
-        controller(request, response)
+        service(request, response)
 
         expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
         expect(responseBody.randomNumberGenerator.name).toBe('uniform')
@@ -149,7 +149,7 @@ describe('evaluateExpressionController', () => {
           request.body.randomNumberGenerator.content.name = 'constantMax'
         })
 
-        controller(request, response)
+        service(request, response)
 
         expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
         expect(responseBody.randomNumberGenerator.name).toBe('constantMax')
@@ -163,7 +163,7 @@ describe('evaluateExpressionController', () => {
           request.body.randomNumberGenerator.content.name = '<<UNKNOWN>>'
         })
 
-        controller(request, response)
+        service(request, response)
 
         expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
         expect(responseBody.error).toBeDefined()
@@ -172,8 +172,8 @@ describe('evaluateExpressionController', () => {
 
     describe('when random number generator specification has an invalid signature', () => {
       it('should respond with bad request error', () => {
-        const otherPrivateKey = controllerTest.getOtherPrivateKey()
-        const otherPublicKey = controllerTest.getOtherPublicKey()
+        const otherPrivateKey = serviceTest.getOtherPrivateKey()
+        const otherPublicKey = serviceTest.getOtherPublicKey()
 
         request.body.randomNumberGenerator.signature = security.createSignature(
           request.body.randomNumberGenerator.content,
@@ -181,7 +181,7 @@ describe('evaluateExpressionController', () => {
           otherPublicKey
         )
 
-        controller(request, response)
+        service(request, response)
 
         expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
         expect(responseBody.error).toBeDefined()
@@ -196,7 +196,7 @@ describe('evaluateExpressionController', () => {
           request.body.expression.text = 'd6'
         })
 
-        controller(request, response)
+        service(request, response)
 
         expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
         expect(responseBody.error).toBeDefined()
@@ -209,7 +209,7 @@ describe('evaluateExpressionController', () => {
           request.body.expression.text = 'round(d6)'
         })
 
-        controller(request, response)
+        service(request, response)
 
         expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
         expect(responseBody.error).toBeDefined()

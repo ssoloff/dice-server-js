@@ -8,11 +8,11 @@
 
 'use strict'
 
-const controllerUtils = require('../util/controller-utils')
 const httpStatus = require('http-status-codes')
 const security = require('../util/security')
+const serviceUtils = require('../util/service-utils')
 
-module.exports = (controllerData) => {
+module.exports = (serviceData) => {
   function createRedeemedTicket (request) {
     const redeemedTicketContent = createRedeemedTicketContent(request)
     return {
@@ -27,7 +27,7 @@ module.exports = (controllerData) => {
     const evaluateExpressionResult = evaluateExpression(ticketContent.evaluateExpressionRequestBody)
     const evaluateExpressionResponseStatus = evaluateExpressionResult[0]
     const evaluateExpressionResponseBody = evaluateExpressionResult[1]
-    if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
+    if (serviceUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
       return {
         description: ticketContent.description,
         evaluateExpressionResponseBody: evaluateExpressionResponseBody,
@@ -36,7 +36,7 @@ module.exports = (controllerData) => {
       }
     }
 
-    throw controllerUtils.createControllerErrorFromResponse(
+    throw serviceUtils.createServiceErrorFromResponse(
       evaluateExpressionResponseStatus,
       evaluateExpressionResponseBody
     )
@@ -51,25 +51,25 @@ module.exports = (controllerData) => {
   }
 
   function createSignature (content) {
-    return security.createSignature(content, controllerData.privateKey, controllerData.publicKey)
+    return security.createSignature(content, serviceData.privateKey, serviceData.publicKey)
   }
 
   function evaluateExpression (requestBody) {
-    return controllerUtils.postJson(controllerData.evaluateExpressionController, requestBody)
+    return serviceUtils.postJson(serviceData.evaluateExpression, requestBody)
   }
 
   function getValidateRedeemedTicketUrl (request) {
-    return controllerUtils.getRequestRootUrl(request) + controllerData.validateRedeemedTicketPath
+    return serviceUtils.getRequestRootUrl(request) + serviceData.validateRedeemedTicketPath
   }
 
   function isSignatureValid (content, signature) {
-    return security.verifySignature(content, signature, controllerData.publicKey)
+    return security.verifySignature(content, signature, serviceData.publicKey)
   }
 
   function validateRequest (request) {
     const ticket = request.body.ticket
     if (!isSignatureValid(ticket.content, ticket.signature)) {
-      throw controllerUtils.createControllerError(
+      throw serviceUtils.createServiceError(
         httpStatus.BAD_REQUEST,
         'ticket signature is invalid'
       )
@@ -78,9 +78,9 @@ module.exports = (controllerData) => {
 
   return (request, response) => {
     try {
-      controllerUtils.setSuccessResponse(response, createResponseBody(request))
+      serviceUtils.setSuccessResponse(response, createResponseBody(request))
     } catch (e) {
-      controllerUtils.setFailureResponse(response, e)
+      serviceUtils.setFailureResponse(response, e)
     }
   }
 }

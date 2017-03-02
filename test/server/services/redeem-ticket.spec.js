@@ -8,25 +8,25 @@
 
 'use strict'
 
-const controllerTest = require('../test-support/controller-test')
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
+const serviceTest = require('../test-support/service-test')
 
-describe('redeemTicketController', () => {
-  let controller,
-    request,
+describe('redeemTicket', () => {
+  let request,
     response,
-    responseBody
+    responseBody,
+    service
 
-  function createRedeemTicketController (evaluateExpressionController) {
-    evaluateExpressionController = evaluateExpressionController ||
+  function createRedeemTicketService (evaluateExpression) {
+    evaluateExpression = evaluateExpression ||
       require('../../../src/server/services/evaluate-expression')({
-        publicKey: controllerTest.getPublicKey()
+        publicKey: serviceTest.getPublicKey()
       })
     return require('../../../src/server/services/redeem-ticket')({
-      evaluateExpressionController: evaluateExpressionController,
-      privateKey: controllerTest.getPrivateKey(),
-      publicKey: controllerTest.getPublicKey(),
+      evaluateExpression: evaluateExpression,
+      privateKey: serviceTest.getPrivateKey(),
+      publicKey: serviceTest.getPublicKey(),
       validateRedeemedTicketPath: '/validateRedeemedTicketPath'
     })
   }
@@ -35,10 +35,10 @@ describe('redeemTicketController', () => {
     modifyRequestBodyWithoutSignatureUpdate(callback)
 
     const randomNumberGenerator = request.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator
-    randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content)
+    randomNumberGenerator.signature = serviceTest.createSignature(randomNumberGenerator.content)
 
     const ticket = request.body.ticket
-    ticket.signature = controllerTest.createSignature(ticket.content)
+    ticket.signature = serviceTest.createSignature(ticket.content)
   }
 
   function modifyRequestBodyWithoutSignatureUpdate (callback) {
@@ -46,9 +46,9 @@ describe('redeemTicketController', () => {
   }
 
   beforeEach(() => {
-    jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual)
+    jasmine.addCustomEqualityTester(serviceTest.isResponseBodyEqual)
 
-    request = controllerTest.createRequest()
+    request = serviceTest.createRequest()
     modifyRequestBody(() => {
       request.body = {
         ticket: {
@@ -73,17 +73,17 @@ describe('redeemTicketController', () => {
       }
     })
 
-    response = controllerTest.createResponse((json) => {
+    response = serviceTest.createResponse((json) => {
       responseBody = json
     })
     responseBody = null
 
-    controller = createRedeemTicketController()
+    service = createRedeemTicketService()
   })
 
-  describe('when evaluate expression controller responds with success', () => {
+  describe('when evaluate expression service responds with success', () => {
     it('should respond with OK', () => {
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
       expect(responseBody).toEqual({
@@ -126,17 +126,17 @@ describe('redeemTicketController', () => {
     })
 
     it('should respond with a signed redeemed ticket', () => {
-      controller(request, response)
+      service(request, response)
 
       expect(responseBody.redeemedTicket).toBeSigned()
     })
   })
 
-  describe('when evaluate expression controller responds with error', () => {
+  describe('when evaluate expression service responds with error', () => {
     it('should respond with same error', () => {
       const expectedStatus = httpStatus.BAD_GATEWAY
       const expectedErrorMessage = 'message'
-      const stubEvaluateExpressionController = (request, response) => {
+      const stubEvaluateExpression = (request, response) => {
         response.status(expectedStatus).json({
           error: {
             message: expectedErrorMessage
@@ -144,9 +144,9 @@ describe('redeemTicketController', () => {
         })
       }
 
-      controller = createRedeemTicketController(stubEvaluateExpressionController)
+      service = createRedeemTicketService(stubEvaluateExpression)
 
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(expectedStatus)
       expect(responseBody).toEqual({
@@ -163,7 +163,7 @@ describe('redeemTicketController', () => {
         request.body.ticket.content.description += '...' // Simulate forged content
       })
 
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
       expect(responseBody).toEqual({
@@ -202,11 +202,11 @@ describe('redeemTicketController', () => {
           }
         }
       })
-      controller(request, response)
+      service(request, response)
       const firstResponseBody = responseBody
       responseBody = null
 
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
       expect(responseBody).toEqual(firstResponseBody)

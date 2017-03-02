@@ -8,17 +8,17 @@
 
 'use strict'
 
-const ControllerError = require('./controller-error')
 const httpStatus = require('http-status-codes')
+const ServiceError = require('./service-error')
 
 module.exports = {
-  createControllerError (status, message) {
-    return new ControllerError(status, message)
+  createServiceError (status, message) {
+    return new ServiceError(status, message)
   },
 
-  createControllerErrorFromResponse (responseStatus, responseBody) {
+  createServiceErrorFromResponse (responseStatus, responseBody) {
     const message = responseBody.error ? responseBody.error.message : null
-    return new ControllerError(responseStatus, message)
+    return new ServiceError(responseStatus, message)
   },
 
   getRequestRootUrl (request) {
@@ -52,7 +52,7 @@ module.exports = {
   },
 
   setFailureResponse (response, e) {
-    if (e instanceof ControllerError) {
+    if (e instanceof ServiceError) {
       response.status(e.status)
     } else {
       response.status(httpStatus.INTERNAL_SERVER_ERROR)

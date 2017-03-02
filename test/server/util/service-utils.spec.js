@@ -8,15 +8,15 @@
 
 'use strict'
 
-const controllerTest = require('../test-support/controller-test')
-const controllerUtils = require('../../../src/server/util/controller-utils')
 const httpStatus = require('http-status-codes')
+const serviceTest = require('../test-support/service-test')
+const serviceUtils = require('../../../src/server/util/service-utils')
 
-describe('controllerUtils', () => {
-  describe('.createControllerErrorFromResponse', () => {
+describe('serviceUtils', () => {
+  describe('.createServiceErrorFromResponse', () => {
     describe('when response body does not contain an error', () => {
       it('should create error with empty message', () => {
-        const e = controllerUtils.createControllerErrorFromResponse(httpStatus.INTERNAL_SERVER_ERROR, {})
+        const e = serviceUtils.createServiceErrorFromResponse(httpStatus.INTERNAL_SERVER_ERROR, {})
 
         expect(e.message).toBe('')
       })
@@ -38,7 +38,7 @@ describe('controllerUtils', () => {
 
     describe('when the request has not been forwarded', () => {
       it('should use the request protocol', () => {
-        expect(controllerUtils.getRequestRootUrl(request)).toBe('http://hostname:1234')
+        expect(serviceUtils.getRequestRootUrl(request)).toBe('http://hostname:1234')
       })
     })
 
@@ -46,18 +46,18 @@ describe('controllerUtils', () => {
       it('should use the forwarded protocol', () => {
         requestHeaders['x-forwarded-proto'] = 'https'
 
-        expect(controllerUtils.getRequestRootUrl(request)).toBe('https://hostname:1234')
+        expect(serviceUtils.getRequestRootUrl(request)).toBe('https://hostname:1234')
       })
     })
   })
 
   describe('.setFailureResponse', () => {
-    describe('when error is not an instance of ControllerError', () => {
+    describe('when error is not an instance of ServiceError', () => {
       it('should set response status to internal server error', () => {
-        const response = controllerTest.createResponse(() => {
+        const response = serviceTest.createResponse(() => {
         })
 
-        controllerUtils.setFailureResponse(response, new Error('message'))
+        serviceUtils.setFailureResponse(response, new Error('message'))
 
         expect(response.status).toHaveBeenCalledWith(httpStatus.INTERNAL_SERVER_ERROR)
       })

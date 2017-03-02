@@ -8,11 +8,11 @@
 
 'use strict'
 
-const controllerUtils = require('../util/controller-utils')
 const httpStatus = require('http-status-codes')
 const security = require('../util/security')
+const serviceUtils = require('../util/service-utils')
 
-module.exports = (controllerData) => {
+module.exports = (serviceData) => {
   function createResponseBody (request) {
     validateRequest(request)
 
@@ -20,13 +20,13 @@ module.exports = (controllerData) => {
   }
 
   function isSignatureValid (content, signature) {
-    return security.verifySignature(content, signature, controllerData.publicKey)
+    return security.verifySignature(content, signature, serviceData.publicKey)
   }
 
   function validateRequest (request) {
     const redeemedTicket = request.body.redeemedTicket
     if (!isSignatureValid(redeemedTicket.content, redeemedTicket.signature)) {
-      throw controllerUtils.createControllerError(
+      throw serviceUtils.createServiceError(
         httpStatus.BAD_REQUEST,
         'redeemed ticket signature is invalid'
       )
@@ -35,9 +35,9 @@ module.exports = (controllerData) => {
 
   return (request, response) => {
     try {
-      controllerUtils.setSuccessResponse(response, createResponseBody(request))
+      serviceUtils.setSuccessResponse(response, createResponseBody(request))
     } catch (e) {
-      controllerUtils.setFailureResponse(response, e)
+      serviceUtils.setFailureResponse(response, e)
     }
   }
 }

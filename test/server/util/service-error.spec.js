@@ -8,24 +8,24 @@
 
 'use strict'
 
-const ControllerError = require('../../../src/server/util/controller-error')
+const ServiceError = require('../../../src/server/util/service-error')
 
-describe('ControllerError', () => {
+describe('ServiceError', () => {
   describe('.constructor', () => {
     it('should use a default message if one is not provided', () => {
-      const error = new ControllerError(200, null)
+      const error = new ServiceError(200, null)
 
       expect(error.message).not.toBeNull()
     })
 
     it('should use a default status if one is not provided', () => {
-      const error = new ControllerError(null, 'message')
+      const error = new ServiceError(null, 'message')
 
       expect(error.status).not.toBeNull()
     })
 
     it('should provide a stack trace', () => {
-      const error = new ControllerError(200, 'message')
+      const error = new ServiceError(200, 'message')
 
       expect(error.stack).not.toBeUndefined()
     })

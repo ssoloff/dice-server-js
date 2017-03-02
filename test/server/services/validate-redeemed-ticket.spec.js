@@ -8,19 +8,19 @@
 
 'use strict'
 
-const controllerTest = require('../test-support/controller-test')
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
+const serviceTest = require('../test-support/service-test')
 
-describe('validateRedeemedTicketController', () => {
-  let controller,
-    request,
+describe('validateRedeemedTicket', () => {
+  let request,
     response,
-    responseBody
+    responseBody,
+    service
 
-  function createValidateRedeemedTicketController () {
+  function createValidateRedeemedTicketService () {
     return require('../../../src/server/services/validate-redeemed-ticket')({
-      publicKey: controllerTest.getPublicKey()
+      publicKey: serviceTest.getPublicKey()
     })
   }
 
@@ -28,7 +28,7 @@ describe('validateRedeemedTicketController', () => {
     modifyRequestBodyWithoutSignatureUpdate(callback)
 
     const redeemedTicket = request.body.redeemedTicket
-    redeemedTicket.signature = controllerTest.createSignature(redeemedTicket.content)
+    redeemedTicket.signature = serviceTest.createSignature(redeemedTicket.content)
   }
 
   function modifyRequestBodyWithoutSignatureUpdate (callback) {
@@ -36,9 +36,9 @@ describe('validateRedeemedTicketController', () => {
   }
 
   beforeEach(() => {
-    jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual)
+    jasmine.addCustomEqualityTester(serviceTest.isResponseBodyEqual)
 
-    request = controllerTest.createRequest()
+    request = serviceTest.createRequest()
     modifyRequestBody(() => {
       request.body = {
         redeemedTicket: {
@@ -65,17 +65,17 @@ describe('validateRedeemedTicketController', () => {
       }
     })
 
-    response = controllerTest.createResponse((json) => {
+    response = serviceTest.createResponse((json) => {
       responseBody = json
     })
     responseBody = null
 
-    controller = createValidateRedeemedTicketController()
+    service = createValidateRedeemedTicketService()
   })
 
   describe('when redeemed ticket is valid', () => {
     it('should respond with OK', () => {
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
       expect(responseBody).toEqual({})
@@ -88,7 +88,7 @@ describe('validateRedeemedTicketController', () => {
         request.body.redeemedTicket.content.description += '...' // Simulate forged content
       })
 
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.BAD_REQUEST)
       expect(responseBody).toEqual({

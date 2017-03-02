@@ -17,29 +17,29 @@ module.exports = (app, privateKey, publicKey) => {
   const redeemTicketPath = '/api/ticket/redeem'
   const validateRedeemedTicketPath = '/api/ticket/validate-redeemed'
 
-  const evaluateExpressionController = services.evaluateExpression({
+  const evaluateExpression = services.evaluateExpression({
     publicKey: publicKey
   })
-  const issueTicketController = services.issueTicket({
-    evaluateExpressionController: evaluateExpressionController,
+  const issueTicket = services.issueTicket({
+    evaluateExpression: evaluateExpression,
     privateKey: privateKey,
     publicKey: publicKey,
     redeemTicketPath: redeemTicketPath
   })
-  const redeemTicketController = services.redeemTicket({
-    evaluateExpressionController: evaluateExpressionController,
+  const redeemTicket = services.redeemTicket({
+    evaluateExpression: evaluateExpression,
     privateKey: privateKey,
     publicKey: publicKey,
     validateRedeemedTicketPath: validateRedeemedTicketPath
   })
-  const validateRedeemedTicketController = services.validateRedeemedTicket({
+  const validateRedeemedTicket = services.validateRedeemedTicket({
     publicKey: publicKey
   })
 
   app.use(bodyParser.json())
 
-  app.post(evaluateExpressionPath, evaluateExpressionController)
-  app.post(issueTicketPath, issueTicketController)
-  app.post(redeemTicketPath, redeemTicketController)
-  app.post(validateRedeemedTicketPath, validateRedeemedTicketController)
+  app.post(evaluateExpressionPath, evaluateExpression)
+  app.post(issueTicketPath, issueTicket)
+  app.post(redeemTicketPath, redeemTicket)
+  app.post(validateRedeemedTicketPath, validateRedeemedTicket)
 }

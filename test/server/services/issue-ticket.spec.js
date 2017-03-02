@@ -8,25 +8,25 @@
 
 'use strict'
 
-const controllerTest = require('../test-support/controller-test')
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
+const serviceTest = require('../test-support/service-test')
 
-describe('issueTicketController', () => {
-  let controller,
-    request,
+describe('issueTicket', () => {
+  let request,
     response,
-    responseBody
+    responseBody,
+    service
 
-  function createIssueTicketController (evaluateExpressionController) {
-    evaluateExpressionController = evaluateExpressionController ||
+  function createIssueTicketService (evaluateExpression) {
+    evaluateExpression = evaluateExpression ||
       require('../../../src/server/services/evaluate-expression')({
-        publicKey: controllerTest.getPublicKey()
+        publicKey: serviceTest.getPublicKey()
       })
     return require('../../../src/server/services/issue-ticket')({
-      evaluateExpressionController: evaluateExpressionController,
-      privateKey: controllerTest.getPrivateKey(),
-      publicKey: controllerTest.getPublicKey(),
+      evaluateExpression: evaluateExpression,
+      privateKey: serviceTest.getPrivateKey(),
+      publicKey: serviceTest.getPublicKey(),
       redeemTicketPath: '/redeemTicketPath'
     })
   }
@@ -36,14 +36,14 @@ describe('issueTicketController', () => {
 
     const randomNumberGenerator = request.body.evaluateExpressionRequestBody.randomNumberGenerator
     if (randomNumberGenerator) {
-      randomNumberGenerator.signature = controllerTest.createSignature(randomNumberGenerator.content)
+      randomNumberGenerator.signature = serviceTest.createSignature(randomNumberGenerator.content)
     }
   }
 
   beforeEach(() => {
-    jasmine.addCustomEqualityTester(controllerTest.isResponseBodyEqual)
+    jasmine.addCustomEqualityTester(serviceTest.isResponseBodyEqual)
 
-    request = controllerTest.createRequest()
+    request = serviceTest.createRequest()
     modifyRequestBody(() => {
       request.body = {
         description: 'description',
@@ -61,17 +61,17 @@ describe('issueTicketController', () => {
       }
     })
 
-    response = controllerTest.createResponse((json) => {
+    response = serviceTest.createResponse((json) => {
       responseBody = json
     })
     responseBody = null
 
-    controller = createIssueTicketController()
+    service = createIssueTicketService()
   })
 
-  describe('when evaluate expression controller responds with success', () => {
+  describe('when evaluate expression service responds with success', () => {
     it('should respond with OK', () => {
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
       expect(responseBody).toEqual({
@@ -98,23 +98,23 @@ describe('issueTicketController', () => {
     })
 
     it('should respond with a valid ticket', () => {
-      controller(request, response)
+      service(request, response)
 
       expect(responseBody.ticket.content.id).toMatch(/^[0-9A-Fa-f]{40}$/)
     })
 
     it('should respond with a signed ticket', () => {
-      controller(request, response)
+      service(request, response)
 
       expect(responseBody.ticket).toBeSigned()
     })
   })
 
-  describe('when evaluate expression controller responds with error', () => {
+  describe('when evaluate expression service responds with error', () => {
     it('should respond with same error', () => {
       const expectedStatus = httpStatus.BAD_GATEWAY
       const expectedErrorMessage = 'message'
-      const stubEvaluateExpressionController = (request, response) => {
+      const stubEvaluateExpression = (request, response) => {
         response.status(expectedStatus).json({
           error: {
             message: expectedErrorMessage
@@ -122,9 +122,9 @@ describe('issueTicketController', () => {
         })
       }
 
-      controller = createIssueTicketController(stubEvaluateExpressionController)
+      service = createIssueTicketService(stubEvaluateExpression)
 
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(expectedStatus)
       expect(responseBody).toEqual({
@@ -148,7 +148,7 @@ describe('issueTicketController', () => {
         }
       })
 
-      controller(request, response)
+      service(request, response)
 
       expect(response.status).toHaveBeenCalledWith(httpStatus.OK)
       expect(responseBody).toEqual({

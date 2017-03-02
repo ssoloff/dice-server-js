@@ -13,13 +13,13 @@ const security = require('../../../src/server/util/security')
 const securityTest = require('./security-test')
 
 /**
- * Provides useful methods for testing a dice server controller.
+ * Provides useful methods for testing a dice server service.
  *
- * @module controller-test
+ * @module service-test
  */
 module.exports = {
   /**
-   * Creates a new request for a controller.
+   * Creates a new request for a service.
    *
    * @returns {Object!} A new request.
    */
@@ -35,7 +35,7 @@ module.exports = {
   },
 
   /**
-   * Creates a new response for a controller.
+   * Creates a new response for a service.
    *
    * @param {Function!} jsonCallback - The callback to invoke when the JSON
    *      associated with the response is set.  This callback accepts a
@@ -78,38 +78,38 @@ module.exports = {
   },
 
   /**
-   * Returns the alternate private key to be used by secure controllers.
+   * Returns the alternate private key to be used by secure services.
    *
    * @returns {Object!} The alternate private key to be used by secure
-   *      controllers.
+   *      services.
    */
   getOtherPrivateKey () {
     return securityTest.getOtherPrivateKey()
   },
 
   /**
-   * Returns the alternate public key to be used by secure controllers.
+   * Returns the alternate public key to be used by secure services.
    *
    * @returns {Object!} The alternate public key to be used by secure
-   *      controllers.
+   *      services.
    */
   getOtherPublicKey () {
     return securityTest.getOtherPublicKey()
   },
 
   /**
-   * Returns the private key to be used by secure controllers.
+   * Returns the private key to be used by secure services.
    *
-   * @returns {Object!} The private key to be used by secure controllers.
+   * @returns {Object!} The private key to be used by secure services.
    */
   getPrivateKey () {
     return securityTest.getPrivateKey()
   },
 
   /**
-   * Returns the public key to be used by secure controllers.
+   * Returns the public key to be used by secure services.
    *
-   * @returns {Object!} The public key to be used by secure controllers.
+   * @returns {Object!} The public key to be used by secure services.
    */
   getPublicKey () {
     return securityTest.getPublicKey()

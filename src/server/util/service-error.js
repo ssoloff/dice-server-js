@@ -10,13 +10,13 @@
 
 const httpStatus = require('http-status-codes')
 
-class ControllerError extends Error {
+class ServiceError extends Error {
   constructor (status, message) {
     super(message || '')
 
-    this.name = 'ControllerError'
+    this.name = 'ServiceError'
     this.status = status || httpStatus.INTERNAL_SERVER_ERROR
   }
 }
 
-module.exports = ControllerError
+module.exports = ServiceError

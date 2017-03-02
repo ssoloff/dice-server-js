@@ -9,14 +9,14 @@
 'use strict'
 
 const _ = require('underscore')
-const controllerUtils = require('../util/controller-utils')
 const dice = require('../model/dice')
 const diceExpressionResultUtils = require('../model/dice-expression-result-utils')
 const httpStatus = require('http-status-codes')
 const random = require('../util/random')
 const security = require('../util/security')
+const serviceUtils = require('../util/service-utils')
 
-module.exports = (controllerData) => {
+module.exports = (serviceData) => {
   function createRandomNumberGenerator (randomNumberGeneratorSpecification) {
     switch (randomNumberGeneratorSpecification.name) {
       case 'constantMax': {
@@ -28,7 +28,7 @@ module.exports = (controllerData) => {
       }
     }
 
-    throw controllerUtils.createControllerError(
+    throw serviceUtils.createServiceError(
       httpStatus.BAD_REQUEST,
       `unknown random number generator "${randomNumberGeneratorSpecification.name}"`
     )
@@ -49,7 +49,7 @@ module.exports = (controllerData) => {
 
     const expressionResult = expression.evaluate()
     if (!_.isFinite(expressionResult.value)) {
-      throw controllerUtils.createControllerError(
+      throw serviceUtils.createServiceError(
         httpStatus.BAD_REQUEST,
         'expression does not evaluate to a finite number'
       )
@@ -89,7 +89,7 @@ module.exports = (controllerData) => {
     }
 
     if (!isSignatureValid(randomNumberGenerator.content, randomNumberGenerator.signature)) {
-      throw controllerUtils.createControllerError(
+      throw serviceUtils.createServiceError(
         httpStatus.BAD_REQUEST,
         'random number generator specification signature is invalid'
       )
@@ -98,7 +98,7 @@ module.exports = (controllerData) => {
   }
 
   function isSignatureValid (content, signature) {
-    return security.verifySignature(content, signature, controllerData.publicKey)
+    return security.verifySignature(content, signature, serviceData.publicKey)
   }
 
   function parseExpressionText (expressionText, randomNumberGeneratorSpecification) {
@@ -108,15 +108,15 @@ module.exports = (controllerData) => {
     try {
       return expressionParser.parse(expressionText)
     } catch (e) {
-      throw controllerUtils.createControllerError(httpStatus.BAD_REQUEST, e.message)
+      throw serviceUtils.createServiceError(httpStatus.BAD_REQUEST, e.message)
     }
   }
 
   return (request, response) => {
     try {
-      controllerUtils.setSuccessResponse(response, createResponseBody(request))
+      serviceUtils.setSuccessResponse(response, createResponseBody(request))
     } catch (e) {
-      controllerUtils.setFailureResponse(response, e)
+      serviceUtils.setFailureResponse(response, e)
     }
   }
 }

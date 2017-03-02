@@ -9,11 +9,11 @@
 'use strict'
 
 const _ = require('underscore')
-const controllerUtils = require('../util/controller-utils')
 const crypto = require('crypto')
 const security = require('../util/security')
+const serviceUtils = require('../util/service-utils')
 
-module.exports = (controllerData) => {
+module.exports = (serviceData) => {
   function createResponseBody (request) {
     return {
       ticket: createTicket(request)
@@ -21,7 +21,7 @@ module.exports = (controllerData) => {
   }
 
   function createSignature (content) {
-    return security.createSignature(content, controllerData.privateKey, controllerData.publicKey)
+    return security.createSignature(content, serviceData.privateKey, serviceData.publicKey)
   }
 
   function createTicket (request) {
@@ -38,7 +38,7 @@ module.exports = (controllerData) => {
     const evaluateExpressionRequestBody = getEvaluateExpressionRequestBody(requestBody)
     const evaluateExpressionResult = evaluateExpression(evaluateExpressionRequestBody)
     const evaluateExpressionResponseStatus = evaluateExpressionResult[0]
-    if (controllerUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
+    if (serviceUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
       return {
         description: requestBody.description,
         evaluateExpressionRequestBody: evaluateExpressionRequestBody,
@@ -48,14 +48,14 @@ module.exports = (controllerData) => {
     }
 
     const evaluateExpressionResponseBody = evaluateExpressionResult[1]
-    throw controllerUtils.createControllerErrorFromResponse(
+    throw serviceUtils.createServiceErrorFromResponse(
       evaluateExpressionResponseStatus,
       evaluateExpressionResponseBody
     )
   }
 
   function evaluateExpression (requestBody) {
-    return controllerUtils.postJson(controllerData.evaluateExpressionController, requestBody)
+    return serviceUtils.postJson(serviceData.evaluateExpression, requestBody)
   }
 
   function generateRandomNumberGeneratorSeed () {
@@ -88,8 +88,8 @@ module.exports = (controllerData) => {
       }
       randomNumberGenerator.signature = security.createSignature(
         randomNumberGenerator.content,
-        controllerData.privateKey,
-        controllerData.publicKey
+        serviceData.privateKey,
+        serviceData.publicKey
       )
       evaluateExpressionRequestBody.randomNumberGenerator = randomNumberGenerator
     }
@@ -97,14 +97,14 @@ module.exports = (controllerData) => {
   }
 
   function getRedeemTicketUrl (request) {
-    return controllerUtils.getRequestRootUrl(request) + controllerData.redeemTicketPath
+    return serviceUtils.getRequestRootUrl(request) + serviceData.redeemTicketPath
   }
 
   return (request, response) => {
     try {
-      controllerUtils.setSuccessResponse(response, createResponseBody(request))
+      serviceUtils.setSuccessResponse(response, createResponseBody(request))
     } catch (e) {
-      controllerUtils.setFailureResponse(response, e)
+      serviceUtils.setFailureResponse(response, e)
     }
   }
 }
