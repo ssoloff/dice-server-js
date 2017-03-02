@@ -45,12 +45,12 @@ function evaluateExpression(expressionText) {
     }
 
     $.postJSON('/api/expression/evaluate', createRequestBody(expressionText), {
-        success: onEvaluateExpressionResponseSuccess,
-        error: onEvaluateExpressionResponseError,
         headers: {
             'X-Request-ID': newRequestId()
         }
-    });
+    })
+    .done(onEvaluateExpressionResponseSuccess)
+    .fail(onEvaluateExpressionResponseError);
 }
 
 function getExpressionText() {
