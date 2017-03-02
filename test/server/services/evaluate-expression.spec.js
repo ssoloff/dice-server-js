@@ -11,6 +11,7 @@
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
 const security = require('../../../src/server/util/security')
+const services = require('../../../src/server/services')
 const serviceTest = require('../test-support/service-test')
 
 describe('evaluateExpression', () => {
@@ -20,7 +21,7 @@ describe('evaluateExpression', () => {
     service
 
   function createEvaluateExpressionService () {
-    return require('../../../src/server/services/evaluate-expression')({
+    return services.evaluateExpression({
       publicKey: serviceTest.getPublicKey()
     })
   }

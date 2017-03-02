@@ -204,7 +204,7 @@ function injectCopyright () {
 }
 
 function injectVersion (gitInfo) {
-  const packageInfo = require(`./${paths.packageInfo}`)
+  const packageInfo = require(`./${paths.packageInfo}`) // eslint-disable-line global-require
   const versionQualifier = getVersionQualifier(gitInfo)
   return replace('{{VERSION}}', `${packageInfo.version}-${versionQualifier}`)
 }
@@ -250,7 +250,7 @@ function runHtmlHint (stream) {
 function runJasmine () {
   return gulp.src(compilePath(paths.js.test.server.spec))
     .pipe(jasmine({
-      config: require(`./${paths.jasmine.config}`),
+      config: require(`./${paths.jasmine.config}`), // eslint-disable-line global-require
       verbose: true
     }))
 }
