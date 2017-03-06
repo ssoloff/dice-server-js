@@ -9,7 +9,7 @@
 'use strict'
 
 const bodyParser = require('body-parser')
-const services = require('./services')
+const services = require('../services')
 
 module.exports = (app, privateKey, publicKey) => {
   const evaluateExpressionPath = '/api/expression/evaluate'
