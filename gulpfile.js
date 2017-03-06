@@ -46,7 +46,7 @@ const dirs = (() => {
   const SRC_DIR = 'src'
   const TEST_DIR = 'test'
 
-  const BUILD_DIR = 'build'
+  const BUILD_DIR = '.build'
 
   const DIST_DIR = `${BUILD_DIR}/dist`
   const PUBLIC_DIST_DIR = `${DIST_DIR}/public`

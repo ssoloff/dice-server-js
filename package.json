@@ -23,8 +23,8 @@
     "node": ">= 6.10.0"
   },
   "files": [
-    "build/compile/src/server",
-    "build/compile/support"
+    ".build/compile/src/server",
+    ".build/compile/support"
   ],
   "dependencies": {
     "base64url": "~2.0.0",
@@ -83,6 +83,6 @@
     "vinyl-source-stream": "~1.1.0"
   },
   "scripts": {
-    "start": "node build/dist/server.js"
+    "start": "node .build/dist/server.js"
   }
 }
