@@ -11,8 +11,8 @@ addons:
       - google-chrome-stable
   firefox: latest
 before_install:
-  - "./tools/travis/start-xvfb"
-  - ". ./tools/travis/env.sh"
+  - "./build/travis/start-xvfb"
+  - ". ./build/travis/env.sh"
   - export DISPLAY=$DSJS_DISPLAY
 install:
   - npm install --global chromedriver geckodriver gulp-cli
@@ -41,4 +41,4 @@ deploy:
   on:
     repo: ssoloff/dice-server-js
 after_deploy:
-  - "./tools/travis/test-deployment"
+  - "./build/travis/test-deployment"
