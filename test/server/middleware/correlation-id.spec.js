@@ -8,7 +8,7 @@
 
 'use strict'
 
-const correlationId = require('../../../src/server/middleware/correlation-id')
+const middleware = require('../../../src/server/middleware')
 
 describe('correlationId', () => {
   describe('correlator', () => {
@@ -18,7 +18,7 @@ describe('correlationId', () => {
     let res
 
     beforeEach(() => {
-      correlator = correlationId()
+      correlator = middleware.correlationId()
       next = jasmine.createSpy('next')
       req = {
         get: jasmine.createSpy('get')
