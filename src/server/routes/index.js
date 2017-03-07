@@ -11,29 +11,29 @@
 const bodyParser = require('body-parser')
 const services = require('../services')
 
-module.exports = (app, privateKey, publicKey) => {
+module.exports = (app) => {
   const evaluateExpressionPath = '/api/expression/evaluate'
   const issueTicketPath = '/api/ticket/issue'
   const redeemTicketPath = '/api/ticket/redeem'
   const validateRedeemedTicketPath = '/api/ticket/validate-redeemed'
 
   const evaluateExpression = services.evaluateExpression({
-    publicKey
+    publicKey: app.locals.publicKey
   })
   const issueTicket = services.issueTicket({
     evaluateExpression,
-    privateKey,
-    publicKey,
+    privateKey: app.locals.privateKey,
+    publicKey: app.locals.publicKey,
     redeemTicketPath
   })
   const redeemTicket = services.redeemTicket({
     evaluateExpression,
-    privateKey,
-    publicKey,
+    privateKey: app.locals.privateKey,
+    publicKey: app.locals.publicKey,
     validateRedeemedTicketPath
   })
   const validateRedeemedTicket = services.validateRedeemedTicket({
-    publicKey
+    publicKey: app.locals.publicKey
   })
 
   app.use(bodyParser.json())

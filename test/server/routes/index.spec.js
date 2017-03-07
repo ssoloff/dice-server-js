@@ -16,7 +16,9 @@ describe('routes', () => {
   it('should not throw an exception when provided a valid application', () => {
     expect(() => {
       const app = express()
-      routes(app, securityTest.getPrivateKey(), securityTest.getPublicKey())
+      app.locals.privateKey = securityTest.getPrivateKey()
+      app.locals.publicKey = securityTest.getPublicKey()
+      routes(app)
     }).not.toThrow()
   })
 })

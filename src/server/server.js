@@ -15,11 +15,13 @@ const routes = require('./routes')
 const security = require('./util/security')
 
 const app = express()
+
+app.locals.privateKey = security.getKey('private', process.argv[2], process.env.DSJS_PRIVATE_KEY)
+app.locals.publicKey = security.getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(middleware.correlationId())
 
-const privateKey = security.getKey('private', process.argv[2], process.env.DSJS_PRIVATE_KEY)
-const publicKey = security.getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
-routes(app, privateKey, publicKey)
+routes(app)
 
 app.listen(process.env.PORT || 3000)
