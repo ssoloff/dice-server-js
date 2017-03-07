@@ -10,7 +10,6 @@
 
 const express = require('express')
 const middleware = require('./middleware')
-const path = require('path')
 const routes = require('./routes')
 const security = require('./util/security')
 
@@ -19,9 +18,7 @@ const app = express()
 app.locals.privateKey = security.getKey('private', process.argv[2], process.env.DSJS_PRIVATE_KEY)
 app.locals.publicKey = security.getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
 
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(middleware.correlationId())
-
+middleware(app)
 routes(app)
 
 app.listen(process.env.PORT || 3000)

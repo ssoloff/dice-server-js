@@ -8,7 +8,6 @@
 
 'use strict'
 
-const bodyParser = require('body-parser')
 const services = require('../services')
 
 module.exports = (app) => {
@@ -35,8 +34,6 @@ module.exports = (app) => {
   const validateRedeemedTicket = services.validateRedeemedTicket({
     publicKey: app.locals.publicKey
   })
-
-  app.use(bodyParser.json())
 
   app.post(evaluateExpressionPath, evaluateExpression)
   app.post(issueTicketPath, issueTicket)

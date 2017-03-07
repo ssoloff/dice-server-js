@@ -8,8 +8,17 @@
 
 'use strict'
 
+const bodyParser = require('body-parser')
 const correlationId = require('./correlation-id')
+const express = require('express')
+const path = require('path')
 
-module.exports = {
-  correlationId
+function middleware (app) {
+  app.use(express.static(path.join(__dirname, '..', 'public')))
+  app.use(correlationId())
+  app.use(bodyParser.json())
 }
+
+middleware.correlationId = correlationId
+
+module.exports = middleware
