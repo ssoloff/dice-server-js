@@ -9,8 +9,8 @@
 'use strict'
 
 const express = require('express')
-const routes = require('../../src/server/routes')
-const securityTest = require('./test-support/security-test')
+const routes = require('../../../src/server/routes')
+const securityTest = require('../test-support/security-test')
 
 describe('routes', () => {
   it('should not throw an exception when provided a valid application', () => {
