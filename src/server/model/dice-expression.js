@@ -52,7 +52,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      addendExpression: addendExpression,
+      addendExpression,
 
       /**
        * The augend expression.
@@ -61,7 +61,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      augendExpression: augendExpression,
+      augendExpression,
 
       /**
        * Evaluates the expression.
@@ -130,7 +130,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression[]!}
        */
-      expressions: expressions,
+      expressions,
 
       /**
        * The expression type identifier.
@@ -171,7 +171,7 @@ module.exports = {
        *
        * @type {Number!}
        */
-      constant: constant,
+      constant,
 
       /**
        * Evaluates the expression.
@@ -223,7 +223,7 @@ module.exports = {
        *
        * @type {module:dice-bag~Die!}
        */
-      die: die,
+      die,
 
       /**
        * Evaluates the expression.
@@ -282,7 +282,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      dividendExpression: dividendExpression,
+      dividendExpression,
 
       /**
        * The divisor expression.
@@ -291,7 +291,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      divisorExpression: divisorExpression,
+      divisorExpression,
 
       /**
        * Evaluates the expression.
@@ -356,7 +356,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression[]!}
        */
-      argumentListExpressions: argumentListExpressions,
+      argumentListExpressions,
 
       /**
        * Evaluates the expression.
@@ -380,7 +380,7 @@ module.exports = {
        *
        * @type {String!}
        */
-      name: name,
+      name,
 
       /**
        * The expression type identifier.
@@ -422,7 +422,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      childExpression: childExpression,
+      childExpression,
 
       /**
        * Evaluates the expression.
@@ -481,7 +481,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      dividendExpression: dividendExpression,
+      dividendExpression,
 
       /**
        * The divisor expression.
@@ -490,7 +490,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      divisorExpression: divisorExpression,
+      divisorExpression,
 
       /**
        * Evaluates the expression.
@@ -567,7 +567,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      multiplicandExpression: multiplicandExpression,
+      multiplicandExpression,
 
       /**
        * The multiplier expression.
@@ -576,7 +576,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      multiplierExpression: multiplierExpression,
+      multiplierExpression,
 
       /**
        * The expression type identifier.
@@ -618,7 +618,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      childExpression: childExpression,
+      childExpression,
 
       /**
        * Evaluates the expression.
@@ -672,7 +672,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      childExpression: childExpression,
+      childExpression,
 
       /**
        * Evaluates the expression.
@@ -746,7 +746,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      minuendExpression: minuendExpression,
+      minuendExpression,
 
       /**
        * The subtrahend expression.
@@ -755,7 +755,7 @@ module.exports = {
        *
        * @type {module:dice-expression~Expression!}
        */
-      subtrahendExpression: subtrahendExpression,
+      subtrahendExpression,
 
       /**
        * The expression type identifier.

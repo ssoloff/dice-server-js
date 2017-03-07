@@ -53,7 +53,7 @@ module.exports = {
         })
       },
       payload: canonicalPayload,
-      privateKey: privateKey
+      privateKey
     })
     const decodedJwsSignature = jws.decode(jwsSignature)
     return {

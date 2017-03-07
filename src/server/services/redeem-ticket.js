@@ -30,7 +30,7 @@ module.exports = (serviceData) => {
     if (serviceUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
       return {
         description: ticketContent.description,
-        evaluateExpressionResponseBody: evaluateExpressionResponseBody,
+        evaluateExpressionResponseBody,
         id: ticketContent.id,
         validateUrl: getValidateRedeemedTicketUrl(request)
       }

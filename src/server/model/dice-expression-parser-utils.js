@@ -118,7 +118,7 @@ module.exports = {
    *      function call expression representing the decimal dice roll, e.g.
    *      `decimal(roll(3, d10))`.
    */
-  createDecimalDiceRollExpression: createDecimalDiceRollExpression,
+  createDecimalDiceRollExpression,
 
   /**
    * @function createDefaultContext
@@ -129,7 +129,7 @@ module.exports = {
    * @returns {module:dice-expression-parser~Context!} A new dice expression
    *      parser context.
    */
-  createDefaultContext: createDefaultContext,
+  createDefaultContext,
 
   /**
    * @function createDiceRollExpression
@@ -143,7 +143,7 @@ module.exports = {
    *      function call expression representing the dice roll, e.g.
    *      `sum(roll(3, d6))`.
    */
-  createDiceRollExpression: createDiceRollExpression,
+  createDiceRollExpression,
 
   /**
    * @function createDieExpression
@@ -155,7 +155,7 @@ module.exports = {
    *
    * @returns {module:dice-expression~DieExpression!} A new die expression.
    */
-  createDieExpression: createDieExpression,
+  createDieExpression,
 
   /**
    * @function createFunctionCallExpression
@@ -170,5 +170,5 @@ module.exports = {
    * @returns {module:dice-expression~FunctionCallExpression!} A new
    *      function call expression.
    */
-  createFunctionCallExpression: createFunctionCallExpression
+  createFunctionCallExpression
 }

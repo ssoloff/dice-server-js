@@ -41,7 +41,7 @@ module.exports = (serviceData) => {
     if (serviceUtils.isSuccessResponse(evaluateExpressionResponseStatus)) {
       return {
         description: requestBody.description,
-        evaluateExpressionRequestBody: evaluateExpressionRequestBody,
+        evaluateExpressionRequestBody,
         id: generateTicketId(),
         redeemUrl: getRedeemTicketUrl(request)
       }

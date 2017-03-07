@@ -11,5 +11,5 @@
 const correlationId = require('./correlation-id')
 
 module.exports = {
-  correlationId: correlationId
+  correlationId
 }

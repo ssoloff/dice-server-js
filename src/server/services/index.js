@@ -14,8 +14,8 @@ const redeemTicket = require('./redeem-ticket')
 const validateRedeemedTicket = require('./validate-redeemed-ticket')
 
 module.exports = {
-  evaluateExpression: evaluateExpression,
-  issueTicket: issueTicket,
-  redeemTicket: redeemTicket,
-  validateRedeemedTicket: validateRedeemedTicket
+  evaluateExpression,
+  issueTicket,
+  redeemTicket,
+  validateRedeemedTicket
 }

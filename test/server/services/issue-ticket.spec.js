@@ -24,7 +24,7 @@ describe('issueTicket', () => {
       publicKey: serviceTest.getPublicKey()
     })
     return services.issueTicket({
-      evaluateExpression: evaluateExpression,
+      evaluateExpression,
       privateKey: serviceTest.getPrivateKey(),
       publicKey: serviceTest.getPublicKey(),
       redeemTicketPath: '/redeemTicketPath'

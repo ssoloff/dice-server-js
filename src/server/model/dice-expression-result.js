@@ -69,7 +69,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      addendExpressionResult: addendExpressionResult,
+      addendExpressionResult,
 
       /**
        * The augend expression result.
@@ -78,7 +78,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      augendExpressionResult: augendExpressionResult,
+      augendExpressionResult,
 
       /**
        * The expression result type identifier.
@@ -141,7 +141,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult[]!}
        */
-      expressionResults: expressionResults,
+      expressionResults,
 
       /**
        * The expression result type identifier.
@@ -319,7 +319,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      dividendExpressionResult: dividendExpressionResult,
+      dividendExpressionResult,
 
       /**
        * The divisor expression result.
@@ -328,7 +328,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      divisorExpressionResult: divisorExpressionResult,
+      divisorExpressionResult,
 
       /**
        * The expression result type identifier.
@@ -401,7 +401,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult[]!}
        */
-      argumentListExpressionResults: argumentListExpressionResults,
+      argumentListExpressionResults,
 
       /**
        * The function name.
@@ -410,7 +410,7 @@ module.exports = {
        *
        * @type {String!}
        */
-      name: name,
+      name,
 
       /**
        * The expression result type identifier.
@@ -473,7 +473,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      childExpressionResult: childExpressionResult,
+      childExpressionResult,
 
       /**
        * The expression result type identifier.
@@ -547,7 +547,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      dividendExpressionResult: dividendExpressionResult,
+      dividendExpressionResult,
 
       /**
        * The divisor expression result.
@@ -556,7 +556,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      divisorExpressionResult: divisorExpressionResult,
+      divisorExpressionResult,
 
       /**
        * The expression result type identifier.
@@ -630,7 +630,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      multiplicandExpressionResult: multiplicandExpressionResult,
+      multiplicandExpressionResult,
 
       /**
        * The multiplier expression result.
@@ -639,7 +639,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      multiplierExpressionResult: multiplierExpressionResult,
+      multiplierExpressionResult,
 
       /**
        * The expression result type identifier.
@@ -702,7 +702,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      childExpressionResult: childExpressionResult,
+      childExpressionResult,
 
       /**
        * The expression result type identifier.
@@ -765,7 +765,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      childExpressionResult: childExpressionResult,
+      childExpressionResult,
 
       /**
        * The expression result type identifier.
@@ -839,7 +839,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      minuendExpressionResult: minuendExpressionResult,
+      minuendExpressionResult,
 
       /**
        * The subtrahend expression result.
@@ -848,7 +848,7 @@ module.exports = {
        *
        * @type {module:dice-expression-result~ExpressionResult!}
        */
-      subtrahendExpressionResult: subtrahendExpressionResult,
+      subtrahendExpressionResult,
 
       /**
        * The expression result type identifier.
