@@ -8,6 +8,7 @@
 
 'use strict'
 
+const _ = require('underscore')
 const bodyParser = require('body-parser')
 const correlationId = require('./correlation-id')
 const express = require('express')
@@ -19,6 +20,6 @@ function middleware (app) {
   app.use(bodyParser.json())
 }
 
-middleware.correlationId = correlationId
-
-module.exports = middleware
+module.exports = _.extend(middleware, {
+  correlationId
+})

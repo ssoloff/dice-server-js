@@ -8,6 +8,7 @@
 
 'use strict'
 
+const _ = require('underscore')
 const evaluateExpression = require('./evaluate-expression')
 const issueTicket = require('./issue-ticket')
 const redeemTicket = require('./redeem-ticket')
@@ -45,9 +46,9 @@ function services (app) {
   app.post(validateRedeemedTicketPath, validateRedeemedTicketService)
 }
 
-services.evaluateExpression = evaluateExpression
-services.issueTicket = issueTicket
-services.redeemTicket = redeemTicket
-services.validateRedeemedTicket = validateRedeemedTicket
-
-module.exports = services
+module.exports = _.extend(services, {
+  evaluateExpression,
+  issueTicket,
+  redeemTicket,
+  validateRedeemedTicket
+})
