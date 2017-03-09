@@ -23,7 +23,9 @@ module.exports = {
 
   getRequestRootUrl (request) {
     const protocol = request.get('X-Forwarded-Proto') || request.protocol
-    return `${protocol}://${request.get('Host')}`
+    const host = request.get('Host')
+    const path = (request.baseUrl !== '/') ? request.baseUrl : ''
+    return `${protocol}://${host}${path}`
   },
 
   isSuccessResponse (responseStatus) {

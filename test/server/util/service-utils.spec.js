@@ -24,13 +24,15 @@ describe('serviceUtils', () => {
   })
 
   describe('.getRequestRootUrl', () => {
-    const requestHeaders = {
-      host: 'hostname:1234'
-    }
-    let request
+    let request,
+      requestHeaders
 
     beforeEach(() => {
+      requestHeaders = {
+        host: 'hostname:1234'
+      }
       request = {
+        baseUrl: '/path',
         get: jasmine.createSpy('get').and.callFake((field) => requestHeaders[field.toLowerCase()]),
         protocol: 'http'
       }
@@ -38,7 +40,7 @@ describe('serviceUtils', () => {
 
     describe('when the request has not been forwarded', () => {
       it('should use the request protocol', () => {
-        expect(serviceUtils.getRequestRootUrl(request)).toBe('http://hostname:1234')
+        expect(serviceUtils.getRequestRootUrl(request)).toBe('http://hostname:1234/path')
       })
     })
 
@@ -46,7 +48,23 @@ describe('serviceUtils', () => {
       it('should use the forwarded protocol', () => {
         requestHeaders['x-forwarded-proto'] = 'https'
 
-        expect(serviceUtils.getRequestRootUrl(request)).toBe('https://hostname:1234')
+        expect(serviceUtils.getRequestRootUrl(request)).toBe('https://hostname:1234/path')
+      })
+    })
+
+    describe('when the base URL is not the root', () => {
+      it('should not include a trailing slash in the path', () => {
+        request.baseUrl = '/path/subpath'
+
+        expect(serviceUtils.getRequestRootUrl(request)).toBe('http://hostname:1234/path/subpath')
+      })
+    })
+
+    describe('when the base URL is the root', () => {
+      it('should not include a trailing slash in the path', () => {
+        request.baseUrl = '/'
+
+        expect(serviceUtils.getRequestRootUrl(request)).toBe('http://hostname:1234')
       })
     })
   })

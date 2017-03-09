@@ -10,16 +10,16 @@
 
 const _ = require('underscore')
 const evaluateExpression = require('./evaluate-expression')
+const express = require('express')
 const issueTicket = require('./issue-ticket')
 const redeemTicket = require('./redeem-ticket')
 const validateRedeemedTicket = require('./validate-redeemed-ticket')
 
 function services (app) {
-  const BASE_URI = '/api'
-  const evaluateExpressionPath = `${BASE_URI}/expression/evaluate`
-  const issueTicketPath = `${BASE_URI}/ticket/issue`
-  const redeemTicketPath = `${BASE_URI}/ticket/redeem`
-  const validateRedeemedTicketPath = `${BASE_URI}/ticket/validate-redeemed`
+  const evaluateExpressionPath = '/expression/evaluate'
+  const issueTicketPath = '/ticket/issue'
+  const redeemTicketPath = '/ticket/redeem'
+  const validateRedeemedTicketPath = '/ticket/validate-redeemed'
 
   const evaluateExpressionService = evaluateExpression({
     publicKey: app.locals.publicKey
@@ -40,10 +40,12 @@ function services (app) {
     publicKey: app.locals.publicKey
   })
 
-  app.post(evaluateExpressionPath, evaluateExpressionService)
-  app.post(issueTicketPath, issueTicketService)
-  app.post(redeemTicketPath, redeemTicketService)
-  app.post(validateRedeemedTicketPath, validateRedeemedTicketService)
+  const api = express.Router()
+  api.post(evaluateExpressionPath, evaluateExpressionService)
+  api.post(issueTicketPath, issueTicketService)
+  api.post(redeemTicketPath, redeemTicketService)
+  api.post(validateRedeemedTicketPath, validateRedeemedTicketService)
+  app.use('/api', api)
 }
 
 module.exports = _.extend(services, {
