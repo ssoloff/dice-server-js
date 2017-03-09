@@ -9,16 +9,16 @@
 'use strict'
 
 const express = require('express')
-const routes = require('../../../src/server/routes')
 const securityTest = require('../test-support/security-test')
+const services = require('../../../src/server/services')
 
-describe('routes', () => {
+describe('services', () => {
   it('should not throw an exception when provided a valid application', () => {
     expect(() => {
       const app = express()
       app.locals.privateKey = securityTest.getPrivateKey()
       app.locals.publicKey = securityTest.getPublicKey()
-      routes(app)
+      services(app)
     }).not.toThrow()
   })
 })
