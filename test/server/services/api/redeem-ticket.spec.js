@@ -10,8 +10,8 @@
 
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
-const serviceTest = require('../test-support/service-test')
-const services = require('../../../src/server/services')
+const serviceTest = require('../../test-support/service-test')
+const services = require('../../../../src/server/services')
 
 describe('redeemTicket', () => {
   let request,
@@ -20,10 +20,10 @@ describe('redeemTicket', () => {
     service
 
   function createRedeemTicketService (evaluateExpression) {
-    evaluateExpression = evaluateExpression || services.evaluateExpression({
+    evaluateExpression = evaluateExpression || services.api.evaluateExpression({
       publicKey: serviceTest.getPublicKey()
     })
-    return services.redeemTicket({
+    return services.api.redeemTicket({
       evaluateExpression,
       privateKey: serviceTest.getPrivateKey(),
       publicKey: serviceTest.getPublicKey(),

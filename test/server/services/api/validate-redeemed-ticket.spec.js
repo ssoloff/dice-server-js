@@ -10,8 +10,8 @@
 
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
-const serviceTest = require('../test-support/service-test')
-const services = require('../../../src/server/services')
+const serviceTest = require('../../test-support/service-test')
+const services = require('../../../../src/server/services')
 
 describe('validateRedeemedTicket', () => {
   let request,
@@ -20,7 +20,7 @@ describe('validateRedeemedTicket', () => {
     service
 
   function createValidateRedeemedTicketService () {
-    return services.validateRedeemedTicket({
+    return services.api.validateRedeemedTicket({
       publicKey: serviceTest.getPublicKey()
     })
   }

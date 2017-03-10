@@ -10,8 +10,8 @@
 
 const httpStatus = require('http-status-codes')
 const ja = require('json-assert')
-const serviceTest = require('../test-support/service-test')
-const services = require('../../../src/server/services')
+const serviceTest = require('../../test-support/service-test')
+const services = require('../../../../src/server/services')
 
 describe('issueTicket', () => {
   let request,
@@ -20,10 +20,10 @@ describe('issueTicket', () => {
     service
 
   function createIssueTicketService (evaluateExpression) {
-    evaluateExpression = evaluateExpression || services.evaluateExpression({
+    evaluateExpression = evaluateExpression || services.api.evaluateExpression({
       publicKey: serviceTest.getPublicKey()
     })
-    return services.issueTicket({
+    return services.api.issueTicket({
       evaluateExpression,
       privateKey: serviceTest.getPrivateKey(),
       publicKey: serviceTest.getPublicKey(),

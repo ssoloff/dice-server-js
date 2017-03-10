@@ -9,8 +9,8 @@
 'use strict'
 
 const httpStatus = require('http-status-codes')
-const security = require('../util/security')
-const serviceUtils = require('../util/service-utils')
+const security = require('../../util/security')
+const serviceUtils = require('../../util/service-utils')
 
 module.exports = (serviceData) => {
   function createResponseBody (request) {

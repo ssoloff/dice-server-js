@@ -9,12 +9,12 @@
 'use strict'
 
 const _ = require('underscore')
-const dice = require('../model/dice')
-const diceExpressionResultUtils = require('../model/dice-expression-result-utils')
+const dice = require('../../model/dice')
+const diceExpressionResultUtils = require('../../model/dice-expression-result-utils')
 const httpStatus = require('http-status-codes')
-const random = require('../util/random')
-const security = require('../util/security')
-const serviceUtils = require('../util/service-utils')
+const random = require('../../util/random')
+const security = require('../../util/security')
+const serviceUtils = require('../../util/service-utils')
 
 module.exports = (serviceData) => {
   function createRandomNumberGenerator (randomNumberGeneratorSpecification) {
