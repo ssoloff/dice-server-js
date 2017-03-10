@@ -6,6 +6,7 @@
     "dice"
   ],
   "license": "MIT",
+  "private": true,
   "homepage": "https://github.com/ssoloff/dice-server-js",
   "repository": {
     "type": "git",
