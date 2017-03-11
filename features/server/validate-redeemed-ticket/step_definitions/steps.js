@@ -67,7 +67,7 @@ module.exports = function () {
 
   this.Then(/^the response should indicate failure$/, function () {
     expect(this.response.statusCode).to.not.equal(httpStatus.OK)
-    expect(this.response.body.error).to.exist
+    expect(this.response.body.error).to.exist // eslint-disable-line no-unused-expressions
   })
 
   this.Then(/^the response should indicate success$/, function () {

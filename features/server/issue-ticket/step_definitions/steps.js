@@ -40,11 +40,11 @@ module.exports = function () {
   })
 
   this.Then(/^the response should contain a link to the redeem ticket service$/, function () {
-    expect(this.response.body.ticket.content.redeemUrl).to.exist
+    expect(this.response.body.ticket.content.redeemUrl).to.exist // eslint-disable-line no-unused-expressions
   })
 
   this.Then(/^the response should contain a signed ticket$/, function () {
-    expect(this.response.body.ticket.signature).to.exist
+    expect(this.response.body.ticket.signature).to.exist // eslint-disable-line no-unused-expressions
   })
 
   this.Then(/^the response should contain a ticket identifier$/, function () {
@@ -69,7 +69,7 @@ module.exports = function () {
 
   this.Then(/^the response should indicate failure$/, function () {
     expect(this.response.statusCode).to.not.equal(httpStatus.OK)
-    expect(this.response.body.error).to.exist
+    expect(this.response.body.error).to.exist // eslint-disable-line no-unused-expressions
   })
 
   this.Then(/^the response should indicate success$/, function () {

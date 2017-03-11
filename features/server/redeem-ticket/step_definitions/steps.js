@@ -89,11 +89,11 @@ module.exports = function () {
   })
 
   this.Then(/^the response should contain a link to the validate redeemed ticket service$/, function () {
-    expect(this.response.body.redeemedTicket.content.validateUrl).to.exist
+    expect(this.response.body.redeemedTicket.content.validateUrl).to.exist // eslint-disable-line no-unused-expressions
   })
 
   this.Then(/^the response should contain a signed redeemed ticket$/, function () {
-    expect(this.response.body.redeemedTicket.signature).to.exist
+    expect(this.response.body.redeemedTicket.signature).to.exist // eslint-disable-line no-unused-expressions
   })
 
   this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
@@ -120,7 +120,7 @@ module.exports = function () {
 
   this.Then(/^the response should indicate failure$/, function () {
     expect(this.response.statusCode).to.not.equal(httpStatus.OK)
-    expect(this.response.body.error).to.exist
+    expect(this.response.body.error).to.exist // eslint-disable-line no-unused-expressions
   })
 
   this.Then(/^the response should indicate success$/, function () {
