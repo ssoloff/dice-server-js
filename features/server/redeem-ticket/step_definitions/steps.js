@@ -8,56 +8,41 @@
 
 'use strict'
 
-const chai = require('chai')
+const { defineSupportCode } = require('cucumber')
+const { expect } = require('chai')
 const httpStatus = require('http-status-codes')
 
-const expect = chai.expect
-
-module.exports = function () {
-  this.Before(function (scenario, callback) {
-    this.issueTicketService = this.createIssueTicketService()
-    this.redeemTicketService = this.createRedeemTicketService()
-    this.response = null
-    this.previousResponse = null
-    this.ticket = {
-      description: null,
-      forceInvalidSignature: false,
-      forceRedeemed: false,
-      id: null
-    }
-    callback()
-  })
-
-  this.Given(/^a ticket$/, function () {
+defineSupportCode(({Given, When, Then}) => {
+  Given('a ticket', function () {
     this.issueTicketService.setExpression('3d6')
     this.issueTicketService.setDescription('description')
   })
 
-  this.Given(/^a ticket that has already been redeemed$/, function () {
+  Given('a ticket that has already been redeemed', function () {
     this.issueTicketService.setExpression('3d6')
     this.issueTicketService.setDescription('description')
     this.ticket.forceRedeemed = true
   })
 
-  this.Given(/^a ticket with an invalid signature$/, function () {
+  Given('a ticket with an invalid signature', function () {
     this.issueTicketService.setExpression('3d6')
     this.issueTicketService.setDescription('description')
     this.ticket.forceInvalidSignature = true
   })
 
-  this.Given(/^a ticket with the description "(.*)"$/, function (description) {
+  Given('a ticket with the description {stringInDoubleQuotes}', function (description) {
     this.issueTicketService.setDescription(description)
   })
 
-  this.Given(/^a ticket with the expression "(.*)"$/, function (expression) {
+  Given('a ticket with the expression {stringInDoubleQuotes}', function (expression) {
     this.issueTicketService.setExpression(expression)
   })
 
-  this.Given(/^a ticket with the random number generator named "(.*)"$/, function (randomNumberGeneratorName) {
+  Given('a ticket with the random number generator named {stringInDoubleQuotes}', function (randomNumberGeneratorName) {
     this.issueTicketService.setRandomNumberGenerator(randomNumberGeneratorName)
   })
 
-  this.When(/^the redeem ticket service is invoked$/, function (callback) {
+  When('the redeem ticket service is invoked', function (callback) {
     this.issueTicketService.call((response) => {
       const issueTicketResponseBody = response.body
 
@@ -88,42 +73,45 @@ module.exports = function () {
     })
   })
 
-  this.Then(/^the response should contain a link to the validate redeemed ticket service$/, function () {
+  Then('the response should contain a link to the validate redeemed ticket service', function () {
     expect(this.response.body.redeemedTicket.content.validateUrl).to.exist // eslint-disable-line no-unused-expressions
   })
 
-  this.Then(/^the response should contain a signed redeemed ticket$/, function () {
+  Then('the response should contain a signed redeemed ticket', function () {
     expect(this.response.body.redeemedTicket.signature).to.exist // eslint-disable-line no-unused-expressions
   })
 
-  this.Then(/^the response should contain the expression result text "(.*)"$/, function (expressionResultText) {
-    expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.text)
-      .to.equal(expressionResultText)
-  })
+  Then(
+    'the response should contain the expression result text {stringInDoubleQuotes}',
+    function (expressionResultText) {
+      expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.text)
+        .to.equal(expressionResultText)
+    }
+  )
 
-  this.Then(/^the response should contain the expression result value (.+)$/, function (expressionResultValue) {
+  Then('the response should contain the expression result value {float}', function (expressionResultValue) {
     expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.value)
       .to.equal(parseFloat(expressionResultValue))
   })
 
-  this.Then(/^the response should contain the ticket description$/, function () {
+  Then('the response should contain the ticket description', function () {
     expect(this.response.body.redeemedTicket.content.description).to.equal(this.ticket.description)
   })
 
-  this.Then(/^the response should contain the ticket identifier$/, function () {
+  Then('the response should contain the ticket identifier', function () {
     expect(this.response.body.redeemedTicket.content.id).to.equal(this.ticket.id)
   })
 
-  this.Then(/^the response should equal the previous response$/, function () {
+  Then('the response should equal the previous response', function () {
     expect(this.response.body).to.deep.equal(this.previousResponse.body)
   })
 
-  this.Then(/^the response should indicate failure$/, function () {
+  Then('the response should indicate failure', function () {
     expect(this.response.statusCode).to.not.equal(httpStatus.OK)
     expect(this.response.body.error).to.exist // eslint-disable-line no-unused-expressions
   })
 
-  this.Then(/^the response should indicate success$/, function () {
+  Then('the response should indicate success', function () {
     expect(this.response.statusCode).to.equal(httpStatus.OK)
   })
-}
+})

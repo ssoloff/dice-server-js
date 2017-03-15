@@ -9,6 +9,7 @@
 'use strict'
 
 const config = require('../../../common/support/config')
+const { defineSupportCode } = require('cucumber')
 const EvaluateExpressionService = require('../../support/evaluate-expression-service')
 const objectUtil = require('../../support/object-util')
 
@@ -17,7 +18,7 @@ function World () {
   this.objectUtil = objectUtil
 }
 
-module.exports = function () {
-  this.World = World
-  config.initCucumberDefaultTimeout(this)
-}
+defineSupportCode(({setDefaultTimeout, setWorldConstructor}) => {
+  setDefaultTimeout(config.getCucumberDefaultTimeoutInMilliseconds())
+  setWorldConstructor(World)
+})

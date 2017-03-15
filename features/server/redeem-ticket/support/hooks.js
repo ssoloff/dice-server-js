@@ -9,16 +9,19 @@
 'use strict'
 
 const { defineSupportCode } = require('cucumber')
-const driver = require('./driver')
 
-defineSupportCode(({Before, registerHandler}) => {
+defineSupportCode(({Before}) => {
   Before(function (scenarioResult, callback) {
-    this.homePage = this.createHomePage()
-    this.resultRowCount = 0
+    this.issueTicketService = this.createIssueTicketService()
+    this.redeemTicketService = this.createRedeemTicketService()
+    this.response = null
+    this.previousResponse = null
+    this.ticket = {
+      description: null,
+      forceInvalidSignature: false,
+      forceRedeemed: false,
+      id: null
+    }
     callback()
-  })
-
-  registerHandler('AfterFeatures', (features, callback) => {
-    driver.quit().then(callback)
   })
 })

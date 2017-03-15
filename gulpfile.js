@@ -15,7 +15,6 @@ const change = require('gulp-change')
 const childProcess = require('child_process')
 const coveralls = require('gulp-coveralls')
 const csslint = require('gulp-csslint')
-const cucumber = require('gulp-cucumber')
 const del = require('del')
 const eslint = require('gulp-eslint')
 const eventStream = require('event-stream')
@@ -160,12 +159,20 @@ function compilePath (path) {
   return compilePath
 }
 
-function exec (command, callback) {
-  childProcess.exec(command, (err) => {
-    if (err) {
-      return callback(err)
-    }
-    callback()
+function exec (command) {
+  return new Promise((resolve, reject) => {
+    const child = childProcess.exec(command, (err) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve()
+    })
+    child.stdout.on('data', (data) => {
+      process.stdout.write(data)
+    })
+    child.stderr.on('data', (data) => {
+      process.stderr.write(data)
+    })
   })
 }
 
@@ -224,7 +231,7 @@ function runCucumber (path) {
     ignore: `${path}/support`
   })
   featureDirs.forEach((featureDir) => {
-    promise = promise.then(() => streamToPromise(gulp.src([`${featureDir}/*.feature`]).pipe(cucumber({}))))
+    promise = promise.then(() => exec(`${dirs.nodeModulesBin}/cucumber-js --require ${featureDir} ${featureDir}`))
   })
 
   return promise
@@ -255,8 +262,8 @@ function runJasmine () {
     }))
 }
 
-function runJsDoc (configPath, callback) {
-  exec(`${dirs.nodeModulesBin}/jsdoc -c ${configPath}`, callback)
+function runJsDoc (configPath) {
+  return exec(`${dirs.nodeModulesBin}/jsdoc -c ${configPath}`)
 }
 
 function wrapHtmlFragment (content) {
@@ -354,12 +361,12 @@ gulp.task('dist:server', () => {
 
 gulp.task('dist', ['dist:client', 'dist:server'])
 
-gulp.task('docs:client', (done) => {
-  runJsDoc(paths.jsdoc.config.client, done)
+gulp.task('docs:client', () => {
+  return runJsDoc(paths.jsdoc.config.client)
 })
 
-gulp.task('docs:server', (done) => {
-  runJsDoc(paths.jsdoc.config.server, done)
+gulp.task('docs:server', () => {
+  return runJsDoc(paths.jsdoc.config.server)
 })
 
 gulp.task('docs', ['docs:client', 'docs:server'])
