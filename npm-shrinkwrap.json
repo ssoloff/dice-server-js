@@ -1099,6 +1099,12 @@
       "from": "cookie-signature@1.0.6",
       "resolved": "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz"
     },
+    "cookiejar": {
+      "version": "2.1.0",
+      "from": "cookiejar@>=2.0.6 <3.0.0",
+      "resolved": "https://registry.npmjs.org/cookiejar/-/cookiejar-2.1.0.tgz",
+      "dev": true
+    },
     "core-js": {
       "version": "2.4.1",
       "from": "core-js@>=2.4.0 <3.0.0",
@@ -3406,6 +3412,12 @@
       "resolved": "https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.5.2.tgz",
       "dev": true
     },
+    "jasmine-supertest": {
+      "version": "1.0.0",
+      "from": "jasmine-supertest@latest",
+      "resolved": "https://registry.npmjs.org/jasmine-supertest/-/jasmine-supertest-1.0.0.tgz",
+      "dev": true
+    },
     "jasmine-terminal-reporter": {
       "version": "1.0.3",
       "from": "jasmine-terminal-reporter@>=1.0.0 <2.0.0",
@@ -5605,6 +5617,32 @@
       "version": "1.0.0",
       "from": "subarg@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/subarg/-/subarg-1.0.0.tgz",
+      "dev": true
+    },
+    "superagent": {
+      "version": "3.5.0",
+      "from": "superagent@>=3.0.0 <4.0.0",
+      "resolved": "https://registry.npmjs.org/superagent/-/superagent-3.5.0.tgz",
+      "dev": true,
+      "dependencies": {
+        "component-emitter": {
+          "version": "1.2.1",
+          "from": "component-emitter@>=1.2.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.1.tgz",
+          "dev": true
+        },
+        "formidable": {
+          "version": "1.1.1",
+          "from": "formidable@>=1.1.1 <2.0.0",
+          "resolved": "https://registry.npmjs.org/formidable/-/formidable-1.1.1.tgz",
+          "dev": true
+        }
+      }
+    },
+    "supertest": {
+      "version": "3.0.0",
+      "from": "supertest@latest",
+      "resolved": "https://registry.npmjs.org/supertest/-/supertest-3.0.0.tgz",
       "dev": true
     },
     "supports-color": {

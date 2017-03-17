@@ -8,17 +8,12 @@
 
 'use strict'
 
-const express = require('express')
-const middleware = require('./middleware')
+const createApp = require('./app')
 const security = require('./util/security')
-const services = require('./services')
 
-const app = express()
-
-app.locals.privateKey = security.getKey('private', process.argv[2], process.env.DSJS_PRIVATE_KEY)
-app.locals.publicKey = security.getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
-
-middleware(app)
-services(app)
+const app = createApp({
+  privateKey: security.getKey('private', process.argv[2], process.env.DSJS_PRIVATE_KEY),
+  publicKey: security.getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
+})
 
 app.listen(process.env.PORT || 3000)
