@@ -19,7 +19,7 @@ module.exports = {
       fs.readFileSync(path.join(__dirname, '../../../test/server/test-keys/public-key.pem')),
 
   getCucumberDefaultTimeoutInMilliseconds () {
-    const DEFAULT_TIMEOUT_IN_MILLISECONDS = 5000
+    const DEFAULT_TIMEOUT_IN_MILLISECONDS = 10000
     if (!process.env.DSJS_CUCUMBER_DEFAULT_TIMEOUT) {
       return DEFAULT_TIMEOUT_IN_MILLISECONDS
     }
