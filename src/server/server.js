@@ -16,4 +16,8 @@ const app = createApp({
   publicKey: security.getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
 })
 
-app.listen(process.env.PORT || 3000)
+module.exports = new Promise((resolve, reject) => {
+  const server = app.listen(process.env.PORT || 3000, () => {
+    resolve(server)
+  })
+})
