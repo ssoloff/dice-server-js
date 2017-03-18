@@ -19,6 +19,23 @@ describe('app', () => {
     publicKey: serviceTest.getPublicKey()
   }))
 
+  describe('middleware', () => {
+    it('should echo request ID as correlation ID', (done) => {
+      const requestId = 'aaaaa-bbbbb-ccccc-ddddd'
+
+      agent
+        .post('/api/expression/evaluate')
+        .set('X-Request-ID', requestId)
+        .send({
+          expression: {
+            text: '1+2'
+          }
+        })
+        .expect('X-Correlation-ID', requestId)
+        .end(finishTest(done))
+    })
+  })
+
   describe('api', () => {
     it('should route an evaluate expression request', (done) => {
       agent
