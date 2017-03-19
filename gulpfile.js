@@ -181,10 +181,10 @@ function getGitInfo () {
     promisifyWithoutError(git.branch),
     promisifyWithoutError(git.short)
   ])
-  .then((results) => {
+  .then(([branch, commit]) => {
     return {
-      branch: results[0],
-      commit: results[1]
+      branch,
+      commit
     }
   })
 }
