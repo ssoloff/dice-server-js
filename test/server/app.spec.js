@@ -8,16 +8,12 @@
 
 'use strict'
 
-const createApp = require('../../src/server/app')
+const appTest = require('./test-support/app-test')
 const finishTest = require('jasmine-supertest')
 const request = require('supertest')
-const serviceTest = require('./test-support/service-test')
 
 describe('app', () => {
-  const agent = request(createApp({
-    privateKey: serviceTest.getPrivateKey(),
-    publicKey: serviceTest.getPublicKey()
-  }))
+  const agent = request(appTest.createApplication())
 
   describe('middleware', () => {
     it('should echo request ID as correlation ID', (done) => {
