@@ -8,14 +8,17 @@
 
 'use strict'
 
-const express = require('express')
+const createApp = require('../../../src/server/app')
 const middleware = require('../../../src/server/middleware')
+const securityTest = require('../test-support/security-test')
 
 describe('middleware', () => {
   it('should not throw an exception when provided a valid application', () => {
     expect(() => {
-      const app = express()
-      middleware(app)
+      middleware(createApp({
+        privateKey: securityTest.getPrivateKey(),
+        publicKey: securityTest.getPublicKey()
+      }))
     }).not.toThrow()
   })
 })
