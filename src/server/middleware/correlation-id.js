@@ -8,8 +8,8 @@
 
 'use strict'
 
-module.exports = function () {
-  return function (req, res, next) {
+module.exports = () => {
+  return (req, res, next) => {
     const requestId = req.get('X-Request-ID')
 
     next()
