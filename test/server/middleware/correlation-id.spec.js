@@ -11,47 +11,45 @@
 const middleware = require('../../../src/server/middleware')
 
 describe('correlationId', () => {
-  describe('correlator', () => {
-    let correlator
-    let next
-    let req
-    let res
+  let correlationId
+  let next
+  let req
+  let res
 
-    beforeEach(() => {
-      correlator = middleware.correlationId()
-      next = jasmine.createSpy('next')
-      req = {
-        get: jasmine.createSpy('get')
-      }
-      res = {
-        set: jasmine.createSpy('set')
-      }
+  beforeEach(() => {
+    correlationId = middleware.correlationId()
+    next = jasmine.createSpy('next')
+    req = {
+      get: jasmine.createSpy('get')
+    }
+    res = {
+      set: jasmine.createSpy('set')
+    }
+  })
+
+  it('should invoke the next middleware in the chain', () => {
+    correlationId(req, res, next)
+
+    expect(next).toHaveBeenCalled()
+  })
+
+  describe('when the request contains a request ID', () => {
+    it('should echo the request ID as the correlation ID in the response', () => {
+      const requestId = 'the-request-id'
+      req.get.and.returnValue(requestId)
+
+      correlationId(req, res, next)
+
+      expect(req.get).toHaveBeenCalledWith('X-Request-ID')
+      expect(res.set).toHaveBeenCalledWith('X-Correlation-ID', requestId)
     })
+  })
 
-    it('should invoke the next middleware in the chain', () => {
-      correlator(req, res, next)
+  describe('when the request does not contain a request ID', () => {
+    it('should not modify the response', () => {
+      correlationId(req, res, next)
 
-      expect(next).toHaveBeenCalled()
-    })
-
-    describe('when the request contains a request ID', () => {
-      it('should echo the request ID as the correlation ID in the response', () => {
-        const requestId = 'the-request-id'
-        req.get.and.returnValue(requestId)
-
-        correlator(req, res, next)
-
-        expect(req.get).toHaveBeenCalledWith('X-Request-ID')
-        expect(res.set).toHaveBeenCalledWith('X-Correlation-ID', requestId)
-      })
-    })
-
-    describe('when the request does not contain a request ID', () => {
-      it('should not modify the response', () => {
-        correlator(req, res, next)
-
-        expect(res.set).not.toHaveBeenCalled()
-      })
+      expect(res.set).not.toHaveBeenCalled()
     })
   })
 })
