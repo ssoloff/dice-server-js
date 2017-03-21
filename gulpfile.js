@@ -95,7 +95,8 @@ const paths = {
       client: {
         fragment: `${dirs.clientSrc}/*/**/*.html`,
         main: `${dirs.clientSrc}/index.html`
-      }
+      },
+      server: `${dirs.serverSrc}/**/*.html`
     }
   },
   jasmine: {
@@ -304,6 +305,11 @@ gulp.task('compile:client:js', () => {
 
 gulp.task('compile:client', ['compile:client:html', 'compile:client:js'])
 
+gulp.task('compile:server:html', () => {
+  return gulp.src(paths.html.main.server)
+    .pipe(gulp.dest(compilePath(dirs.serverSrc)))
+})
+
 gulp.task('compile:server:jison', () => {
   return gulp.src(paths.jison.main.server)
     .pipe(jison())
@@ -322,7 +328,7 @@ gulp.task('compile:server:js:test', () => {
 
 gulp.task('compile:server:js', ['compile:server:js:prod', 'compile:server:js:test'])
 
-gulp.task('compile:server', ['compile:server:jison', 'compile:server:js'])
+gulp.task('compile:server', ['compile:server:html', 'compile:server:jison', 'compile:server:js'])
 
 gulp.task('compile', ['compile:client', 'compile:server'])
 
@@ -355,7 +361,7 @@ gulp.task('dist:client', () => {
 })
 
 gulp.task('dist:server', () => {
-  return gulp.src(compilePath(paths.js.main.server))
+  return gulp.src([compilePath(paths.html.main.server), compilePath(paths.js.main.server)])
     .pipe(gulp.dest(dirs.dist))
 })
 
@@ -387,7 +393,7 @@ gulp.task('lint:html:fragment', () => {
 
 gulp.task('lint:html:full', () => {
   return runHtmlHint(
-    gulp.src(paths.html.main.client.main)
+    gulp.src([paths.html.main.client.main, paths.html.main.server])
   )
 })
 

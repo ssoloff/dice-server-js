@@ -18,8 +18,10 @@ module.exports = (options = {}) => {
   app.locals.privateKey = options.privateKey
   app.locals.publicKey = options.publicKey
 
-  middleware(app)
-  services(app)
+  middleware({
+    app,
+    services
+  })
 
   return app
 }

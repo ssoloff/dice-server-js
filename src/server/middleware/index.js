@@ -12,14 +12,20 @@ const _ = require('underscore')
 const bodyParser = require('body-parser')
 const correlationId = require('./correlation-id')
 const express = require('express')
+const notFound = require('./not-found')
 const path = require('path')
 
-function middleware (app) {
+function middleware ({app, services}) {
   app.use(express.static(path.join(__dirname, '..', 'public')))
   app.use(correlationId())
   app.use(bodyParser.json())
+
+  services(app)
+
+  app.use(notFound())
 }
 
 module.exports = _.extend(middleware, {
-  correlationId
+  correlationId,
+  notFound
 })
