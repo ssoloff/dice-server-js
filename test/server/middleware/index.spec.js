@@ -14,10 +14,7 @@ const middleware = require('../../../src/server/middleware')
 describe('middleware', () => {
   it('should not throw an exception when provided a valid application', () => {
     expect(() => {
-      middleware({
-        app: appTest.createApplication(),
-        services: () => undefined
-      })
+      middleware(appTest.createApplication())
     }).not.toThrow()
   })
 })

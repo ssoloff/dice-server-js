@@ -14,8 +14,9 @@ const correlationId = require('./correlation-id')
 const express = require('express')
 const notFound = require('./not-found')
 const path = require('path')
+const services = require('../services')
 
-function middleware ({app, services}) {
+function middleware (app) {
   app.use(express.static(path.join(__dirname, '..', 'public')))
   app.use(correlationId())
   app.use(bodyParser.json())

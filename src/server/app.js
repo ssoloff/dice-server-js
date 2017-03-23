@@ -10,7 +10,6 @@
 
 const express = require('express')
 const middleware = require('./middleware')
-const services = require('./services')
 
 module.exports = (options = {}) => {
   const app = express()
@@ -18,10 +17,7 @@ module.exports = (options = {}) => {
   app.locals.privateKey = options.privateKey
   app.locals.publicKey = options.publicKey
 
-  middleware({
-    app,
-    services
-  })
+  middleware(app)
 
   return app
 }
