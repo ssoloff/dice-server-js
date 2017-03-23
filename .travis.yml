@@ -15,7 +15,7 @@ before_install:
   - ". ./build/travis/env.sh"
   - export DISPLAY=$DSJS_DISPLAY
 install:
-  - npm install --global chromedriver geckodriver gulp-cli
+  - npm install --global chromedriver geckodriver@1.4.0 gulp-cli
   - npm install
 script:
   - gulp test:unit
