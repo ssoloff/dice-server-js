@@ -32,6 +32,7 @@
     "body-parser": "~1.17.1",
     "bootstrap": "~3.3.7",
     "canonical-json": "~0.0.4",
+    "ejs": "~2.5.6",
     "express": "~4.15.2",
     "http-status-codes": "~1.1.6",
     "jcanvas": "~16.7.3",

@@ -8,14 +8,27 @@
 
 'use strict'
 
+const ejs = require('ejs')
 const express = require('express')
 const middleware = require('./middleware')
+const path = require('path')
+
+function configureLocals (app, options) {
+  app.locals.privateKey = options.privateKey
+  app.locals.publicKey = options.publicKey
+}
+
+function configureViewEngine (app) {
+  app.set('views', path.join(__dirname, 'views'))
+  app.engine('html', ejs.renderFile)
+  app.set('view engine', 'html')
+}
 
 module.exports = (options = {}) => {
   const app = express()
 
-  app.locals.privateKey = options.privateKey
-  app.locals.publicKey = options.publicKey
+  configureLocals(app, options)
+  configureViewEngine(app)
 
   middleware(app)
 

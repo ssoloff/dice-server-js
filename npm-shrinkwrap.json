@@ -1567,6 +1567,11 @@
       "from": "ee-first@1.1.1",
       "resolved": "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
     },
+    "ejs": {
+      "version": "2.5.6",
+      "from": "ejs@latest",
+      "resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.6.tgz"
+    },
     "elliptic": {
       "version": "6.4.0",
       "from": "elliptic@>=6.2.3 <7.0.0",

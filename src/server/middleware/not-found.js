@@ -9,14 +9,13 @@
 'use strict'
 
 const httpStatus = require('http-status-codes')
-const path = require('path')
 
 module.exports = () => {
   return (req, res) => {
     res.status(httpStatus.NOT_FOUND)
 
     if (req.accepts('html')) {
-      return res.sendFile(path.join(__dirname, '404.html'))
+      return res.render('404')
     }
 
     if (req.accepts('json')) {

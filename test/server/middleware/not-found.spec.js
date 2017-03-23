@@ -20,8 +20,8 @@ describe('notFound', () => {
     req = {}
     res = {
       json: jasmine.createSpy('json'),
+      render: jasmine.createSpy('render'),
       send: jasmine.createSpy('send'),
-      sendFile: jasmine.createSpy('sendFile'),
       status: jasmine.createSpy('status'),
       type: jasmine.createSpy('type')
     }
@@ -35,7 +35,7 @@ describe('notFound', () => {
       notFound(req, res)
 
       expect(res.status).toHaveBeenCalledWith(404)
-      expect(res.sendFile).toHaveBeenCalledWith(jasmine.stringMatching('404.html'))
+      expect(res.render).toHaveBeenCalledWith('404')
     })
   })
 
