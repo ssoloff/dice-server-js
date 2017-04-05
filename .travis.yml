@@ -4,27 +4,20 @@ language: node_js
 node_js:
   - 6.10.1
 addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
-  firefox: latest
+  sauce_connect: true
 before_install:
-  - "./build/travis/start-xvfb"
-  - ". ./build/travis/env.sh"
-  - export DISPLAY=$DSJS_DISPLAY
+  - export DSJS_SELENIUM_REMOTE_URL=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445/wd/hub
+  - export DSJS_SELENIUM_TUNNEL_ID=$TRAVIS_JOB_NUMBER
 install:
-  - npm install --global chromedriver geckodriver@1.4.0 gulp-cli
+  - npm install --global gulp-cli
   - npm install
 script:
   - gulp test:unit
   - gulp dist
   - gulp server:start
-  - gulp test:acceptance:server
-  - SELENIUM_BROWSER=phantomjs gulp test:acceptance:client
-  - SELENIUM_BROWSER=chrome gulp test:acceptance:client
-  - SELENIUM_BROWSER=firefox gulp test:acceptance:client
+  - gulp test:acceptance
+  - SELENIUM_REMOTE_URL=$DSJS_SELENIUM_REMOTE_URL SELENIUM_BROWSER='chrome:latest:Linux' gulp test:acceptance:client
+  - SELENIUM_REMOTE_URL=$DSJS_SELENIUM_REMOTE_URL SELENIUM_BROWSER='firefox:latest:Linux' gulp test:acceptance:client
   - gulp server:stop
   - gulp lint
   - gulp docs

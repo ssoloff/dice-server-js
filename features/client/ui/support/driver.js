@@ -10,8 +10,11 @@
 
 const webdriver = require('selenium-webdriver')
 
+const capabilities = webdriver.Capabilities.phantomjs()
+capabilities.set('tunnelIdentifier', process.env.DSJS_SELENIUM_TUNNEL_ID)
+
 const driver = new webdriver.Builder()
-  .forBrowser('phantomjs')
+  .withCapabilities(capabilities)
   .build()
 
 module.exports = driver
