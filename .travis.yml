@@ -17,7 +17,9 @@ script:
   - gulp server:start
   - gulp test:acceptance
   - SELENIUM_BROWSER='chrome:latest:Linux' ./build/travis/test-client
+  - SELENIUM_BROWSER='chrome:latest:Windows 10' ./build/travis/test-client
   - SELENIUM_BROWSER='firefox:latest:Linux' ./build/travis/test-client
+  - SELENIUM_BROWSER='firefox:latest:Windows 10' ./build/travis/test-client
   - gulp server:stop
   - gulp lint
   - gulp docs
