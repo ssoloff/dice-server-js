@@ -16,8 +16,8 @@ script:
   - gulp dist
   - gulp server:start
   - gulp test:acceptance
-  - SELENIUM_REMOTE_URL=$DSJS_SELENIUM_REMOTE_URL SELENIUM_BROWSER='chrome:latest:Linux' gulp test:acceptance:client
-  - SELENIUM_REMOTE_URL=$DSJS_SELENIUM_REMOTE_URL SELENIUM_BROWSER='firefox:latest:Linux' gulp test:acceptance:client
+  - SELENIUM_BROWSER='chrome:latest:Linux' ./build/travis/test-client
+  - SELENIUM_BROWSER='firefox:latest:Linux' ./build/travis/test-client
   - gulp server:stop
   - gulp lint
   - gulp docs

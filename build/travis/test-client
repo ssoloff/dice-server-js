@@ -1,0 +1,4 @@
+#!/bin/sh
+
+SELENIUM_REMOTE_URL=$DSJS_SELENIUM_REMOTE_URL gulp test:acceptance:client 2>&1 \
+  | sed -r 's|http://[^@]+@|http://[secure]@|'
