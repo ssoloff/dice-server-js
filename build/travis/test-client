@@ -19,6 +19,7 @@ readonly sauce_job_id=$(cat $selenium_session_id_file)
 
 curl \
   --request PUT \
+  --silent \
   --data "{\"passed\": $sauce_test_passed}" \
   --user $SAUCE_USERNAME:$SAUCE_ACCESS_KEY \
   https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$sauce_job_id
