@@ -6,8 +6,8 @@ node_js:
 addons:
   sauce_connect: true
 before_install:
+  - export DSJS_SAUCE_TUNNEL_ID=$TRAVIS_JOB_NUMBER
   - export DSJS_SELENIUM_REMOTE_URL=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445/wd/hub
-  - export DSJS_SELENIUM_TUNNEL_ID=$TRAVIS_JOB_NUMBER
 install:
   - npm install --global gulp-cli
   - npm install
@@ -16,10 +16,10 @@ script:
   - gulp dist
   - gulp server:start
   - gulp test:acceptance
-  - SELENIUM_BROWSER='chrome:latest:Linux' ./build/travis/test-client
-  - SELENIUM_BROWSER='chrome:latest:Windows 10' ./build/travis/test-client
-  - SELENIUM_BROWSER='firefox:latest:Linux' ./build/travis/test-client
-  - SELENIUM_BROWSER='firefox:latest:Windows 10' ./build/travis/test-client
+  - SELENIUM_BROWSER='chrome:latest:linux' ./build/travis/test-client
+  - SELENIUM_BROWSER='chrome:latest:windows 10' ./build/travis/test-client
+  - SELENIUM_BROWSER='firefox:latest:linux' ./build/travis/test-client
+  - SELENIUM_BROWSER='firefox:latest:windows 10' ./build/travis/test-client
   - gulp server:stop
   - gulp lint
   - gulp docs

@@ -1,4 +1,28 @@
-#!/bin/sh
+#!/bin/bash
 
-SELENIUM_REMOTE_URL=$DSJS_SELENIUM_REMOTE_URL gulp test:acceptance:client 2>&1 \
+readonly selenium_session_id_file=$(mktemp)
+
+DSJS_SAUCE_NAME=dsjs-$TRAVIS_JOB_NUMBER-$SELENIUM_BROWSER \
+  DSJS_SAUCE_BUILD=$TRAVIS_JOB_NUMBER \
+  DSJS_SELENIUM_SESSION_ID_FILE=$selenium_session_id_file \
+  SELENIUM_REMOTE_URL=$DSJS_SELENIUM_REMOTE_URL \
+  gulp test:acceptance:client 2>&1 \
   | sed -r 's|http://[^@]+@|http://[secure]@|'
+
+readonly test_exit_code="${PIPESTATUS[0]}"
+
+[[ $test_exit_code -eq 0 ]] \
+  && readonly sauce_test_passed=true \
+  || readonly sauce_test_passed=false
+
+readonly sauce_job_id=$(cat $selenium_session_id_file)
+
+curl \
+  --request PUT \
+  --data "{\"passed\": $sauce_test_passed}" \
+  --user $SAUCE_USERNAME:$SAUCE_ACCESS_KEY \
+  https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$sauce_job_id
+
+rm -f $selenium_session_id_file
+
+exit $test_exit_code
