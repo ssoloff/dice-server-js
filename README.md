@@ -4,8 +4,8 @@ A server for parsing and evaluating dice notation.
 
 Release | Status
 :-- | :--
-Stable | [![Deployment Status][heroku-image-master]][heroku-url-master] [![Build Status][travis-image-master]][travis-url-master] [![Coverage Status][coveralls-image-master]][coveralls-url-master] [![Dependency Status][david-prod-image-master]][david-prod-url-master] [![Dev Dependency Status][david-dev-image-master]][david-dev-url-master]
-Latest | [![Deployment Status][heroku-image-develop]][heroku-url-develop] [![Build Status][travis-image-develop]][travis-url-develop] [![Coverage Status][coveralls-image-develop]][coveralls-url-develop] [![Dependency Status][david-prod-image-develop]][david-prod-url-develop] [![Dev Dependency Status][david-dev-image-develop]][david-dev-url-develop]
+Stable | [![Deployment Status][heroku-image-master]][heroku-url-master] [![Build Status][travis-image-master]][travis-url-master] [![Sauce Test Status][saucelabs-status-image-master]][saucelabs-url-master] [![Coverage Status][coveralls-image-master]][coveralls-url-master] [![Dependency Status][david-prod-image-master]][david-prod-url-master] [![Dev Dependency Status][david-dev-image-master]][david-dev-url-master] <br> [![Sauce Test Status][saucelabs-matrix-image-master]][saucelabs-url-master]
+Latest | [![Deployment Status][heroku-image-develop]][heroku-url-develop] [![Build Status][travis-image-develop]][travis-url-develop] [![Sauce Test Status][saucelabs-status-image-develop]][saucelabs-url-develop] [![Coverage Status][coveralls-image-develop]][coveralls-url-develop] [![Dependency Status][david-prod-image-develop]][david-prod-url-develop] [![Dev Dependency Status][david-dev-image-develop]][david-dev-url-develop] <br> [![Sauce Test Status][saucelabs-matrix-image-develop]][saucelabs-url-develop]
 
 ## Usage
 
@@ -34,6 +34,12 @@ Licensed under the terms of the [MIT License][license-url].
 [heroku-url-develop]: https://dice-server-js-staging.herokuapp.com
 [heroku-url-master]: https://dice-server-js.herokuapp.com
 [license-url]: https://opensource.org/licenses/MIT
+[saucelabs-matrix-image-develop]: https://saucelabs.com/browser-matrix/dice-server-js-staging.svg
+[saucelabs-matrix-image-master]: https://saucelabs.com/browser-matrix/dice-server-js.svg
+[saucelabs-status-image-develop]: https://saucelabs.com/buildstatus/dice-server-js-staging
+[saucelabs-status-image-master]: https://saucelabs.com/buildstatus/dice-server-js
+[saucelabs-url-develop]: https://saucelabs.com/u/dice-server-js-staging
+[saucelabs-url-master]: https://saucelabs.com/u/dice-server-js
 [travis-image-develop]: https://travis-ci.org/ssoloff/dice-server-js.svg?branch=develop
 [travis-image-master]: https://travis-ci.org/ssoloff/dice-server-js.svg?branch=master
 [travis-url-develop]: https://travis-ci.org/ssoloff/dice-server-js
