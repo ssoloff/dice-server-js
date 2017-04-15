@@ -6,8 +6,9 @@ node_js:
 addons:
   sauce_connect: true
 before_install:
-  - export DSJS_SAUCE_TUNNEL_ID=$TRAVIS_JOB_NUMBER
-  - export DSJS_SELENIUM_REMOTE_URL=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445/wd/hub
+  - ". ./build/travis/env.sh"
+  - export SAUCE_ACCESS_KEY=$DSJS_SAUCE_ACCESS_KEY
+  - export SAUCE_USERNAME=$DSJS_SAUCE_USERNAME
 install:
   - npm install --global gulp-cli
   - npm install

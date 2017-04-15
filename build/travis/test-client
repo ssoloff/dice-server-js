@@ -3,10 +3,11 @@
 readonly selenium_session_id_file=$(mktemp)
 
 DSJS_CUCUMBER_DEFAULT_TIMEOUT=30000 \
-  DSJS_SAUCE_NAME=dsjs-$TRAVIS_JOB_NUMBER-$SELENIUM_BROWSER \
   DSJS_SAUCE_BUILD=$TRAVIS_JOB_NUMBER \
+  DSJS_SAUCE_NAME=dsjs-$TRAVIS_JOB_NUMBER-$SELENIUM_BROWSER \
+  DSJS_SAUCE_TUNNEL_ID=$TRAVIS_JOB_NUMBER \
   DSJS_SELENIUM_SESSION_ID_FILE=$selenium_session_id_file \
-  SELENIUM_REMOTE_URL=$DSJS_SELENIUM_REMOTE_URL \
+  SELENIUM_REMOTE_URL=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445/wd/hub \
   gulp test:acceptance:client 2>&1 \
   | sed -r 's|http://[^@]+@|http://[secure]@|'
 
