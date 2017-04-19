@@ -92,7 +92,7 @@ module.exports = {
            *
            * @type {Number!}
            */
-          sides: sides
+          sides
         }
       },
 
@@ -104,7 +104,7 @@ module.exports = {
        *
        * @type {module:dice-bag~randomNumberGenerator!}
        */
-      randomNumberGenerator: randomNumberGenerator
+      randomNumberGenerator
     }
   }
 }

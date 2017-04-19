@@ -8,27 +8,16 @@
 
 'use strict'
 
-const correlator = require('./util/correlation-id')
-const express = require('express')
-const fs = require('fs')
-const path = require('path')
+const createApp = require('./app')
+const security = require('./util/security')
 
-function getKey (keyType, fileName, envValue) {
-  if (fileName) {
-    return fs.readFileSync(fileName)
-  } else if (envValue) {
-    return envValue
-  }
+const app = createApp({
+  privateKey: security.getKey('private', process.argv[2], process.env.DSJS_PRIVATE_KEY),
+  publicKey: security.getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
+})
 
-  throw new Error(`${keyType} key not specified`)
-}
-
-const app = express()
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(correlator())
-
-const privateKey = getKey('private', process.argv[2], process.env.DSJS_PRIVATE_KEY)
-const publicKey = getKey('public', process.argv[3], process.env.DSJS_PUBLIC_KEY)
-require('./routes')(app, privateKey, publicKey)
-
-app.listen(process.env.PORT || 3000)
+module.exports = new Promise((resolve, reject) => {
+  const server = app.listen(process.env.PORT || 3000, () => {
+    resolve(server)
+  })
+})

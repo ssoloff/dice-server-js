@@ -158,11 +158,7 @@ class HomePage {
         this.driver.findElement(Locators.requestId()).getText(),
         this.driver.findElement(Locators.correlationId()).getText()
       ])
-      .then((results) => {
-        const requestId = results[0]
-        const correlationId = results[1]
-        return requestId === correlationId ? true : null
-      })
+      .then(([requestId, correlationId]) => requestId === correlationId ? true : null)
     )
     return this._wait(untilResponseReceived)
   }

@@ -9,6 +9,7 @@
 'use strict'
 
 const config = require('../../../common/support/config')
+const { defineSupportCode } = require('cucumber')
 const IssueTicketService = require('../../support/issue-ticket-service')
 const RedeemTicketService = require('../../support/redeem-ticket-service')
 
@@ -17,7 +18,7 @@ function World () {
   this.createRedeemTicketService = () => new RedeemTicketService()
 }
 
-module.exports = function () {
-  this.World = World
-  config.initCucumberDefaultTimeout(this)
-}
+defineSupportCode(({setDefaultTimeout, setWorldConstructor}) => {
+  setDefaultTimeout(config.getCucumberDefaultTimeoutInMilliseconds())
+  setWorldConstructor(World)
+})

@@ -11,6 +11,7 @@
     "standard"
   ],
   "rules": {
+    "global-require": 2,
     "guard-for-in": 2,
     "linebreak-style": 2,
     "max-len": [2, {"code": 120}],

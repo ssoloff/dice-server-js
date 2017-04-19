@@ -1,6 +1,0 @@
-#!/bin/sh -x
-
-SCRIPT_DIR=`dirname "$0"`
-. $SCRIPT_DIR/env.sh
-
-mkdir -p $DSJS_LOCAL_BIN_DIR

@@ -8,10 +8,17 @@
 
 'use strict'
 
+const { defineSupportCode } = require('cucumber')
 const driver = require('./driver')
 
-module.exports = function () {
-  this.registerHandler('AfterFeatures', (event, callback) => {
-    driver.quit().then(() => callback())
+defineSupportCode(({Before, registerHandler}) => {
+  Before(function (scenarioResult, callback) {
+    this.homePage = this.createHomePage()
+    this.resultRowCount = 0
+    callback()
   })
-}
+
+  registerHandler('AfterFeatures', (features, callback) => {
+    driver.quit().then(callback)
+  })
+})

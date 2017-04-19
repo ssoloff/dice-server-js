@@ -2,38 +2,30 @@ dist: trusty
 sudo: false
 language: node_js
 node_js:
-- 6.9.5
+  - 6.10.1
 addons:
-  apt:
-    sources:
-    - google-chrome
-    packages:
-    - google-chrome-stable
-  firefox: latest
+  sauce_connect: true
 before_install:
-- "./tools/travis/init-env"
-- "./tools/travis/install-chromedriver"
-- "./tools/travis/install-geckodriver"
-- "./tools/travis/start-xvfb"
-- ". ./tools/travis/env.sh"
-- export DISPLAY=$DSJS_DISPLAY
-- export PATH=$PATH:$DSJS_LOCAL_BIN_DIR
+  - ". ./build/travis/env.sh"
+  - export SAUCE_ACCESS_KEY=$DSJS_SAUCE_ACCESS_KEY
+  - export SAUCE_USERNAME=$DSJS_SAUCE_USERNAME
 install:
-- npm install --global gulp-cli
-- npm install
+  - npm install --global gulp-cli
+  - npm install
 script:
-- gulp unit-test-with-coverage
-- gulp dist
-- gulp server:start
-- gulp acceptance-test:server
-- SELENIUM_BROWSER=phantomjs gulp acceptance-test:client
-- SELENIUM_BROWSER=chrome gulp acceptance-test:client
-- SELENIUM_BROWSER=firefox gulp acceptance-test:client
-- gulp server:stop
-- gulp lint
-- gulp docs
-after_script:
-- gulp publish-coverage
+  - gulp test:unit
+  - gulp dist
+  - gulp server:start
+  - gulp test:acceptance
+  - SELENIUM_BROWSER='chrome:latest:linux' ./build/travis/test-client
+  - SELENIUM_BROWSER='chrome:latest:windows 10' ./build/travis/test-client
+  - SELENIUM_BROWSER='firefox:latest:linux' ./build/travis/test-client
+  - SELENIUM_BROWSER='firefox:latest:windows 10' ./build/travis/test-client
+  - gulp server:stop
+  - gulp lint
+  - gulp docs
+after_success:
+  - gulp publish-coverage
 deploy:
   provider: heroku
   api_key:
@@ -45,4 +37,4 @@ deploy:
   on:
     repo: ssoloff/dice-server-js
 after_deploy:
-- "./tools/travis/test-deployment"
+  - "./build/travis/test-deployment"

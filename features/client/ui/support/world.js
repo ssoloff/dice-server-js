@@ -9,6 +9,7 @@
 'use strict'
 
 const config = require('../../../common/support/config')
+const { defineSupportCode } = require('cucumber')
 const driver = require('./driver')
 const HomePage = require('../../support/home-page')
 
@@ -16,7 +17,7 @@ function World () {
   this.createHomePage = () => new HomePage(driver)
 }
 
-module.exports = function () {
-  this.World = World
-  config.initCucumberDefaultTimeout(this)
-}
+defineSupportCode(({setDefaultTimeout, setWorldConstructor}) => {
+  setDefaultTimeout(config.getCucumberDefaultTimeoutInMilliseconds())
+  setWorldConstructor(World)
+})

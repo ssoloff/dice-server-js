@@ -8,36 +8,29 @@
 
 'use strict'
 
-const chai = require('chai')
+const { defineSupportCode } = require('cucumber')
+const { expect } = require('chai')
 
-const expect = chai.expect
-
-module.exports = function () {
-  this.Before(function (scenario, callback) {
-    this.homePage = this.createHomePage()
-    this.resultRowCount = 0
-    callback()
-  })
-
-  this.Given(/^the home page is open$/, function () {
+defineSupportCode(({Given, When, Then}) => {
+  Given('the home page is open', function () {
     return this.homePage.open()
   })
 
-  this.Given(/^the random number generator name is "(.*)"$/, function (randomNumberGeneratorName) {
+  Given('the random number generator name is {stringInDoubleQuotes}', function (randomNumberGeneratorName) {
     return this.homePage.setRandomNumberGenerator(randomNumberGeneratorName)
   })
 
-  this.When(/^the ENTER key is pressed$/, function () {
+  When('the ENTER key is pressed', function () {
     return this.homePage.typeEnter()
   })
 
-  this.When(/^the expression "(.*)" is entered$/, function (expression) {
+  When('the expression {stringInDoubleQuotes} is entered', function (expression) {
     return this.homePage.clearExpressionText()
       .then(() => this.homePage.typeExpressionText(expression))
   })
 
-  this.When(
-    /^the expression "(.*)" is evaluated( and added to the results table)?$/,
+  When(
+    /^the expression "([^"]*)" is evaluated( and added to the results table)?$/,
     function (expression, waitForResultRow) {
       let promise = this.homePage.clearExpressionText()
         .then(() => this.homePage.typeExpressionText(expression))
@@ -53,26 +46,26 @@ module.exports = function () {
     }
   )
 
-  this.When(/^the reevaluate button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (row) {
+  When(/^the reevaluate button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (row) {
     this.resultRowCount += 1
     return this.homePage.reevaluateResultAtRow(row)
       .then(() => this.homePage.waitUntilResponseReceived())
       .then(() => this.homePage.waitUntilResultRowCountIs(this.resultRowCount))
   })
 
-  this.When(/^the remove all button is clicked$/, function () {
+  When('the remove all button is clicked', function () {
     return this.homePage.removeAllResults()
   })
 
-  this.When(/^the remove button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (row) {
+  When(/^the remove button on the (\d+)(?:st|nd|rd|th) row is clicked$/, function (row) {
     return this.homePage.removeResultAtRow(row)
   })
 
-  this.When(/^the rounding mode is "(.*)"$/, function (roundingMode) {
+  When('the rounding mode is {stringInDoubleQuotes}', function (roundingMode) {
     return this.homePage.setRoundingMode(roundingMode)
   })
 
-  this.Then(/^an error message should be displayed$/, function () {
+  Then('an error message should be displayed', function () {
     return this.homePage.awaitUntil(() =>
       this.homePage.isErrorMessageDisplayed()
         .then((displayed) => expect(displayed).to.be.true)
@@ -81,15 +74,15 @@ module.exports = function () {
     )
   })
 
-  this.Then(/^an error message should not be displayed$/, function () {
+  Then('an error message should not be displayed', function () {
     return this.homePage.awaitUntil(() =>
       this.homePage.isErrorMessageDisplayed()
         .then((displayed) => expect(displayed).to.be.false)
     )
   })
 
-  this.Then(
-    /^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "(.*)"$/,
+  Then(
+    /^the(?: (\d+)(?:st|nd|rd|th))? expression canonical text should be "([^"]*)"$/,
     function (row, expressionCanonicalText) {
       return this.homePage.awaitUntil(() =>
         this.homePage.getExpressionCanonicalTextAtRow(Number(row || '1'))
@@ -98,15 +91,15 @@ module.exports = function () {
     }
   )
 
-  this.Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "(.*)"$/, function (row, expressionText) {
+  Then(/^the(?: (\d+)(?:st|nd|rd|th))? expression text should be "([^"]*)"$/, function (row, expressionText) {
     return this.homePage.awaitUntil(() =>
       this.homePage.getExpressionTextAtRow(Number(row || '1'))
         .then((text) => expect(text).to.equal(expressionText))
     )
   })
 
-  this.Then(
-    /^the(?: (\d+)(?:st|nd|rd|th))? expression result text should be "(.*)"$/,
+  Then(
+    /^the(?: (\d+)(?:st|nd|rd|th))? expression result text should be "([^"]*)"$/,
     function (row, expressionResultText) {
       return this.homePage.awaitUntil(() =>
         this.homePage.getExpressionResultTextAtRow(Number(row || '1'))
@@ -115,8 +108,8 @@ module.exports = function () {
     }
   )
 
-  this.Then(
-    /^the(?: (\d+)(?:st|nd|rd|th))? expression result value should be "(.*)"$/,
+  Then(
+    /^the(?: (\d+)(?:st|nd|rd|th))? expression result value should be "([^"]*)"$/,
     function (row, expressionResultValue) {
       return this.homePage.awaitUntil(() =>
         this.homePage.getExpressionResultValueAtRow(Number(row || '1'))
@@ -125,10 +118,10 @@ module.exports = function () {
     }
   )
 
-  this.Then(/^the results table should be empty$/, function () {
+  Then('the results table should be empty', function () {
     return this.homePage.awaitUntil(() =>
       this.homePage.getExpressionResultCount()
         .then((expressionResultCount) => expect(expressionResultCount).to.equal(0))
     )
   })
-}
+})

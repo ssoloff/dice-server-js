@@ -8,35 +8,23 @@
 
 'use strict'
 
-const chai = require('chai')
+const { defineSupportCode } = require('cucumber')
+const { expect } = require('chai')
 const httpStatus = require('http-status-codes')
 
-const expect = chai.expect
-
-module.exports = function () {
-  this.Before(function (scenario, callback) {
-    this.issueTicketService = this.createIssueTicketService()
-    this.redeemTicketService = this.createRedeemTicketService()
-    this.validateRedeemedTicketService = this.createValidateRedeemedTicketService()
-    this.response = null
-    this.redeemedTicket = {
-      forceInvalidSignature: false
-    }
-    callback()
-  })
-
-  this.Given(/^a redeemed ticket$/, function () {
+defineSupportCode(({Given, When, Then}) => {
+  Given('a redeemed ticket', function () {
     this.issueTicketService.setExpression('42')
     this.issueTicketService.setDescription('description')
   })
 
-  this.Given(/^a redeemed ticket with an invalid signature$/, function () {
+  Given('a redeemed ticket with an invalid signature', function () {
     this.issueTicketService.setExpression('42')
     this.issueTicketService.setDescription('description')
     this.redeemedTicket.forceInvalidSignature = true
   })
 
-  this.When(/^the validate redeemed ticket service is invoked$/, function (callback) {
+  When('the validate redeemed ticket service is invoked', function (callback) {
     this.issueTicketService.call((response) => {
       const issueTicketResponseBody = response.body
 
@@ -65,12 +53,12 @@ module.exports = function () {
     })
   })
 
-  this.Then(/^the response should indicate failure$/, function () {
+  Then('the response should indicate failure', function () {
     expect(this.response.statusCode).to.not.equal(httpStatus.OK)
-    expect(this.response.body.error).to.exist
+    expect(this.response.body.error).to.exist // eslint-disable-line no-unused-expressions
   })
 
-  this.Then(/^the response should indicate success$/, function () {
+  Then('the response should indicate success', function () {
     expect(this.response.statusCode).to.equal(httpStatus.OK)
   })
-}
+})
