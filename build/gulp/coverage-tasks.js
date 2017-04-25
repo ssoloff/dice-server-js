@@ -8,12 +8,15 @@
 
 'use strict'
 
-require('./clean-tasks')
-require('./compile-tasks')
-require('./coverage-tasks')
-require('./dev-tasks')
-require('./dist-tasks')
-require('./docs-tasks')
-require('./lint-tasks')
-require('./server-tasks')
-require('./test-tasks')
+const coveralls = require('gulp-coveralls')
+const gulp = require('gulp')
+const paths = require('./paths')
+
+gulp.task('publish-coverage', () => {
+  if (process.env.CI !== 'true') {
+    return
+  }
+
+  return gulp.src(paths.lcov.info)
+    .pipe(coveralls())
+})

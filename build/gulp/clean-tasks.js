@@ -8,12 +8,10 @@
 
 'use strict'
 
-require('./clean-tasks')
-require('./compile-tasks')
-require('./coverage-tasks')
-require('./dev-tasks')
-require('./dist-tasks')
-require('./docs-tasks')
-require('./lint-tasks')
-require('./server-tasks')
-require('./test-tasks')
+const del = require('del')
+const dirs = require('./dirs')
+const gulp = require('gulp')
+
+gulp.task('clean', () => {
+  return del(dirs.build)
+})
