@@ -25,7 +25,7 @@ script:
   - gulp lint
   - gulp docs
 after_success:
-  - gulp publish-coverage
+  - gulp coverage:publish
 deploy:
   provider: heroku
   api_key:

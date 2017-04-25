@@ -12,7 +12,7 @@ const coveralls = require('gulp-coveralls')
 const gulp = require('gulp')
 const paths = require('./paths')
 
-gulp.task('publish-coverage', () => {
+gulp.task('coverage:publish', () => {
   if (process.env.CI !== 'true') {
     return
   }
