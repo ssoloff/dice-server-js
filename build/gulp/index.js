@@ -16,6 +16,7 @@ const childProcess = require('child_process')
 const coveralls = require('gulp-coveralls')
 const csslint = require('gulp-csslint')
 const del = require('del')
+const dirs = require('./dirs')
 const eslint = require('gulp-eslint')
 const eventStream = require('event-stream')
 const excludeGitignore = require('gulp-exclude-gitignore')
@@ -31,6 +32,7 @@ const jison = require('gulp-jison')
 const jsonlint = require('gulp-jsonlint')
 const nodemon = require('gulp-nodemon')
 const path = require('path')
+const paths = require('./paths')
 const replace = require('gulp-replace')
 const runSequence = require('run-sequence')
 const source = require('vinyl-source-stream')
@@ -39,113 +41,6 @@ const through = require('through2')
 const validatePackage = require('gulp-nice-package')
 
 const SERVER_PID_ENCODING = 'utf8'
-
-const dirs = (() => {
-  const FEATURES_DIR = 'features'
-  const SRC_DIR = 'src'
-  const TEST_DIR = 'test'
-
-  const BUILD_DIR = '.build'
-
-  const DIST_DIR = `${BUILD_DIR}/dist`
-  const PUBLIC_DIST_DIR = `${DIST_DIR}/public`
-
-  const NODE_MODULES_DIR = 'node_modules'
-
-  return {
-    build: BUILD_DIR,
-    clientFeatures: `${FEATURES_DIR}/client`,
-    clientSrc: `${SRC_DIR}/client`,
-    compile: `${BUILD_DIR}/compile`,
-    coverage: `${BUILD_DIR}/coverage`,
-    dist: DIST_DIR,
-    features: FEATURES_DIR,
-    htmlDist: PUBLIC_DIST_DIR,
-    jsDist: `${PUBLIC_DIST_DIR}/js`,
-    nodeModules: NODE_MODULES_DIR,
-    nodeModulesBin: `${NODE_MODULES_DIR}/.bin`,
-    serverFeatures: `${FEATURES_DIR}/server`,
-    serverSrc: `${SRC_DIR}/server`,
-    serverTest: `${TEST_DIR}/server`,
-    src: SRC_DIR,
-    test: TEST_DIR
-  }
-})()
-
-const paths = {
-  all: {
-    all: '**/*'
-  },
-  build: {
-    all: `${dirs.build}/**`
-  },
-  css: {
-    main: {
-      client: `${dirs.clientSrc}/**/*.css`
-    }
-  },
-  gulpfile: 'gulpfile.js',
-  html: {
-    main: {
-      client: {
-        fragment: `${dirs.clientSrc}/*/**/*.html`,
-        main: `${dirs.clientSrc}/index.html`
-      },
-      server: `${dirs.serverSrc}/**/*.html`
-    }
-  },
-  jasmine: {
-    config: `${dirs.serverTest}/.jasmine.json`
-  },
-  jison: {
-    main: {
-      server: `${dirs.serverSrc}/**/*.jison`
-    }
-  },
-  js: {
-    all: '**/*.js',
-    main: {
-      client: {
-        bundle: `${dirs.clientSrc}/bundle.js`,
-        main: `${dirs.clientSrc}/index.js`
-      },
-      server: `${dirs.serverSrc}/**/*.js`
-    },
-    test: {
-      server: {
-        all: `${dirs.serverTest}/**/*.js`,
-        spec: `${dirs.serverTest}/**/*.spec.js`
-      }
-    }
-  },
-  jsdoc: {
-    config: {
-      client: '.jsdoc-client-conf.json',
-      server: '.jsdoc-server-conf.json'
-    }
-  },
-  json: {
-    all: '**/*.json'
-  },
-  lcov: {
-    info: `${dirs.coverage}/lcov.info`
-  },
-  nodeModules: {
-    all: `${dirs.nodeModules}/**`
-  },
-  packageInfo: 'package.json',
-  pem: {
-    test: {
-      server: {
-        all: `${dirs.serverTest}/**/*.pem`,
-        private: `${dirs.serverTest}/test-keys/private-key.pem`,
-        public: `${dirs.serverTest}/test-keys/public-key.pem`
-      }
-    }
-  },
-  serverMain: `${dirs.dist}/server.js`,
-  serverPid: '.server.pid'
-}
 
 function compilePath (path) {
   let compilePath = dirs.compile
