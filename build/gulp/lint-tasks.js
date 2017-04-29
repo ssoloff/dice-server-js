@@ -18,7 +18,7 @@ const gutil = require('gulp-util')
 const htmlhint = require('gulp-htmlhint')
 const jsonlint = require('gulp-jsonlint')
 const paths = require('./paths')
-const through = require('through2')
+const Transform = require('stream').Transform
 const validatePackage = require('gulp-nice-package')
 
 function runEsLint (globs) {
@@ -86,17 +86,20 @@ gulp.task('lint:json', () => {
 
 gulp.task('lint:package', () => {
   function failOnError () {
-    return through.obj((file, enc, cb) => {
-      let error = null
-      if (file.nicePackage.valid === false) {
-        error = new gutil.PluginError(
-          'gulp-nice-package',
-          `Failed with ${_.size(file.nicePackage.errors)} error(s), ` +
-              `${_.size(file.nicePackage.warnings)} warning(s), ` +
-              `${_.size(file.nicePackage.recommendations)} recommendation(s)`
-        )
+    return new Transform({
+      objectMode: true,
+      transform (file, enc, cb) {
+        let error = null
+        if (file.nicePackage.valid === false) {
+          error = new gutil.PluginError(
+            'gulp-nice-package',
+            `Failed with ${_.size(file.nicePackage.errors)} error(s), ` +
+                `${_.size(file.nicePackage.warnings)} warning(s), ` +
+                `${_.size(file.nicePackage.recommendations)} recommendation(s)`
+          )
+        }
+        return cb(error, file)
       }
-      return cb(error, file)
     })
   }
 

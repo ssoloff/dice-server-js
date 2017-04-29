@@ -85,7 +85,6 @@
     "server-destroy": "1.0.1",
     "stream-to-promise": "2.2.0",
     "supertest": "3.0.0",
-    "through2": "2.0.3",
     "vinyl-source-stream": "1.1.0"
   },
   "scripts": {
