@@ -61,22 +61,22 @@ gulp.task('test:unit', ['compile'], () => {
       util.compilePath(paths.js.main.server),
       `!${util.compilePath(dirs.serverSrc)}/model/dice-expression-parser.js`
     ])
-    .pipe(istanbul({
-      includeUntested: true
-    }))
-    .pipe(istanbul.hookRequire())
+      .pipe(istanbul({
+        includeUntested: true
+      }))
+      .pipe(istanbul.hookRequire())
   )
-  .then(() => streamToPromise(runJasmine()))
-  .then(() => streamToPromise(
-    gulp.src([])
-      .pipe(istanbul.writeReports({
-        dir: dirs.coverage,
-        reporters: ['lcov', 'text-summary']
-      }))
-      .pipe(istanbul.enforceThresholds({
-        thresholds: {
-          global: 90
-        }
-      }))
-  ))
+    .then(() => streamToPromise(runJasmine()))
+    .then(() => streamToPromise(
+      gulp.src([])
+        .pipe(istanbul.writeReports({
+          dir: dirs.coverage,
+          reporters: ['lcov', 'text-summary']
+        }))
+        .pipe(istanbul.enforceThresholds({
+          thresholds: {
+            global: 90
+          }
+        }))
+    ))
 })

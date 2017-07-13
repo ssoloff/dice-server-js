@@ -49,8 +49,8 @@ function evaluateExpression(expressionText) {
             'X-Request-ID': newRequestId()
         }
     })
-    .then(onEvaluateExpressionResponseSuccess)
-    .catch(onEvaluateExpressionResponseError);
+        .then(onEvaluateExpressionResponseSuccess)
+        .catch(onEvaluateExpressionResponseError);
 }
 
 function getExpressionText() {

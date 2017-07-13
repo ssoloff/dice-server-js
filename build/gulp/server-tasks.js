@@ -37,19 +37,19 @@ gulp.task('server:dev:_nodemon', ['dev:_rebuild:with-tests'], (done) => {
     tasks: ['dev:_rebuild:without-tests'],
     watch: [`${dirs.src}/*`]
   })
-  .on('start', () => {
-    if (!called) {
-      called = true
-      done()
-    }
-  })
-  .on('restart', () => {
-    setTimeout(() => {
-      browserSync.reload({
-        stream: false
-      })
-    }, 1000)
-  })
+    .on('start', () => {
+      if (!called) {
+        called = true
+        done()
+      }
+    })
+    .on('restart', () => {
+      setTimeout(() => {
+        browserSync.reload({
+          stream: false
+        })
+      }, 1000)
+    })
 })
 
 gulp.task('server:dev', ['server:dev:_browser-sync'])

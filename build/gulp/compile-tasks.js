@@ -25,12 +25,12 @@ function getGitInfo () {
     promisifyWithoutError(git.branch),
     promisifyWithoutError(git.short)
   ])
-  .then(([branch, commit]) => {
-    return {
-      branch,
-      commit
-    }
-  })
+    .then(([branch, commit]) => {
+      return {
+        branch,
+        commit
+      }
+    })
 }
 
 function getLocalVersionQualifier (gitInfo) {
