@@ -21,7 +21,8 @@
   },
   "contributors": [],
   "engines": {
-    "node": ">= 6.10.1"
+    "node": ">= 6.11.1",
+    "npm": ">= 3.0.0"
   },
   "files": [
     ".build/compile/src/server",
