@@ -134,7 +134,7 @@ class HomePage {
     randomNumberGenerator.signature = security.createSignature(randomNumberGenerator.content)
     return this._wait(until.elementsLocated(Locators.randomNumberGeneratorJson()))
       .then((element) => this.driver.executeScript(
-          'document.getElementById(\'main-eval-randomNumberGeneratorJson\').value = \'' +
+        'document.getElementById(\'main-eval-randomNumberGeneratorJson\').value = \'' +
           JSON.stringify(randomNumberGenerator) +
           '\';'
       ))
@@ -158,7 +158,7 @@ class HomePage {
         this.driver.findElement(Locators.requestId()).getText(),
         this.driver.findElement(Locators.correlationId()).getText()
       ])
-      .then(([requestId, correlationId]) => requestId === correlationId ? true : null)
+        .then(([requestId, correlationId]) => requestId === correlationId ? true : null)
     )
     return this._wait(untilResponseReceived)
   }

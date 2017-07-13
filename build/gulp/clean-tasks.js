@@ -6,4 +6,12 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-require('./build/gulp')
+'use strict'
+
+const del = require('del')
+const dirs = require('./dirs')
+const gulp = require('gulp')
+
+gulp.task('clean', () => {
+  return del(dirs.build)
+})

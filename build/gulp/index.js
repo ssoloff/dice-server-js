@@ -6,4 +6,14 @@
  * This software comes with ABSOLUTELY NO WARRANTY.
  */
 
-require('./build/gulp')
+'use strict'
+
+require('./clean-tasks')
+require('./compile-tasks')
+require('./coverage-tasks')
+require('./dev-tasks')
+require('./dist-tasks')
+require('./docs-tasks')
+require('./lint-tasks')
+require('./server-tasks')
+require('./test-tasks')
