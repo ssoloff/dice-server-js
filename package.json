@@ -21,7 +21,7 @@
   },
   "contributors": [],
   "engines": {
-    "node": ">= 6.11.1",
+    "node": ">= 6.11.3",
     "npm": ">= 3.0.0"
   },
   "files": [
