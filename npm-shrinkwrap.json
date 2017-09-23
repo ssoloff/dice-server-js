@@ -391,6 +391,12 @@
       "dev": true,
       "optional": true
     },
+    "becke-ch--regex--s0-0-v1--base--pl--lib": {
+      "version": "1.2.0",
+      "from": "becke-ch--regex--s0-0-v1--base--pl--lib@>=1.2.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/becke-ch--regex--s0-0-v1--base--pl--lib/-/becke-ch--regex--s0-0-v1--base--pl--lib-1.2.0.tgz",
+      "dev": true
+    },
     "beeper": {
       "version": "1.1.1",
       "from": "beeper@>=1.0.0 <2.0.0",
@@ -1250,9 +1256,9 @@
       }
     },
     "cucumber": {
-      "version": "2.3.1",
-      "from": "cucumber@2.3.1",
-      "resolved": "https://registry.npmjs.org/cucumber/-/cucumber-2.3.1.tgz",
+      "version": "3.0.2",
+      "from": "cucumber@3.0.2",
+      "resolved": "https://registry.npmjs.org/cucumber/-/cucumber-3.0.2.tgz",
       "dev": true,
       "dependencies": {
         "lodash": {
@@ -1264,9 +1270,9 @@
       }
     },
     "cucumber-expressions": {
-      "version": "3.0.0",
-      "from": "cucumber-expressions@>=3.0.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/cucumber-expressions/-/cucumber-expressions-3.0.0.tgz",
+      "version": "4.0.3",
+      "from": "cucumber-expressions@>=4.0.3 <5.0.0",
+      "resolved": "https://registry.npmjs.org/cucumber-expressions/-/cucumber-expressions-4.0.3.tgz",
       "dev": true
     },
     "cucumber-tag-expressions": {
@@ -4233,6 +4239,12 @@
       "resolved": "https://registry.npmjs.org/loud-rejection/-/loud-rejection-1.6.0.tgz",
       "dev": true
     },
+    "lower-case": {
+      "version": "1.1.4",
+      "from": "lower-case@>=1.1.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/lower-case/-/lower-case-1.1.4.tgz",
+      "dev": true
+    },
     "lowercase-keys": {
       "version": "1.0.0",
       "from": "lowercase-keys@>=1.0.0 <2.0.0",
@@ -4466,6 +4478,12 @@
       "version": "0.6.1",
       "from": "negotiator@0.6.1",
       "resolved": "https://registry.npmjs.org/negotiator/-/negotiator-0.6.1.tgz"
+    },
+    "no-case": {
+      "version": "2.3.2",
+      "from": "no-case@>=2.2.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/no-case/-/no-case-2.3.2.tgz",
+      "dev": true
     },
     "nodemon": {
       "version": "1.12.1",
@@ -6238,6 +6256,12 @@
       "resolved": "https://registry.npmjs.org/timers-browserify/-/timers-browserify-1.4.2.tgz",
       "dev": true
     },
+    "title-case": {
+      "version": "2.1.1",
+      "from": "title-case@>=2.1.1 <3.0.0",
+      "resolved": "https://registry.npmjs.org/title-case/-/title-case-2.1.1.tgz",
+      "dev": true
+    },
     "tmp": {
       "version": "0.0.33",
       "from": "tmp@>=0.0.33 <0.0.34",
@@ -6467,14 +6491,8 @@
     },
     "upper-case": {
       "version": "1.1.3",
-      "from": "upper-case@>=1.1.1 <2.0.0",
+      "from": "upper-case@>=1.0.3 <2.0.0",
       "resolved": "https://registry.npmjs.org/upper-case/-/upper-case-1.1.3.tgz",
-      "dev": true
-    },
-    "upper-case-first": {
-      "version": "1.1.2",
-      "from": "upper-case-first@>=1.1.2 <2.0.0",
-      "resolved": "https://registry.npmjs.org/upper-case-first/-/upper-case-first-1.1.2.tgz",
       "dev": true
     },
     "urix": {

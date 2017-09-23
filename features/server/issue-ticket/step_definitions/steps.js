@@ -13,20 +13,17 @@ const { expect } = require('chai')
 const httpStatus = require('http-status-codes')
 
 defineSupportCode(({Given, When, Then}) => {
-  Given(/^a request with the description "(.*)"$/, function (description) {
+  Given('a request with the description {string}', function (description) {
     this.issueTicketService.setDescription(description)
   })
 
-  Given('a request with the expression {stringInDoubleQuotes}', function (expression) {
+  Given('a request with the expression {string}', function (expression) {
     this.issueTicketService.setExpression(expression)
   })
 
-  Given(
-    'a request with the random number generator named {stringInDoubleQuotes}',
-    function (randomNumberGeneratorName) {
-      this.issueTicketService.setRandomNumberGenerator(randomNumberGeneratorName)
-    }
-  )
+  Given('a request with the random number generator named {string}', function (randomNumberGeneratorName) {
+    this.issueTicketService.setRandomNumberGenerator(randomNumberGeneratorName)
+  })
 
   When('the issue ticket service is invoked', function (callback) {
     this.issueTicketService.call((response) => {
@@ -51,17 +48,14 @@ defineSupportCode(({Given, When, Then}) => {
     expect(this.response.body.ticket.content.description).to.equal(description)
   })
 
-  Then('the response should contain the expression text {stringInDoubleQuotes}', function (expressionText) {
+  Then('the response should contain the expression text {string}', function (expressionText) {
     expect(this.response.body.ticket.content.evaluateExpressionRequestBody.expression.text).to.equal(expressionText)
   })
 
-  Then(
-    'the response should contain the random number generator named {stringInDoubleQuotes}',
-    function (randomNumberGeneratorName) {
-      expect(this.response.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content.name)
-        .to.equal(randomNumberGeneratorName)
-    }
-  )
+  Then('the response should contain the random number generator named {string}', function (randomNumberGeneratorName) {
+    expect(this.response.body.ticket.content.evaluateExpressionRequestBody.randomNumberGenerator.content.name)
+      .to.equal(randomNumberGeneratorName)
+  })
 
   Then('the response should indicate failure', function () {
     expect(this.response.statusCode).to.not.equal(httpStatus.OK)

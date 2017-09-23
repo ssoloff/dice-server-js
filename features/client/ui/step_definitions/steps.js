@@ -16,7 +16,7 @@ defineSupportCode(({Given, When, Then}) => {
     return this.homePage.open()
   })
 
-  Given('the random number generator name is {stringInDoubleQuotes}', function (randomNumberGeneratorName) {
+  Given('the random number generator name is {string}', function (randomNumberGeneratorName) {
     return this.homePage.setRandomNumberGenerator(randomNumberGeneratorName)
   })
 
@@ -24,7 +24,7 @@ defineSupportCode(({Given, When, Then}) => {
     return this.homePage.typeEnter()
   })
 
-  When('the expression {stringInDoubleQuotes} is entered', function (expression) {
+  When('the expression {string} is entered', function (expression) {
     return this.homePage.clearExpressionText()
       .then(() => this.homePage.typeExpressionText(expression))
   })
@@ -61,7 +61,7 @@ defineSupportCode(({Given, When, Then}) => {
     return this.homePage.removeResultAtRow(row)
   })
 
-  When('the rounding mode is {stringInDoubleQuotes}', function (roundingMode) {
+  When('the rounding mode is {string}', function (roundingMode) {
     return this.homePage.setRoundingMode(roundingMode)
   })
 
