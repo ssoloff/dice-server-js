@@ -2662,8 +2662,8 @@
     },
     "gulp-exclude-gitignore": {
       "version": "1.2.0",
-      "from": "sboudrias/gulp-exclude-gitignore#v1.2.0",
-      "resolved": "git://github.com/sboudrias/gulp-exclude-gitignore.git#7844c5083492fb8a7179e417b69dca05684a3691",
+      "from": "gulp-exclude-gitignore@latest",
+      "resolved": "https://registry.npmjs.org/gulp-exclude-gitignore/-/gulp-exclude-gitignore-1.2.0.tgz",
       "dev": true
     },
     "gulp-htmlhint": {

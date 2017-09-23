@@ -67,7 +67,7 @@
     "gulp-coveralls": "0.1.4",
     "gulp-csslint": "1.0.0",
     "gulp-eslint": "4.0.0",
-    "gulp-exclude-gitignore": "github:sboudrias/gulp-exclude-gitignore#v1.2.0",
+    "gulp-exclude-gitignore": "1.2.0",
     "gulp-htmlhint": "0.3.1",
     "gulp-istanbul": "1.1.2",
     "gulp-jasmine": "2.4.2",
