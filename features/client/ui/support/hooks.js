@@ -11,14 +11,14 @@
 const { defineSupportCode } = require('cucumber')
 const driver = require('./driver')
 
-defineSupportCode(({Before, registerHandler}) => {
-  Before(function (scenarioResult, callback) {
+defineSupportCode(({AfterAll, Before}) => {
+  Before(function (testCase, callback) {
     this.homePage = this.createHomePage()
     this.resultRowCount = 0
     callback()
   })
 
-  registerHandler('AfterFeatures', (features, callback) => {
+  AfterAll(callback => {
     driver.quit().then(callback)
   })
 })

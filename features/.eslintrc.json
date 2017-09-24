@@ -4,6 +4,6 @@
     "../support/.eslintrc-node.json"
   ],
   "rules": {
-    "new-cap": [1, {"capIsNewExceptions": ["Before", "Given", "Then", "When"]}]
+    "new-cap": [1, {"capIsNewExceptions": ["AfterAll", "Before", "Given", "Then", "When"]}]
   }
 }

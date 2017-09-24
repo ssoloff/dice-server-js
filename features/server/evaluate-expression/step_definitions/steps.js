@@ -13,20 +13,17 @@ const { expect } = require('chai')
 const httpStatus = require('http-status-codes')
 
 defineSupportCode(({Given, When, Then}) => {
-  Given('a request with the expression {stringInDoubleQuotes}', function (expression) {
+  Given('a request with the expression {string}', function (expression) {
     this.evaluateExpressionService.setExpression(expression)
   })
 
-  Given('a request with the ID {stringInDoubleQuotes}', function (requestId) {
+  Given('a request with the ID {string}', function (requestId) {
     this.evaluateExpressionService.setRequestId(requestId)
   })
 
-  Given(
-    'a request with the random number generator named {stringInDoubleQuotes}',
-    function (randomNumberGeneratorName) {
-      this.evaluateExpressionService.setRandomNumberGenerator(randomNumberGeneratorName)
-    }
-  )
+  Given('a request with the random number generator named {string}', function (randomNumberGeneratorName) {
+    this.evaluateExpressionService.setRandomNumberGenerator(randomNumberGeneratorName)
+  })
 
   When('the evaluate expression service is invoked', function (callback) {
     this.evaluateExpressionService.call((response) => {
@@ -39,7 +36,7 @@ defineSupportCode(({Given, When, Then}) => {
     expect(this.response.body).to.deep.equal(JSON.parse(jsonResponse))
   })
 
-  Then('the response should contain the correlation ID {stringInDoubleQuotes}', function (correlationId) {
+  Then('the response should contain the correlation ID {string}', function (correlationId) {
     expect(this.objectUtil.getPropertyValue(this.response.headers, 'X-Correlation-ID')).to.equal(correlationId)
   })
 
@@ -47,15 +44,16 @@ defineSupportCode(({Given, When, Then}) => {
     expect(this.response.body.dieRollResults).to.deep.equal(JSON.parse(jsonDieRollResults))
   })
 
-  Then(
-    'the response should contain the expression result text {stringInDoubleQuotes}',
-    function (expressionResultText) {
-      expect(this.response.body.expressionResult.text).to.equal(expressionResultText)
-    }
-  )
+  Then('the response should contain the expression result text {string}', function (expressionResultText) {
+    expect(this.response.body.expressionResult.text).to.equal(expressionResultText)
+  })
 
   Then('the response should contain the expression result value {float}', function (expressionResultValue) {
     expect(this.response.body.expressionResult.value).to.equal(parseFloat(expressionResultValue))
+  })
+
+  Then('the response should contain the expression result value {int}', function (expressionResultValue) {
+    expect(this.response.body.expressionResult.value).to.equal(parseInt(expressionResultValue, 10))
   })
 
   Then('the response should indicate failure', function () {

@@ -30,15 +30,15 @@ defineSupportCode(({Given, When, Then}) => {
     this.ticket.forceInvalidSignature = true
   })
 
-  Given('a ticket with the description {stringInDoubleQuotes}', function (description) {
+  Given('a ticket with the description {string}', function (description) {
     this.issueTicketService.setDescription(description)
   })
 
-  Given('a ticket with the expression {stringInDoubleQuotes}', function (expression) {
+  Given('a ticket with the expression {string}', function (expression) {
     this.issueTicketService.setExpression(expression)
   })
 
-  Given('a ticket with the random number generator named {stringInDoubleQuotes}', function (randomNumberGeneratorName) {
+  Given('a ticket with the random number generator named {string}', function (randomNumberGeneratorName) {
     this.issueTicketService.setRandomNumberGenerator(randomNumberGeneratorName)
   })
 
@@ -81,17 +81,14 @@ defineSupportCode(({Given, When, Then}) => {
     expect(this.response.body.redeemedTicket.signature).to.exist // eslint-disable-line no-unused-expressions
   })
 
-  Then(
-    'the response should contain the expression result text {stringInDoubleQuotes}',
-    function (expressionResultText) {
-      expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.text)
-        .to.equal(expressionResultText)
-    }
-  )
+  Then('the response should contain the expression result text {string}', function (expressionResultText) {
+    expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.text)
+      .to.equal(expressionResultText)
+  })
 
-  Then('the response should contain the expression result value {float}', function (expressionResultValue) {
+  Then('the response should contain the expression result value {int}', function (expressionResultValue) {
     expect(this.response.body.redeemedTicket.content.evaluateExpressionResponseBody.expressionResult.value)
-      .to.equal(parseFloat(expressionResultValue))
+      .to.equal(parseInt(expressionResultValue, 10))
   })
 
   Then('the response should contain the ticket description', function () {
