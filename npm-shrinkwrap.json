@@ -1870,9 +1870,9 @@
       }
     },
     "eslint-config-crockford": {
-      "version": "1.0.0",
-      "from": "eslint-config-crockford@1.0.0",
-      "resolved": "https://registry.npmjs.org/eslint-config-crockford/-/eslint-config-crockford-1.0.0.tgz",
+      "version": "2.0.0",
+      "from": "eslint-config-crockford@2.0.0",
+      "resolved": "https://registry.npmjs.org/eslint-config-crockford/-/eslint-config-crockford-2.0.0.tgz",
       "dev": true
     },
     "eslint-config-standard": {
